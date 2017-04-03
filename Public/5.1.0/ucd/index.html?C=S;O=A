@@ -1,0 +1,44 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<html>
+ <head>
+  <title>Index of /Public/5.1.0/ucd</title>
+ </head>
+ <body>
+<h1>Index of /Public/5.1.0/ucd</h1>
+<pre><img src="../../../icons/blank.gif" alt="Icon "> <a href="index.html?C=N%3BO=A">Name</a>                          <a href="index.html?C=M%3BO=A">Last modified</a>      <a href="index.html?C=S%3BO=D">Size</a>  <a href="index.html?C=D%3BO=A">Description</a><hr><img src="../../../icons/back.gif" alt="[DIR]"> <a href="../index.html">Parent Directory</a>                                   -   
+<img src="../../../icons/folder.gif" alt="[DIR]"> <a href="auxiliary/index.html">auxiliary/</a>                    01-Apr-2008 14:46    -   
+<img src="../../../icons/folder.gif" alt="[DIR]"> <a href="extracted/index.html">extracted/</a>                    01-Apr-2008 14:50    -   
+<img src="../../../icons/text.gif" alt="[TXT]"> <a href="ReadMe.txt">ReadMe.txt</a>                    31-Mar-2008 15:52  435   
+<img src="../../../icons/text.gif" alt="[TXT]"> <a href="NameAliases.txt">NameAliases.txt</a>               11-Feb-2008 13:39  1.1K  
+<img src="../../../icons/text.gif" alt="[TXT]"> <a href="NormalizationCorrections.txt">NormalizationCorrections.txt</a>  20-Mar-2008 19:52  2.0K  
+<img src="../../../icons/text.gif" alt="[TXT]"> <a href="Jamo.txt">Jamo.txt</a>                      20-Mar-2008 20:01  3.1K  
+<img src="../../../icons/text.gif" alt="[TXT]"> <a href="Unihan.html">Unihan.html</a>                   18-Mar-2008 12:45  5.0K  
+<img src="../../../icons/text.gif" alt="[TXT]"> <a href="PropertyAliases.txt">PropertyAliases.txt</a>           28-Feb-2008 14:30  5.1K  
+<img src="../../../icons/text.gif" alt="[TXT]"> <a href="NamedSequences.txt">NamedSequences.txt</a>            20-Mar-2008 19:51  5.7K  
+<img src="../../../icons/text.gif" alt="[TXT]"> <a href="Blocks.txt">Blocks.txt</a>                    20-Mar-2008 19:49  5.7K  
+<img src="../../../icons/text.gif" alt="[TXT]"> <a href="StandardizedVariants.txt">StandardizedVariants.txt</a>      24-Mar-2008 15:42  7.3K  
+<img src="../../../icons/text.gif" alt="[TXT]"> <a href="CompositionExclusions.txt">CompositionExclusions.txt</a>     20-Mar-2008 19:50  7.9K  
+<img src="../../../icons/text.gif" alt="[TXT]"> <a href="NamedSequencesProv.txt">NamedSequencesProv.txt</a>        14-Feb-2008 14:29   11K  
+<img src="../../../icons/text.gif" alt="[TXT]"> <a href="ArabicShaping.txt">ArabicShaping.txt</a>             20-Mar-2008 19:49   12K  
+<img src="../../../icons/text.gif" alt="[TXT]"> <a href="SpecialCasing.txt">SpecialCasing.txt</a>             03-Mar-2008 20:00   16K  
+<img src="../../../icons/text.gif" alt="[TXT]"> <a href="NamesList.html">NamesList.html</a>                13-Jun-2007 20:03   19K  
+<img src="../../../icons/text.gif" alt="[TXT]"> <a href="BidiMirroring.txt">BidiMirroring.txt</a>             28-Mar-2008 12:23   23K  
+<img src="../../../icons/text.gif" alt="[TXT]"> <a href="PropertyValueAliases.txt">PropertyValueAliases.txt</a>      03-Mar-2008 19:59   31K  
+<img src="../../../icons/text.gif" alt="[TXT]"> <a href="StandardizedVariants.html">StandardizedVariants.html</a>     24-Mar-2008 15:42   33K  
+<img src="../../../icons/text.gif" alt="[TXT]"> <a href="HangulSyllableType.txt">HangulSyllableType.txt</a>        03-Mar-2008 20:04   50K  
+<img src="../../../icons/text.gif" alt="[TXT]"> <a href="CaseFolding.txt">CaseFolding.txt</a>               03-Mar-2008 19:57   63K  
+<img src="../../../icons/text.gif" alt="[TXT]"> <a href="DerivedAge.txt">DerivedAge.txt</a>                03-Mar-2008 19:57   64K  
+<img src="../../../icons/text.gif" alt="[TXT]"> <a href="PropList.txt">PropList.txt</a>                  20-Mar-2008 16:31   83K  
+<img src="../../../icons/text.gif" alt="[TXT]"> <a href="Scripts.txt">Scripts.txt</a>                   20-Mar-2008 16:31  106K  
+<img src="../../../icons/text.gif" alt="[TXT]"> <a href="UCD.html">UCD.html</a>                      25-Mar-2008 13:06  135K  
+<img src="../../../icons/text.gif" alt="[TXT]"> <a href="Index.txt">Index.txt</a>                     19-Feb-2008 16:43  145K  
+<img src="../../../icons/text.gif" alt="[TXT]"> <a href="DerivedNormalizationProps.txt">DerivedNormalizationProps.txt</a> 03-Mar-2008 19:58  200K  
+<img src="../../../icons/text.gif" alt="[TXT]"> <a href="DerivedCoreProperties.txt">DerivedCoreProperties.txt</a>     20-Mar-2008 16:30  462K  
+<img src="../../../icons/text.gif" alt="[TXT]"> <a href="EastAsianWidth.txt">EastAsianWidth.txt</a>            20-Mar-2008 19:50  692K  
+<img src="../../../icons/text.gif" alt="[TXT]"> <a href="LineBreak.txt">LineBreak.txt</a>                 20-Mar-2008 19:51  746K  
+<img src="../../../icons/text.gif" alt="[TXT]"> <a href="NamesList.txt">NamesList.txt</a>                 26-Mar-2008 14:43  917K  
+<img src="../../../icons/text.gif" alt="[TXT]"> <a href="UnicodeData.txt">UnicodeData.txt</a>               19-Mar-2008 13:54  1.1M  
+<img src="../../../icons/text.gif" alt="[TXT]"> <a href="NormalizationTest.txt">NormalizationTest.txt</a>         03-Mar-2008 19:59  2.1M  
+<img src="../../../icons/compressed.gif" alt="[   ]"> <a href="Unihan.zip">Unihan.zip</a>                    13-Mar-2008 19:03  6.0M  
+<hr></pre>
+</body></html>

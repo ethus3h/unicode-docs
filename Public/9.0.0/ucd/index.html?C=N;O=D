@@ -1,0 +1,54 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<html>
+ <head>
+  <title>Index of /Public/9.0.0/ucd</title>
+ </head>
+ <body>
+<h1>Index of /Public/9.0.0/ucd</h1>
+<pre><img src="../../../icons/blank.gif" alt="Icon "> <a href="index.html?C=N%3BO=A">Name</a>                          <a href="index.html?C=M%3BO=A">Last modified</a>      <a href="index.html?C=S%3BO=A">Size</a>  <a href="index.html?C=D%3BO=A">Description</a><hr><img src="../../../icons/back.gif" alt="[DIR]"> <a href="../index.html">Parent Directory</a>                                   -   
+<img src="../../../icons/folder.gif" alt="[DIR]"> <a href="extracted/index.html">extracted/</a>                    20-Jun-2016 08:48    -   
+<img src="../../../icons/folder.gif" alt="[DIR]"> <a href="auxiliary/index.html">auxiliary/</a>                    20-Jun-2016 08:50    -   
+<img src="../../../icons/compressed.gif" alt="[   ]"> <a href="Unihan.zip">Unihan.zip</a>                    01-Jun-2016 15:02  6.3M  
+<img src="../../../icons/text.gif" alt="[TXT]"> <a href="UnicodeData.txt">UnicodeData.txt</a>               16-May-2016 19:23  1.6M  
+<img src="../../../icons/layout.gif" alt="[   ]"> <a href="USourceGlyphs.pdf">USourceGlyphs.pdf</a>             17-Jun-2016 13:42  1.7M  
+<img src="../../../icons/text.gif" alt="[TXT]"> <a href="USourceData.txt">USourceData.txt</a>               14-Jan-2016 11:04  193K  
+<img src="../../../icons/compressed.gif" alt="[   ]"> <a href="UCD.zip">UCD.zip</a>                       20-Jun-2016 20:06  5.4M  
+<img src="../../../icons/text.gif" alt="[TXT]"> <a href="TangutSources.txt">TangutSources.txt</a>             21-Mar-2016 19:31  364K  
+<img src="../../../icons/text.gif" alt="[TXT]"> <a href="StandardizedVariants.txt">StandardizedVariants.txt</a>      20-Nov-2015 18:26   76K  
+<img src="../../../icons/text.gif" alt="[TXT]"> <a href="StandardizedVariants.html">StandardizedVariants.html</a>     07-Apr-2016 18:12  4.0K  
+<img src="../../../icons/text.gif" alt="[TXT]"> <a href="SpecialCasing.txt">SpecialCasing.txt</a>             03-Mar-2016 10:55   16K  
+<img src="../../../icons/text.gif" alt="[TXT]"> <a href="Scripts.txt">Scripts.txt</a>                   01-Jun-2016 09:13  156K  
+<img src="../../../icons/text.gif" alt="[TXT]"> <a href="ScriptExtensions.txt">ScriptExtensions.txt</a>          01-Jun-2016 09:13   18K  
+<img src="../../../icons/text.gif" alt="[TXT]"> <a href="ReadMe.txt">ReadMe.txt</a>                    20-Jun-2016 09:01  612   
+<img src="../../../icons/text.gif" alt="[TXT]"> <a href="PropertyValueAliases.txt">PropertyValueAliases.txt</a>      03-Mar-2016 10:56   67K  
+<img src="../../../icons/text.gif" alt="[TXT]"> <a href="PropertyAliases.txt">PropertyAliases.txt</a>           03-Mar-2016 10:57  7.8K  
+<img src="../../../icons/text.gif" alt="[TXT]"> <a href="PropList.txt">PropList.txt</a>                  01-Jun-2016 09:13  113K  
+<img src="../../../icons/text.gif" alt="[TXT]"> <a href="NormalizationTest.txt">NormalizationTest.txt</a>         04-Apr-2016 09:16  2.4M  
+<img src="../../../icons/text.gif" alt="[TXT]"> <a href="NormalizationCorrections.txt">NormalizationCorrections.txt</a>  22-Jan-2016 13:27  2.1K  
+<img src="../../../icons/text.gif" alt="[TXT]"> <a href="NamesList.txt">NamesList.txt</a>                 17-Jun-2016 12:32  1.4M  
+<img src="../../../icons/text.gif" alt="[TXT]"> <a href="NamesList.html">NamesList.html</a>                09-Mar-2016 17:31   29K  
+<img src="../../../icons/text.gif" alt="[TXT]"> <a href="NamedSequencesProv.txt">NamedSequencesProv.txt</a>        26-May-2016 18:20  2.4K  
+<img src="../../../icons/text.gif" alt="[TXT]"> <a href="NamedSequences.txt">NamedSequences.txt</a>            26-May-2016 18:20   18K  
+<img src="../../../icons/text.gif" alt="[TXT]"> <a href="NameAliases.txt">NameAliases.txt</a>               22-Jan-2016 13:27   15K  
+<img src="../../../icons/text.gif" alt="[TXT]"> <a href="LineBreak.txt">LineBreak.txt</a>                 26-May-2016 12:06  219K  
+<img src="../../../icons/text.gif" alt="[TXT]"> <a href="Jamo.txt">Jamo.txt</a>                      22-Jan-2016 13:27  3.2K  
+<img src="../../../icons/text.gif" alt="[TXT]"> <a href="IndicSyllabicCategory.txt">IndicSyllabicCategory.txt</a>     23-May-2016 11:22   67K  
+<img src="../../../icons/text.gif" alt="[TXT]"> <a href="IndicPositionalCategory.txt">IndicPositionalCategory.txt</a>   09-Jun-2016 17:42   40K  
+<img src="../../../icons/text.gif" alt="[TXT]"> <a href="Index.txt">Index.txt</a>                     13-Jun-2016 13:43  162K  
+<img src="../../../icons/text.gif" alt="[TXT]"> <a href="HangulSyllableType.txt">HangulSyllableType.txt</a>        03-Mar-2016 10:58   50K  
+<img src="../../../icons/text.gif" alt="[TXT]"> <a href="EmojiSources.txt">EmojiSources.txt</a>              22-Jan-2016 13:27   13K  
+<img src="../../../icons/text.gif" alt="[TXT]"> <a href="EastAsianWidth.txt">EastAsianWidth.txt</a>            27-May-2016 18:25  161K  
+<img src="../../../icons/text.gif" alt="[TXT]"> <a href="DerivedNormalizationProps.txt">DerivedNormalizationProps.txt</a> 03-Mar-2016 10:59  792K  
+<img src="../../../icons/text.gif" alt="[TXT]"> <a href="DerivedCoreProperties.txt">DerivedCoreProperties.txt</a>     01-Jun-2016 09:14  921K  
+<img src="../../../icons/text.gif" alt="[TXT]"> <a href="DerivedAge.txt">DerivedAge.txt</a>                03-Mar-2016 10:59  104K  
+<img src="../../../icons/text.gif" alt="[TXT]"> <a href="CompositionExclusions.txt">CompositionExclusions.txt</a>     22-Jan-2016 13:27  8.2K  
+<img src="../../../icons/text.gif" alt="[TXT]"> <a href="CaseFolding.txt">CaseFolding.txt</a>               03-Mar-2016 11:00   76K  
+<img src="../../../icons/text.gif" alt="[TXT]"> <a href="CJKRadicals.txt">CJKRadicals.txt</a>               22-Jan-2016 13:27  5.0K  
+<img src="../../../icons/text.gif" alt="[TXT]"> <a href="Blocks.txt">Blocks.txt</a>                    05-Feb-2016 20:51  9.1K  
+<img src="../../../icons/text.gif" alt="[TXT]"> <a href="BidiTest.txt">BidiTest.txt</a>                  03-Mar-2016 11:02  7.6M  
+<img src="../../../icons/text.gif" alt="[TXT]"> <a href="BidiMirroring.txt">BidiMirroring.txt</a>             22-Jan-2016 13:27   24K  
+<img src="../../../icons/text.gif" alt="[TXT]"> <a href="BidiCharacterTest.txt">BidiCharacterTest.txt</a>         15-Jan-2016 17:47  6.6M  
+<img src="../../../icons/text.gif" alt="[TXT]"> <a href="BidiBrackets.txt">BidiBrackets.txt</a>              07-Jun-2016 18:48  8.4K  
+<img src="../../../icons/text.gif" alt="[TXT]"> <a href="ArabicShaping.txt">ArabicShaping.txt</a>             25-Feb-2016 10:49   31K  
+<hr></pre>
+</body></html>

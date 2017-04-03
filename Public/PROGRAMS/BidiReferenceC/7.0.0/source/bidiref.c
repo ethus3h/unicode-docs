@@ -1,0 +1,339 @@
+/*
+**      Unicode Bidirectional Algorithm
+**      Reference Implementation
+**      (c) Copyright 2013 - 2015
+**      Unicode, Inc. All rights reserved.
+**      Unpublished rights reserved under U.S. copyright laws.
+*/
+
+/*
+ * bidiref.c
+ *
+ * Unicode Bidirectional Algorithm (UBA)
+ * Reference Implementation
+ *
+ * This reference implementation is deliberately designed to
+ * be literal and to explicitly follow the UBA specification
+ * in UAX #9 for didactic reasons. It is not optimized, nor
+ * intended as a direct guide to how to build an efficient
+ * implementation. Instead, it is designed to make the steps
+ * of the algorithm clear, so as to provide unambiguous
+ * interpretation of the intended results of the UBA in all
+ * input cases.
+ */
+
+/*
+ * Change history:
+ *
+ * 2013-May-31 kenw   Created to match UBA 6.2.0 spec and
+ *                    UBA 6.3.0 spec.
+ * 2013-Jun-02 kenw   Reworked to put the UBA and initial
+ *                    table loading into a dll (or static
+ *                    library) with a public API.
+ * 2013-Jun-07 kenw   Added Trace14.
+ * 2013-Jun-19 kenw   Added Trace15.
+ * 2013-Jun-21 kenw   Tweaks for U_Int_32 definition.
+ * 2013-Jun-26 kenw   Version 1.5.
+ * 2013-Jun-27 kenw   Version 1.6. (Various bug fixes)
+ * 2013-Jun-29 kenw   Version 1.7. (Bug fix in N0)
+ * 2013-Jul-08 kenw   Version 1.8. (Bug fix in br_DropSequence)
+ * 2014-Apr-17 kenw   Version 7.0.0. Update for Unicode 7.0
+ *                    and synch bidiref version to the standard.
+ * 2015-Jun-04 kenw   Further updates for Unicode 7.0.
+ */
+
+#include <string.h>
+#include <stdio.h>
+#include <ctype.h>
+
+#include "bidirefp.h"
+
+static char versionString[] = "bidiref version 7.0.0, 2015-06-04\n";
+
+static char infile[] = "BidiRefTest.txt"; /* default file name */
+
+/*
+ * Set the MAXARGLEN value fairly high, to allow fully-qualified
+ * input file names.
+ */
+#define MAXARGLEN (512)
+
+char inputFileName[MAXARGLEN];
+
+int debugLevel; /* Set level for debug output */
+int staticTest; /* Use static test string(s) */
+
+/***********************************************************/
+
+/*
+ * SetInitialTraceFlags
+ *
+ * Adjust the initial traceFlags value based on the
+ * overall debug level chosen at the command line or
+ * at runtime.
+ */
+
+static void SetInitialTraceFlags ( void )
+{
+    TraceOn ( Trace0 );
+    TraceOn ( Trace15 );
+    if ( debugLevel > 0 )
+    {
+        TraceOn ( Trace1 | Trace2 );
+    }
+    if ( debugLevel > 1 )
+    {
+        TraceOn ( Trace11 );
+    }
+    if ( debugLevel > 2 )
+    {
+        TraceOn ( Trace3 | Trace5 | Trace6 | Trace8 );
+    }
+    if ( debugLevel > 3 )
+    {
+        TraceOn ( Trace4 | Trace7 | Trace9 | Trace12 );
+    }
+    /* Temporary testing of single trace flag */
+    /* TraceOn ( Trace14 ); */
+}
+
+/***********************************************************/
+
+/*
+ * SECTION: Command Line Processing.
+ */
+
+static void usageMsg( void )
+{
+    fputs ("Usage: bidiref (-xyzvh)(-dn)(filename)\n", stdout );
+    fputs ("       Default input is BidiRefTest.txt\n", stdout );
+    fputs ("       -dn  set diagnostic mode: 1 minimum, 2 medium, 3 high, 4 maximum.\n",
+        stdout );
+    fputs ("       -unn set UBA version to n.n. (valid values: -u62, -u63, -u70)\n",
+        stdout );
+    fputs ("       -x   set UBA version to 6.3. (= -u63)\n", stdout );
+    fputs ("       -y   omit output for vacuous rule application (Trace14 on).\n", stdout );
+    fputs ("       -z   run one statically defined test diagnostic.\n", stdout );
+    fputs ("       -v   show bidiref program version.\n", stdout );
+    fputs ("       -h   show this usage message.\n", stdout );
+}
+
+static void versionMsg(void)
+{
+    fputs ( versionString, stdout );
+}
+
+/*
+ * processArguments()
+ *
+ * -1 Error return code. Post error message and stop.
+ *  0 Stop return code. Stop without further processing.
+ *  1 Continue return code. Continue processing.
+ */
+
+static int processArguments( int argc, char *argv[] )
+{
+char argstring[MAXARGLEN];
+char* tmp;
+char c;
+int numargs = argc;
+int foundFile = 0;
+
+/*
+ * Set up default values for input parameters.
+ */
+    debugLevel = 0;
+    staticTest = 0;
+
+    while ( numargs > 1 )
+    {
+        strncpy ( argstring, *++argv, MAXARGLEN );
+        argstring[MAXARGLEN - 1] = '\0';
+        numargs--;
+        tmp = argstring;
+        c = *tmp++;
+        if ( c == '-' )
+        {
+            c = *tmp;
+            switch ( c )
+            {
+            case 'd' :
+                tmp++;
+                if ( *tmp == '1' )
+                {
+                    debugLevel = 1;
+                }
+                else if ( *tmp == '2' )
+                {
+                    debugLevel = 2;
+                }
+                else if ( *tmp == '3' )
+                {
+                    debugLevel = 3;
+                }
+                else if ( *tmp == '4' )
+                {
+                    debugLevel = 4;
+                }
+                else
+                {
+                    usageMsg();
+                    return -1;
+                }
+                break;
+            case 'u' :
+                tmp++;
+                if ( *tmp == '6' )
+                {
+                    tmp++;
+                    if ( *tmp == '2')
+                    {
+                        SetUBAVersion (UBA62);
+                    }
+                    else if ( *tmp == '3')
+                    {
+                        SetUBAVersion (UBA63);
+                    }
+                    else
+                    {
+                        usageMsg();
+                        return -1;
+                    }
+                }
+                else if ( *tmp == '7' )
+                {
+                    tmp++;
+                    if ( *tmp == '0')
+                    {
+                        SetUBAVersion (UBA70);
+                    }
+                    else
+                    {
+                        usageMsg();
+                        return -1;
+                    }
+                }
+                else
+                {
+                    usageMsg();
+                    return -1;
+                }
+                break;
+            case 'x' :
+                SetUBAVersion ( UBA63 );
+                break;
+            case 'v' :
+                versionMsg();
+                return 0;
+            /* The -y command line arg is a temporary hack. */
+            case 'y' :
+                TraceOn ( Trace14 );
+                break;
+            case 'z' :
+                staticTest = 1;
+                break;
+            case '?' :
+            case 'h' :
+                usageMsg();
+                return 0;
+            default:
+                usageMsg();
+                return -1;
+            }
+        }
+        else if ( !foundFile )
+        {
+            strncpy ( inputFileName, argstring, MAXARGLEN );
+            foundFile = 1;
+        }
+        else
+        {
+            usageMsg();
+            return -1;
+        }
+    }
+/*
+ * Default empty parameter1 to input file name as BidiRefTest.txt.
+ */
+    if ( !foundFile )
+    {
+        strcpy ( inputFileName, infile );
+    }
+
+/*
+ * Detect whether the input for test set data is BidiTest.txt.
+ * If so, reset the fileFormat to FORMAT_B. For a simple test,
+ * just check whether "BidiTest" occurs anywhere in the
+ * inputFileName string, because we aren't actually parsing
+ * fully-qualified paths here.
+ */
+    tmp = strstr ( inputFileName, "BidiTest" );
+    if ( tmp != NULL )
+    {
+        /* 
+         * TBD: Further checking to ensure name meets
+         * qualification for FORMAT_B.
+         */
+        SetFileFormat ( FORMAT_B );
+    } 
+
+    return ( 1 );
+}
+
+/***********************************************************/
+
+main ( int argc, char *argv[] )
+{
+int rc;
+
+    rc = processArguments ( argc, argv );
+    if ( rc != 1 )
+    {
+        if ( rc < 0 )
+        {
+            br_ErrPrint ( "Error in processing command line arguments.\n" );           
+        }
+        return ( rc );
+    }
+
+    /*
+     * Set any individual trace flags based on overall debug levels.
+     */
+
+    SetInitialTraceFlags();
+
+    if ( Trace ( Trace2 ) )
+    {
+        if ( staticTest )
+        {
+            printf ( "Trace: Starting bidiref with static input.\n" );
+        }
+        else
+        {
+            printf ( "Trace: Starting bidiref, input file=\"%s\"\n", inputFileName );
+        }
+    }
+
+    /* 
+     * Initialize property tables from UnicodeData.txt and BidiBrackets.txt.
+     */
+
+    rc = br_InitTable ( GetUBAVersion() );
+    if ( rc != 1 )
+    {
+        br_ErrPrint ( "Error in processing property tables.\n" );
+        return ( rc );
+    }
+
+    if ( staticTest )
+    {
+        rc = br_RunStaticTest();
+    }
+    else
+    {
+        rc = br_RunFileTests ( GetUBAVersion(), inputFileName );
+    }
+
+    return (1);
+}
+
