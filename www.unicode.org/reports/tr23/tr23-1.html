@@ -1,0 +1,2181 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
+       "http://www.w3.org/TR/REC-html40/loose.dtd"> 
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta http-equiv="Content-Language" content="en-us">
+<link rel="stylesheet" href="../../unicode/reports/reports.css" type="text/css">
+<meta name="GENERATOR" content="Microsoft FrontPage 4.0">
+<meta name="ProgId" content="FrontPage.Editor.Document">
+<title>UTR #23: Character Properties</title>
+<style type="text/css">
+<!--
+p.caption    { page-break-after: avoid; font-weight: bold; text-align: center }
+table.gray   { border-collapse: collapse; border-style: none; border-width: medium }
+td.grayfirst { border-left-style: none; border-left-width: medium; border-right-style: none; 
+               border-right-width: medium; border-top: 1.5pt solid gray; 
+               border-bottom: .75pt solid gray; padding-left: 5.4pt; 
+               padding-right: 5.4pt; padding-top: 0in; padding-bottom: 0in }
+td.graymiddle { border-style: none; border-width: medium; padding-left: 5.4pt; padding-right: 
+               5.4pt; padding-top: 0in; padding-bottom: 0in }
+td.graylast  { border-left-style: none; border-left-width: medium; border-right-style: none; 
+               border-right-width: medium; border-top-style: none; 
+               border-top-width: medium; border-bottom: 1.5pt solid gray; 
+               padding-left: 5.4pt; padding-right: 5.4pt; padding-top: 0in; 
+               padding-bottom: 0in }
+table.black  { border-collapse: collapse; border: .5pt solid black }
+td.black     { font-size: 9pt; border: .5pt solid black; padding-left: 5.4pt; padding-right: 
+               5.4pt; padding-top: 0in; padding-bottom: 0in }
+td.nb	   { border-style:none }
+table.nb  { border-style:none }
+div.body     { margin-left: 1em; margin-right: .5em }
+ul.toc       { list-style-type: none }
+ol.toc       { list-style-type: decimal; margin-bottom: 0pt }
+-->
+</style>
+</head>
+
+<body>
+
+<!-- BEGIN OF DOCUMENT TITLE, DATE AND VERSION -->
+<table class="header" cellpadding="0" cellspacing="0" width="100%">
+  <tr>
+    <td class="icon"><a href="http://www.unicode.org"><img align="middle" alt="[Unicode]" border="0" src="../../webscripts/logo60s2.gif" width="34" height="33"></a>&nbsp;&nbsp;<a class="bar" href="http://www.unicode.org/unicode/reports">Technical              
+              Reports</a></td>
+   </tr>
+  <tr>
+    <td class="gray">&nbsp;</td>
+  </tr>
+</table>
+<div class="body">
+  <h2 align="center"><font color="#FF0000">Proposed Draft </font>             
+    Unicode Technical Report #23</h2>            
+  <h1 align="center">CHARACTER Properties</h1>
+  <table border="1" cellpadding="2" width="95%">
+  <tr>
+    <td>Version</td>      
+    <td> 1.0</td>        
+  </tr>
+  <tr>      
+    <td>Author</td>      
+    <td> Asmus Freytag (<a href="mailto:asmus@unicode.org">asmus@unicode.org</a>)</td>        
+  </tr>       
+  <tr>       
+    <td>Date</td>       
+    <td>2002-04-23</td>     
+  </tr>     
+  <tr>     
+    <td>This Version</td>     
+    <td><a href="http://www.unicode.org/unicode/reports/tr23/tr23-1.html">http://www.unicode.org/unicode/reports/tr23/tr23-1.html</a></td>    
+  </tr>    
+  <tr>    
+    <td>Previous Version</td>    
+    <td>none</td>    
+  </tr>    
+  <tr>    
+    <td width="120">Latest Version</td>    
+    <td><a href="http://www.unicode.org/unicode/reports/tr23/">http://www.unicode.org/unicode/reports/tr23/</a></td>    
+  </tr>    
+  <tr>     
+    <td>Tracking Number</td>     
+    <td><a href="tr23-1.html#Modifications">1</a></td>      
+  </tr>      
+</table>    
+<p><a name="Summary"><b>Summary</b></a></p>
+    <p>    
+    <i>This report presents a survey of the character properties defined  
+    in the Unicode Standard as well as guidelines to their usage.</i>     
+    </p>
+<p><b>Status</b></p>
+  <p><i>This document has been approved by the Unicode Technical Committee for   
+  public review as a <b>Proposed Draft Unicode Technical Report</b>. Publication   
+  does not imply endorsement by the Unicode Consortium. This is a draft document   
+  which may be updated, replaced, or superseded by other documents at any time.   
+  This is not a stable document; it is inappropriate to cite this document as   
+  other than a work in progress.</i></p>  
+  <p><font color="#FF0000">Significant changes of the information in this 
+  proposed draft are expected as result of public and UTC review.</font></p>    
+  <p><i>Please send comments to the authors. A list of current Unicode Technical             
+  Reports is found on <a href="http://www.unicode.org/unicode/reports/">http://www.­unicode.org/unicode/reports/</a>.             
+  For more information about versions of the Unicode Standard, see </i><i><a href="http://www.unicode.org/unicode/standard/versions/">http://www.unicode.org/unicode/standard/versions/</a>.</i></p>            
+  <p><i>The <a href="tr23-1.html#References">References</a>  
+  provide related information that is useful in understanding this document.  
+  Please mail corrigenda and other comments to the author(s).</i></p> 
+<p>[<font color="#FF0000">Editorial notes for the benefit of       
+reviewers are indicated like this.</font>]</p>             
+         
+         
+<p><b><i>Contents</i></b></p>       
+<dl compact>       
+<dd><a href="tr23-1.html#Scope">1 Scope</a></dd>       
+    <dd><a href="tr23-1.html#Overview">2 Overview</a>        
+  <dl compact>     
+    <dd><a href="tr23-1.html#Scheme">2.1 Origin of Character Properties</a></dd>              
+    <dd><a href="tr23-1.html#Encoders">2.2 Character Behavior in Context</a></dd>          
+    <dd><a href="tr23-1.html#Scheme">2.3 Relation of Character Properties to Algorithms</a></dd>                 
+    <dd><a href="tr23-1.html#Encoders">2.4 Normative Properties</a></dd>          
+    <dd><a href="tr23-1.html#Scheme">2.5 Informative Properties</a></dd>                 
+    <dd><a href="tr23-1.html#Encoders">2.6 Issues</a></dd>          
+  </dl>          
+    </dd>          
+    <dd><a href="tr23-1.html#Definitions">3 Definitions</a></dd>          
+    <dd><a href="tr23-1.html#Conformance">4 Conformance</a>          
+   <dl compact>     
+   <dd><a href="tr23-1.html#Requirements">4.1 Conformance Requirements</a></dd>                 
+   <dd><a href="tr23-1.html#Overriding">4.2 Overriding Properties and Higher-level 
+    Protocols</a></dd>          
+   <dd><a href="tr23-1.html#Normative and Informative">4.3 Normative and 
+    Informative Properties</a></dd>                 
+	  </dl>
+	</dd>
+  <!--  
+  <dd><a href="#Table of Character Properties">5 Table of Character Properties</a>         
+  </dd>         
+  <dd><a href="#Notes">6 Notes on specific Properties</a>
+
+    <dl compact>     
+    <dd><a href="#Scheme">6.1 Subsection 2.1</a></dd>                 
+    <dd><a href="#Encoders">6.2 Subsection 2.2</a></dd>          
+    <dd><a href="#Scheme">6.3 Subsection 2.1</a></dd>                 
+    <dd><a href="#Encoders">6.4 Subsection 2.2</a></dd>          
+    <dd><a href="#Scheme">6.5 Subsection 2.1</a></dd>                 
+    <dd><a href="#Encoders">6.6 Subsection 2.2</a></dd>          
+    <dd><a href="#Scheme">6.7 Subsection 2.1</a></dd>                 
+    <dd><a href="#Encoders">6.8 Subsection 2.2</a></dd>          
+    <dd><a href="#Scheme">6.9 Subsection 2.1</a></dd>                 
+    <dd><a href="#Encoders">6.10 Subsection 2.2</a></dd>          
+    <dd><a href="#Scheme">6.11 Subsection 2.1</a></dd>                 
+    <dd><a href="#Encoders">6.12 Subsection 2.2</a></dd>          
+    <dd><a href="#Scheme">6.13 Subsection 2.1</a></dd>                 
+    <dd><a href="#Encoders">6.14 Subsection 2.2</a></dd>          
+    <dd><a href="#Scheme">6.15 Subsection 2.1</a></dd>                 
+    <dd><a href="#Encoders">6.16 Subsection 2.2</a></dd>          
+    <dd><a href="#Scheme">6.17 Subsection 2.1</a></dd>                 
+    <dd><a href="#Encoders">6.18 Subsection 2.2</a></dd>          
+    <dd><a href="#Scheme">6.19 Subsection 2.1</a></dd>                 
+    <dd><a href="#Encoders">6.20 Subsection 2.2</a></dd>          
+    <dd><a href="#Scheme">6.21 Subsection 2.1</a></dd>                 
+    <dd><a href="#Encoders">6.22 Subsection 2.2</a></dd>          
+    <dd><a href="#Scheme">6.23 Subsection 2.1</a></dd>                 
+    <dd><a href="#Encoders">6.24 Subsection 2.2</a></dd>          
+	 </dl>
+  </dd>
+	 -->
+    <dd><a href="tr23-1.html#Maintenance">7 Updating Character Properties and Extending the Standard</a>
+    <dl compact>     
+  <dd><a href="tr23-1.html#Updating">7.1 Updating</a></dd>                 
+  <dd><a href="tr23-1.html#Guarantees">7.2 Guarantees</a></dd>          
+	</dl>
+   </dd>
+   <dd><a href="http://www.unicode.org/reports/tr23/SpecialValues">8 Special Property Values</a>
+    <dl compact>     
+  <dd><a href="tr23-1.html#NA">8.1 N/A</a></dd>                 
+  <dd><a href="tr23-1.html#Default">8.2 Default Values</a></dd>          
+  <dd><a href="tr23-1.html#Preliminary">8.3 Preliminary Property Assignments</a></dd>              
+  <!-- <dd><a href="#Undetermined">8.4 Undetermined Property Values</a></dd>   !-->
+	</dl>
+   </dd>
+   <dd><a href="tr23-1.html#Working">9 Working with properties</a>
+    <dl compact>     
+  <dd><a href="tr23-1.html#Scheme">9.1 Subsection 2.1</a></dd>                 
+  <dd><a href="tr23-1.html#Encoders">9.2 Subsection 2.2</a></dd>          
+  <dd><a href="tr23-1.html#Scheme">9.3 Subsection 2.1</a></dd>                 
+  <dd><a href="tr23-1.html#Encoders">9.4 Subsection 2.2</a></dd>          
+	</dl>
+  </dd>	
+  <dd><a href="tr23-1.html#Management">10 Data Managagement and Distribution</a>
+    <dl compact>     
+  <dd><a href="tr23-1.html#Location">10.1 Versions</a></dd>                 
+  <dd><a href="tr23-1.html#Syntax">10.2 File Syntax Conventions</a></dd>          
+  <dd><a href="tr23-1.html#Beta">10.3 Beta</a></dd>                 
+	</dl>
+	</dd>
+  <dd><a href="tr23-1.html#References">11. References</a></dd>         
+  <dd><a href="tr23-1.html#Acknowledgements">Acknowledgements</a></dd>        
+  <dd><a href="tr23-1.html#Revisions">Revisions</a></dd>        
+</dl>        
+<hr>     
+         
+         
+<h2>1. <a name="Scope"> Scope</a></h2>          
+      
+      
+    <p>This survey   
+    provides discussion of common aspects of character properties. This   
+    survey is not intended to supersede chapter 4 in the book, nor the existing body of technical reports 
+    and documentation files in the Unicode Character Database that provide detailed    
+    descriptions for particular character properties. Instead it presents a    
+    capsule summary only and references the corresponding technical report   
+    for the full details.               
+</p>       
+       
+         
+<p>This report specifically covers formal <b>character properties</b>, which are those                          
+attributes of characters that are specified according to the definitions set                        
+forth in this report.&nbsp;</p>                              
+         
+         
+<h2><a name="Overview">2. Overview</a></h2>                    
+         
+<h3><a name="Origin">2.1 Origin of Character Properties</a></h3>
+    <p>The Unicode Standard views character semantics as inherent to the definition                             
+of a character and conformant processes are required to take these into account                 
+    when interpreting characters. The assignment of character semantics for the Unicode                             
+Standard is based on character                         
+behavior. For other character set                             
+standards, it is left to the implementer, or to unrelated secondary standards, to                             
+assign character semantics to characters. In contrast, the Unicode&nbsp; Standard                       
+supplies                         
+a rich set of character attributes, called properties, for each character contained in it.&nbsp;&nbsp;Many                       
+properties are specified in relation to processes or algorithms that                         
+interpret them, in order to implement the discovered character behavior.&nbsp;</p>                     
+       
+<h3><a name="Context">2.2 Character Behavior in Context</a></h3>                 
+       
+<p>The interpretation of some properties (such as the case of a character) is 
+largely independent of context, whereas the   
+interpretation of others (such as directionality) is applicable to a character sequence as a whole, rather than to the   
+individual characters that compose the sequence.</p>     
+    <p>Other examples that require context include the classification of neutrals in script 
+    assignments or title casing. The line breaking rules of  
+    TR#14 involve character pairs and and triples, and in certain cases,  
+    longer sequences. The glyph(s)   
+    defined by a combining character sequence are the result of contextual analysis in the   
+    display shaping engine. Isolated character properties typically only   
+    tell part of the story.</p>  
+       
+<h3><a name="Relation">2.3 Relation of Character Properties to Algorithms</a></h3>
+       
+    <p> When modeling character behavior with computer processes, formal           
+character properties are assigned in order to achieve the expected results. Such  
+    modeling depends heavily on algorithms. In some cases, a   
+    given character property is specified in close conjunction with a   
+    detailed specification of an algorithm. In other cases, algorithms are implied but not specified, or there are several algorithms can make use of the same general character   
+    property. The last case may require occasional differences in character  
+    property assignment to make all algorithms work correctly. This can  
+    usually be achieved by overriding specific properties for specific 
+    algorithms.</p> 
+       
+    <p>When assigning character properties for use with a given algorithm, it may be tempting to assign somewhat              
+    values to some characters, as                
+long as the algorithm happens to produce the expected results.&nbsp; Proceeding in this                
+way hides the nature of the character and limits the re-use of character properties by related processes.              
+    Therefore, instead                
+of tweaking the properties to simply make a particular algorithm easier, the              
+    Unicode Standard pays careful                
+attention to the underlying essential linguistic identity of the                
+character. However, not all aspects of a characters identity are relevant in all               
+circumstances, and some characters can be used in many different ways, depending               
+on context or circumstance. Because of this the formal character properties alone              
+    are not sufficient to describe the complete range of desirable or acceptable              
+    character behaviors.</p>                          
+       
+<h3><a name="Normative">2.4 Normative Properties</a></h3>
+<p>As specified in Chapter   
+3, Conformance,   
+the Unicode Standard [UNICODE] defines both normative and informative properties.</p>   
+<p><font FACE="Times New Roman" SIZE="2">
+<b><i>Normative Properties.</i></b><i>Normative</i>means that  implementations that 
+claim conformance to the Unicode Standard (at a particular version) and that make use of a  
+particular property must follow the specifications of the standard for that property to be  
+conformant. The term <i>normative </i> when applied to a character property does  <i>not</i> mean that the   
+value of the property will never change. Corrections and extensions to the standard in the future   
+may require minor changes to normative values, even though the Unicode Technical   
+Committee strives to minimize such changes.   
+</font>      
+    </p>  
+    <p>By making a property                            
+normative, the Unicode Standard guarantees that conformant implementations can                            
+rely on the fact that other conformant will interpret the character in the same                            
+way. This is most useful for those properties where the Unicode Standard                            
+provides precise rules for the interpretation&nbsp;of characters based on their                            
+properties. An example are the bidirectional properties and their use by the                            
+bidirectional algorithm. For some character properties, for example the general                            
+category, the Unicode standard does note define what model of processing it is                 
+    intended to support and what the required consequences are of a character being                 
+    e.g. "Letter Other" as opposed to "Symbol Other". In the absence of such                 
+    definition, the only effect of conformance that can be tested in a                 
+    strict manner is whether a character property library returns the                 
+    correct value to its caller.</p>                              
+         
+<p><b>Note</b>: one trivial, but important instance of conformant implementation is   
+runtime access to a character property database. For normative properties,   
+conformant implementations guarantee that the returned values match the values   
+defined by the Unicode Consortium.</p>       
+        
+<h3><a name="Informative">2.5 Informative Properties</a></h3> 
+<p><font FACE="Times New Roman" SIZE="2">
+<i><b>Informative Properties. </b></i> An <i>informative</i> character property is strongly recommended, but a conformant 
+implementation is free to use or change such values as it may require, while still remaining   
+conformant to the standard. Particular implementations may choose to override the   
+properties that are not normative. In that case,  the implementer has the option of   
+establishing a protocol to convey that information.</font></p>   
+<p>Properties may be informative for two main reasons.</p>         
+<ol>         
+  <li>The nature of the property or the precise set of characters to which it       
+    applies are not yet definite and it therefore is too early to assign a       
+    normative property. Even if there was a precise description of how to      
+    interpret such a property, the fact that it is subject to a (planned)      
+    revision makes it less interesting to communicating implementations to rely      
+    on the specified behavior.</li>      
+  <li>Existing implementations show a range of behaviors for the same character,      
+    many or all of which may be equally useful choice on the part of their      
+    designers. Assigning a normative property would imply a unwarranted      
+    restriction on existing and established practice.</li>      
+</ol>         
+       
+<h2>3. <a name="Definitions"> Definitions</a></h2>       
+<dl>     
+  <dt><i>PD1. Code Point Property</i></dt>     
+    
+      
+<dd>A code point property defines a set of values and a mapping from each Unicode   
+  code point to one of the values of the set.          
+</dd>        
+        
+  <dt>&nbsp;</dt>     
+  <dt><i>PD2. Character Property</i></dt>            
+    
+      
+<dd>A character property defines a set of values and a mapping from each Unicode       
+  character to one of the values of the set.&nbsp;               
+</dd>        
+        
+  <dt>&nbsp;</dt>
+  <dd>Character Properties typically map a default value to any code point not       
+    assigned to a character.</dd>      
+   
+</dl>     
+       
+<p><i>PD3. Property Value</i></p> 
+<dl>     
+  <dd>One of the set of values associated with a character property.<br>      
+    <br>      
+    For example, the [<a href="tr23-1.html#East Asian Width">East Asian Width</a>] property       
+    has the possible values &quot;Narrow&quot;, &quot;Neutral&quot;,       
+    &quot;Wide&quot;, &quot;Ambiguous&quot; and &quot;Unassigned&quot;.</dd>      
+  <dt>&nbsp;</dt>      
+  <dt><i>PD4. Universal (Required) Property</i>                              
+</dt>         
+         
+<dd>A universal property applies to all Unicode        
+characters. A universal property does not have a 'does not apply value'.       
+</dd>      
+      
+  <dt>&nbsp;             
+  </dt>       
+      
+  <dt><i>PD5. Limited Property</i>                              
+  </dt>       
+      
+<dd>A property which is not defined or does not apply to all characters is 
+  called a <i>limited</i> property. It applies to only a subset of Unicode characters, usually one script,              
+or a related family of scripts.             
+</dd>      
+      
+<dd>&nbsp;            
+</dd>      
+      
+<dd>For example case, and case mapping information is not needed for                           
+unicameral scripts. Such information can in principle be left 'undefined' for                           
+the characters to which it does not apply. Limited properties are often implemented                 
+  by listing property values for all characters and giving a special 'does-not-apply' value to all                          
+characters to which the limited property does not apply.&nbsp;                             
+</dd>      
+      
+  <dt></dt>
+         
+<dt><i>PD6. Enumerated Property</i>                              
+</dt>         
+         
+<dd>A property with a fixed set of values. This is sometimes also known as a 
+  partition.      
+</dd>       
+      
+<dd>&nbsp;      
+</dd>       
+      
+<dd> As characters are added to the Unicode                          
+Standard, the set of values may need to be extended in the future, but it is                          
+advantageous to think of enumerated properties of having a fixed set of possible                          
+values.      
+</dd>       
+      
+  <dt>&nbsp;</dt>       
+      
+  <dt><i>PD7. Closed Enumeration</i></dt>                           
+  <dd>         
+         
+An enumerated property for which the set of values is closed (i.e. it may not be  
+extended for future versions of the Unicode Standard).    
+  <dd>         
+         
+&nbsp;    
+  <dd>         
+         
+Note: Currently, the General Category is the only closed enumeration, other than                    
+Boolean properties.                     
+  <dt>&nbsp;</dt>
+  <dt><i>PD8. Single Valued (Boolean) Property</i>                              
+</dt>         
+         
+<dd>A closed enumerated property whose set of values is limited to 'true' and 
+  false.             
+</dd>         
+         
+<!--<dd>,           
+  'false', and&nbsp; possibly 'undetermined.              
+</dd>  !-->
+         
+  <dt>&nbsp;</dt>
+         
+<dd>       
+  Essentially the presence or absence of the property is the important                    
+  information.         
+</dd>         
+         
+  <dt>&nbsp;</dt>      
+         
+  <dt><i>PD9. Integral Property</i></dt>                           
+  <dd>         
+         
+An integral property can take on any integer or real value. An example is the <b>decimal 
+digit value</b> property. There is no implied limit to the number of possible distinct       
+values for the property, short of the limitations of representing integers in computers.
+  <dt>&nbsp;</dt>
+      
+  <dt><i>PD10. General Numeric Property</i></dt>                           
+  <dd>         
+         
+A general numeric property can take on any integer, real, or complex value. An example is the <b>numeric       
+value</b> property. There is no implied limit to the number of possible distinct       
+values for the property, short of the limitations of representing integers,    
+real or complex numbers in       
+computers.     
+      
+  <dt>&nbsp;</dt>       
+      
+  <dt><i>PD11. Normative Property</i></dt>                           
+    
+  <dd>A normative property has conformance implications, see 4. Conformance. A       
+    normative character property must be paired with a precise description of       
+    how to interpret characters with each normative property value in a       
+    conformant way.<br>      
+  </dd>     
+    
+  <dd>Note: A normative process that depends in a normative and testable way on a  
+    property, causes the property to be normative. For example, the interpretation of the <a href="tr23-1.html#Bidirectional Class">bidirectional       
+    class</a> is precisely defined in [<a href="tr23-1.html#Bidirectional Algorithm">Bidirectional       
+    Algorithm</a>].    
+  </dd>     
+    
+  <dd>If a process does not interpret a given character, it may remain unaware 
+    of its properties - but is is recommended that processes use carefully 
+    chosen default values for characters that they don't handle.<br>    
+  </dd>     
+    
+  <dt><i>PD12. Informative Property</i></dt>       
+  <dd>An informative property is provided as helpful information to      
+    implementers. There are no requirements to implementations of the Unicode      
+    Standard. </dd>     
+    
+  <dt>&nbsp;</dt>      
+    
+  <dd>Note: Informative properties capture expert implementation experience and                       
+    their use is strongly recommended by the Consortium. </dd>                           
+    
+  <dt>&nbsp;</dt>
+    
+  <dt><i>PD13. Simple Property</i></dt>                          
+  <dd>A property that applies to a character in isolation.</dd> 
+  <dt>&nbsp;</dt> 
+  <dt><i>PD14. Character Behavior</i></dt>                      
+  <dd>A property that applies to a character in context of a longer character   
+    sequence</dd> 
+   
+  <dt>&nbsp;</dt>
+  <dt><i>PD15. Stable Property</i></dt>                      
+  <dd>A property is stable with respect to a particular algorithm or process,  
+    if changes in the assignment of property values produce no changes in the  
+    outcome of the process or algorithm.</dd> 
+  <dd>&nbsp;</dd>
+  <dd>For example, while the absolute values of the canonical combining classes                       
+    are not guaranteed to be the same between versions of the Unicode Standard,                       
+    their relative values will be maintained. As a result, they are stable with                       
+    respect to the Normalization Forms as defined in [Normalization].</dd>                      
+   
+  <dt>&nbsp;</dt>
+  <dt><i>PD16. Immutable Property</i></dt>                   
+  <dd>A property whose values, once assigned to a character, are fixed and will                    
+    not be changed.&nbsp;&nbsp;&nbsp;<br>                   
+    <br>
+    An example of immutable, or fixed, properties are the code position and name                    
+    of each Unicode character.</dd>                   
+  <dt>&nbsp;</dt>
+  <dt><i>PD17. Overridable Property</i></dt>                   
+  <dd>A property whose values may be overridden by a higher level protocols.<br>
+  </dd>
+  <dt><i>PD18. Default Value</i></dt> 
+  <dd>Value of a property to be used when encountering unassigned or unsupported 
+    characters. There may be more than one default value per property.</dd>
+  <dd>&nbsp;</dd>
+   
+</dl>     
+       
+<h2>4. <a name="Conformance">Conformance</a> related considerations</h2>                        
+       
+<h3><a name="Requirements">4.1 Conformance Requirements</a></h3> 
+       
+<p>In Chapter 3, Conformance, The Unicode Standard [Unicode] states<i> </i> that<i>         
+&quot;A process shall interpret a coded character representation according to    
+the character</i> <i>semantics established by this standard, if that process                  
+does interpret that coded character</i> <i>representation.&quot;&nbsp; </i>The           
+semantics of a character are established by taking its coded representation, character         
+name and representative glyph in context and are further defined by its normative properties and behavior.         
+Neither character name nor representative glyphs can be relied upon absolutely;         
+a character may have a broader range of use than the most literal interpretation         
+of its character name, and the representative glyph is only indicative of one of         
+a range of typical glyphs representing the same character.</p>        
+       
+    <h3><a name="Overriding">4.2 Overriding properties</a><a name="Higher"> 
+    via Higher-level Protocols</a></h3>
+<p>The Unicode Standard makes these specific statements about overriding  
+properties:</p>
+<p>     
+Some normative behavior is default behavior; this behavior can be overridden by   
+higher-level protocols. However, in the absence of such protocols, the behavior must be observed so as to follow the   
+character semantics.</p>  
+<p>• The character combination properties and the canonical ordering behavior   
+cannot be overridden by          
+higher-level protocols. 
+    </p>
+    <p>• Particular implementations may choose to override                 
+    all&nbsp; properties that are not normative.&nbsp;</p>                
+    <p>For interpreting                 
+    directionality, higher-level protocols may:</p>                
+<p>• Override the number handling to use information provided by a broader  
+context. For example,         
+information from other paragraphs in a document could be used to conclude that the document was fundamentally Arabic         
+and that EN should generally be converted         
+to AN.</p> 
+<p>• Replace, supplement, or override the directional overrides or  
+embedding codes. This task is         
+accomplished by providing information via additional stylesheet or markup information about the embedding level or         
+character direction. The interpretation of such         
+information must always be defined by reference to the behavior of the  
+equivalent explicit codes as given         
+in the algorithm.</p> 
+<p>• Override the bidirectional character types assigned to control codes  
+to match the interpretation of         
+the control codes within the protocol. (See also Section 13.1, Control Codes.)</p>       
+<p>• Remap the number shapes to match those of another set. For   
+example, remap the Arabic number          
+shapes to have the same appearance as the European numbers.</p>  
+  <font color="#FF0000">  
+[Ed. Note: Section 5 and 6 have been removed from this draft] </font>
+<!-- REMOVED PENDING REVIEW       
+<h2>5. <a name="Table of Character Properties">Table of Character Properties</a> </h2>                
+<p>The following table attempts to list all character properties defined by the      
+Unicode Standard and associated Unicode Standard Annexes, Unicode Technical      
+Standards, or Unicode Technical Reports. Full  
+listings for all Unicode properties are provided in the Unicode  
+Character Database. </p>         
+<p><span style="background-color: #66FFCC">[ TBD: add the information    
+specified in the PropList file into the table below.]</span> </p>      
+ <b><font FACE="Times New Roman" SIZE="4">
+<p align="center">Table 5-1. Overview of Character Properties</p>  
+</font></b>
+<table border="1" width="100%" cellspacing="0" cellpadding="2">      
+  <tr>      
+    <TH width="198" height="19">Name</th>      
+    <th width="183" height="19">Where Specified</th>      
+    <th width="22" height="19" align="center">N/I</th>      
+    <th width="102" height="19">Data Type</th>      
+    <th width="283" height="19">Notes</th>      
+  </tr>      
+  <tr>      
+    <td width="198" height="19">Alias</td>      
+    <td width="183" height="19">[NamesList]</td>     
+    <td width="22" height="19" align="center">I</td>     
+    <td width="102" height="19">Text</td>     
+    <td width="283" height="19">see [NamesList-Format]</td>     
+  </tr>     
+  <tr>     
+    <td width="198" height="19">Alphabetic</td>     
+    <td width="183" height="19">[Unicode], Section 4.10</td>      
+    <td width="22" height="19" align="center">I</td>     
+    <td width="102" height="19">Boolean</td>     
+    <td width="283" height="19">&nbsp;</td>     
+  </tr>     
+  <tr>     
+    <td width="198" height="19">Arabic and Syriac Shaping Class</td>                   
+    <td width="183" height="19">[ArabicShaping]</td>      
+    <td width="22" height="19" align="center">N</td>      
+    <td width="102" height="19">Enum</td>      
+    <td width="283" height="19">&nbsp;</td>      
+  </tr>      
+  <tr>      
+    <td width="198" height="19"><a name="Bidirectional Class">Bidirectional Class</a></td>                    
+    <td width="183" height="19">[UnicodeData], Field&nbsp;4</td>                    
+    <td width="22" height="19" align="center">N</td>       
+    <td width="102" height="19">Enum</td>       
+    <td width="283" height="19">see [Bidirectional Algorithm]</td>      
+  </tr>      
+  <tr>      
+    <td width="198" height="19">Canonical Decomposition</td>      
+    <td width="183" height="19">[UnicodeData], Field&nbsp;5</td>                    
+    <td width="22" height="19" align="center">N</td>      
+    <td width="102" height="19">Code Sequence</td>      
+    <td width="283" height="19">no prefix, see also <i>Compatibility Mapping</i></td>      
+  </tr>      
+  <tr>      
+    <td width="198" height="19">Case</td>      
+    <td width="183" height="19">[UnicodeData], Field&nbsp;4 =&nbsp;<br>                
+  Lu | Ll | Lt</td>                  
+    <td width="22" height="19" align="center">N</td>      
+    <td width="102" height="19">Enum</td>      
+    <td width="283" height="19"><i>Derived:&nbsp;<br>
+  General Category</i> =&nbsp; Lu | Ll | Lt</td>                  
+  </tr>      
+  <tr>      
+    <td width="198" height="19">Case Folding</td>      
+    <td width="183" height="19">[CaseFolding]</td>      
+    <td width="22" height="19" align="center">I</td>      
+    <td width="102" height="19">Code point</td>       
+    <td width="283" height="19">see [Case Mapping]</td>      
+  </tr>      
+  <tr>      
+    <td width="198" height="19">Case Mapping (Lower)</td>      
+    <td width="183" height="19">[UnicodeData], Field&nbsp;13</td>                   
+    <td width="22" height="19" align="center">N</td>      
+    <td width="102" height="19">Code point</td>       
+    <td width="283" height="19">only 1:1 mappings that are locale independent</td>      
+  </tr>      
+  <tr>      
+    <td width="198" height="19">Case Mapping (Upper)</td>      
+    <td width="183" height="19">[UnicodeData], Field&nbsp;12</td>                   
+    <td width="22" height="19" align="center">N</td>      
+    <td width="102" height="19">Code point</td>       
+    <td width="283" height="19">only 1:1 mappings that are locale independent</td>      
+  </tr>      
+  <tr>      
+    <td width="198" height="19">Case Mapping (Title)</td>      
+    <td width="183" height="19">[UnicodeData], Field&nbsp;14</td>                    
+    <td width="22" height="19" align="center">N</td>       
+    <td width="102" height="19">Code point</td>        
+    <td width="283" height="19">only 1:1 mappings that are locale                     
+  independent&nbsp;</td>       
+  </tr>       
+  <tr>       
+    <td width="198" height="19">Case Mapping (Special)</td>                    
+    <td width="183" height="19">[SpecialCasing]</td>       
+    <td width="22" height="19" align="center">I</td>      
+    <td width="102" height="19">Code sequence</td>      
+    <td width="283" height="19">see [Case Mapping]</td>      
+  </tr>      
+  <tr>      
+    <td width="198" height="19">Code point</td>       
+    <td width="183" height="19">[UnicodeData], Field&nbsp;0</td>                    
+    <td width="22" height="19" align="center">N</td>      
+    <td width="102" height="19">Code point</td>       
+    <td width="283" height="19">&nbsp;</td>      
+  </tr>      
+  <tr>      
+    <td width="198" height="19">Combining Class</td>                   
+    <td width="183" height="19">[UnicodeData], Field&nbsp;3</td>                    
+    <td width="22" height="19" align="center">N</td>       
+    <td width="102" height="19">0..255</td>       
+    <td width="283" height="19">&nbsp;</td>       
+  </tr>       
+  <tr>       
+    <td width="198" height="19">Comments</td>       
+    <td width="183" height="19">[NamesList]</td>      
+    <td width="22" height="19" align="center">I</td>      
+    <td width="102" height="19">Text</td>      
+    <td width="283" height="19">see [Nameslist-Format]</td>      
+  </tr>      
+  <tr>      
+    <td width="198" height="19">Compatibility Mapping</td>      
+    <td width="183" height="19">[UnicodeData], Field&nbsp;5</td>                    
+    <td width="22" height="19" align="center">I</td>      
+    <td width="102" height="19">Prefix +<br> 
+  Code Sequence</td>       
+    <td width="283" height="19">prefix indicating mapping type</td>       
+  </tr>      
+  <tr>      
+    <td width="198" height="19">Control</td>      
+    <td width="183" height="19">[UnicodeData], Field&nbsp;4 = Cc</td>                  
+    <td width="22" height="19" align="center">N</td>      
+    <td width="102" height="19">Boolean</td>      
+    <td width="283" height="19"><i>Derived: General Category = Cc</i> </td>       
+  </tr>       
+  <tr>       
+    <td width="198" height="19">Cross Mappings</td>       
+    <td width="183" height="19"><i>Various</i></td>       
+    <td width="22" height="19" align="center">I</td>       
+    <td width="102" height="19">&nbsp;</td>      
+    <td width="283" height="19">see [Character                     
+  Mapping Tables]</td>                   
+  </tr>      
+  <tr>      
+    <td width="198" height="25">Dashes</td>      
+    <td width="183" height="25">[Unicode], Table 6-2</td>      
+    <td width="22" height="25" align="center">N</td>      
+    <td width="102" height="25">Boolean</td>      
+    <td width="283" height="25">207B,                     
+  208B, 2212 | <i>General Category = </i>Pd&nbsp;</td>                    
+  </tr>       
+  <tr>       
+    <td width="198" height="25">Default                     
+  Sort Weight                  
+  </td>       
+    <td width="183" height="25"><i>Various</i></td>       
+    <td width="22" height="25" align="center">&nbsp;</td>      
+    <td width="102" height="25">&nbsp;&nbsp;</td>      
+    <td width="283" height="25">See                    
+  [Collation]</td>      
+  </tr>      
+  <tr>      
+    <td width="198" height="19">Digit,       
+  Decimal      
+ </td>       
+    <td width="183" height="19">[UnicodeData], Field&nbsp;4 = Nd</td>                   
+    <td width="22" height="19" align="center">N</td>       
+    <td width="102" height="19">Boolean</td>      
+    <td width="283" height="19"><i>Derived: General Category</i> = Nd</td>        
+  </tr>       
+  <tr>       
+    <td width="198" height="19">Digit, Decimal Value</td>      
+    <td width="183" height="19">[UnicodeData], Field&nbsp;6</td>                   
+    <td width="22" height="19" align="center">N</td>      
+    <td width="102" height="19">0..9</td>      
+    <td width="283" height="19">&nbsp;</td>      
+  </tr>      
+  <tr>      
+    <td width="198" height="19">Digit, Value</td>                   
+    <td width="183" height="19">[UnicodeData], Field&nbsp;7</td>                   
+    <td width="22" height="19" align="center">N</td>      
+    <td width="102" height="19">Integer</td>      
+    <td width="283" height="19">&nbsp;</td>      
+  </tr>      
+  <tr>      
+    <td width="198" height="19">East Asian Width</td>                   
+    <td width="183" height="19">[EastAsianWidth]</td>      
+    <td width="22" height="19" align="center">I</td>      
+    <td width="102" height="19">Enum</td>      
+    <td width="283" height="19">see [East Asian Width]</td>      
+  </tr>      
+  <tr>      
+    <td width="198" height="19"><a name="General Category">General Category</a></td>       
+    <td width="183" height="19">[UnicodeData], Field&nbsp;2</td>                    
+    <td width="22" height="19" align="center">N/I</td>      
+    <td width="102" height="19">Enum</td>      
+    <td width="283" height="19">see [UnicodeData-Format]</td>      
+  </tr>      
+  <tr>      
+    <td width="198" height="19">Identifier Extend</td>      
+    <td width="183" height="19">[UnicodeData], Field&nbsp;4 =&nbsp;<br>                
+  Mn | Mc | Nd | Pc | Cf&nbsp;</td>                  
+    <td width="22" height="19" align="center">I</td>      
+    <td width="102" height="19">Boolean</td>      
+    <td width="283" height="19"><i>Derived:&nbsp;<br>
+  General Category</i> = Mn | Mc | Nd | Pc | Cf&nbsp;</td>                   
+  </tr>       
+  <tr>       
+    <td width="198" height="19">Identifier Start</td>                   
+    <td width="183" height="19">[UnicodeData], Field&nbsp;4 =&nbsp;<br>                
+  Lu | Ll | Lt | Lm | Lo | Nl</td>                    
+    <td width="22" height="19" align="center">I</td>      
+    <td width="102" height="19">Boolean</td>      
+    <td width="283" height="19"><i>Derived:&nbsp;<br>
+  General Category</i> = Lu | Ll | Lt | Lm | Lo | Nl</td>                    
+  </tr>       
+  <tr>       
+    <td width="198" height="19">Ideographic</td>       
+    <td width="183" height="19"><i>Derived</i></td>       
+    <td width="22" height="19" align="center">I</td>      
+    <td width="102" height="19">Boolean</td>      
+    <td width="283" height="19">&nbsp;</td>      
+  </tr>      
+  <tr>      
+    <td width="198" height="19">ISO comments</td>                   
+    <td width="183" height="19">[UnicodeData], Field&nbsp;11</td>                    
+    <td width="22" height="19" align="center">N</td>       
+    <td width="102" height="19">Text</td>      
+    <td width="283" height="19">&nbsp;</td>      
+  </tr>      
+  <tr>      
+    <td width="198" height="19">Jamo Short Name</td>                   
+    <td width="183" height="19">[Jamo]</td>      
+    <td width="22" height="19" align="center">N</td>      
+    <td width="102" height="19">Text</td>      
+    <td width="283" height="19">&nbsp;</td>      
+  </tr>      
+  <tr>      
+    <td width="198" height="19">Letter</td>      
+    <td width="183" height="19"><i>Derived</i></td>      
+    <td width="22" height="19" align="center">I</td>      
+    <td width="102" height="19">Boolean</td>      
+    <td width="283" height="19">see [Unicode]<i>,</i> Section 4.10</td>       
+  </tr>       
+  <tr>       
+    <td width="198" height="19">Line Breaking Property</td>       
+    <td width="183" height="19">[LineBreak]</td>      
+    <td width="22" height="19" align="center">I</td>      
+    <td width="102" height="19">Enum</td>      
+    <td width="283" height="19">&nbsp;</td>      
+  </tr>      
+  <tr>      
+    <td width="198" height="19">Mathematical Property</td>                   
+    <td width="183" height="19">[Unicode], Section 4.9</td>       
+    <td width="22" height="19" align="center">I</td>       
+    <td width="102" height="19">Boolean</td>      
+    <td width="283" height="19">&nbsp;</td>      
+  </tr>      
+  <tr>      
+    <td width="198" height="19">Mirrored</td>      
+    <td width="183" height="19">[UnicodeData], Field&nbsp;9</td>                    
+    <td width="22" height="19" align="center">N</td>       
+    <td width="102" height="19">Boolean</td>       
+    <td width="283" height="19">&nbsp;</td>       
+  </tr>       
+  <tr>       
+    <td width="198" height="19">Name</td>       
+    <td width="183" height="19">[UnicodeData], Field&nbsp;1</td>                    
+    <td width="22" height="19" align="center">N</td>       
+    <td width="102" height="19">Text</td>       
+    <td width="283" height="19">&nbsp;</td>       
+  </tr>       
+  <tr>       
+    <td width="198" height="19">Numeric Value</td>                    
+    <td width="183" height="19">[UnicodeData], Field&nbsp;8</td>                   
+    <td width="22" height="19" align="center">I</td>      
+    <td width="102" height="19">Real<span style="background-color: #00FFFF"> 
+  [Complex]</span></td>      
+    <td width="283" height="19">&nbsp;</td>      
+  </tr>      
+  <tr>      
+    <td width="198" height="19">Ideographs, Primary Numeric</td>                   
+    <td width="183" height="19">[Unicode], Table 4-7</td>      
+    <td width="22" height="19" align="center">I</td>      
+    <td width="102" height="19">Integer</td>      
+    <td width="283" height="19">&nbsp;</td>      
+  </tr>      
+  <tr>      
+    <td width="198" height="19">Ideographs, Accounting Numbers</td>                   
+    <td width="183" height="19">[Unicode], Table 4-8</td>      
+    <td width="22" height="19" align="center">I</td>      
+    <td width="102" height="19">Integer</td>      
+    <td width="283" height="19">&nbsp;</td>      
+  </tr>      
+  <tr>      
+    <td width="198" height="19">Private Use</td>                   
+    <td width="183" height="19">[UnicodeData], Field&nbsp;4 = Cp</td>                  
+    <td width="22" height="19" align="center">N</td>      
+    <td width="102" height="19">Boolean</td>      
+    <td width="283" height="19"><i>Derived: General Category</i> = Cp</td>       
+  </tr>      
+  <tr>      
+    <td width="198" height="19">Related characters</td>      
+    <td width="183" height="19">[NamesList]</td>      
+    <td width="22" height="19" align="center">I</td>      
+    <td width="102" height="19">Text</td>      
+    <td width="283" height="19">&nbsp;</td>      
+  </tr>      
+  <tr>      
+    <td width="198" height="19">Script</td>      
+    <td width="183" height="19">[ScriptNames]</td>      
+    <td width="22" height="19" align="center">I</td>      
+    <td width="102" height="19"><span style="background-color: #00FFFF">[Text / Enum?]</span></td>       
+    <td width="283" height="19">see [Script      
+  Names]</td>      
+  </tr>      
+  <tr>      
+    <td width="198" height="19">Space</td>      
+    <td width="183" height="19">[UnicodeData], Field&nbsp;4 = Zs</td>                  
+    <td width="22" height="19" align="center">N</td>      
+    <td width="102" height="19">Boolean</td>      
+    <td width="283" height="19"><i>Derived: General Category</i> = Zs</td>       
+  </tr>      
+  <tr>      
+    <td width="198" height="19">Special</td>      
+    <td width="183" height="19">[Unicode], Table 3-9</td>             
+    <td width="22" height="19" align="center">N</td>      
+    <td width="102" height="19"><i>various</i></td>      
+    <td width="283" height="19">see chapter 13 of [Unicode]</td>       
+  </tr>      
+  <tr>      
+    <td width="198" height="19">Surrogates</td>      
+    <td width="183" height="19">[UnicodeData], Field&nbsp;4 = Cs</td>                  
+    <td width="22" height="19" align="center">N</td>      
+    <td width="102" height="19">Text</td>      
+    <td width="283" height="19"><i>Derived: General Category</i> = Cs</td>       
+  </tr>      
+  <tr>      
+    <td width="198" height="19">Unicode 1.0 Name</td>      
+    <td width="183" height="19">[UnicodeData], Field&nbsp;10</td>                   
+    <td width="22" height="19" align="center">N</td>      
+    <td width="102" height="19">Text</td>      
+    <td width="283" height="19">&nbsp;</td>      
+  </tr>      
+</table>      
+        
+<h3>Notes on the table</h3>          
+        
+<h4>Code points and code sequences </h4>         
+        
+<p>Code points can range from 0000 to 10FFF and code sequences are sequences of 
+code points. There is no pre-determined maximum length for a code sequence. </p>         
+        
+<h4>Derived Properties </h4>      
+        
+<p>Character properties that are noted <i>derived</i> can be implied from other      
+character properties. For practical and historical reasons, the [<a href="#UnicodeData">UnicodeData</a>]      
+file is considered as the primary source of information in determining the      
+direction of such 'derivation'. The notation Field = X | Y means that the value 
+of the field is either X or Y for the property to be true. </p>         
+        
+<h2>6. Notes on Properties</h2>      
+      
+    <font FACE="Times New Roman" SIZE="2">
+<b><i><font FACE="Times New Roman">
+<blockquote>
+<p>Disclaimer</p>
+</font></i></b>
+<p>The content of all character property tables has been verified as far as
+possible by
+the Unicode Consortium. However, the Unicode Consortium does not guarantee
+that the tables printed in this volume or on the CD-ROM are correct in every
+detail, and it is not responsible for errors that may occur either in the
+character
+property tables or in software that implements these tables. <i>The
+contents of all the</i>
+ <i>tables in this chapter may be superseded or augmented by information on the
+Unicode Web site.</p>
+</blockquote>
+</i> 
+ </font>  
+        
+<p><b>Cross correlations between properties:</b> Some properties are maintained in or may be inferred from more than one     
+location. As a result, several correlations between properties are true by 
+design: </p>      
+         
+<pre>Decimal Digit Value present :=: General Category = Nd</pre>         
+        
+<pre>Decimal Digit Value present :=: Decimal Digit Value = Numeric Value</pre>         
+        
+<pre>Digit Value present :=: Digit Value = Numeric Value</pre>         
+        
+<p><b>Issues with overloaded enumerations:</b> If an enumerated property is cobbled together from 
+non-overlapping Boolean properties, the result may be difficult to apply or 
+extend. The same applies if one attempts to use enumerated properties to convey distinctions they        
+were not designed for. One either needs to keep subdividing and subdividing them into        
+smaller subsets, using more values (something that cannot be done for a closed 
+partition), or one must define alternative properties.</p>      
+<p><b>Issues with Boolean properties</b>: If multiple Boolean properties are  
+used to capture what are in effect mutually exclusive assignments of an  
+enumerated value an essential fact, the mutual exclusiveness, can no longer be  
+expressed in the property itself.</p>       
+        
+<p><b>Consistency   
+of Properties: </b>The Unicode    
+Standard is the product of many compromises. It has to strike a balance between uniformity of treatment for similar    
+characters and compatibility with    
+existing practice for characters inherited from legacy encodings. Because of    
+this balancing act, one can expect    
+a certain number of anomalies in character properties. For example,    
+some pairs of characters might have been treated as canonical equivalents but    
+are left unequivalent for    
+compatibility with legacy differences. This situation pertains to U+00B5 µ MICRO   
+SIGN (cf. U+03BC µ GREEK SMALL LETTER MU)   
+as well as to certain Korean jamo.</p> 
+<p><b>Compatibility and Reanalysis:</b> Some characters might have had existing properties differing in some ways    
+from those assigned in this    
+standard, but whose properties are left as is for compatibility with existing practice. This situation can be seen with    
+the halfwidth voicing marks for Japanese (U+FF9E HALFWIDTH KATAKANA    
+VOICED SOUND MARK and U+FF9F HALFWIDTH   
+KATAKANA SEMI-VOICED SOUND MARK),   
+which might have been better analyzed as spacing combining marks, and with the conjoining    
+Hangul jamo, which might have been better analyzed as an initial base    
+character, followed by formally combining medial and final characters. In the interest of efficiency and    
+uniformity in algorithms, implementations may take advantage of such reanalyses of    
+character properties, as long as the results they produce do not overtly conflict with those    
+specified by the normative properties of this standard.</p>   
+        
+<h3><a name="Case"><font face="Times New Roman">6.1 Case—Normative</font></a></h3> 
+<i><font FACE="Times New Roman" SIZE="2">
+<p>Case </font></i><font FACE="Times New Roman" SIZE="2">is a normative property   
+of characters in certain alphabets whereby characters are considered to be variants of a single letter. These variants, which may differ markedly 
+in shape and size, are called the </font> <i><font FACE="Times New Roman" SIZE="2">uppercase 
+</font></i><font FACE="Times New Roman" SIZE="2">letter (also known as </font><i><font FACE="Times New Roman" SIZE="2">capital
+</font></i><font FACE="Times New Roman" SIZE="2">or </font><i><font FACE="Times New Roman" SIZE="2">majuscul</font></i><font FACE="Times New Roman" SIZE="2">e)
+and the </font><i><font FACE="Times New Roman" SIZE="2">lower-case</font></i> <font FACE="Times New Roman" SIZE="2">letter (also known as </font><i><font FACE="Times New Roman" SIZE="2">small </font></i><font FACE="Times New Roman" SIZE="2">or          
+</font><i><font FACE="Times New Roman" SIZE="2">minuscul</font></i><font FACE="Times New Roman" SIZE="2">e). 
+The uppercase letter is generally larger than the lowercase letter. 
+</font> &nbsp;</p>
+<p><font FACE="Times New Roman" SIZE="2">Because of the inclusion of certain composite characters for compatibility,     
+such as U+01F1</font> <font FACE="MinionExp-Regular" SIZE="2">LATIN CAPITAL LETTER D</font><font FACE="Times New Roman" SIZE="2">Z, a third   
+case, called </font><i><font FACE="Times New Roman" SIZE="2">titlecas</font></i><font FACE="Times New Roman" SIZE="2">e, 
+is used where the first character of a word must be capitalized. An example of such a character is U+01F2 </font> <font FACE="MinionExp-Regular" SIZE="2">LATIN 
+CAPITAL LETTER D WITH SMALL LETTER </font> <font FACE="Times New Roman" SIZE="2">Z. The three 
+case forms are UPPERCASE, Titlecase, lowercase.
+</font>&nbsp;</p>
+<p><font FACE="Times New Roman" SIZE="2">For those scripts that have case (Latin, Greek, Cyrillic, Armenian, and   
+archaic Georgian), the case of a Unicode character can usually be obtained from the character’s   
+name. This statement is true for only these five scripts. Uppercase characters typically   
+contain the word   
+</font> <font FACE="Times New Roman" SIZE="2"><i>capital </i> in their names. 
+Lowercase characters typically contain the word </font><i><font FACE="Times New Roman" SIZE="2">smal</font></i><font FACE="Times New Roman" SIZE="2">l. 
+The word</font> <font FACE="Times New Roman" SIZE="2"><i>small </i> in the names of   
+characters from scripts other than the five just listed has nothing to do with case. (Note that while the archaic Georgian script contained upper- 
+and lowercase pairs, they are rarely used in modern Georgian. See </font><i><font FACE="Times New Roman" SIZE="2">Section 
+7.5, Georgia</font></i><font FACE="Times New Roman" SIZE="2">n.)</p>
+</font><b><i><font FACE="Times New Roman" SIZE="2">
+<p>Case Mappings. </font></i></b><font FACE="Times New Roman" SIZE="2">The 
+lowercase letter default case mapping occurs between the small character and the capital character. The Unicode Standard case mapping tables, which 
+are informative, are on the CD-ROM. Exceptions to the normal casing rules can be 
+found in the data file SpecialCasing.txt. For more information on case mappings, see 
+<i>Section
+5.18,</i> </font>
+ <font FACE="Times New Roman" SIZE="2"><i>Case Mapping</i>s, and Unicode 
+Technical Report #21, &quot;Case Mappings,&quot; on the CD-ROM or the up-to-date version on the Unicode Web site.</p> 
+</font>
+<h3><a name="Combining Classes"><font face="Times New Roman">6.2 Combining Classes—Normative</font></a></h3>
+<font FACE="Times New Roman" SIZE="2">
+<p>Each combining character has a normative canonical </font><i><font FACE="Times New Roman" SIZE="2">combining  
+clas</font></i><font FACE="Times New Roman" SIZE="2">s. This class is used with the canonical ordering algorithm to determine which 
+combining characters 
+interact typographically and to determine how the canonical ordering of sequences of 
+combining characters takes place. Class </font> 
+<i><font FACE="Times New Roman" SIZE="2">zero
+</font></i><font FACE="Times New Roman" SIZE="2">combining characters act like 
+base letters for the purpose of determining canonical order. Combining characters with non-zero classes 
+participate in reordering for the purpose of determining the canonical form of sequences of 
+characters. (See </font> <i><font FACE="Times New Roman" SIZE="2">Section 3.10, Canonical 
+Ordering Behavio</font></i><font FACE="Times New Roman" SIZE="2">r, for a 
+description of the algorithm.)</p> 
+<p>The list of combining characters and their canonical combining class appears 
+in </font><i><font FACE="Times New Roman" SIZE="2">Table 4 - 3 </font></i><font FACE="Times New Roman" SIZE="2">. 
+Most combining characters are nonspacing. The spacing, class zero, combining 
+characters are so noted.</p> 
+</font> <b><font FACE="Times New Roman" SIZE="4">
+<p align="center">Table 4-3. Combining Classes</p>
+<p align="center">&lt;listing omitted&gt;</p>
+</font></b>
+<h3><a name="Directionality"><font face="Times New Roman">6.3 Directionality—Normative</font></a></h3>
+<font FACE="Times New Roman" SIZE="2">
+<p>Directional behavior is interpreted according to the Unicode bidirectional  
+algorithm (see</font> <font FACE="Times New Roman" SIZE="2"><i>Section 3.12, Bidirectional Behavio</i>r</font><i><font FACE="Times New Roman" SIZE="2">).          
+</font></i><font FACE="Times New Roman" SIZE="2">For this purpose, all 
+characters of the Unicode Standard possess a normative </font> <i><font FACE="Times New Roman" SIZE="2">directional 
+</font></i><font FACE="Times New Roman" SIZE="2">type. The directional types 
+left-to-right and right-to-left are called </font> <i><font FACE="Times New Roman" SIZE="2">strong type</font></i><font FACE="Times New Roman" SIZE="2">s, 
+and characters of these types are called strong directional characters. Left-to-right types include most alphabetic and syllabic characters, as well 
+as all Han 
+</font> <font FACE="Times New Roman" SIZE="2">ideographic characters. Right-to-left types include Arabic, Hebrew, Syriac, 
+and Thaana,</font> <font FACE="Times New Roman" SIZE="2">and most punctuation specific to those scripts. In addition, the Unicode          
+bidirectional algorithm</font> <font FACE="Times New Roman" SIZE="2">also uses </font><i><font FACE="Times New Roman" SIZE="2">weak types </font></i><font FACE="Times New Roman" SIZE="2">and          
+</font><i><font FACE="Times New Roman" SIZE="2">neutral</font></i><font FACE="Times New Roman" SIZE="2">s.</p>
+<p>For the directional types of Unicode characters, see the Unicode Character 
+Database on the CD-ROM.</p>
+</font> 
+<h3><a name="Jamo Short Names"><font face="Times New Roman">6.4 Jamo Short Names—Normative</font></a></h3> 
+<font FACE="Times New Roman" SIZE="2">
+<p>The </font><i><font FACE="Times New Roman" SIZE="2">jamo short name </font></i><font FACE="Times New Roman" SIZE="2">is  
+a normative property of the Unicode conjoining Hangul jamo characters. These short names, which are listed in </font> <i><font FACE="Times New Roman" SIZE="2">Tab 
+l e 4 - 4 </font></i><font FACE="Times New Roman" SIZE="2">, are used to 
+determine the character names that are derived when decomposing Hangul syllables into their 
+decomposition sequence.</p>
+</font> <b><font FACE="Times New Roman" SIZE="4">
+<p align="center">Table 4. Jamo Short Names</p> 
+<p align="center">&lt;listing omitted&gt;</p>
+</font></b>
+<h3><a name="General Category"><font face="Times New Roman">6.5 General Category—Normative</font></a></h3>
+<p>The General Category is a broad categorization of all character according to   
+their principal use. It constitutes a partition of the characters  
+into several  
+major classes, such as letters, punctuation, and symbols, and further  
+subclasses for each of  
+the major classes. It is specifically designed to support a wide variety of   
+common parsing tasks, including, but not limited to identifier syntax, regular   
+expression processing, and word boundary detection. A common use of the General Category of a Unicode character is to assist in  
+determination of boundaries in text, as in Section  
+5.15, Locating Text Element Boundaries.  
+Another common use is in determining language identifiers for programming, scripting, and  
+markup, as in Section 5.16, Identifiers.  
+This property is also used to support common APIs such as isLetter(), 
+isUppercase(), 
+and so on.</p>  
+<p>Many tasks will require   
+specific overrides, or specializations for some characters, in some cases   
+different overrides, dependent on locale. For some tasks, the specializations needed   
+were extensive enough to warrant a separate property, for an example see [Line   
+Breaking] . In other cases, alternative categorizations are needed that overlap   
+some of the General Categories values, but not others, for example the   
+Mathematical Property is true for all characters with General Category = Sm, but   
+the reverse is not true.</p>  
+<p><font FACE="Times New Roman" SIZE="2">
+Each Unicode character is assigned a General Category value. Each value of   
+the General   
+Category is defined as a two-letter abbreviation, where the first letter   
+gives information   
+about a major class and the second letter designates a subclass of that major   
+class. In each   
+class, the subclass &quot;other&quot; merely collects the remaining   
+characters of the major class. For   
+example, the subclass &quot;No&quot; (Number, other) includes all characters   
+of the Number class   
+that are not a decimal digit or letter. These characters may have little in   
+common besides   
+their membership in the same major class.</p>   
+<p>Characters with General Category values Zs, Zl, and Zp are considered format characters, but their membership in the   
+Z (separator)   
+class takes precedence over their membership in the Cf class, because the   
+General Category   
+assigns only a single value to each character.   
+</font> &nbsp;</p>
+<p> <i><font FACE="Times New Roman" SIZE="2"> 
+Table 4 - 5 </font></i><font FACE="Times New Roman" SIZE="2">enumerates the   
+values of General Category, with a short description of each value.</p> 
+<p> </font> </p>
+<blockquote>
+<font FACE="Times New Roman" SIZE="4">
+<p align="center"><b>Table 5. General Category</b></p> 
+<table border="1" width="75%">
+  <tr>
+    <td width="38%"><b>Category</b></td>
+    <td width="62%"><b>Notes</b></td>
+  </tr>
+  <tr>
+    <td width="38%">
+	<p style="margin-top: 0; margin-bottom: 0">Lu = Letter, uppercase</p>
+	<p style="margin-top: 0; margin-bottom: 0">Ll = Letter, lowercase</p>  
+</font>
+	<p style="margin-top: 0; margin-bottom: 0">Lm = Letter, modifier</p> 
+	<p style="margin-top: 0; margin-bottom: 0">Lo = Letter, other</p> 
+	<p style="margin-top: 0; margin-bottom: 0">Lt = Letter, titlecase</p> 
+	<p style="margin-top: 0; margin-bottom: 0">Mn = Mark, nonspacing</p> 
+	<p style="margin-top: 0; margin-bottom: 0">Mc = Mark, spacing combining</p>
+	<p style="margin-top: 0; margin-bottom: 0">Me = Mark, enclosing</p>
+	<p style="margin-top: 0; margin-bottom: 0">Nd = Number, decimal digit</p> 
+	<p style="margin-top: 0; margin-bottom: 0">Nl = Number, letter</p> 
+	<p style="margin-top: 0; margin-bottom: 0">No = Number, other</p>
+	<p style="margin-top: 0; margin-bottom: 0">Pc = Punctuation, connector</p> 
+	<p style="margin-top: 0; margin-bottom: 0">Pd = Punctuation, dash</p> 
+	<p style="margin-top: 0; margin-bottom: 0">Ps = Punctuation, open</p> 
+	<p style="margin-top: 0; margin-bottom: 0">Pe = Punctuation, close</p>  
+  <p style="margin-top: 0; margin-bottom: 0">Pi = Punctuation, initial quote</p>   
+	<p style="margin-top: 0; margin-bottom: 0">Pf = Punctuation, final quote</p>  
+	<p style="margin-top: 0; margin-bottom: 0">Po = Punctuation, other</p> 
+	<p style="margin-top: 0; margin-bottom: 0">Sm = Symbol, math</p>  
+	<p style="margin-top: 0; margin-bottom: 0">Sc = Symbol, currency</p> 
+	<p style="margin-top: 0; margin-bottom: 0">Sk = Symbol, modifier</p>  
+	<p style="margin-top: 0; margin-bottom: 0">So = Symbol, other</p>  
+	<p style="margin-top: 0; margin-bottom: 0">Zs = Separator, space</p>
+	<p style="margin-top: 0; margin-bottom: 0">Zl = Separator, line</p> 
+	<p style="margin-top: 0; margin-bottom: 0">Zp = Separator, paragraph</p> 
+	<p style="margin-top: 0; margin-bottom: 0">Cc = Other, control</p>
+	<p style="margin-top: 0; margin-bottom: 0">Cf = Other, format</p> 
+	<p style="margin-top: 0; margin-bottom: 0">Cs = Other, surrogate</p>
+	<p style="margin-top: 0; margin-bottom: 0">Co = Other, private use</p>
+	<p style="margin-top: 0; margin-bottom: 0">Cn = Other, not assigned</p> 
+    </td>
+    <td width="62%">
+	<p  style="margin-top: 0; margin-bottom: 0">&nbsp;</p>
+	<p  style="margin-top: 0; margin-bottom: 0">&nbsp;</p>
+	<p  style="margin-top: 0; margin-bottom: 0">&nbsp;</p>
+	<p  style="margin-top: 0; margin-bottom: 0">&nbsp;</p>
+	<p  style="margin-top: 0; margin-bottom: 0">&nbsp;</p>
+	<p  style="margin-top: 0; margin-bottom: 0"></p>
+	<p  style="margin-top: 0; margin-bottom: 0">&nbsp;</p>
+	<p  style="margin-top: 0; margin-bottom: 0">&nbsp;</p>
+	<p  style="margin-top: 0; margin-bottom: 0">&nbsp;</p>
+	<p  style="margin-top: 0; margin-bottom: 0">&nbsp;</p>
+	<p  style="margin-top: 0; margin-bottom: 0">&nbsp;</p>
+	<p  style="margin-top: 0; margin-bottom: 0">&nbsp;</p>
+	<p  style="margin-top: 0; margin-bottom: 0">&nbsp;</p>
+	<p  style="margin-top: 0; margin-bottom: 0">see also line break property</p>    
+	<p  style="margin-top: 0; margin-bottom: 0">see also line break property</p>
+	<p style="margin-top: 0; margin-bottom: 0"> may  behave like Ps or Pe depending on usage</p> 
+	<p  style="margin-top: 0; margin-bottom: 0">may  behave like Ps or Pe depending on usage</p>
+	<p  style="margin-top: 0; margin-bottom: 0">&nbsp;</p>
+	<p  style="margin-top: 0; margin-bottom: 0">see also math property</p>    
+	<p  style="margin-top: 0; margin-bottom: 0">&nbsp;</p>
+	<p  style="margin-top: 0; margin-bottom: 0">&nbsp;</p>
+	<p  style="margin-top: 0; margin-bottom: 0">&nbsp;</p>
+	<p  style="margin-top: 0; margin-bottom: 0">also format charcters</p>    
+	<p  style="margin-top: 0; margin-bottom: 0">also a format character</p>
+	<p  style="margin-top: 0; margin-bottom: 0">also a format character</p>
+	<p  style="margin-top: 0; margin-bottom: 0">&nbsp;</p>
+	<p  style="margin-top: 0; margin-bottom: 0">&nbsp;</p>
+	<p  style="margin-top: 0; margin-bottom: 0">&nbsp;</p>
+	<p  style="margin-top: 0; margin-bottom: 0">&nbsp;</p>
+	<p  style="margin-top: 0; margin-bottom: 0">&nbsp;</p>
+ 
+  </td>
+  </tr>
+</table>
+</blockquote>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; * may  behave like Ps or Pe depending on usage     
+</p>
+<font FACE="Times New Roman" SIZE="1">
+<p><b><i>Limitations.</i></b>        
+</font>  
+<font FACE="Times New Roman" SIZE="1"> 
+Some of the values in the General Category values are        
+better defined than others. Letters, digits, combining marks, spaces, and        
+formatting characters are some of the well defined values. The subdivision of the remainder into subclasses is     
+then based on an implicit and unstated hierarchy where the less well defined     
+categories, such as &quot;Punctuation&quot; and &quot;Symbol&quot;, represent     
+the left-overs.&nbsp; The subdivision of punctuation into subtypes, such as opening and closing     
+cannot be uniquely done (see the quotation marks) and is less detailed than     
+needed for important implementations, such as line breaking. In addition, the     
+assignment of Symbol cannot be made coherent, since there are         
+instances of letters functioning as symbols (e.g., the letterlike symbols), and instances of symbols functioning as letters (e.g., some of         
+the modifier letters). Where detailed analysis of symbols or punctuation is     
+required, it is recommended that implementers not rely solely on General     
+Category assignments, but consider other, more specific properties as well.</p>         
+<p>This can be compared to the use of 1:1 case transforms in      
+[UnicodeData] and the existence of a separate SpecialCasing.txt to give the         
+complete answer.</p>        
+</font>
+<font FACE="Times New Roman" SIZE="1">
+</font>
+<h3><a name="Numeric Value"><font face="Times New Roman">6.6 Numeric Value—Normative</font></a></h3>
+<i><font FACE="Times New Roman" SIZE="2">
+<p>Numeric value </font></i><font FACE="Times New Roman" SIZE="2">is a normative  
+property of characters that represent </font><i><font FACE="Times New Roman" SIZE="2">number</font></i><font FACE="Times New Roman" SIZE="2">s. 
+This group includes characters such as fractions, subscripts, superscripts, Roman 
+numerals, currency numerators, encircled numbers, and script-specific digits. In many 
+traditional numbering systems, letters are used with a numeric value. Examples include Greek and 
+Hebrew letters as well as Latin letters used in outlines (II.A.1.b). These special cases are 
+not included here 
+</font> <font FACE="Times New Roman" SIZE="2">as numbers.</font></p> 
+<p><i><font FACE="Times New Roman" SIZE="2">Decimal digits </font></i><font FACE="Times New Roman" SIZE="2">form a large 
+subcategory of numbers consisting of those digits that can be used to form decimal-radix numbers. They include 
+script-specific digits, not 
+characters such as Roman numerals (1 + 5 = 15 = fifteen, but I + V = IV = four), 
+subscripts, or super-scripts. Numbers other than decimal digits can be used in numerical expressions, but 
+it is up to the user to determine the specialized uses.</p> 
+<p>The Unicode Standard assigns distinct codes to the forms of digits that are 
+specific to a given script or language. Examples are the digits used with the Arabic 
+script, Chinese numbers, or those of the Indic languages. For naming conventions, see the introduction 
+to <i>Section</i> </font> <font FACE="Times New Roman" SIZE="2"><i>8.2, Arabi</i>c.</p> 
+</font><i><font FACE="Times New Roman" SIZE="2">
+<p>Table 4 - 6 </font></i><font FACE="Times New Roman" SIZE="2">gives the 
+numeric values of Unicode characters that can represent numbers. Some</p> 
+<p>CJK ideographs also have numeric values; those are not included in </font><i><font FACE="Times New Roman" SIZE="2"> 
+Table 4 - </font></i><font FACE="Times New Roman" SIZE="2">6, but are discussed 
+</font> <font FACE="Times New Roman" SIZE="2">following the table.</p> 
+</font><b><font FACE="Times New Roman" SIZE="4">
+<p align="center">Table 6. Numeric Properties</p> 
+<p align="center">&lt;listing omitted&gt;</p>
+</font></b><font FACE="Times New Roman" SIZE="2">
+<p>CJK ideographs from the Unified Repertoire and Ordering also may have numeric 
+values. 
+The primary numeric ideographs are shown in </font> <i><font FACE="Times New Roman" SIZE="2">Table 4 - 7 </font></i><font FACE="Times New Roman" SIZE="2">. When used to 
+represent numbers</font> <font FACE="Times New Roman" SIZE="2">in decimal notation, zero is represented by U+3007. Otherwise, zero is          
+represented by</font> <font FACE="Times New Roman" SIZE="2">U+96F6.</p>          
+<p>Ideographic accounting numbers are commonly used on checks and other 
+financial instruments</font> <font FACE="Times New Roman" SIZE="2">to minimize the possibilities of misinterpretation or fraud in the          
+representation of</font>  <font FACE="Times New Roman" SIZE="2">numerical values. The set of accounting numbers varies somewhat between          
+Japanese, Chinese,</font> <font FACE="Times New Roman" SIZE="2">and Korean usage.          
+</font><i><font FACE="Times New Roman" SIZE="2">Table 4 -
+8 </font></i><font FACE="Times New Roman" SIZE="2">gives a fairly complete 
+listing of the known accounting characters. Some of these characters are ideographs with other meanings 
+pressed into service as accounting numbers; others are used only as accounting numbers.</p> 
+</font> <b><font FACE="Times New Roman" SIZE="4">
+<blockquote>
+<p align="center">Table 7. Primary Numeric Ideographs</p> 
+</font></b>
+<table border="1" width="352">
+  <tr>
+    <td width="67">
+<p><font FACE="Courier" SIZE="1">
+U+96F6 </font></p>
+    </td>
+    <td width="75">
+<p><font FACE="Times New Roman" SIZE="1">0
+</font></p>
+    </td>
+  </tr>
+  <tr>
+    <td width="67">
+<p><font FACE="Courier" SIZE="1">
+U+4E00 </font></p>
+    </td>
+    <td width="75">
+<p><font FACE="Times New Roman" SIZE="1">1
+</font></p>
+    </td>
+  </tr>
+  <tr>
+    <td width="67">
+<p><font FACE="Courier" SIZE="1">
+U+4E8C </font></p>
+    </td>
+    <td width="75">
+<p><font FACE="Times New Roman" SIZE="1">2
+</font></p>
+    </td>
+  </tr>
+  <tr>
+    <td width="67">
+<p><font FACE="Courier" SIZE="1">
+U+4E09 </font></p>
+    </td>
+    <td width="75">
+<p><font FACE="Times New Roman" SIZE="1">3
+</font></p>
+    </td>
+  </tr>
+  <tr>
+    <td width="67">
+<p><font FACE="Courier" SIZE="1">
+U+56DB </font></p>
+    </td>
+    <td width="75">
+<p><font FACE="Times New Roman" SIZE="1">4
+</font></p>
+    </td>
+  </tr>
+  <tr>
+    <td width="67">
+<p><font FACE="Courier" SIZE="1">
+U+4E94 </font></p>
+    </td>
+    <td width="75">
+<p><font FACE="Times New Roman" SIZE="1">5
+</font></p>
+    </td>
+  </tr>
+  <tr>
+    <td width="67">
+<p><font FACE="Courier" SIZE="1">
+U+516D </font></p>
+    </td>
+    <td width="75">
+<p><font FACE="Times New Roman" SIZE="1">6
+</font></p>
+    </td>
+  </tr>
+  <tr>
+    <td width="67">
+<p><font FACE="Courier" SIZE="1">
+U+4E03 </font></p>
+    </td>
+    <td width="75">
+<p><font FACE="Times New Roman" SIZE="1">7
+</font></p>
+    </td>
+  </tr>
+  <tr>
+    <td width="67">
+<p><font FACE="Courier" SIZE="1">
+U+516B </font></p>
+    </td>
+    <td width="75">
+<p><font FACE="Times New Roman" SIZE="1">8
+</font></p>
+    </td>
+  </tr>
+  <tr>
+    <td width="67">
+<p><font FACE="Courier" SIZE="1">
+U+4E5D </font></p>
+    </td>
+    <td width="75">
+<p><font FACE="Times New Roman" SIZE="1">9
+</font></p>
+    </td>
+  </tr>
+  <tr>
+    <td width="67">
+<p><font FACE="Courier" SIZE="1">
+U+5341 </font></p>
+    </td>
+    <td width="75">
+<p><font FACE="Times New Roman" SIZE="1">10
+</font></p>
+    </td>
+  </tr>
+  <tr>
+    <td width="67">
+<p><font FACE="Courier" SIZE="1">
+U+767E </font></p>
+    </td>
+    <td width="75">
+<p><font FACE="Times New Roman" SIZE="1">100
+</font></p>
+    </td>
+  </tr>
+  <tr>
+    <td width="67">
+<p><font FACE="Courier" SIZE="1">
+U+5343 </font></p>
+    </td>
+    <td width="75">
+<p><font FACE="Times New Roman" SIZE="1">1,000
+</font></p>
+    </td>
+  </tr>
+  <tr>
+    <td width="67">
+<p><font FACE="Courier" SIZE="1">
+U+4E07 </font></p>
+    </td>
+    <td width="75">
+<p><font FACE="Times New Roman" SIZE="1">10,000
+</font></p>
+    </td>
+  </tr>
+  <tr>
+    <td width="67">
+<p><font FACE="Courier" SIZE="1">
+U+5104 </font></p>
+    </td>
+    <td width="75">
+<p><font FACE="Times New Roman" SIZE="1">100,000,000</font> <font FACE="Times New Roman" SIZE="1">(10,000</font>    
+<font FACE="Times New Roman" SIZE="1">×</font> <font FACE="Times New Roman" SIZE="1">10,000)</font></p>    
+    </td>
+  </tr>
+  <tr>
+    <td width="67">
+<p><font FACE="Courier" SIZE="1">
+U+5146 </font></p>
+    </td>
+    <td width="239">
+<p><font FACE="Times New Roman" SIZE="1">1,000,000,000,000</font> <font FACE="Times New Roman" SIZE="1">(10,000</font>    
+<font FACE="Times New Roman" SIZE="1">×</font> <font FACE="Times New Roman" SIZE="1">10,000</font>    
+<font FACE="Times New Roman" SIZE="1">×</font> <font FACE="Times New Roman" SIZE="1">10,000)</font></p>    
+    </td>
+  </tr>
+</table>
+<b><font FACE="Times New Roman" SIZE="4">
+<p>Table 8. Ideographs Used as Accounting Numbers</p> 
+</font></b>
+<table border="1" width="350">
+  <tr>
+    <td width="74">
+<p><font FACE="Times New Roman" SIZE="1">
+1</font></p>
+    </td>
+    <td width="260">
+<p><font FACE="Times New Roman" SIZE="1">
+ U+58F9, U+58F1, U+5F0C a</font></p>
+    </td>
+  </tr>
+  <tr>
+    <td width="74">
+<p><font FACE="Times New Roman" SIZE="1">
+2</font></p>
+    </td>
+    <td width="260">
+<p><font FACE="Times New Roman" SIZE="1">
+ U+8CAE a , U+8D30 a , U+5F10 a , U+5F0D a</font></p>
+    </td>
+  </tr>
+  <tr>
+    <td width="74">
+<p><font FACE="Times New Roman" SIZE="1">
+3</font></p>
+    </td>
+    <td width="260">
+<p><font FACE="Times New Roman" SIZE="2">U+53C3, U+53C2, U+53C1 </font><font FACE="Times New Roman" SIZE="1">a
+</font><font FACE="Times New Roman" SIZE="2">, U+5F0E </font><font FACE="Times New Roman" SIZE="1">a</font></p>
+    </td>
+  </tr>
+  <tr>
+    <td width="74">
+<p><font FACE="Times New Roman" SIZE="1">4</font></p>
+    </td>
+    <td width="260">
+<p><font FACE="Times New Roman" SIZE="1"> U+8086</font></p>
+    </td>
+  </tr>
+  <tr>
+    <td width="74">
+<p><font FACE="Times New Roman" SIZE="1">5</font></p>
+    </td>
+    <td width="260">
+<p><font FACE="Times New Roman" SIZE="1"> U+4F0D</font></p>
+    </td>
+  </tr>
+  <tr>
+    <td width="74">
+<p><font FACE="Times New Roman" SIZE="1">6</font></p>
+    </td>
+    <td width="260">
+<p><font FACE="Times New Roman" SIZE="1"> U+9678, U+9646</font></p>
+    </td>
+  </tr>
+  <tr>
+    <td width="74">
+<p><font FACE="Times New Roman" SIZE="1">7</font></p>
+    </td>
+    <td width="260">
+<p><font FACE="Times New Roman" SIZE="1"> U+67D2 b</font></p>
+    </td>
+  </tr>
+  <tr>
+    <td width="74">
+<p><font FACE="Times New Roman" SIZE="1">8</font></p>
+    </td>
+    <td width="260">
+<p><font FACE="Times New Roman" SIZE="1"> U+634C</font></p>
+    </td>
+  </tr>
+  <tr>
+    <td width="74">
+<p><font FACE="Times New Roman" SIZE="1">9</font></p>
+    </td>
+    <td width="260">
+<p><font FACE="Times New Roman" SIZE="1"> U+7396</font></p>
+    </td>
+  </tr>
+  <tr>
+    <td width="74">
+<p><font FACE="Times New Roman" SIZE="1">10</font></p>
+    </td>
+    <td width="260">
+<p><font FACE="Times New Roman" SIZE="1"> U+62FE</font></p>
+    </td>
+  </tr>
+  <tr>
+    <td width="74">
+<p><font FACE="Times New Roman" SIZE="1">100</font></p>
+    </td>
+    <td width="260">
+<p><font FACE="Times New Roman" SIZE="2">U+4F70 </font><font FACE="Times New Roman" SIZE="1">a
+</font><font FACE="Times New Roman" SIZE="2">, U+964C
+</font></p>
+    </td>
+  </tr>
+  <tr>
+    <td width="74">
+<p><font FACE="Times New Roman" SIZE="1">
+1,000
+</font></p>
+    </td>
+    <td width="260">
+<p><font FACE="Times New Roman" SIZE="1">
+ U+4EDF
+</font></p>
+    </td>
+  </tr>
+  <tr>
+    <td width="74">
+<p><font FACE="Times New Roman" SIZE="1">
+10,000
+</font></p>
+    </td>
+    <td width="260">
+<p><font FACE="Times New Roman" SIZE="1">
+ U+842C
+</font></p>
+    </td>
+  </tr>
+</table>
+<font FACE="Times New Roman" SIZE="1">
+<p>a. These characters are used </font><i><font FACE="Times New Roman" SIZE="1">only  
+</font></i><font FACE="Times New Roman" SIZE="1">as accounting numbers, and have  
+no other meaning.<br> 
+b. In Japan, U+67D2 is also pronounced </font><i><font FACE="Times New Roman" SIZE="1">urus</font></i><font FACE="Times New Roman" SIZE="1">i,  
+meaning &quot;lacquer,&quot; and is treated as a variant of the standard character  
+for &quot;lacquer&quot; U+6F06.</p>  
+</blockquote>
+</font> 
+<h3><a name="Mirrored"><font face="Times New Roman">6.7 Mirrored—Normative</font></a></h3>
+<i><font FACE="Times New Roman" SIZE="2">
+<p>Mirrored </font></i><font FACE="Times New Roman" SIZE="2">is a normative  
+property of characters such as parentheses, whose images are mirrored horizontally in text that is laid 
+out from right to left. For example, U+0028 
+</font> <font FACE="MinionExp-Regular" SIZE="2">LEFT PARENTHESIS </font> <font FACE="Times New Roman" SIZE="2">is interpreted as </font><i><font FACE="Times New Roman" SIZE="2">opening 
+parenthesi</font></i><font FACE="Times New Roman" SIZE="2">s; in a left-to-right 
+context it will appear as &quot;(&quot;, 
+while in a right-to-left context it will appear as the mirrored glyph 
+&quot;)&quot;. The list of mirrored characters 
+appears in </font> <i><font FACE="Times New Roman" SIZE="2">Table 
+4 - 9 </font></i><font FACE="Times New Roman" SIZE="2">. Note that mirroring is
+not limited to paired characters,</font> <font FACE="Times New Roman" SIZE="2">but          
+that any character with the mirrored property will need two mirrored glyphs.
+This</font> <font FACE="Times New Roman" SIZE="2">requirement is necessary to          
+render the character properly in a bidirectional context.</p>
+</font>
+<h3><a name="Unicode 1.0"><font face="Times New Roman">6.8 Unicode 1.0 Names</font></a></h3>
+<font FACE="Times New Roman" SIZE="2">
+<p>The </font><i><font FACE="Times New Roman" SIZE="2">Unicode 1.0 character  
+name </font></i><font FACE="Times New Roman" SIZE="2">is an informative property 
+of the characters defined in Version 1.0 of the Unicode Standard. The names of Unicode characters were changed in 
+the process of merging the standard with ISO/IEC 10646. The Version 1.0 character 
+names can be obtained from the CD-ROM accompanying the standard or from the ftp site. 
+See also 
+</font> <font FACE="Times New Roman" SIZE="2"><i>Appendix D, Changes from Unicode Version 2.</i>0. 
+Where the Version 1.0 character name provides additional useful information, it is listed in 
+</font><i><font FACE="Times New Roman" SIZE="2">Chapter
+14, Code Chart</font></i><font FACE="Times New Roman" SIZE="2">s. For example, U+00B6 </font> 
+<font FACE="MinionExp-Regular" SIZE="2">PILCROW SIGN </font><font FACE="Times New Roman" SIZE="2">has
+its Version 1.0 name, </font><font FACE="MinionExp-Regular" SIZE="2">PARAGRAPH
+SIG</font><font FACE="Times New Roman" SIZE="2">N, listed for clarity.</p>
+</font>
+<h3><a name="Mathematical Property"><font face="Times New Roman">6.9 Mathematical Property</font></a></h3>
+<font FACE="Times New Roman" SIZE="2">
+<p>The mathematical property is an informative property of characters that are  
+used as operators  
+in mathematical formulas. The mathematical property may be useful in  
+algorithms  
+that deal with the display of mathematical text and formulas. However, a  
+number of these  
+characters have multiple usages and may occur with nonmathematical semantics.  
+For  
+example, U+002D </font> <font FACE="MinionExp-Regular" SIZE="2">HYPHEN-MINUS </font><font FACE="Times New Roman" SIZE="2">may  
+also be used as a hyphen—and not as a mathematical minus sign. Other characters, including some alphabetic, numeric, 
+punctuation, spaces, arrows, and geometric shapes, are used in mathematical expressions as 
+well, but are even more dependent on the context for their identification. The Unicode 
+characters in the following lists have the mathematical property.</p> 
+<p>Characters with the math property and the Sm General Category:</p>
+</font> <font FACE="Courier" SIZE="1">
+<p>002B, 003C..003E, 007C, 007E, 00AC, 00B1, 00D7, 00F7, 2044,</p>
+<p>207A..207C, 208A..208C, 2190..2194, 219A..219B, 21A0, 21A3, 21A6,</p>
+<p>21AE, 21CE..21CF, 21D2, 21D4, 2200..22F1, 2308..230B, 2320..2321,</p>
+<p>25B7, 25C1, 266F, FB29, FE62, FE64..FE66, FF0B, FF1C..FF1E, FF5C,</p>
+<p>FF5E, FFE2, FFE9..FFEC</p>
+</font><font FACE="Times New Roman" SIZE="2">
+<p>Characters with the math property and other General Category values:</p>
+</font><font FACE="Courier" SIZE="1">
+<p>0028..002A, 002D, 002F, 005B..005E, 007B, 007D, 2016, 2032..2034,</p>
+<p>207D..207E, 208D..208E, 20D0..20DC, 20E1, 2329..232A, 300A..300B,</p>
+<p>301A..301B, FE35..FE38, FE59..FE5C, FE61, FE63, FE68, FF08..FF0A,</p>
+<p>FF0D, FF0F, FF3B..FF3E, FF5B, FF5D</p>
+</font>
+<h3><a name="Letters"><font face="Times New Roman">6.10 Letters and Other Useful Properties</font></a></h3>
+<font FACE="Times New Roman" SIZE="2">
+<p>The CD-ROM that accompanies the Unicode Standard contains data files that  
+list other  
+useful, informative properties of Unicode characters. The full list of those  
+properties can be  
+found in the data files; see, in particular, PropList.txt. This section  
+highlights some of those  
+properties that have a bearing on such implementation issues as parsing of  
+identifiers. (See  
+also </font> <i><font FACE="Times New Roman" SIZE="2">Section 5.16, Identifier</font></i><font FACE="Times New Roman" SIZE="2">s.)</p>  
+<p>Computer language standards often characterize identifiers as consisting of 
+letters, syllables, ideographs, and digits, but do not specify exactly what a &quot;letter,&quot; 
+&quot;syllable,&quot; &quot;ideograph,&quot; or &quot;digit&quot; is, leaving the definitions implicitly either to a 
+character encoding standard or to a locale specification. The large scope of the Unicode 
+Standard means that it includes many writing systems for which these distinctions are not as 
+self-evident as they may once have been for systems designed to work primarily for Western 
+European languages and Japanese. In particular, while the Unicode Standard includes various 
+&quot;alphabets&quot; and &quot;syllabaries,&quot; it also includes writing systems that fall 
+somewhere in between. As a result, no attempt is made to draw a sharp property distinction between 
+letters and syllables.</p> 
+</font> <b><i><font FACE="Times New Roman" SIZE="2">
+<p>Letter. </font></i></b><font FACE="Times New Roman" SIZE="2">This informative 
+property applies to characters that are used to write words. This group includes characters such as capital letters, small letters, ideographs, 
+hangul, and spacing modifier letters. Combining marks generally assume the letter 
+property of the preceding base character. For example, when searching for word boundaries, combining 
+characters don’t break from previous letters. The letter property mappings can be 
+obtained from the CD-ROM accompanying the standard.</p> 
+</font> <b><i><font FACE="Times New Roman" SIZE="2">
+<p>Alphabetic. </font></i></b><font FACE="Times New Roman" SIZE="2">The 
+alphabetic property is an informative property of the primary units of alphabets and/or 
+syllabaries, whether combining or noncombining. Included in 
+this group would be composite characters that are canonical equivalents to a combining 
+character sequence of an alphabetic base character plus one or more combining 
+characters; letter digraphs; contextual variants of alphabetic characters; ligatures of 
+alphabetic characters; contextual variants of ligatures; modifier letters; letterlike symbols that 
+are compatibility equivalents of single alphabetic letters; and miscellaneous letter elements. 
+Notably, U+00AA </font> <font FACE="MinionExp-Regular" SIZE="2">FEMININE ORDINAL 
+INDICATOR </font><font FACE="Times New Roman" SIZE="2">and U+00BA </font><font FACE="MinionExp-Regular" SIZE="2">MASCULINE
+ORDINAL INDICATOR </font><font FACE="Times New Roman" SIZE="2">are simply abbreviatory forms involving a Latin letter and should be considered 
+alphabetic rather than nonalphabetic symbols.</p> 
+</font> <b><i><font FACE="Times New Roman" SIZE="2">
+<p>Ideographic. </font></i></b><font FACE="Times New Roman" SIZE="2">The  
+ideographic property is an informative property of the Unified CJK Ideograph set (U+4E00..U+9FA5); the CJK Ideograph Extension A set (U+3400..U+4DB5); the 
+CJK Compatibility Ideograph set (U+F900..U+FA2D); U+3007 </font> 
+<font FACE="MinionExp-Regular" SIZE="2">IDEOGRAPHIC
+NUMBER</font> <font FACE="MinionExp-Regular" SIZE="2">ZER</font><font FACE="Times New Roman" SIZE="2">O; U+3006 </font><font FACE="MinionExp-Regular" SIZE="2">IDEOGRAPHIC          
+CLOSING MARK; </font><font FACE="Times New Roman" SIZE="2">and the Hangzhou-style 
+numerals (U+3021..U+3029, U+3038..U+303A). 
+</font>
+
+</p>
+<h3><a name="East Asian Width">6.11 East Asian Width</a></h3> 
+<p>East Asian Width is a limited property, classifying characters based on their 
+width in East Asian legacy implementations. While presented as a closed 
+enumeration, the EAW value &quot;Neutral&quot; essentially is the 'does not 
+apply' value.</p>
+<h3><a name="ISO Comment">6.12 ISO comment</a></h3> 
+<p>ISO/IEC 10646 provides for a comment field in the character name itself,     
+while Unicode uses a more extensive set of annotations. Combining the     
+information in this field with the Unicode Character name, provides the complete     
+name as it appears in ISO/IEC 10646.&nbsp;</p>    
+<h3>6.13 Sort Weights</h3>  
+<p>&lt;see TR 10&gt;</p> 
+<h3><a name="Line Breaking">6.14 Line Breaking</a></h3>  
+<p>&lt;see TR 14&gt;</p> 
+<h3>6.15 Decompositions</h3> 
+<p>&lt;see TR 15&gt;</p> 
+<h3>6.16 Special Property</h3> 
+<p>Table 3-9 in [Unicode] lists those characters that have particular 
+properties. Their properties are described individually in chapter 13 of 
+[Unicode]. These characters can be grouped as follows.</p> 
+        
+<ul>
+  <li>Line Boundary Control</li>
+  <li>Hyphenation Control</li>
+  <li>Fraction Formatting</li>
+  <li>Special Behavior with nonspacing marks</li>
+  <li>Double nonspacing marks</li>
+  <li>Joining Control</li>
+  <li>Bidirectional Ordering Control</li>
+  <li>Alternate Formatting (deprecated)</li>
+  <li>Syriac abbreviation</li>
+  <li>Indic dead-character formation</li>
+  <li>Mongolian variation selectors</li>
+  <li>Ideographic variation indication</li>
+  <li>Ideographic description</li>
+  <li>Interlinear Annotation</li>
+  <li>Object Replacement</li>
+  <li>Code Conversion Fallback</li>
+  <li>Byte Order Signature</li>
+</ul>
+<span style="background-color: #FFFF00">NEW: 3.1/3.2</span>        
+        
+<ul>
+  <li>Math Variant</li> 
+  <li>Combining Grapheme Joiner</li>
+  <li>Word joiner</li>
+  <li>Ligature formation control</li>
+  <li>Musical scoping</li>
+  <li>Invisible operators</li>
+</ul>
+<p>&nbsp;</p> 
+<h3><a name="Case Mapping">6.21 Case Mapping</a></h3>  
+<p>&lt;see TR21&gt;</p> 
+<h3><a name="Character Mapping">6.22 Character Mappings</a></h3> 
+<p>&lt;see TR22&gt;</p> 
+<h3><a name="Script Name">6.24 Script Name</a></h3> 
+<p>&lt;see UTR 24: Script Names&gt;</p> 
+END OF REMOVED --><h2>7. <a name="Maintenance">Updating Properties and Extending the Standard</a>&nbsp;</h2>                
+        
+<h3><a name="Updating">7.1 Updating Properties</a></h3>       
+<p>Updates to the Unicode Character Database can be required for three reasons</p>       
+      
+<ol>   
+  <li>To cover new characters added to the Unicode Standard</li>   
+  <li>To add new properties</li>   
+  <li>To change the assigned values for a property for some characters</li>   
+</ol>   
+       
+<p>Changing a characters property assignment invalidates existing    
+implementations and is therefore something that is done judiciously and with    
+great care when there is no better alternative.</p>        
+      
+<ul>
+  <li><b>Unless explicitly stated otherwise, The Unicode Consortium may change 
+    the properties of characters.</b> 
+    <p>The consortium will endeavor to keep the values of all character properties  
+    as stable as possible, but some circumstances may arise that require  
+    changing them. In particular, as Unicode encodes less-well documented  
+    scripts (such as for minority languages in Thailand) the exact character  
+    properties and behavior may not be known at the time the script is first  
+    encoded.<br>
+  </li>
+</ul>
+      
+<h3><a name="Guarantees">7.2 Guarantees</a></h3>
+       
+<p>For some properties, some of the following aspects are guaranteed to be 
+invariant.</p>    
+       
+<ul>       
+  <li>&nbsp;stability of assignment&nbsp;</li>                
+  <li>&nbsp;stability of set of values for a property</li>                
+  <li>&nbsp;stability of file formats</li>                
+  <li>&nbsp;stability of relation to another property</li>               
+</ul>       
+    <p>The status of a property as normative does not imply a stability 
+    guarantee.</p>
+       
+<ul>
+  <li><p><b>Once a character is encoded, its code position and name are immutable   
+    properties.</b></p>
+    <p>Mistakes in naming are noted in the nameslist in a note or by using an 
+    alias, but the formal name remains unchanged.</p>
+	
+  <li><p><b>Once a character is encoded, its canonical combining class and  
+    decomposition (canonical or combining) are stable with respect to  
+    normalization.</b></p>
+    <p>If a string contains only characters from a given version of the Unicode 
+    Standard (say Unicode 3.1), and it is put into a normalized form in 
+    accordance with that version of Unicode, then it will be in normalized form 
+    when according to any past or future versions of Unicode.</p>
+    <p><i><b>Note: </b>If an implementation normalizes a string that contains  
+    characters that are <b>not</b> assigned in the version of Unicode that it  
+    supports, that string may not be assessed as being in normalized form  
+    according to a future version of Unicode. For example, suppose that a  
+    Unicode 3.0 program normalizes a string that contains new Unicode 3.1  
+    characters. That string may not be normalized according to Unicode 3.1.<br> 
+    </i></p>
+  <li><p><b>The General Category and Bidi Category are closed enumerations.</b></p>
+    <p>In other words they will not be further subdivided.</p>
+  </li>
+  <li><b>The structure of certain property values in the Unicode Character 
+    Database will not be changed:</b>
+    <p>Further description of these is provided in described in <a href="http://www.unicode.org/Public/UNIDATA/UnicodeData.html">UnicodeData.html</a>:<br>
+    <ul>
+  <li>Combining classes are limited to the values 0 to 255.
+  <li>All characters other than those of General Category M* have the 
+    combining class 0.
+  <li>Canonical and Compatibility mappings are always in canonical order, 
+    and the resulting recursive decomposition will also be in canonical 
+    order.
+  <li>Canonical mappings are always limited either to a single value or to a 
+    pair. The second character in the pair cannot itself have a canonical 
+    mapping.<br>
+  </li>
+    </ul>
+</ul>
+      
+<h2><a name="SpecialValues">8. Special Property Values</a></h2>      
+     
+<h3><a name="NA">8.1 N/A Value</a></h3>
+     
+<p>Limited properties apply to only a subset of characters. Where these   
+properties are implemented as a partition (required property) the characters to   
+which the property does not apply is given a special value denoting that the   
+property does not apply.</p>       
+     
+<h3><a name="Default">8.2 Default Value</a></h3>
+     
+<p>
+Implementations often need specific properties for <i> all</i> code points, including those    
+that are unassigned. To meet this need, the Unicode standard assigns default    
+properties to ranges of  unassigned code points.</p>      
+     
+<p>All implementations of the Unicode Standard should endeavor to handle  
+additions to the character repertoire gracefully. In some cases this may require  
+that an implementation attempts to 'anticipate' likely property values for Code points for which characters have not yet been defined, but where surrounding  
+characters exist that make it probable that similar characters will be assigned  
+to the Code point in question.</p>      
+     
+<p>There are three strategies</p>       
+     
+<ol>  
+  <li>Rely on the recommendation from The Unicode Consortium. For example, for the 
+    Bidirectional Class, the Unicode Consortium has published recommended 
+    default values for all code points.</li>   
+  <li>Treat the unassigned areas of a block as if they had property values    
+    common to other characters of the block. A variation of this scheme bridges    
+    'holes' in the allocation by using the property values for the characters    
+    bracketing the hole.</li>   
+  <li>Give unassigned code location a different default property that will result in    
+    graceful, if not completely correct behavior if encoded characters are later    
+    encountered at that location.</li>   
+</ol>  
+<p>Each of these strategies has advantages and drawbacks, and none can guarantee    
+that the behavior of an implementation that is conformant to a prior version of    
+the Unicode Standard will support characters added in a later version of the    
+Unicode Standard in precisely the same way as an implementation that is    
+conformant to the later version. The most that can be hoped for, is that the    
+earlier implementation will behave gracefully in such circumstances.</p>        
+     
+<p>Default values are temporary: they will be superseded by final assignments,  
+once characters are assigned to a given code point.</p>        
+     
+<p>For non-character codes, a property returning API would return the same value 
+as the default value for unassigned characters.</p>       
+     
+<h3><a name="Undetermined">8.3 Undetermined Property Values</a></h3>
+     
+<p>For many archaic scripts (as well as for not yet fully implemented modern ones) essential characteristics of many characters may not be knowable at the time of their publication.   
+In these cases the proper assignments of property values for newly encoded   
+characters cannot be reliably determined at the time the characters are first   
+added to the Unicode Standard, or for a new property, when the property is first   
+added to the Unicode Character Database. In these cases, and where the property   
+is a required property, it will be given a value of 'undetermined', or 'unknown   
+at time of publication'.</p>       
+     
+<h3><a name="Preliminary">8.4 Preliminary Property Assignments</a></h3>
+     
+<p>Sometimes, a determination and assignment of property values can be made, but    
+the information on which it was based may be incomplete or preliminary. In such    
+cases, the property value may be changed when better information becomes    
+available. Currently, there is no machine readable way to provide information    
+about the confidence of a property assignment; however, the text of the Standard    
+or a Technical Report defining the property may provide general indications of    
+preliminary status of property assignments where they are known.</p>        
+     
+<h2><a name="Working">9. Working with properties</a></h2>        
+      
+<p><font color="#FF0000"><b>[</b>The text in this section is  
+very preliminary<b>]</b>.</font></p> 
+      
+<p>There are two main issues in working with properties</p> 
+<ul>
+  <li>Efficient storage and access to the property information</li> 
+  <li>Interpretation of the character property and implementation of character  
+behavior in context</li> 
+</ul>
+
+<h3><a name="Access">9.1 Efficient storage and access to property information</a></h3>
+<p>The Unicode Standard provides detailed  
+information on character properties (see <i>Chapter 4, 
+Character Properties, a</i>nd the Unicode Character Database on the accompanying 
+CD-ROM).</p>
+<p>These properties can be used by implementers to implement a variety of    
+low-level processes. Fully    
+language-aware and higher-level processes will need additional information.</p>   
+<p>A two-stage table, as described in <i>Section 5.1, Transcoding to Other 
+Standards</i>, can also be used to 
+handle mapping to character properties or other information indexed by character  
+code. For example, the data from the 
+Unicode Character Database on the accompanying CD-ROM 
+can be represented in memory very efficiently as a set of two-stage tables.</p>    
+<p>Individual properties are common to large sets of characters and therefore    
+lend themselves to implementations    
+using the shared blocks.</p>   
+<p>Many popular implementations are influenced by the POSIX model, which 
+provides functions for separate 
+properties, such as isalpha, isdigit,  
+and so on. Implementers of Unicode-based 
+systems and internationalization libraries need to take care to extend these concepts to the full set of Unicode 
+characters correctly.</p>    
+<p>In Unicode-encoded text, combining characters participate fully. In addition 
+to providing callers with 
+information about which characters have the combining property, implementers and writers of language standards need to 
+provide for the fact that combining characters assume 
+the property of the preceding base character (see also Section 3.5,  
+Combination, and Section 
+5.16, Identifiers). Other important properties, such as sort weights, may  
+also depend on a character’s 
+context.</p>
+<p>Because the Unicode Standard provides such a rich set of properties, 
+implementers will find it useful to 
+allow access to several properties at a time, possibly returning a string of bit-fields, one bit-field per character in 
+the input string.</p>    
+<p>In the past, many existing standards, such as the C language standard,  
+assumed very minimalist &quot;portable  
+character sets&quot; and geared their functions to operations on such sets. As the Unicode encoding itself is  
+increasingly becoming the portable character set, implementers are  
+advised to distinguish between historical limitations and true requirements when implementing specifications for  
+particular text processes.</p>     
+<p><b>Multistage Tables</b></p>     
+<p>Tables require space. Even small character sets often map to characters from   
+several different blocks in            
+the Unicode Standard, and thus may contain up to 64K entries in at least one direction. Several techniques exist to            
+reduce the memory space requirements for mapping tables.            
+Such techniques apply not only to transcoding tables, but also to many other  
+tables needed to implement the            
+Unicode Standard, including character property data, collation tables,            
+and glyph selection tables.</p>  
+<p><b><i>Flat Tables.</i></b> If diskspace is not at issue, virtual memory   
+architectures yield acceptable working            
+set sizes even for flat tables because frequency of usage among characters  
+differs widely and even small            
+character sets contain many infrequently used characters. In addition, data            
+intended to be mapped into a given character set generally does not contain  
+characters from all blocks of the            
+Unicode Standard (usually, only a few blocks at a time need to be            
+transcoded to a given character set). This situation leaves large sections of  
+the 64K-sized reverse mapping            
+tables (containing the default character, or unmappable character entry) unused—and            
+therefore paged to disk.</p>  
+<p><b><i>Ranges.</i></b> It may be tempting to &quot;optimize&quot; these tables for   
+space by providing elaborate pro-visions for            
+nested ranges or similar devices. This practice leads to unnecessary performance 
+penalties on modern, highly pipelined            
+processor architectures because of branch penalties.</p>  
+<p>A faster solution is to use an optimized two-stage table, which can be   
+coded without any test or branch            
+instructions. Hash tables can also be used for space optimization, although they 
+are not as fast as multistage tables.</p>           
+<p><b><i>Two-Stage Tables (Single index tries).</i></b> Two-stage (high-byte) tables are a commonly   
+employed mechanism to reduce table            
+size (see Figure 5-1). They use an array of 256 pointers and a default  
+value. If a pointer is NULL,            
+the returned value is the default. Otherwise, the pointer references a block of 256 values. 
+If full support for supplementary characters is required, three-stage tables (or 
+double index tries) are a better solution.</p>          
+<p><b>Figure 5-1. Two-Stage Tables <font color="#FF0000">[TBD]</font></b></p>
+<p><b><i>Optimized Two-Stage Table.</i></b> Wherever any blocks are identical, the   
+pointers just point to the same            
+block. For transcoding tables, this case occurs generally for a block containing 
+only mappings to the &quot;default&quot;            
+or &quot;unmappable&quot; character. Instead of using NULL pointers and a default            
+value, one &quot;shared&quot; block of 256 default entries is created. This  
+block is pointed to by all            
+first-stage table entries, for which no character value can be mapped. By avoiding tests and branches, this strategy            
+provides access time that approaches the simple array            
+access, but at a great savings in storage.</p>  
+<p>Given an arbitrary 64K table, it is a simple matter to write a small utility   
+that can calculate the optimal            
+number of stages and their width.</p>  
+<h3><a name="Range">Range tables</a></h3>
+<p><font color="#FF0000">[additional guidelines, TBD]         
+<!-- REMOVED PENDING REVIEW         
+</p>
+        
+<h2><a name="Management">10. Data Management and Distribution</a></h2>     
+      
+<h3><a name="Location">10.1 Versions of the Unicode Character Database</a></h3> 
+<p>The Unicode Character Database is provided as a collection of flat text  
+files, as described in [UnicodeCharacterDatabase]. Each version of the database has  
+its own, numbered directory on the Unicode ftp site [ftp-http]. In each  
+versioned directory, the filenames of all files carry their version number in  
+the file names. The latest version of the database is replicated in the  
+directory named UNIDATA [Unidata], which uses constant file names (i.e. without  
+version number). It is thus possible to reference both a specific version as  
+well as the latest version of a database file (or the database itself) without  
+need to update the links.</p>      
+<p>For more information about the versions of the Unicode Standard see [UnicodeVersions].</p>        
+      
+<h3><a name="Syntax">10.2 File Syntax Conventions </a></h3>
+        
+<p>All files need a (formal) syntax description at least as detailed as namelist.txt has - it's probably useful to set up three or four templates for       
+this now, so that we don't get new formats for each proposed property.         
+</p>        
+        
+<p>The majority of plain text files in the Unicode Character Database use this 
+general format:        
+</p>        
+        
+<blockquote>
+        
+<p>LINE := COMMENT<br>  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;   
+CODE_RANGE ( &quot;;&quot; VALUE) + { COMMENT }      
+</p>        
+        
+<p>VALUE := file specific, often a two letter abbreviation or a small number        
+</p>        
+        
+<p>COMMENT := '#' arbitrary text        
+</p>        
+        
+<p>CODE_RANGE = CODE { &quot;..&quot;CODE }        
+</p>        
+        
+<p>CODE := HHHH { { H } H }        
+</p>        
+        
+<p>H := '0' | '1' | '2' | '3' | '4' | '5' | '6' | '7' | '8' | '9' | 'A' | 'B' | 
+'C' | 'D' | 'E' | 'F'        
+</p>        
+        
+</blockquote>
+        
+<p>By convention, the file starts with a <i>headerI, i.e.</i> several comment 
+lines identifying title, version, date, author, purpose and content of the file, 
+as well as the permissible values and meaning for each field. By convention, 
+following the last field in each line, a comment contains the character name. 
+This comment should be ignored in machine processing of the file.        
+</p>        
+        
+<p>        
+An XML version of the Unicode Character Database is under preparation.      
+</p>         
+         
+<h3><a name="Beta">10.3 Beta Versions of the Character Database</a></h3>
+<p>Whenever an update of the database is being developed, a beta version may be 
+released in a directory whose name contains the word 'beta' in the directory 
+name and in all filenames contained therein. This beta directory will be provided solely 
+for review purposes and will not be maintained after the end of the beta period.</p>     
+END OF REMOVED -->         
+</font>    
+      
+<h2>11. <a name="References">References</a></h2>     
+  <table style="border-style: none; border-width: 0;" cellspacing="0" cellpadding="12" width="99%">
+  <tr>
+    <td class="nb">[<a name="ArabicShaping">ArabicShaping</a>]</td>       
+  <td class="nb">Data file <a href="ftp://ftp.unicode.org/Public/UNIDATA/ArabicShaping.txt">ftp://ftp.unicode.org/Public/UNIDATA/ArabicShaping.txt</a>    
+  <tr>
+    <td class="nb">[<a name="Bidirectional Algorithm">Bidirectional Algorithm</a>]</td>       
+  <td class="nb">Mark Davis, Unicode Standard Annex #9: The Bidirectional Algorithm, 
+    <a href="http://www.unicode.org/unicode/reports/tr9">http://www.unicode.org/unicode/reports/tr9</a>     
+  </td>
+  </tr>    
+  <tr>
+    <td class="nb">[<a name="CaseFolding">CaseFolding</a>]</td>    
+  <td class="nb">Data file <a href="ftp://ftp.unicode.org/Public/UNIDATA/CaseFolding.txt">ftp://ftp.unicode.org/Public/UNIDATA/CaseFolding.txt</a>    
+  <tr>
+    <td class="nb">[<a name="Case Mapping]">Case Mapping]</a>&nbsp;</td>       
+  <td class="nb">Mark Davis, Unicode Technical Report #21: Case Mapping, <a href="http://www.unicode.org/unicode/reports/tr21">http://www.unicode.org/unicode/reports/tr21</a>            
+  </td>
+  </tr>      
+  <tr>
+    <td class="nb">[<a name="Character Mapping Tables">Character Mapping Tables</a>]</td>    
+    <td class="nb">Mark Davis, Unicode Technical Report #22: Character Mapping Tables, 
+      <a href="http://www.unicode.org/unicode/reports/tr22">http://www.unicode.org/unicode/reports/tr22</a>
+    </td>
+  </tr>    
+  <tr>
+  <td class="nb">[<a name="Collation">Collation</a>]</td>    
+  <td class="nb">Mark Davis, Unicode Technical Report #10: Collation, <a href="http://www.unicode.org/unicode/reports/tr10">http://www.unicode.org/unicode/reports/tr10</a>      
+  </td></tr>    
+  <tr><td class="nb">[<a name="EastAsianWidth">EastAsianWidth</a>]</td>       
+  <td class="nb">Data file <a href="ftp://ftp.unicode.org/Public/UNIDATA/EastAsianWidth.txt">ftp://ftp.unicode.org/Public/UNIDATA/EastAsianWidth.txt</a>      
+  </td></tr>    
+  <tr><td class="nb">[<a name="East Asian Width">East Asian Width</a>]&nbsp;</td>       
+  <td class="nb"> Asmus Freytag, <i> Unicode Standard Annex #11, East Asian Width</i>, 
+    <a href="http://www.unicode.org/unicode/reports/tr11">http://www.unicode.org/unicode/reports/tr11</a>       
+  </td></tr>     
+  <tr><td class="nb">[<a name="Jamo">Jamo</a>]</td>       
+  <td class="nb">Data file <a href="ftp://ftp.unicode.org/Public/UNIDATA/Jamo.txt">ftp://ftp.unicode.org/Public/UNIDATA/Jamo.txt</a></td></tr>      
+  <tr><td class="nb">[<a name="LineBreak">LineBreak</a>]</td>       
+  <td class="nb">Data file <a href="ftp://ftp.unicode.org/Public/UNIDATA/LineBreak.txt">ftp://ftp.unicode.org/Public/UNIDATA/LineBreak.txt</a>     
+  </td></tr>    
+  <tr><td class="nb">[<a name="Line Breaking">Line Breaking</a>]</td>    
+  <td class="nb">Asmus Freytag, Unicode Standard Annex #14: Line Breaking Properties, 
+    <a href="http://www.unicode.org/unicode/reports/tr14">http://www.unicode.org/unicode/reports/tr14</a>     
+  </td></tr>    
+  <tr><td class="nb">[<a name="NamesList">NamesList</a>]</td>    
+  <td class="nb">Data file <a href="ftp://ftp.unicode.org/Public/UNIDATA/NamesList.txt">ftp://ftp.unicode.org/Public/UNIDATA/NamesList.txt</a>      
+  </td></tr>    
+  <tr><td class="nb">[<a name="NamesList-Format">NamesList-Format</a>]</td>    
+  <td class="nb">Readme file <a href="ftp://ftp.unicode.org/Public/UNIDATA/NamesList.html">http://www.unicode.org/Public/UNIDATA/NamesList.html</a>        
+  </td></tr>     
+  <tr><td class="nb">[<a name="SpecialCasing">SpecialCasing</a>]</td>      
+  <td class="nb">Data file <a href="ftp://ftp.unicode.org/Public/UNIDATA/SpecialCasing.txt">ftp://ftp.unicode.org/Public/UNIDATA/SpecialCasing.txt</a></td></tr>      
+  <tr><td class="nb">[<a name="Unicode">Unicode</a>]</td>    
+  <td class="nb">The Unicode Standard, Version 3.0, Addison Wesley Longman, 2000.       
+  </td></tr>     
+  <tr><td class="nb">[UnicodeCharacterDatabase]</td>      
+  <td class="nb">Overview file, <a href="ftp://ftp.unicode.org/UCD/">http://www.unicode.org/UCD/</a></td></tr>      
+  <tr><td class="nb">[<a name="UnicodeData">UnicodeData</a>]</td>    
+  <td class="nb">      
+Data file <a href="ftp://ftp.unicode.org/Public/UNIDATA/UnicodeData.txt">ftp://ftp.unicode.org/Public/UNIDATA/UnicodeData.txt</a>      
+  </td></tr>    
+  <tr><td class="nb">[<a name="UnicodeData-Format">UnicodeData-Format</a>]</td>    
+  <td class="nb">      
+Readme file <a href="ftp://ftp.unicode.org/Public/UNIDATA/UnicodeData.html">http://www.unicode.org/Public/UNIDATA/UnicodeData.html</a>       
+  </td></tr>     
+  <tr><td class="nb">[<a name="UnicodeData-Format">UnicodeVersions</a>]</td>       
+  <td class="nb">     
+Versions of the Unicode Standard <a href="http://www.unicode.org/unicode/standard/versions">http://www.unicode.org/unicode/standard/versions</a>      
+  </td></tr>    
+ </table>      
+     
+       
+<h2>Acknowledgements</h2>       
+<p>The author wishes to thank Ken Whistler and Mark Davis for their insightful comments.</p>         
+       
+<h2><a name="Modifications">Changes from previous drafts</a></h2>         
+      
+<p><b>1</b> First version for public review</p> 
+      
+<hr>     
+  <p>Copyright © 2000-2002 Unicode, Inc. All Rights Reserved. The Unicode              
+  Consortium makes no expressed or implied warranty of any kind, and assumes no              
+  liability for errors or omissions. No liability is assumed for incidental and              
+  consequential damages in connection with or arising out of the use of the              
+  information or programs contained or accompanying this technical report.</p>             
+  <p>Unicode and the Unicode logo are trademarks of Unicode, Inc., and are          
+  registered in some jurisdictions.</p>         
+
+</div>
+</body>        
+        
+</html> 

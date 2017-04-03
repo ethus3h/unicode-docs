@@ -1,0 +1,40 @@
+# CategoryLabels.txt
+# Date: 2011-07-13, 23:00:00 GMT [KW]
+#
+# This file is a informative data file accompanying
+# Unicode Technical Report #49, Unicode Character Categories.
+#
+# Copyright (c) 2011 Unicode, Inc.
+# For terms of use, see http://www.unicode.org/terms_of_use.html
+#
+# This file defines informative display labels for Unicode character
+# categories.
+#
+# For documentation, see http://www.unicode.org/reports/tr49/
+#
+# FORMAT
+#
+# Each line has two semicolon-delimited fields
+# First field: Identifier for character category, constructed
+#    by concatenation of category names from Categories.txt
+# Second field: Display label for that category
+#
+# 2011-07-13 note: The data currently in this data file only
+#    consists of a handful of examples. Upon review of the
+#    concept of supplying a data file for display labels
+#    for categories, these examples will be expanded to
+#    consist of a complete set for each unique subcategory
+#    occurring in Categories.txt. The format of this file
+#    may be modified to make the data easier
+#    to use for spreadsheet import. 
+#
+#-----------------------------------------------------------------
+
+Letter_Consonant ;                     Consonant
+Letter_Consonant_Dependent_Subjoined ; Subjoined Consonant
+Symbol_Arrow_Harpoon ;                 Harpoon
+Symbol_Game_Playing_card ;             Playing Card Symbol
+Symbol_Music_Western ;                 Western Musical Symbol
+Symbol_Technical_Keyboard ;            Keyboard Symbol
+
+# EOF

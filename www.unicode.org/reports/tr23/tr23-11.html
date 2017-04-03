@@ -1,0 +1,1392 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+       "http://www.w3.org/TR/html4/loose.dtd"> 
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta http-equiv="Content-Language" content="en-us">
+<title>UTR #23: The Unicode Character Property Model</title>
+<link rel="stylesheet" type="text/css" href="../reports-v2.css">
+<style type="text/css">
+<!--
+blockquote.tus { border-style:solid; border-width:.25pt; background-color:#F0F0F0; padding-left:.75em; padding-right:.5em; font-size:90% }
+dd { margin-bottom: 0.75em }
+-->
+</style>
+</head>
+
+<body>
+
+
+
+<!-- BEGIN OF DOCUMENT TITLE, DATE AND VERSION -->
+<table class="header">
+  <tr>
+    <td class="icon"><a href="http://www.unicode.org"><img align="middle" 
+    alt="[Unicode]" border="0" src="../../webscripts/logo60s2.gif" 
+    width="34" height="33"></a>&nbsp;&nbsp;<a class="bar" href="../index.html">Technical                                           
+      Reports</a></td>
+  </tr>
+  <tr>
+    <td class="gray">&nbsp;</td>
+  </tr>
+</table>
+<div class="body">
+	<h2 align="center">Unicode Technical Report #23</h2>
+  <h1 align="center">The Unicode Character Property Model</h1>
+  <table class="simple" width="90%">
+    <tr>
+      <td>Editors</td>
+      <td>Ken Whistler (<a href="mailto:ken@unicode.org">ken@unicode.org</a>)
+       and Asmus Freytag (<a href="mailto:asmus@unicode.org">asmus@unicode.org</a>)</td>
+    </tr>
+    <tr>
+      <td>Date</td>
+      <td>2015-05-27</td>
+    </tr>
+    <tr>
+      <td>This Version</td>
+      <td><a href="tr23-11.html">
+		http://www.unicode.org/reports/tr23/tr23-11.html</a></td>
+    </tr>
+    <tr>
+      <td>Previous Version</td>
+      <td><a href="tr23-9.html">
+      http://www.unicode.org/reports/tr23/tr23-9.html</a></td>
+    </tr>
+    <tr>
+      <td>Latest Version</td>
+      <td><a href="../tr23.1">http://www.unicode.org/reports/tr23/</a></td>
+    </tr>
+    <tr>
+      <td>Revision</td>
+      <td><a href="tr23-11.html#Modifications">11</a></td>
+    </tr>
+  </table>
+	<!-- BEGIN OF DOCUMENT FRONT MATTER -->
+  <h4>Summary</h4>
+<p><i>This document presents a conceptual model of character properties  
+  defined in the Unicode Standard.</i></p>
+  <h4>Status</h4>
+ 	<!-- NOT YET APPROVED
+	<p class="changed"><i>This document is a <b><font color="#ff3333"> proposed update 
+	of a previously approved Unicode Technical Report</font></b>. This document 
+	may be updated, replaced, or superseded by other documents at any time. 
+	Publication does not imply endorsement by the Unicode Consortium. This 
+	is not a stable document; it is inappropriate to cite this document as other 
+	than a work in progress.</i></p>
+        END NOT YET APPROVED -->
+	<!-- APPROVED -->
+	<p><i>This document has been reviewed by Unicode members 
+	and other interested
+	parties, and has been approved for publication by the Unicode Consortium.
+	This is a stable document and may be used as reference material or cited as
+	a normative reference by other specifications.</i></p>
+	<!-- END APPROVED -->
+  
+  <blockquote>
+  <p><i><b>A Unicode Technical Report (UTR)</b> contains 
+            informative material. Conformance to the Unicode Standard does not 
+            imply conformance to any UTR. Other specifications, however, are 
+            free to make normative references to a UTR.</i></p>      
+  </blockquote>
+  <p><i>Please submit corrigenda and other comments with the online reporting 
+  form [<a href="http://www.unicode.org/reporting.html">Feedback</a>]. 
+  Related information that is useful in understanding this document is found in the
+  <a href="tr23-11.html#References">References</a>. 
+  For the latest version of the Unicode Standard, see [<a href="http://www.unicode.org/versions/latest/">Unicode</a>]. 
+  For a list of current Unicode Technical Reports, see [<a href="../index.html">Reports</a>]. 
+  For more information about versions of the Unicode Standard, see [<a href="http://www.unicode.org/versions/">Versions</a>].</i></p>
+  <h3><i>Contents</i></h3>
+  <ol class="toc">
+    <li><a href="tr23-11.html#Scope">Scope</a></li>
+    <li><a href="tr23-11.html#Overview">Overview</a>
+      <ul class="toc">
+        <li>2.1 <a href="tr23-11.html#Origin">Origin of Character Properties</a></li>
+        <li>2.2 <a href="tr23-11.html#Context">Character Behavior in Context</a></li>
+        <li>2.3 <a href="tr23-11.html#Relation">Relation of Character Properties to Algorithms</a></li>
+        <li>2.4 <a href="tr23-11.html#CodePointProperties">Code Point Properties and 
+		Abstract Character Properties</a></li>
+        <li>2.5 <a href="tr23-11.html#Normative">Normative Properties</a></li>
+        <li>2.6 <a href="tr23-11.html#Informative">Informative Properties</a></li>
+        <li>2.7 <a href="tr23-11.html#Referring">Referring to Properties</a></li>
+        <li>2.8 <a href="tr23-11.html#CharacterDatabase">The Unicode Character Database</a></li> 
+      </ul>
+    </li>
+    <li><a href="tr23-11.html#Definitions">Definitions</a>
+    <ul class="toc">
+      <li>3.1 <a href="tr23-11.html#PropertiesDefinitions">Properties and Property Values</a></li>
+      <li>3.2 <a href="tr23-11.html#PropertyValueTypeDefinitions">Types of Property Values</a></li>      
+      <li>3.3 <a href="tr23-11.html#PropertyTypeDefinitions">Types of Properties</a></li>         
+      <li>3.4 <a href="tr23-11.html#ConformanceStatusDefinitions">Conformance Status of Properties</a></li>
+      <li>3.5 <a href="tr23-11.html#PropertyClassificationDefinitions">Classification of Properties</a></li>
+      <li>3.6 <a href="tr23-11.html#StringFunctionsDefinitions">String Functions</a></li>         
+      <li>3.7 <a href="tr23-11.html#StringFunctionClassificationDefinitions">Classification of 
+		String Functions</a></li>
+      <li>3.8 <a href="tr23-11.html#OtherDefinitions">Other Definitions</a></li>
+    </ul>
+    </li>
+    <li><a href="tr23-11.html#Conformance">Conformance-related Considerations</a>
+    <ul class="toc">
+        <li>4.1 <a href="tr23-11.html#Requirements">Conformance Requirements</a></li>
+        <li>4.2 <a href="tr23-11.html#Algorithms">Algorithms and Character Properties</a></li>
+        <li>4.3 <a href="tr23-11.html#Overriding">Overriding Properties and Higher-level 
+          Protocols</a></li>
+      </ul>
+    </li>
+    <li><a href="tr23-11.html#Maintenance">Updating Character Properties and Extending the 
+      Standard</a>
+      <ul class="toc">
+        <li>5.1 <a href="tr23-11.html#Updating">Updating Properties</a></li>
+        <li>5.2 <a href="tr23-11.html#Guarantees">Stability Guarantees</a></li>             
+        <li>5.3 <a href="tr23-11.html#Consistency">Consistency of Properties</a></li>
+        <li>5.4 <a href="tr23-11.html#Provisional">Provisional Properties</a></li>
+        <li>5.5 <a href="tr23-11.html#Unmaintained">Stabilized Properties</a></li>
+      </ul>
+    </li>
+    <li><a href="tr23-11.html#SpecialValues">Special Property Values</a>
+      <ul class="toc">
+        <li>6.1 <a href="tr23-11.html#NA">Not Applicable Value</a> </li>
+        <li>6.2 <a href="tr23-11.html#Default">Default Values</a></li>
+        <li>6.3 <a href="tr23-11.html#Preliminary">Preliminary Property Assignments</a></li>
+      </ul>
+    </li>
+    </ol>
+    <ul class="toc">
+    <li><a href="tr23-11.html#References">References</a></li>
+    <li><a href="tr23-11.html#Acknowledgements">Acknowledgements</a></li>
+    <li><a href="tr23-11.html#Modifications">Modifications</a></li>
+  </ul>
+  <hr>
+  <h2>1. <a name="Scope" href="tr23-11.html#Scope">Scope</a></h2>
+  <p>This report discusses of common aspects of character properties.   
+  This description of the Unicode character property model is not intended to  
+  supersede the normative information on  properties in The Unicode  
+  Standard [<a href="tr23-11.html#Unicode">Unicode</a>], nor the existing body  
+  of technical reports and documentation files in the Unicode Character  
+  Database [<a href="tr23-11.html#UCDDoc">UCDDoc</a>] that provide detailed descriptions for   
+  particular character properties. Instead it presents a general overview and   
+  typology of character properties and property values.</p>  
+   
+  <p>This report specifically covers formal <b>character properties</b>, which                                          
+  are those attributes of characters specified according to the                                          
+  definitions set forth in this report. Such formal character properties are only a subset of character properties in the generic sense, and they further subdivide into those properties defined in the Unicode Standard or Unicode Character Database, and those defined by related standards.</p>                                         
+  <h2>2. <a name="Overview" href="tr23-11.html#Overview">Overview</a></h2>                                         
+  <p>At its most basic, a character  
+  property relates a character to a value. At its most  
+  general, a property can be considered a function that maps from code points to 
+	specific  
+  property values.</p>                               
+  <h3>2.1 <a name="Origin" href="tr23-11.html#Origin">Origin of Character Properties</a></h3>
+  <p>The Unicode Standard views character semantics as inherent to the                                          
+  definition of a character, and conformant processes are required to take these                                          
+  into account when interpreting characters.&nbsp;</p>                                         
+  <blockquote class="tus">
+    <p><i>D3 Character semantics:</i> The semantics of a character are                                          
+    determined by its identity, normative properties, and behavior.</p>                                    
+  </blockquote>
+  <p>The assignment of character semantics in the Unicode Standard is based on                                          
+  character behavior. Other character set standards leave it to the                                          
+  implementer, or to unrelated secondary standards, to assign character                                          
+  semantics to characters. In contrast, the Unicode Standard supplies a                                          
+  rich set of character attributes, called properties, for each character                                          
+  contained in it. Many properties are specified in relation to                                          
+  processes or algorithms that interpret them, in order to implement the                                          
+  character behavior.</p>                                         
+  <h3>2.2 <a name="Context" href="tr23-11.html#Context">Character Behavior in Context</a></h3>
+  <p>The interpretation of some properties (such as whether a character is a 
+  digit or not) is  
+  largely independent of context, whereas the interpretation of others (such as  
+  directionality) is applicable to a character sequence as a whole, rather than  
+  to the individual characters that compose the sequence.</p> 
+  <p>Other examples that require context include title casing, and the classification of neutrals  
+  in script assignments. The line breaking rules 
+  of <i><a href="../tr14/index.html">UAX#14  
+  Unicode Line Breaking Algorithm</a> 
+  </i>[<a href="tr23-11.html#LineBreak">LineBreak</a>]  
+  involve character pairs and triples, and in certain cases, longer sequences.  
+  The glyph(s) defined by a combining character sequence are the result of  
+  contextual analysis in the display shaping engine. Isolated character  
+  properties typically only tell part of the story.</p> 
+  <p>In some cases, the expected character behavior depends on external context,  
+  such as the type and nature of the document, the language of the text, or the  
+  cultural expectations of the user. Properties modeling such behaviors  
+  may be specified in separate standards, as is the case for   
+  the <i><a href="../tr10/index.html">UTS#10 Unicode Collation Algorithm</a></i>  
+  [<a href="tr23-11.html#UCA">UCA</a>]. Where a reasonably generic set of property values   
+  can be assigned, for example for [<a href="tr23-11.html#LineBreak">LineBreak</a>], such properties may  
+  be defined as part of [<a href="tr23-11.html#Unicode">Unicode</a>]. 
+	Such properties and any algorithms related to them define useful default 
+	behavior, which can be further customized or tailored to meet more specific 
+	requirements.</p>  
+  <h3>2.3 <a name="Relation" href="tr23-11.html#Relation">Relation of Character Properties to Algorithms</a></h3>
+  <p>When modeling character behavior with computer processes, formal character 
+  properties are assigned to achieve the expected results. Such 
+  modeling depends heavily on the algorithms used to produce these results. In some cases, a given character 
+  property is specified in close conjunction with a detailed specification of an 
+  algorithm. In other cases, algorithms are implied but not specified, or there 
+  are several algorithms that can make use of the same general character property. 
+  The last case may require occasional implementation-specific adjustments in character property 
+  assignment to make all algorithms work correctly. This can usually be achieved 
+  by overriding specific properties for specific algorithms. (See also
+	<a href="tr23-11.html#Overriding">Section 4.3</a> &quot;Overriding Properties via Higher-level 
+	Protocols&quot;)</p>
+  <p>When assigning character properties for use with a given algorithm, it may                                          
+  be tempting to assign somewhat arbitrary values to some characters, as long as                                          
+  the algorithm happens to produce the expected results.Proceeding in                                          
+  this way hides the nature of the character and limits the re-use of character                                          
+  properties by related processes. Therefore, instead of tweaking the properties                                          
+  to simply make a particular algorithm easier, the Unicode Standard pays                                          
+  careful attention to the essential underlying linguistic identity of the                                          
+  character. However, not all aspects of a character&#x2019;s identity are relevant in                                          
+  all circumstances, and some characters can be used in many different ways,                                          
+  depending on context or circumstance. This means the formal character                                          
+  properties alone are not sufficient to describe the complete range of                                          
+  desirable or acceptable character behaviors.</p>                                         
+  <blockquote>
+  <p><b>Note:</b> In some cases, the relevant algorithm is not defined in the 
+  Unicode standard. For example, the algorithm that converts strings of digits into 
+  numerical values is not defined in the Unicode Standard, but 
+  implementations will nevertheless refer to the numeric_value property.</p>                          
+  </blockquote>
+  <h3>2.4 <a name="CodePointProperties" href="tr23-11.html#CodePointProperties">Code Point And Abstract Character Properties</a></h3>
+	<p>Code point properties are properties of code points per se: in 
+	a character encoding standard these are independent of any assignment of actual 
+	abstract characters to those code points. In most character encoding standards, these are 
+	trivial, but in the Unicode Standard they are not. </p>
+	<p>Examples of code point properties include:
+	</p>
+	<ul>
+		<li>Code point XXX is a surrogate code point.</li>
+		<li>Code point XXX is a private use code point.</li>
+		<li>Code point XXX is a reserved code point.</li>
+		<li>Code point XXX is reserved for encoding format control characters.</li>
+		<li>Code point XXX is earmarked for encoding a RTL script.</li>
+		<li>Code point XXX is a Pattern_Syntax code point.</li>
+		<li>Code point XXX is a Pattern_Whitespace code point.</li>
+		<li>Code point XXX is located on Plane 1.</li>
+	</ul>
+	<p>These statements remain true of a code point whether or not there is a 
+	particular abstract character assigned to them.
+  For example, they track status of the code points:
+	whether any abstract character is assigned to them or can be assigned to them, and so on. 
+	Essentially, whenever code points are designated or ranges are reserved in 
+	some way, code point properties are assigned.</p>
+	<p>Character properties are those properties that abstract 
+	characters have independent of any consideration of their encoding.</p>
+	<p>Examples of character properties, not limited to formal properties, include:</p>
+	<ul>
+		<li>G is an alphabetic character.</li>
+		<li>G is in the Latin script.</li>
+    <li>G is an uppercase letter.</li>
+		<li>G is not used in hexadecimal expressions.</li>
+		<li>G collates after F in the English alphabet.</li>
+		<li>G was putatively invented by Spurius Carvilus Ruga ca. 300.</li>
+		<li>G commonly represents the velar voiced stop in orthographies.</li>
+		<li>G is not a punctuation character.</li>
+		<li>G denotes giga in the SI system of nomenclature.</li>
+		<li>G has no diacritic.</li>
+		<li>G is a base character.</li>
+		<li>G is not a combining character.</li>
+	</ul>
+	<p>By virtue of encoding the abstract character LATIN CAPITAL LETTER G 
+	at the code point U+0047, this universe of character properties, some known 
+	and obvious, others obscure or even undiscovered, are associated with that code point. </p>
+	<p>Some of those character properties are generic and systematic 
+	enough to be useful or even necessary in the implementation of general text processing algorithms 
+	— those are the ones that the Unicode Standard formalizes as properties in the 
+	Unicode Character Database. </p>
+	<p>General text processing algorithms and the 
+	programming APIs through which they are accessed, must be prepared to deal 
+	with any code point, even one that is unassigned to any characters at the 
+	time the implementation was created. As a result, they nearly always need to 
+	properly handle each and every code point for any character property, even if they 
+	only associate a property value of &#39;unknown&#39; or &#39;inapplicable&#39; to unassigned 
+	or unsupported code points.</p>
+	<p>This requirement leads to the use of the unifying concept 
+	of <strong>Encoded Character Property</strong> in the Unicode character property model. An 
+	encoded character property combines the concept of a code point property 
+	associating ranges of code points with default values of a property, with 
+	the concept of a character property associating specific values to the 
+	assigned characters. This unified model correlates well with the reality of 
+	Unicode-based implementations, which must supply some value for each and 
+	every code point. In addition, this unified concept simplifies most of the 
+	definitions that are built on top of it, since it is no longer necessary to 
+	separately account for definitions applying to character properties vs. code 
+	point properties.</p>
+	<h3>2.5 <a name="Normative" href="tr23-11.html#Normative">Normative Properties</a></h3>
+  <p class="changedspan">In Chapter 3, <i>Conformance</i>, The Unicode Standard [<a href="tr23-11.html#Unicode">Unicode</a>] 
+  defines a <em>Normative Property</em> as "a Unicode character property used in the specification of the   standard" (definition <em>D33</em>) and provides the following explanation:</p>
+  <blockquote class="tus">
+	<p ALIGN="JUSTIFY">Specification that a character property is normative 
+	means that implementations which claim conformance to a particular version 
+	of the Unicode Standard and which make use of that particular property must 
+	follow the specifications of the standard for that property for the 
+	implementation to be conformant. For example, the Bidi_Class property is required for conformance whenever 
+	rendering text that requires bidirectional layout, such as Arabic or Hebrew.</p>
+			<p ALIGN="JUSTIFY">Whenever a normative process depends on a 
+			property in a specified way, that property is designated as 
+			normative.</p>
+			<p ALIGN="JUSTIFY">The fact that a given Unicode character property 
+			is normative does not mean that the values of the property will 
+			never change for particular characters. Corrections and extensions 
+			to the standard in the future may require minor changes to normative 
+			values, even though the Unicode Technical Committee strives to 
+			minimize such changes...</p>
+			<p ALIGN="JUSTIFY">Some of the normative Unicode algorithms depend 
+			critically on particular property values for their behavior. 
+			Normalization, for example, defines an aspect of textual 
+			interoperability that many applications rely on to be absolutely 
+			stable. As a result, some of the normative properties disallow any 
+			kind of overriding by higher-level protocols. Thus the 
+			decomposition of Unicode characters is both normative and <i>not 
+			overridable</i>; no higher-level protocol may override these values, 
+			because to do so would result in non-interoperable results for the 
+			normalization of Unicode text. Other normative properties, such as 
+			case mapping, are <i>overridable</i> by higher-level protocols, 
+			because their intent is to provide a common basis for behavior. 
+			Nevertheless, they may require tailoring for particular local cultural conventions 
+			or particular implementations.</p>
+  </blockquote>
+  <p>By making a property normative and non-overridable, the Unicode Standard guarantees that                                          
+  conformant implementations can rely on other conformant                                          
+  implementations to interpret the character in the same way. This is most                                          
+  useful for those properties where the Unicode Standard provides precise rules                                          
+  for the interpretation&nbsp;of characters based on their properties, such as the decompositions and their use by the Normalization forms [<a href="tr23-11.html#Normal">Normal</a>].</p>                                        
+  <blockquote>
+    <p><b>Note</b>: One trivial, but important example of conformant 
+	implementation is runtime access to information from the Unicode Character Database 
+	[<a href="tr23-11.html#UCD">UCD</a>]. For 
+	normative properties exposed by a conformant implementation, 
+	conformance requires the returned values to match the values defined by 
+	the Unicode Consortium.</p> 
+  </blockquote>
+  <p>For some character properties, such as the general category, the Unicode 
+	standard does not define what model of processing the property is intended to                   
+  support, nor does it specify the required consequences of a character being 
+	defined as                   
+  &quot;Letter Other&quot; as opposed to &quot;Symbol Other&quot;, for example. In the                   
+  absence of such definition, the only effect of conformance that can be 
+	rigorously tested                   
+  is whether a conformant implementation of a character property 
+	function returns the correct                   
+  value to its caller. However, many implementations use such normative 
+	properties for their own purposes and guaranteed access to this information 
+	helps interoperability.</p>                  
+    <p> For information on which properties are                   
+  normative, see the documentation                   
+  file for the Unicode Character Database [<a href="tr23-11.html#UCDDoc">UCDDoc</a>].</p>
+	<p> For more information on overriding normative properties, see
+	Section 4.3	<a href="tr23-11.html#Overriding"><i>Overriding properties via 
+	Higher-level Protocols</i></a>.</p>           
+  <h3>2.6 <a name="Informative" href="tr23-11.html#Informative">Informative Properties</a></h3>
+  <p class="changedspan">The Unicode Standard [<a href="tr23-11.html#Unicode">Unicode</a>] 
+   defines an <em>Informative Property</em> as "a Unicode character property whose 
+    values are provided for information only" (definition <em>D35</em>) and provides the following explanation:</p>           
+  <blockquote class="tus">
+    <p align="justify">A conformant implementation is free to use or change informative property values as it 
+	may require, while remaining conformant to the standard. An implementer has the option of establishing a    
+    protocol to convey that particular informative    
+    properties are being used in distinct ways. </p>
+	<p align="justify">Informative properties capture expert implementation experience. When an informative property is    
+    explicitly specified in the Unicode Character Database, its use is strongly <i>   
+    recommended</i> for implementations to encourage comparable behavior between    
+    implementations. Note that it is possible for an informative property in one    
+    version of the Unicode Standard to become a normative property in a    
+    subsequent version of the standard if its use starts to acquire conformance 
+    implications in some part of the standard. [emphasis added].</p>   
+  </blockquote>
+  <p>Properties may be informative for two main reasons:</p>
+  <ol>
+    <li>The exact nature or applicability of the property may be unclear. In some cases, the precise set of characters to which it 
+      applies may also not be well-determined.</li>
+    <li>Existing implementations show a range of behaviors for the same 
+	character, many or all of which may be equally useful choices on the part of 
+	their designers.</li>
+  </ol>
+  	<p>In some cases, properties are too tentative to be published as 
+	informative properties. In that case they may be explicitly designated as <i>
+	provisional</i>.</p>
+  <h3>2.7 <a name="Referring" href="tr23-11.html#Referring"> Referring to Properties</a></h3> 
+  <p>The Property Aliases [<a href="tr23-11.html#Alias">Alias</a>] and Property Value 
+  Aliases [<a href="tr23-11.html#ValueAlias">ValueAlias</a>] define        
+  a set of names and abbreviations, called <em>aliases</em>, that are used to refer to properties and        
+  property values. These names can be used for XML formats of data in 
+  the <a href="http://www.unicode.org/ucd/">Unicode        
+  Character Database</a> [<a href="tr23-11.html#UCD">UCD</a>], for regular-expression        
+  property tests, and other programmatic textual descriptions of Unicode data.        
+  The names themselves are not normative, except where they correspond to        
+  normative properties in the UCD. However, other standards may make normative 
+	references to both normative and informative aliases. For more information, see
+	<a href="../tr18.1">UTS 
+    #18: <i>Unicode Regular Expressions</i></a> [<a href="tr23-11.html#RegEx">RegEx</a>].</p>
+	<p>There is one abbreviated name and one long 
+    name for most of the properties. Additional aliases may be added at 
+	any time. The property <em>value</em> names are <i>not</i> unique across properties. For 
+    example, <b>AL</b> means Arabic Letter for the Bidi_Class property, and <b>AL</b> 
+    means Alpha_Left for the Combining_Class property, and <b>AL</b> means 
+    Alphabetic for the Line_Break property. In addition, some property names may 
+    be the same as some property value names. For example, <b>cc</b> means 
+    Combining_Class property, and <b>cc</b> means the General_Category property 
+    value Control. The combination of property value and property name is, 
+    however, unique. </p>
+	<p>The aliases may be translated in appropriate environments, and additional        
+  aliases may be used. The case distinctions, whitespace, and '_' in the        
+  property names are not normative. Unless a specific form is required in a        
+  particular application, all forms are equivalent. For further information see section 5.9 <a href="../tr44/index.html#Matching_Rules">Matching Rules</a> in <a href="../tr44/index.html">UAX#44 Unicode Character Database</a> [<a href="tr23-11.html#UCDDoc">UCDDoc</a>].</p>
+  <p>[<a href="tr23-11.html#Unicode">Unicode</a>] Section 3.1 gives                                  
+  a prescription for referencing properties:&nbsp;</p>                                
+  <blockquote class="tus">
+  <p><b><i> References to Unicode Character                                  
+  Properties</i></b></p>
+  <p> Properties and property values have defined names and   
+  abbreviations, such as</p>
+	<blockquote>
+		<p>Property: General_Category (gc)<br>
+		Property Value: Uppercase_Letter (Lu)</p>
+	</blockquote>
+  <p>To reference a given property and  
+  property value, these aliases are used, as in this example:</p> 
+  <blockquote>
+    <p>The property value  
+    Uppercase_Letter from the General_Category property, as defined in Unicode 7.0.0</p>
+  </blockquote>
+  <p>Then cite that version of the  
+  standard, using the standard citation format that is provided for each version  
+  of the Unicode Standard. For Unicode 7.0.0, it is:</p>
+ 
+  <blockquote>
+  <p>The Unicode Consortium. The Unicode Standard, Version 7.0.0, (Mountain View, CA: The Unicode Consortium, 2014. ISBN 978-1-936213-09-2)<br>
+      <a href="http://www.unicode.org/versions/Unicode7.0.0/">http://www.unicode.org/versions/Unicode7.0.0/</a></p>
+  </blockquote>
+  </blockquote>
+  <p>Additional <a href="http://www.unicode.org/versions/#References" title="Reference Examples">reference examples</a> are available online.</p>
+  <h3>2.8 <a name="CharacterDatabase" href="tr23-11.html#CharacterDatabase">The Unicode Character Database</a></h3>  
+<p>The Unicode Character Database [<a href="tr23-11.html#UCD">UCD</a>] is the main   
+  repository for machine-readable character properties. It consists of a    
+  number of files containing property data along with a documentation file explaining the organization of the database and the format and meaning of the    
+  property data. The main file,&nbsp;&quot;The Unicode    
+  Character Database&quot; [<a href="tr23-11.html#UCDDoc">UCDDoc</a>] explains the overall organization of the current 
+version of the UCD and tells which files contain which properties.</p>   
+<p>While the Unicode Consortium strives to minimize  
+changes to character property data, occasionally the character properties for 
+already encoded characters must be  
+updated. When this situation occurs, the relevant data files of the Unicode  
+Character Database are revised. The revised data files are posted on the Unicode  
+Web site as an update version of the standard.</p>   
+<p>A visual documentation of character code point, character name and                           
+reference glyph, together with excerpts from some of the character                           
+properties and augmented by additional annotations can be found in the Character                           
+Code [<a href="tr23-11.html#Charts">Charts</a>].</p>                            
+  <h2>3. <a name="Definitions" href="tr23-11.html#Definitions">Definitions</a></h2>
+  <dl>
+    <dt>The following presents a consistent set of definitions related to    
+      character properties. Where possible, these definitions match the formal    
+      definitions in Chapter 3, <i>Conformance,</i> in [<a href="tr23-11.html#Unicode">Unicode</a>]. 
+	In those cases, the original number of the definition is given at the    
+      end in square brackets. As much as possible, the 
+	definition numbers in this document will be retained as new definitions are 
+	added. When referring to these definitions in other  
+      contexts, it is customary to prefix the term &#39;Unicode&#39; to the defined term  
+      to indicate the context. For example 'Character Property', becomes  
+      'Unicode Character Property', etc.</dt>  
+  </dl>
+  <h3>3.1 <a name="PropertiesDefinitions" href="tr23-11.html#PropertiesDefinitions">Properties and Property Values</a></h3>
+  <dl>
+    <dt>PD1. Property</dt>
+	<dd>A named attribute of an entity in the Unicode Standard, associated with 
+	a defined set of values. [D19]</dd>
+	
+	<dt>PD2. Code Point Property</dt>        
+    <dd>A property of code points. [D20]</dd>
+	
+	<dd>A code point property defines a set of values and a mapping from each 
+      Unicode code point to one of the values of the set.</dd>
+    
+    <dt>PD3. Abstract Character Property</dt>
+	<dd>A property of abstract characters. [D21]</dd>
+	                                     
+  	<dt>PD4. Encoded character property.</dt>
+	<dd>A property of encoded characters in the Unicode Standard. [D22]<br><br>
+	An encoded character property defines a set of values and a mapping from each                                      
+      Unicode code point to one of the values of the set.</dd>
+	
+    <dd>Encoded character properties typically map a default value to any code point not                                      
+      assigned to a character.</dd>                                     
+  </dl>
+   <p><i>In the rest of this document, as in the Unicode Standard, the term 
+	&#39;character property&#39;, or the term &#39;property&#39; without qualifier includes both 
+	character and code point properties and their combined form, the encoded 
+	character properties.</i></p>
+   <dl>
+	  <dt><i>PD5. Property Value</i></dt>
+    <dd>One of the set of values associated with a property. [D23 - but there 
+	limited to &#39;encoded character property&#39;]<br>
+      <br>
+      For example, the East Asian Width [<a href="tr23-11.html#EAW">EAW</a>] 
+      property has the possible values &quot;Narrow&quot;, &quot;Neutral&quot;, 
+      &quot;Wide&quot;, &quot;Ambiguous&quot; and &quot;Unassigned&quot;. See [<a href="tr23-11.html#Alias">Alias</a>] 
+      and [<a href="tr23-11.html#ValueAlias">ValueAlias</a>] for a list of labels for 
+      properties and their values respectively.</dd>
+    </dl>
+    <h3>3.2 <a name="PropertyValueTypeDefinitions" href="tr23-11.html#PropertyValueTypeDefinitions">Types of Property Values</a></h3>      
+    <dl>
+      <dt>PD6. Explicit Property Value</dt>
+		<dd>A value for an encoded character property which is explicitly 
+		associated with a code point in one of the data files of the Unicode 
+		Character Database. [D24]</dd>
+		
+		<dt>PD7. Implicit Property Value</dt>
+		<dd>A value for an encoded character property which is given by a generic rule or by an &quot;otherwise&quot; clause in one of the data files of the Unicode Character Database. [D25]</dd>
+		
+		<dt>PD8. Default Property Value</dt>        
+    <dd>The value (or in some cases small set of values) of a property 
+      associated with unassigned code points or with encoded characters for which the 
+      property is irrelevant. [D26]</dd>
+
+    <dd><b>Note:</b> There may be more than one default value per property, with 
+	different values for different ranges, as in the Bidi property.</dd>                             
+  </dl>
+  <h3>3.3 <a name="PropertyTypeDefinitions" href="tr23-11.html#PropertyTypeDefinitions">Types of Properties</a></h3>         
+    <dl>
+    <dt>PD9. Enumerated Property</dt>                           
+    <dd>A property with a small set of 
+	named values. [D27]</dd>
+    
+    <dd>As characters are added to the Unicode Standard, the set of values may                                     
+      need to be extended in the future, but                                      
+      enumerated properties, such as the LineBreak property have a relatively fixed set of possible values.</dd>                                    
+    
+    <dt>PD10. Closed Enumeration</dt>                                    
+    <dd>An enumerated property for which the set of values is closed and will not be extended for future versions of the Unicode Standard. 
+	[D28]</dd> 
+      
+    <dd><b>Note</b>: Currently, the General_Category and Bidi_Class properties are the only closed                     
+      enumerations, other than Boolean properties.</dd>                    
+    
+    <dt>PD11. Boolean Property</dt>                                    
+    <dd>A closed enumerated property whose set of values is limited to 'true'  
+      and 'false'. [D29]</dd>
+    
+    <dd>The presence or absence of the property is the essential                                     
+      information.<br>
+	<br>
+	A Boolean property is sometimes called a &#39;single valued&#39; property since 
+	&#39;false&#39; often has the meaning of &#39;this property does not apply&#39;.</dd>
+	
+	<dt>PD12. Numeric Property</dt>
+	<dd>A numeric property is a property 
+	whose value is a number that can take on any integer, or real value.
+	[D30]</dd>
+	
+	<dd>An example is the Numeric_Value property. There is no                        
+      implied limit to the number of possible distinct values for the property,                        
+      except the limitations on representing integers or real numbers                        
+      in computers.</dd>
+	
+	<dt>PD13. String-Valued Property </dt>
+	<dd>A property whose value is a string. [D31]</dd>
+	
+	<dd>The Canonical_Decomposition 
+	property is a string-valued property.</dd>
+	
+	<dt>PD14. Catalog property</dt>
+	<dd>A property that is an 
+		enumerated property, typically unrelated to 
+		an algorithm, that may be extended 
+		in each successive version of the Unicode  
+        Standard. [D32]<br><br>
+        Examples are  the Age, Block, and Script properties.
+        Additional new values may be added to the set
+          of enumerated values each time the standard is revised.
+         Each new Unicode version adds a new value for Age.
+         When a new block is added to the standard, a corresponding new value is added
+         to the Block property. Likewise, when a new script is added, a corresponding
+         new value of the Script property is also added. 
+        </dd>
+	
+	<dt>PD15. Miscellaneous property</dt>
+	<dd>A property whose values are not Boolean, enumerated, numeric, string or 
+	catalog values.</dd>
+	
+	<dd>The Unicode character name 
+	property is a miscellaneous property.</dd>       
+  </dl>
+  <h3>3.4 <a name="ConformanceStatusDefinitions" href="tr23-11.html#ConformanceStatusDefinitions">Conformance Status of Properties</a></h3>
+  <dl>
+    <dt>PD16. Normative Property</dt>          
+    <dd>A [Unicode character] property used in the specification of the Unicode 
+	standard. [D33]</dd>
+    
+    <dd><b>Note</b>: A normative process that depends on a property in a normative and                              
+      testable way, is usually sufficient reason to designate a property                     
+      as normative. For                              
+      example, the interpretation of the <i>bidirectional class</i> is precisely                      
+      defined in [<a href="tr23-11.html#Bidi">Bidi</a>].</dd>                     
+    
+    <dd>If a process does not interpret a given character, it may remain unaware                                     
+      of its properties. However, it is recommended that processes use carefully-chosen default values for characters that they do not handle.</dd>
+      <dd>See also Section 2.5, <a href="tr23-11.html#Normative">Normative Properties</a>.</dd>
+	
+    <dt></dt>                         
+    <dt>PD17. Overridable Property</dt>                           
+    <dd>A normative property whose values may be overridden by conformant higher-level protocols. 
+	[D34]</dd>  
+    
+    <dd>See Section 4.3	<a href="tr23-11.html#Overriding"><i>Overriding properties via 
+	Higher-level Protocols</i></a>.</dd>                   
+    
+    <dt>PD18. Informative Property</dt>           
+    <dd>A [Unicode character] property whose values are provided for information 
+	only. [D35] 
+    </dd>
+    
+    <dd><b>Note</b>: Informative properties capture expert implementation      
+      experience and their use is strongly recommended by the Consortium,   
+      but there are no requirements on implementations of the Unicode   
+      Standard.</dd>
+      <dd>See also Section 2.6, <a href="tr23-11.html#Informative">Informative Properties</a>.</dd>
+      
+    
+    <dt>PD19. <a name="ProvisionalProperty"> Provisional Property</a></dt>                            
+    <dd>A [Unicode character] property whose values are unapproved and tentative,  
+      and which may be incomplete or otherwise not in a usable state. [D36]<br>
+	<br>
+	Provisional properties may be removed from future versions of the standard, 
+	without prior notice.</dd>
+      <dd>See also Section 5.4, <a href="tr23-11.html#Provisional">Provisional Properties</a>.</dd>
+  </dl>
+  <h3>3.5 <a name="PropertyClassificationDefinitions" href="tr23-11.html#PropertyClassificationDefinitions">Classification of Properties</a></h3>
+	<p><i>The following definitions do not define character or code point properties, but properties of 
+	such properties. In the definitions in this section, the 
+	term &#39;code point&#39; is used inclusively to mean code point for a code point property and character for 
+	a character property, respectively.</i></p>
+  <dl>
+    <dt>PD20. Context-dependent Property</dt>                                   
+    <dd>A property that applies to a code point in the context of a longer code point sequence.&nbsp;[D37]<br>
+      <br>
+      For example, the lower case mapping of Greek sigma depends on the 
+	surrounding characters.
+      See also PD33: <a href="tr23-11.html#ContextDependentStringFunction"><i>C</i></a><i><a href="tr23-11.html#ContextDependentStringFunction">ontext-dependent              
+      String Function</a>.</i></dd>
+    
+    <dt>PD21. Context-independent Property</dt>         
+    <dd>A property that is not context-dependent: it applies to a code point in isolation. 
+	[D38]</dd>
+    
+    <dt>PD22. Stable Transformation</dt>                                   
+    <dd>A transformation <i> T</i> on a property <i> P</i> is stable with respect to an  
+      algorithm <i>A</i>, if the result of the algorithm on the transformed property 
+      <i>A</i>(<i>T</i>(<i>P</i>)) is the same as the original result <i>A</i>(<i>P</i>) for all code points. 
+	[D39]</dd> 
+    
+    <dt>PD23. Stable Property</dt>                                    
+    <dd>A property is stable with respect to a particular algorithm or process, 
+	as long as possible changes in the assignment of property values are restricted in such a manner that the result 
+	of the algorithm on the property continues to be the same as the original result for all 
+	previously assigned code points. [D40]</dd>
+    
+    <dd>For example, while the absolute values of the canonical combining                                     
+      classes are <i>not</i> guaranteed to be the same between versions of the Unicode                                     
+      Standard, their relative values will be maintained. As a result, the
+	Canonical Combining Class, while not immutable, is a stable 
+	property with respect to the Normalization Forms as defined in [<a href="tr23-11.html#Normal">Normal</a>].</dd>                                 
+   
+   <dd><b>Note:</b> As new characters are assigned to previously unassigned code 
+	points, replacing any default values for these code points with actual 
+	property values must maintain stability.</dd>
+    
+	<dt>PD24. Fixed Property</dt>
+	<dd>A property whose values, (other than the default value) once associated 
+	with a character or other designated code 
+	point, are fixed and 
+	will not be changed, except to correct obvious or clerical errors. [D41]</dd>
+	
+   <dd>For a fixed property, any default values can be replaced without 
+	restriction by actual property values, as new characters are assigned to 
+	previously unassigned code points. Examples of fixed properties are Age or Hangul Syllable Type. </dd>
+	<dd><b>Note:</b> Designating a property as fixed does not imply stability 
+	or immutability, see below.     
+      While the age of a character, for example, is established by the version of the Unicode 
+	Standard at which it was added, errors in the published listing of the property value 
+	could be  
+      corrected. For some other  
+      properties, there are explicit stability guarantees that prohibit the 
+	correction even of such errors. See Section     
+      5.2 <i><a href="tr23-11.html#Guarantees">Stability Guarantees</a></i>.    
+      </dd>
+	
+	<dt>PD25. Immutable Property</dt>
+	<dd>
+	  <p>A fixed property that is also subject to a stability guarantee  
+	    preventing <i>any</i> change in the published listing of property values 
+	    other than assignment of new values to formerly unassigned code points. 
+	    [D42]<br>
+	    <br>
+	    An immutable property is trivially stable with respect to <i>all</i> 
+	    algorithms.       
+	    An example of an immutable property is the Unicode character  
+	    name. See Section     
+	      5.2 <i><a href="tr23-11.html#Guarantees">Stability Guarantees</a></i>.</p>
+	</dd>
+	<dt>&nbsp;</dt>
+	<dd><b>Note:</b> Because character names are values of an immutable property, misspellings  
+	  and incorrect names will <i>never</i> be corrected. Any errata will be noted in a  
+	  comment in the names list, and, where needed, an informative character 
+		name alias will be  
+	  provided.
+      </dd>
+	
+	<dt>PD26. Stabilized Property</dt>
+	<dd>A property which is neither extended to new characters, nor maintained          
+      in any other manner, but which is retained in the Unicode Character          
+      Database. [D43]</dd>
+	
+	<dd>A stabilized property is also a       
+      fixed property.</dd>
+	
+  <dt>PD27. Deprecated Property</dt>
+	<dd>A property whose use by implementations is discouraged. 
+	[D44]<br>
+	<br>
+	One of the reasons a property may be deprecated is because a different 
+	combination of properties better expresses the intended semantics. </dd>
+	
+	<dd>Where 
+	sufficiently widespread legacy support exists for the deprecated property, 
+	not all implementation may be able to discontinue the use of the deprecated 
+	property. In such a case, a deprecated property may be extended to new 
+	characters, so as to maintain it in a usable and consistent state.</dd>
+	
+	<dt>PD28. Simple Property</dt>
+	<dd>A property whose values are specified directly in the Unicode Character 
+	Database (or elsewhere in the Unicode Standard) and whose values cannot be 
+	derived from other simple properties. [D45]</dd>
+	
+	<dt>PD29. Derived Property</dt>
+	<dd>A property whose values are algorithmically derived from some 
+	combination of simple properties.&nbsp;[D46]</dd>                                 
+  </dl>
+	<dl>
+  	<dt>PD30. Property Alias</dt>
+	<dd>A unique identifier for a particular [Unicode character] property. [D47]</dd>
+	
+	<dd>The set of property aliases forms a namespace. See Section 2.7 <a href="tr23-11.html#Referring">Referring to Properties</a>.</dd>
+	<dt>PD31. Property Value Alias</dt>
+	<dd>A unique identifier for a particular enumerated value for a particular 
+	[Unicode character] property. [D48]<br>
+	<br>
+	The set of property value aliases for each property form a separate 
+	namespace. Values from different properties may have non-unique names. As a 
+	trivial example, the property value aliases for all Boolean properties are 
+	&#39;true&#39; and &#39;false&#39;.<br>
+	<br>
+	See also Section 2.7 <a href="tr23-11.html#Referring">Referring to Properties</a>.</dd>
+    </dl>
+  <h3>3.6 <a name="StringFunctionsDefinitions" href="tr23-11.html#StringFunctionsDefinitions">String Functions</a></h3>         
+
+    <p><i>None of the following definitions is found in the Unicode Standard at 
+	this point, however, they are useful in the context of discussing Unicode 
+	algorithms and their relation to properties.</i></p>
+<dl>	
+	<dt>PD32. String</dt>          
+    <dd>An ordered sequence of zero or more code units.</dd>          
+    
+    <dd>This extends the definition of <i>code unit sequence </i>[D78], to allow the           
+      empty string. In addition, unlike the definition of Unicode String [D80], a 
+	string as defined here is not limited to Unicode code units. Character mappings are common 
+	examples of properties for which the values are strings but not Unicode Strings.</dd>
+
+    <dt>PD33. Offset</dt>           
+    <dd>An offset into a string is a number from 0 to <i>n</i> where <i>n</i>  
+      is the length of the string in code units. 
+      It indicates a position that is logically between code units. 
+      An offset of 0 indicates  
+      the position before the first code unit in the string, and an offset of <i>n</i>  
+      indicates the position after the last code unit in the string.</dd> 
+    
+    <dt>PD34. Code Point Aligned Offset</dt>          
+    <dd>An offset into a string that is aligned to a code point  
+      boundary.</dd>
+    
+    <dt>PD35. String Function</dt>         
+    <dd>A string function is a function whose input is a string <i>S</i> and  
+      two offsets <i>a</i> and <i>b</i>, with <i>a</i> ≤ <i>b</i>.</dd> 
+    
+    <dt>PD36. Text Boundary Property</dt>         
+    <dd>A string function whose value is defined for 
+      a particular offset.<br>
+      <br>
+      Text boundary functions are also called segmentation functions, because they 
+	are commonly used to return segments of text between boundaries. A simple text 
+	boundary function, like IsBreak(S,a,b) minimally returns a Boolean value. 
+	However, other text boundary functions may return additional information. For example, a word-selection boundary function may return whether the 
+	previous segment contained a letter, or a linebreak function may return 
+	information on the relative priority of the break.</dd>
+  </dl>
+  <h3>3.7
+	<a name="StringFunctionClassificationDefinitions" href="tr23-11.html#StringFunctionClassificationDefinitions">Classification of String        
+      Functions</a></h3>
+  <dl>
+    <dt>PD37. Context-independent String Function</dt>   
+    <dd>Given a string <i>S</i>, and 
+      offsets <i>a</i> and <i>b</i>, a context-independent string  
+      function is any string function <i> F</i> for which <i>F</i>(<i>S,a,b</i>) 
+      is independent of the content of <i>S </i>before <i>a</i> and after <i>b</i>.<br>
+      <br>
+      In other words, the input to a context-independent function is fully  
+      defined by the code points between the given offsets.</dd>
+    
+    <dt>PD38. <a name="ContextDependentStringFunction">Context-dependent String        
+      Function</a></dt> 
+    <dd>A context-dependent string function is a 
+	string function that is not context-independent.<br>      
+      <br>
+      In other words, the input to a context-dependent string function requires            
+      additional information, such as information about the code points surrounding the code point range defined       
+      by the offsets as well as the            
+      code points in the range. Any text boundary function of the form <i>B </i>(<i>S,x,x</i>)       
+      is by&nbsp;definition context dependent.</dd>          
+    
+    <dt>PD39. String Transform</dt>
+	<dd>A string-valued string function.</dd>
+	
+	<dt>PD40. Idempotent String Function (Folding)</dt>
+	<dd>A string transform <i>F</i>, with the property that repeated   
+      applications of the same function <i>F</i> produce the same output: <i>F</i>(<i>F</i>(<i>S</i>)) = 
+      <i>F</i>(<i>S</i>)   
+      for all input strings<i> S</i>.</dd>
+	
+	<dd>Such a string function is also called a 
+	folding.</dd>
+	
+    <dd>A folding establishes an equivalence relation, 
+	whereby X ≡ Y if and only if F(X) = F(Y). This equivalence relation 
+	partitions the set of all strings into the set of equivalence classes for 
+	the relation. Conversely, any partition of strings can be used to generate a 
+	folding, by choosing one element of each partition to be the &quot;target member&quot; 
+	that the members of that partition map to.
+	<p>The notation toX(s) may be used for the 
+	folding, and isX(s) for the corresponding binary function, defined such that 
+	isX(s) if and only if toX(s) = s. For example, toNFC() is the folding that 
+	converts to NFC format, while isNFC() is the test for whether a string is in 
+	that format. </dd>
+	
+	<dd>A well known example of a 
+	folding function is case folding. For case folding, the equivalence class 
+	consists of all case variations, including upper, lower, title case and 
+	mixed case. In the case of Unicode case folding, the target member is chosen 
+	to be the lowercase character.</dd>
+	
+	<dd>Folding functions may be context 
+	dependent. Normalization is an   
+      example of a context dependent folding. </dd>  
+    
+    <dt>PD41. Code Point Count        
+      Preserving String Function</dt>        
+    <dd>A string function whose result is a string containing the same number of  
+      code <i>points</i> as its input, is a count preserving string  
+      function.</dd>
+    
+    <dt>PD42. Buffer Length        
+      Preserving String Function</dt>         
+    <dd>A string function whose result is a string containing the same number of   
+      code <i>units</i> as its input, is a buffer length preserving string function.</dd>  
+  </dl>
+  <h3>3.8 <a name="OtherDefinitions" href="tr23-11.html#OtherDefinitions">Other Definitions</a></h3> 
+  <dl>
+    <dt>PD43. Higher-level Protocol</dt>                                
+    <dd>Any agreement on the interpretation of Unicode characters that extends  
+    beyond the scope of the Unicode Standard. [D16]</dd>
+  </dl>
+  <h2>4. <a name="Conformance" href="tr23-11.html#Conformance">Conformance-related Considerations</a></h2> 
+  <p>This technical report does not define conformance requirements, but the  
+  following subsections discuss and summarize the conformance requirements  
+  related to character properties stated in the Unicode Standard. Where applicable, the number of the corresponding conformance clause or definition is given in square brackets.</p> 
+  <h3>4.1 <a name="Requirements" href="tr23-11.html#Requirements">Conformance Requirements</a></h3>
+  <p>In Chapter 3, Conformance, The Unicode Standard [Unicode] states<i> </i>that<i>                              
+  &quot;A process shall interpret a coded character sequence according to 
+  the character</i> <i>semantics established by this standard, if that process                              
+  does interpret that coded character sequence.&quot;</i> [C4] The                              
+  semantics of a character are established by taking its coded representation,                              
+  character name and representative glyph in context and are further defined by                              
+  its normative properties and behavior. Neither character name nor                              
+  representative glyphs can be relied upon absolutely; a character may have a                              
+  broader range of use than the most literal interpretation of its character                              
+  name, and the representative glyph is only indicative of one of a range of                              
+  typical glyphs representing the same character.</p>                             
+  <h3>4.2 <a name="Algorithms" href="tr23-11.html#Algorithms">Algorithms and Character Properties</a></h3>
+	<p>Unicode algorithms are specified 
+	as an idealized series of steps (rules) performed on an input of character 
+	codes and their associated properties. [<a href="tr23-11.html#Unicode">Unicode</a>] states:</p>
+	<blockquote class="tus">
+		<ul>
+			<li>An implementation claiming conformance to a Unicode algorithm 
+			need only guarantee
+			that it produces the same results as those specified in the logical 
+			description of
+			the process; it is not required to follow the actual described 
+			procedure in detail. This
+			allows room for alternative strategies and optimizations in 
+			implementation. See [C18].</li>
+		</ul>
+	</blockquote>
+	<p>As long as the same results are 
+	achieved, the implementation is also not required to use the actual 
+	properties published in the [<a href="tr23-11.html#UCD">UCD</a>].
+	<i>Overriding</i> 
+	a property value therefore does not necessarily imply an actual change in 
+	property assignments, merely that the conformant implementation of an 
+	algorithm now produces the same results as if the property values had been 
+	changed in the description of the ideal algorithm.</p>
+  <h3>4.3 <a name="Overriding" href="tr23-11.html#Overriding">Overriding Properties via 
+	Higher-level Protocols</a></h3>
+  <p>In discussing 
+	character semantics, the Unicode Standard [<a href="tr23-11.html#Unicode">Unicode</a>] 
+	makes this statement about overriding   
+  properties and character behavior:</p>
+    <blockquote class="tus">
+  <p>Some normative behavior is default behavior; this behavior can be 
+  overridden by higher-level protocols. However, in the absence of such 
+  protocols, the behavior must be observed so as to follow the character 
+  semantics. See [D3].</p>
+  </blockquote>
+	<p>Overrides by a higher-level 
+	protocol can conceptually take many forms, including, but not limited to:</p>
+	<ul>
+		<li>providing artificial context for an algorithm 
+		that defines a 
+		context-dependent string function</li>
+	<li>applying the algorithm on a substring</li>
+		<li>emulating the effect of 
+		format control characters in markup</li>
+		<li>reassigning a different 
+		property value to a character during processing or rendering</li>
+		<li>changing the result of a 
+		string function for particular inputs</li>
+</ul>
+	<p>Where overrides involve normative 
+	properties, specific restrictions apply, for example:</p>
+	<blockquote class="tus">
+		<p>• The character combination properties and the canonical ordering 
+  behavior cannot be overridden by higher-level protocols. See [D3].</p>
+	</blockquote>
+	<p>For additional examples of higher-level protocols as well as restrictions on them see section 4.3 in <a href="../tr9/index.html">
+	UAX #9: <i>Unicode Bidirectional 
+  Algorithm</i></a> [<a href="tr23-11.html#Bidi">Bidi</a>]. 
+	There are some normative properties that are fully overridable, for example 
+	General Category.</p>
+	<p>On the other hand, any and all informative properties may be overridden. 
+	However, if doing so changes the result of a Unicode Algorithm, any 
+	implementation wishing to conform to that algorithm 
+	must indicate that overrides have been applied.</p>
+	<h2>5. <a name="Maintenance" href="tr23-11.html#Maintenance">Updating Properties and Extending the Standard</a></h2>
+  <h3>5.1 <a name="Updating" href="tr23-11.html#Updating">Updating Properties</a></h3>
+  <p>Updates to properties the Unicode Character Database can be required for three reasons:</p>
+  <ol>
+    <li>To cover new characters added to the Unicode Standard</li>
+    <li>To add new properties</li>
+    <li>To change the assigned values for a property for some characters</li>
+  </ol>
+  <p>While the Unicode Consortium endeavors to keep the values of all character                           
+      properties as stable as possible, some circumstances may arise that                           
+      require changing them. Changing a character&#39;s property assignment may 
+	impact existing                           
+  implementations and is therefore done judiciously and with                           
+  great care, only when there is no better alternative.</p>                          
+      <p>In particular, as Unicode encodes less well-documented scripts, such as 
+		those for minority languages, the exact  
+      character properties and behavior may not be known when the script  
+      is first encoded. The properties for such characters are 
+		expected to be changed as information becomes available.</p>
+      <p>As 
+		implementation experience grows, it may become necessary to readjust property values. As much as possible, such readjustments are compatible 
+		with established practice. Occasionally, a character property is 
+		changed to prevent incorrect generalizations of a character&#39;s use based on its nominal property values. For example, U+200B 
+		ZERO WIDTH SPACE was originally classified as a space character (General 
+		Category=Zs), but is now classified as a Formal Control (gc=Cf) to 
+		distinguish this line break control from space characters.</p>
+    <p>In other cases, there may have been unintentional mistakes in the 
+      original information that require corrections.</p>
+	<p>The [<a href="tr23-11.html#UTC">UTC</a>] 
+	carefully weighs the costs of a change against the benefit of the correction. In 
+	addition, all updates to properties 
+      are subject to the stability guarantees described in the next section.</p>
+  <h3>5.2 <a name="Guarantees" href="tr23-11.html#Guarantees">Stability Guarantees</a></h3>
+  <p>Unicode guarantees the stability of character assignments; 
+  that is, the <i>identity</i> of a character encoded at a given location will 
+  remain the same. Once a character is encoded, its properties may still 
+  be changed, but <i>not</i> in such a way as to change  
+      the fundamental identity of the character.</p> 
+  <p>For example, the representative glyph for                      
+      U+0041 &quot;A&quot; could not be changed to &quot;B&quot;; the general                      
+      category for U+0041 &quot;A&quot; could not be changed to Ll <i>(lowercase                      
+      letter);</i> and the decomposition mapping for U+00C1 (Á) could not be                      
+      changed to &lt;U+0042, U+0301&gt; (B, ´).</p>                     
+  <p>In addition, for some properties, one or more of the following aspects are 
+	guaranteed to be invariant:</p>
+  <ul>
+    <li>&nbsp;stability of assignment&nbsp;</li>                            
+    <li>&nbsp;stability of result when applying the property</li>                           
+    <li>&nbsp;stability of set of values for a property</li>                            
+    <li>&nbsp;stability of relation to another property</li>                            
+    <li>&nbsp;stability of file formats</li>                            
+  </ul>
+  <p>For the most up-to-date   
+  specification of all stability guarantees in effect see the 
+  Unicode Character Encoding Stability   
+  Policy [<a href="tr23-11.html#Stability">Stability</a>]. Note that the status of a property
+  as normative does not imply a stability guarantee.</p> 
+  <h4>5.2.1 <a name="StabilityofAssignment" href="tr23-11.html#StabilityofAssignment">Stability of Assignment</a></h4> 
+  <p>Stability of assignment is the characteristic of an <i>immutable</i> property. For 
+  example, once a character is encoded, its code point and name are   
+      immutable properties. An immutable property
+  allows software and documents to refer to its values without needing to track 
+  future updates to the Standard. One side effect of an immutable property is 
+  that errors in property values cannot be fixed. For example, mistakes in naming are 
+	annotated in the 
+	Unicode character names list in a note or by using an   
+      alias, but the formal name remains unchanged, even in cases of clear-cut 
+  typographical errors.</p> 
+  <p>Because Code_Point is an immutable property, if a character is ever 
+  found to be unnecessary, or a mistaken duplicate of an existing 
+  character, it will not be removed. Instead, it can be given an additional 
+  property, <i>deprecated</i>, and its use strongly discouraged. 
+  However, the interpretation of all existing documents containing 
+  the character remains the same.</p> 
+<h4>5.2.2 <a name="StabilityofResult" href="tr23-11.html#StabilityofResult">Stability of Result when Applying the Property</a></h4> 
+      <p>Stability of result is the characteristic of a <i>stable</i> property. For 
+      example, once a character is encoded, its canonical combining class and  
+      decomposition (canonical or compatibility) are stable with respect to  
+      normalization. Stability with respect to normalization is defined in such 
+      a way that if a string contains only characters from a given version of the  
+      Unicode Standard (say Unicode 3.2), and it is put into a normalized form  
+      in accordance with that version of Unicode, then it will be in normalized  
+      form when normalized according to any future version of Unicode.</p> 
+  <p>However, unlike character code and 
+	character name, some properties that are guaranteed to be stable may be corrected in 
+  <i>   
+  exceptional</i> circumstances that are clearly defined by the Unicode 
+  Character Encoding Stability Policy [<a href="tr23-11.html#Stability">Stability</a>]. In addition to other 
+	requirements, the correction must be of an obvious mistake, such as a 
+	typographical error, and any alternative would have to violate the stability of the 
+	identity of the character in question. Allowing such carefully restricted exceptions obviates the need for    
+  encoding duplicate characters simply to correct clerical or other clear-cut    
+  errors in property assignments.</p>   
+<h4>5.2.3 <a name="StabilityofSett" href="tr23-11.html#StabilityofSett">Stability of Set of Values for a Property</a></h4>  
+  <p>For most properties, additional property values may be created and assigned to                          
+  both new and existing characters. For example additional line breaking classes                          
+  will be assigned if characters are discovered to require line breaking                          
+  behavior that cannot be expressed with the existing set of classes. For other                          
+  properties the set of values is guaranteed to be fixed, or their range is                          
+  limited. For example, the set of values for the General_Category or                          
+  Bidirectional_Class is fixed, while combining classes are limited to the values 0 to 254.</p>                       
+<h4>5.2.4 <a name="StabilityofRelation" href="tr23-11.html#StabilityofRelation">Stability of Relation to Another Property</a></h4> 
+  In many cases, once a character has a certain value for one property, it is                          
+  likely to have a particular value for a given other property. These relations                          
+  are used by the Unicode Consortium in assigning properties to new characters,                          
+  and in evaluating properties for internal consistency. In some cases, such                          
+  dependencies are explicitly guaranteed and stable.                         
+  <p>For example, all characters other than those of General Category M* have the  
+          combining class 0.</p> 
+<h4>5.2.5 <a name="StabilityofFormat" href="tr23-11.html#StabilityofFormat">Stability of File Formats</a></h4> 
+  <p>In principle, the way the property information is presented in the Unicode 
+  Character Database is independent of the way this information is defined. 
+  However, as the Unicode Standard gets updated, it becomes easier for 
+  implementations to track updates if file formats remain unchanged and other 
+  aspects of the way the data are organized can remain stable. For the majority 
+  of properties, such stability is an informal goal of the development process, 
+  but in a few cases, some aspects of the data organization are covered by 
+  formal stability guarantees.</p>
+  <p>For example, Canonical and Compatibility mappings are always in canonical order,  
+          and the resulting recursive decomposition will also be in canonical  
+          order. Canonical mappings are also always limited either to a single value or to  
+          a pair. The second character in the pair cannot itself have a  
+          canonical mapping.</p>
+  <p>As an alternative to the legacy conventions of semicolon-separated text files, the Unicode Character Database is now also available as a single XML file. See <a href="../tr42/index.html">UAX#42 Unicode Character Database</a> in XML [<a href="tr23-11.html#XML">XML</a>].</p> 
+  <h3>5.3 <a name="Consistency" href="tr23-11.html#Consistency">Consistency of Properties</a></h3> 
+  <p> In an ideal world, all character properties would be                         
+  perfectly self-consistent, and related properties would be consistent with                         
+  each other over the entire range of code points. However, The Unicode Standard                         
+  is the product of many compromises. It has to strike a balance between                         
+  uniformity of treatment for similar characters, and compatibility with existing                         
+  practice for characters inherited from legacy encodings. Because of this                         
+  balancing act, one can expect a certain number of anomalies in character                         
+  properties.</p>
+  <p>Sometimes it may be advantageous for an implementation to                          
+  purposefully override some of the anomalous property values, increasing the                          
+  efficiency and uniformity of algorithms—as long as the results they                          
+  produce do not conflict with those specified by the normative properties of                          
+  this standard. See Chapter 4, <i>Character Properties</i> in [<a href="tr23-11.html#Unicode">Unicode</a>] for some                          
+  examples.</p>
+  <p>Property values assigned to new                         
+  characters added to the Unicode Standard are generally defined so that related                         
+  characters are given consistent values, unless deliberate exceptions are                         
+  needed. For some properties, definite links between that property and                         
+  one or more other properties are defined. For example, for the LineBreak                         
+  property, many line break classes are defined in relation to General Category                         
+  values.</p>
+	<p>There are some properties that are interrelated 
+	or that are derived from a combination of other properties, with or without 
+	a list of explicit exceptions. When properties are assigned to newly 
+	assigned characters, or when properties are adjusted, it is necessary to 
+	take into account all existing relevant properties, any derivational 
+	relations to derived properties, and all property stability guarantees.</p>
+	
+  <h3>5.4 <a name="Provisional" href="tr23-11.html#Provisional">Provisional Properties</a></h3>
+  
+  <p>Some of the information provided about characters in the Unicode Character 
+  Database constitutes provisional data. Provisional property data may capture 
+  partial or preliminary information. Such data may contain errors or omissions, 
+  or otherwise not be ready for systematic use; however, provisional property 
+  data are included in the data files for distribution partly to encourage 
+  review and improvement of the information. For example, a number of the tags 
+  in the Unihan database provide provisional property values of various sorts 
+  about Han characters.</p>
+  
+  <h3>5.5 <a name="Unmaintained" href="tr23-11.html#Unmaintained">Stabilized Properties</a></h3>
+  
+  <p> Occasionally, as the    
+  standard matures, and new characters, properties or algorithms are defined, the    
+  information presented in an existing property may be better represented via other    
+  properties, or it may no longer make sense to extend the property to new characters.    
+  Such a property may then no longer be maintained in future versions of the    
+  Unicode Standard. In that case, it will be designated as <i>stabilized</i>. For    
+  backwards compatibility, a stabilized property will remain part of the Unicode    
+  Character database, but will not be updated or corrected.</p>   
+  <p>An example of a stabilized property is Hyphen.</p>
+  
+  <h2>6. <a name="SpecialValues" href="tr23-11.html#SpecialValues">Special Property Values</a></h2>
+  
+  <h3>6.1 <a name="NA" href="tr23-11.html#NA">Not Applicable Value</a></h3>
+  <p>Limited properties apply to only a subset of characters. Where these 
+  properties are implemented as a partition of the Unicode code space, the characters to which the property does not apply are given a special value denoting that 
+  the property does not apply. The &quot;not applicable&quot; value may be the explicit 
+	value &quot;NA&quot; or, for some properties, take other values such as &quot;XX&quot;.</p>
+  <h3>6.2 <a name="Default" href="tr23-11.html#Default">Default Values</a></h3>
+  <p>Implementations often need specific properties for <i>all</i> code points, 
+  including those that are unassigned. To meet this need, the Unicode standard 
+  assigns default properties to ranges of unassigned code points.</p>
+  <p>All implementations of the Unicode Standard should endeavor to handle 
+  additions to the character repertoire gracefully. In some cases this may 
+  require that an implementation attempts to 'anticipate' likely property values 
+  for code points for which characters have not yet been defined, but where 
+  surrounding characters exist that make it probable that similar characters 
+  will be assigned to the code point in question.</p>
+  <p>There are three strategies:</p>
+  <ol>
+    <li>Rely on the recommendation from the Unicode Consortium. For example, for 
+      the Bidirectional Class, the Unicode Consortium has published recommended 
+      default values for all code points. For details of these recommendations
+      for various properties see [<a href="tr23-11.html#UCDDoc">UCDDoc</a>].</li>
+    <li>Treat the unassigned areas of a given character block as if they had 
+      property values common to other characters of the block. A variation of 
+      this scheme bridges small gaps in the allocation inside a block by using 
+      the property values for the characters bracketing the hole.</li>
+    <li>Give an unassigned <i>code point </i>an implementation defined default property 
+      that will result in graceful if not completely correct behavior, if 
+      an encoded characters is later assigned at that code point.</li>
+  </ol>
+  <p>Each of these strategies has advantages and drawbacks, and none can  
+  guarantee that the behavior of an implementation that is conformant to a prior  
+  version of the Unicode Standard will support characters added in a later  
+  version of the Unicode Standard in precisely the same way as an implementation  
+  that is conformant to the later version. The most that can be hoped for, is  
+  that the earlier implementation will behave more gracefully in such circumstances.</p> 
+  <p>In principle, default values are temporary: they are superseded by final assignments 
+  once characters are assigned to a given code point.</p>
+  <p>For noncharacter code points, a character property function would return the same 
+  value as the default value for unassigned characters.</p>
+  <h3>6.3 <a name="Preliminary" href="tr23-11.html#Preliminary">Preliminary Property Assignments</a></h3> 
+  <p>Sometimes, a determination and assignment of property values can be made,  
+  but the information on which it was based may be incomplete or preliminary. In  
+  such cases, the property value may be changed when better information becomes  
+  available. Currently, there is no machine readable way to provide information  
+  about the confidence of a property assignment; however, the text of the  
+  Standard or a Technical Report defining the property may provide general  
+  indications of preliminary status of property assignments where they are  
+  known.</p>
+  <p>This is distinct from <a href="tr23-11.html#ProvisionalProperty">provisional properties</a>, 
+  where the entire property is preliminary.</p>
+  <h2><a name="References" href="tr23-11.html#References">References</a></h2>
+  <table class="nb" cellspacing="6">
+    <tr>
+     <td class="nb">[<a name="Alias">Alias</a>]</td>
+     <td class="nb">Property Aliases<br> 
+     <a href="http://www.unicode.org/Public/UCD/latest/ucd/PropertyAliases.txt">http://www.unicode.org/unicode/Public/UCD/latest/ucd/PropertyAliases.txt</a></td>
+    </tr>
+    <tr>
+      <td class="nb" vAlign="top" width="1">[<a name="Bidi">Bidi</a>]</td>
+      <td class="nb" vAlign="top">Unicode 
+        Standard Annex #9: <i>The Unicode Bidirectional Algorithm<br>
+		</i> <a href="../tr9/index.html">http://www.unicode.org/reports/tr9/</a></td>
+    </tr>
+    <tr>
+      <td class="nb" vAlign="top" width="1">[<a name="Charts">Charts</a>]</td>
+      <td class="nb" vAlign="top">The online code charts can be found at <a href="http://www.unicode.org/charts/">http://www.unicode.org/charts/</a> 
+        An index to characters names with links to the corresponding chart is 
+        found at <a href="http://www.unicode.org/charts/charindex.html">http://www.unicode.org/charts/charindex.html</a></td>
+    </tr>
+    <tr>
+      <td class="nb" vAlign="top" width="1">[<a name="EAW">EAW</a>]</td>
+      <td class="nb" vAlign="top">Unicode Standard Annex #11:<i> East Asian 
+		Width<br>
+        </i><a href="../tr11/index.html">http://www.unicode.org/reports/tr11/</a></td>
+    </tr>
+    <tr>
+      <td class="nb" vAlign="top" width="1">[<a name="FAQ">FAQ</a>]</td>
+      <td class="nb" vAlign="top">Unicode Frequently Asked Questions<br>
+        <a href="http://www.unicode.org/faq/">http://www.unicode.org/faq/<br>
+        </a><i>For answers to common questions on technical issues.</i></td>
+    </tr>
+    <tr>
+      <td class="nb" vAlign="top" width="1">[<a name="Glossary">Glossary</a>]</td>
+      <td class="nb" vAlign="top">Unicode Glossary<a href="http://www.unicode.org/glossary/"><br>
+        http://www.unicode.org/glossary/<br>
+        </a><i>For explanations of terminology used in this and other documents.</i></td>
+    </tr>
+    <tr>
+      <td class="nb" vAlign="top" width="1">[<a name="LineBreak">LineBreak</a>]</td>
+      <td class="nb" vAlign="top">Unicode Standard Annex #14:<i> Unicode Line Breaking 
+		Algorithm<br>
+        </i><a href="../tr14/index.html">http://www.unicode.org/reports/tr14/</a></td>
+    </tr>
+    <tr>
+     <td class="nb">[<a name="Normal">Normal</a>]</td>
+     <td class="nb">Unicode Standard Annex #15: <i>Unicode Normalization Forms</i><br>
+     <a href="../tr15.1">http://www.unicode.org/unicode/reports/tr15/</a></td>
+    </tr>
+    <tr>
+     <td class="nb">[<a name="RegEx">RegEx</a>]</td>
+     <td class="nb">Unicode Technical Standard #18: <i>Unicode Regular Expressions</i><br>
+		<a href="../tr18.1">http://www.unicode.org/unicode/reports/tr18/</a></td>
+    </tr>
+    <tr>
+      <td class="nb" vAlign="top" width="1">[<a name="Stability">Stability</a>]</td>
+      <td class="nb" vAlign="top">Unicode Character Encoding Stability Policy<br>
+        <a href="http://www.unicode.org/policies/stability_policy.html">
+        http://www.unicode.org/policies/stability_policy.html</a></td>
+    </tr>
+     <tr>
+      <td class="nb" vAlign="top" width="1">[<a name="UCA">UCA</a>]</td>
+      <td class="nb" vAlign="top">Unicode Technical Standard #10: <i>Unicode Collation Algorithm</i><br> 
+        <a href="../tr10/index.html">http://www.unicode.org/reports/tr10/</a></td>
+    </tr>
+   <tr>
+      <td class="nb" vAlign="top" width="1">[<a name="UCD">UCD</a>]</td>
+      <td class="nb" vAlign="top">About the Unicode Character Database<br>
+        <a href="http://www.unicode.org/ucd/">http://www.unicode.org/ucd/<br>
+        </a><i>For an overview of the Unicode Character Database</i></td>
+    </tr>
+   <tr>
+      <td class="nb" vAlign="top" width="1">[<a name="UCDDoc">UCDDoc</a>]</td>
+      <td class="nb" vAlign="top">Unicode Standard Annex #44: <i>Unicode Character Database</i><br>  
+        <a href="../tr44/index.html">
+        http://www.unicode.org/reports/tr44/</a><br>
+        <i>For documentation of the contents of the Unicode Character Database and its associated files</i></td> 
+    </tr>
+    <tr>
+      <td class="nb" vAlign="top" width="1">[<a name="Unicode">Unicode</a>]</td>
+      <td class="nb" vAlign="top">The Unicode Standard<i><br>
+		For the latest version see:</i>
+		<a href="http://www.unicode.org/versions/latest/">
+		http://www.unicode.org/versions/latest/</a><br>
+		<i>For Version 7.0 see:</i> The Unicode Consortium. <a href="http://www.unicode.org/versions/Unicode7.0.0/">The 
+          Unicode Standard, Version 7.0</a>. (Mountain View, CA: The Unicode Consortium, 2014. ISBN 978-1-936213-09-2).</td>
+    </tr>
+    <tr>
+      <td class="nb" vAlign="top" width="1">[<a name="Unihan">Unihan</a>]</td>
+      <td class="nb" vAlign="top">Unicode Standard Annex #38: <i>Unicode Han Database (Unihan)</i><br>
+        <a href="../tr39/index.html">
+        http://www.unicode.org/reports/tr38/</a><br>
+		<i>The database itself is available online at</i><br>
+		<a href="http://www.unicode.org/Public/UCD/latest/ucd/Unihan.zip">
+		http://www.unicode.org/Public/UCD/latest/ucd/Unihan.zip</a> (large download)</td>
+    </tr>
+    <tr>
+      <td class="nb" vAlign="top" width="1">[<a name="UTC">UTC</a>]</td>
+      <td class="nb" vAlign="top">The Unicode Technical Committee<br>
+      <i>For more 
+		information see</i> <a href="http://www.unicode.org/consortium/utc.html">
+		http://www.unicode.org/consortium/utc.html</a></td>
+    </tr>
+    <tr>
+     <td class="nb">[<a name="ValueAlias">ValueAlias</a>]</td>
+     <td class="nb">Property Value Aliases<br> 
+     <a href="http://www.unicode.org/Public/UCD/latest/ucd/PropertyValueAliases.txt">http://www.unicode.org/Public/UCD/latest/ucd/PropertyValueAliases.txt</a></td>
+    </tr>
+    <tr>
+      <td class="nb" vAlign="top" width="1">[<a name="XML">XML</a>]</td>
+      <td class="nb" vAlign="top">Unicode Standard Annex #42: <i>Unicode Character Database in XML</i><br>
+      <a href="../tr42/index.html">http://www.unicode.org/reports/tr42/</a><br>
+      <i>The XML version of the database  is available online at</i><br>
+      <a href="http://www.unicode.org/Public/UCD/latest/ucdxml/">http://www.unicode.org/Public/UCD/latest/ucdxml/</a></td>
+    </tr>
+  </table>
+  <h2><a name="Acknowledgements" href="tr23-11.html#Acknowledgements">Acknowledgements</a></h2>
+  <p>Asmus Freytag was the initial author of this report, with additional
+    content provided by Ken Whistler.</p>
+  <p>The editors wish to thank 
+  Mark Davis for his extensive 
+	contributions and insightful 
+	comments, and Dr. Julie Allen for extensive copy-editing.</p>
+	
+  <h2><a name="Modifications" href="tr23-11.html#Modifications">Modifications</a></h2>
+  <p>The following summarizes
+  modifications from the previous version of this document.</p>
+  
+  <p><b>Revision 11 [AF, KW]</b></p>
+  <ul>
+  <li>Updated references to and citations from Unicode 7.0.</li>
+  <li>Minor editing.</li>
+  </ul>
+
+  <p>Revision 10 being a 
+  proposed update, only modifications between revisions 9 and 11 are 
+  noted here.</p>
+
+  <p><b>Revision 9 [KW]</b></p>
+  
+  <ul>
+  <li>Added a note on constraints on new property additions.</li>
+  <li>Updated titles of some references. Other minor edits.</li>
+  <li>Reformatted modifications section to follow bulleted UTR style.</li>
+  <li>Dropped irrelevant early draft modification information preceding the first approved version.</li>
+  <li>Added Ken Whistler as author.</li> 
+  </ul>
+  
+	<p>Revision 8 being a 
+	proposed update, only modifications between revisions 7 and 9 are 
+	noted here.</p>
+	
+  <p><b>Revision 7 [AF]</b></p>
+  
+  <ul>
+  <li>Removed definition PD30 (Limited Property).</li> 
+  <li>Updated all definitions that correspond to definitions in Unicode 5.0.0.</li> 
+  <li>Updated all definition numbers according to 5.0.0.</li> 
+  <li>New section 2.4.</li> 
+  <li>Additional updates to the text and some other definitions.</li>
+  </ul>
+
+	<p>Revision 6 being a 
+	proposed update, only modifications between revisions 5 and 7 are 
+	noted here.</p>
+	
+  <p><b>Revision 5 [AF]</b></p>
+  <ul>
+  <li>Initial approved version of this report.</li>
+  </ul>
+
+  <hr>
+  <p><font size="-1">Copyright © 2000-2015 Unicode, Inc. All Rights Reserved. 
+	The Unicode Consortium makes no expressed or implied warranty of any kind, 
+	and assumes no liability for errors or omissions. No liability is assumed 
+	for incidental and consequential damages in connection with or arising out 
+	of the use of the information or programs contained or accompanying this 
+	technical report. The Unicode <a href="http://www.unicode.org/copyright.html">Terms of Use</a> apply.</font></p>           
+  <p><font size="-1">Unicode and the Unicode logo are trademarks of Unicode, Inc., and are  
+  registered in some jurisdictions.</font></p> 
+  </div>
+</body>
+
+</html>

@@ -1,0 +1,447 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
+
+       "http://www.w3.org/TR/REC-html40/loose.dtd"> 
+
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta http-equiv="Content-Language" content="en-us">
+<meta name="GENERATOR" content="Microsoft FrontPage 4.0">
+<meta name="ProgId" content="FrontPage.Editor.Document">
+<link rel="stylesheet" href="../../unicode/reports/reports.css" type="text/css">
+<title>UTR #24: Script Names</title>
+<style>.boundary    { background-color: #EEEEEE; color: #FF0000; border-left: 1px solid #0000FF; 
+               border-right: 1px solid #0000FF }
+</style>
+</head>
+
+<body>
+
+<table class="header" width="100%" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="icon"><a href="http://www.unicode.org"><img align="middle" alt="[Unicode]" border="0" src="../../webscripts/logo60s2.gif" width="34" height="33"></a>&nbsp;&nbsp;<a class="bar" href="http://www.unicode.org/reports">Technical 
+      Reports</a></td>
+  </tr>
+  <tr>
+    <td class="gray">&nbsp;</td>
+  </tr>
+</table>
+<div class="body">
+  <h2 align="center"><span class="old_changed">Unicode Standard Annex</span>&nbsp;#24</h2>
+  <h1 align="center">Script Names</h1>
+  <table border="1" cellspacing="2" cellpadding="2" width="100%">
+    <tr>
+      <td width="120">Version</td>
+      <td>
+        <p class="old_changed">4.0.0</p>
+      </td>
+    </tr>
+    <tr>
+      <td width="120">Authors</td>
+      <td>Mark Davis (<a href="mailto:mark.davis@us.ibm.com">mark.davis@us.ibm.com</a>)</td>
+    </tr>
+    <tr>
+      <td width="120">Date</td>
+      <td class="old_changed">2003-04-17</td>
+    </tr>
+    <tr>
+      <td width="120">This Version</td>
+      <td class="old_changed"><a href="tr24-5.html">http://www.unicode.org/reports/tr24/tr24-5.html</a></td>
+    </tr>
+    <tr>
+      <td width="120">Previous&nbsp;Version</td>
+      <td class="old_changed"><a href="tr24-4.html">http://www.unicode.org/reports/tr24/tr24-4.html</a></td>
+    </tr>
+    <tr>
+      <td width="120">Latest Version</td>
+      <td><a href="index.html">http://www.unicode.org/reports/tr24/tr24</a></td>
+    </tr>
+    <tr>
+      <td width="120">Tracking Number</td>
+      <td>
+        <p class="old_changed"><a href="tr24-5.html#TrackingNumber5">5</a></p>
+      </td>
+    </tr>
+  </table>
+  <br>
+  <h3><i>Summary</i></h3>
+  <p><i>This document provides an assignment of script names to all Unicode code 
+  points. This information is useful in mechanisms such as regular expressions, 
+  where it produces much better results than simple matches on block names.</i></p>
+  <h3><i>Status</i></h3>
+  <p class="old_changed"><i>This document has been reviewed by Unicode members 
+  and other interested parties, and has been approved by the Unicode Technical 
+  Committee as a <b>Unicode Standard Annex</b>. This is a stable document and 
+  may be used as reference material or cited as a normative reference by other 
+  specifications.</i></p>
+  <blockquote>
+    <p class="old_changed"><i><b>A Unicode Standard Annex (UAX)</b> forms an 
+    integral part of the Unicode Standard, but is published as a separate 
+    document. The Unicode Standard may require conformance to normative content 
+    in a Unicode Standard Annex, if so specified in the Conformance chapter of 
+    that version of the Unicode Standard. The version number of a UAX document 
+    corresponds to the version number of the Unicode Standard at the last point 
+    that the UAX document was updated.</i></p>
+  </blockquote>
+  <p class="old_changed"><i>Please submit corrigenda and other comments with the 
+  online reporting form [<a href="tr24-5.html#Feedback">Feedback</a>]. Related information 
+  that is useful in understanding this document is found in <a href="tr24-5.html#References">References</a>. 
+  For the latest version of the Unicode Standard see [<a href="tr24-5.html#Unicode">Unicode</a>]. 
+  For a list of current Unicode Technical Reports see [<a href="tr24-5.html#Reports">Reports</a>]. 
+  For more information about versions of the Unicode Standard, see [<a href="tr24-5.html#Versions">Versions</a>].</i></p>
+  <h3><i>Contents</i></h3>
+  <ol>
+    <li><a href="tr24-5.html#Introduction">Introduction</a></li>
+    <li><a href="tr24-5.html#Usage_Model">Usage Model</a></li>
+    <li><a href="tr24-5.html#Values">Values</a></li>
+    <li><a href="tr24-5.html#Data_File">Data File</a></li>
+  </ol>
+  <dl>
+    <dd><a href="tr24-5.html#References">References</a></dd>
+    <dd><a href="tr24-5.html#Modifications">Modifications</a></dd>
+  </dl>
+  <hr>
+  <h2><a name="Introduction">1</a> Introduction</h2>
+  <p>The <a href="http://www.unicode.org/ucd/">Unicode Character Database</a> 
+  (UCD) provides data for a mapping from Unicode characters to script names. 
+  This information is useful for mechanisms such as regular expressions, where 
+  it produces much better results than simple matches on block names. There are 
+  quite a number of problems with using block names to distinguish characters:</p>
+  <ul>
+    <li>Blocks are simply ranges, and contain code points that are unassigned</li>
+    <li>Characters from the same script may be in several different blocks</li>
+    <li>Characters from different scripts may be in the same block</li>
+  </ul>
+  <p>For more information, see <i>Character Blocks</i> in <a href="../tr18.1#Character_Blocks">UTR 
+  #18: Unicode Regular Expression Guidelines</a> [<a href="tr24-5.html#UTR18">UTR18</a>].</p>
+  <h2><a name="Usage_Model">2</a> Usage Model</h2>
+  <p>Although script names are generally much more useful than simple block 
+  names, they cannot be applied blindly. The script assignment is particularly 
+  oriented towards mechanisms such as regular expressions, and is not intended 
+  to be used for other purposes such as graphology, history, or other unrelated 
+  purposes. The definition of script names in the data file do not preclude the 
+  assignment of scripts in appropriate ways for these other purposes.</p>
+  <p>The script name data provides a mapping from each Unicode code point to 
+  either a specific script such as Cyrillic, or to one of two special values:</p>
+  <ul>
+    <li><b>Common</b> - For characters that may be used within multiple scripts, 
+      or any unassigned code points.</li>
+    <li><b>Inherited</b> - For characters that inherit their script from the 
+      preceding characters.
+      <p class="old_changed"><b>Note: </b>A non-spacing mark (a character with 
+      general category value of Mn or Me) normally inherits its properties from 
+      its base character, so that it is not separated from it in normal 
+      processing. The non-spacing marks generally have the property INHERITED to 
+      reflect this. However, in cases where the best interpretation of a 
+      non-spacing mark <i>in isolation</i> would be a specific script, then its 
+      script property value may be different from INHERITED.</p>
+      <p class="old_changed">Even so, implementations that determine the 
+      boundaries between characters of given scripts should never break between 
+      a non-spacing mark and its base character. Thus for boundary 
+      determinations and similar sorts of processing, a non-spacing mark — 
+      whatever its script value — should inherit the script value of its base 
+      character.</li>
+  </ul>
+  <p>The script names form a full partition of the code space: every code point 
+  is assigned a single script name. As new scripts are added to the standard, 
+  additional script names will be added.</p>
+  <p>In many cases, programs will override the script name based upon the 
+  context of the surrounding characters, especially for the case of <b>Common</b>. 
+  A simple heuristic is to use the script of the preceding character, which 
+  works well in many cases. However, this may not always produce optimal 
+  results: for example, in the text &quot;... gamma (γ) is ...&quot; this 
+  heuristic would cause matching parentheses to be in different scripts. Thus 
+  more sophisticated programs may use more complex heuristics.</p>
+  <p>In general, programs should only use specific script values in conjunction 
+  with both <b>Common</b> and <b>Inherited</b>. That is, to distinguish a 
+  sequence of characters appropriate for <b>Greek</b>, one would use:</p>
+  <p align="center"><code>((Greek | Common) (Inherited <span class="old_changed">| 
+  Me | Mn</span>)?)*</code></p>
+  <p align="left">That is, characters that are either in <b>Greek</b> or in <b>Common</b>, 
+  optionally followed by those in Inherited. Specific languages may commonly use 
+  multiple scripts, so for <b>Japanese</b> one might use:</p>
+  <p align="center"><code>((Hiragana | Katakana | Han | Latin | Common) 
+  (Inherited <span class="old_changed">| Me | Mn</span>)?)*</code></p>
+  <p>Given this usage model, the current data is weighted on inclusiveness: a 
+  character is in a specific script (rather than <b>Common</b> or <b>Inherited</b>) 
+  only when it is clearly not used within other scripts. As more data on 
+  individual characters is collected, characters may move from the <b>Common</b> 
+  group to a more specific script (including <b>Inherited</b>).</p>
+  <p>The script property is useful in regular expression syntax for easy 
+  specification of spans of text which consist of a single script (or mixture of 
+  scripts). However, users should be very careful to not misapply it. The script 
+  values form a full partition of the Unicode code space, but that partition 
+  does not exhaust the possibilities for useful and relevant script-like subsets 
+  of Unicode characters.</p>
+  <p>For example, a user might wish to define a regular expression to span 
+  typical mathematical expressions, but the subset of Unicode characters used in 
+  mathematics does not correspond to any particular script. Instead, it requires 
+  use of the <b>Math</b> property, other character properties, and particular 
+  subsets of Latin, Greek, and Cyrillic letters. For information on other 
+  character properties, see the <a href="http://www.unicode.org/ucd/">UCD</a>.</p>
+  <p class="old_changed">The script property values may also be useful in 
+  providing user feedback to help signal possible spoofing, where 
+  visually-similar characters (<i>confusable characters</i>) are substituted in 
+  an attempt to mislead a user. For example, a domain name such as <code>macchiato.com</code> 
+  could be spoofed with <code>macchiatο.com</code> (with some Greek characters) 
+  or <code>maссhiato.com</code> (with some Cyrillic characters). The user can 
+  be alerted to odd cases by displaying mixed scripts with different color, 
+  highlighting, or boundary marks, such as <code>macchiat<span class="boundary">ο.</span>com</code> 
+  or <code>ma<span class="boundary">сс</span>hiato.com</code>.</p>
+  <p class="old_changed">Possible spoofing is not limited to mixtures of 
+  scripts. Even in ASCII, there are confusable characters such as 0 and O, or 1 
+  and l. Thus the use of script values would need to be augmented with other 
+  information such as general category values, plus exception lists of 
+  individual characters that are not distinguished by other Unicode properties.</p>
+  <h2><a name="Values">3</a> Values</h2>
+  <p>For illustration, the following table lists some of the the Script Name 
+  values used in the data file.&nbsp;For a complete list of values, see [<a href="tr24-5.html#Scripts">Scripts</a>]. 
+  The names are not case-sensitive, and the order in which the scripts are 
+  listed here or in the data file is not significant.</p>
+  <p class="old_changed">Although Braille is not a script in the same sense that 
+  Latin or Greek is, it is given a script name in [<a href="tr24-5.html#Scripts">Scripts</a>]. 
+  This is useful because of the nature of the application of these script names, 
+  as in matching spans of similar characters in regular expressions.</p>
+  <p>In the Property Value Aliases file [<a href="tr24-5.html#PropValue">PropValue</a>], 
+  corresponding codes from <a href="http://www.evertype.com/standards/iso15924/">ISO 
+  15924: Code for the Representation of Names of Scripts</a> [<a href="tr24-5.html#ISO15924">ISO15924</a>] 
+  are provided as short names for the scripts.</p>
+  <center>
+  <table cellspacing="0" cellpadding="4" border="1">
+    <caption><b><a name="Script_Values_Table">Table 1: Script Values</a></b></caption>
+    <tbody>
+      <tr>
+        <th>Script Name</th>
+        <th>ISO 15924</th>
+      </tr>
+      <tr>
+        <td><code><i>COMMON</i></code></td>
+        <td><code><i>Zyyy</i></code></td>
+      </tr>
+      <tr>
+        <td><code><i>INHERITED</i></code></td>
+        <td><code><i>Qaai</i></code></td>
+      </tr>
+      <tr>
+        <td><code>LATIN</code></td>
+        <td><code>Latn (Latf, Latg)</code></td>
+      </tr>
+      <tr>
+        <td><code>CYRILLIC</code></td>
+        <td><code>Cyrl (Cyrs)</code></td>
+      </tr>
+      <tr>
+        <td><code>ARMENIAN</code></td>
+        <td><code>Armn</code></td>
+      </tr>
+      <tr>
+        <td><code>HEBREW</code></td>
+        <td><code>Hebr</code></td>
+      </tr>
+      <tr>
+        <td><code>ARABIC</code></td>
+        <td><code>Arab</code></td>
+      </tr>
+      <tr>
+        <td><code>SYRIAC</code></td>
+        <td><code>Syrc (Syrj, Syrn, Syre)</code></td>
+      </tr>
+      <tr>
+        <td><code>GEORGIAN</code></td>
+        <td><code>Geor (Geon, Geoa)</code></td>
+      </tr>
+      <tr>
+        <td><span class="old_changed"><code>...</code></span></td>
+        <td><span class="old_changed"><code>...</code></span></td>
+      </tr>
+    </tbody>
+  </table>
+  </center>
+  <blockquote>
+    <p align="left"><b>Note:</b> ISO 15924 provides an enumeration of 
+    four-letter script codes. In some cases the match between these script names 
+    and the ISO 15924 codes is not precise, since the goals are somewhat 
+    different. ISO 15924 is aimed primarily at the bibliographic identification 
+    of scripts; because of that it occasionally identifies varieties of scripts 
+    that may be useful for book cataloging, but which are not considered 
+    distinct as scripts in the Unicode Standard. For example, ISO 15924 has 
+    separate script codes for the Fraktur and Gaelic varieties of the Latin 
+    script.</p>
+    <p align="left">Where there are no corresponding ISO 15924 codes, the 
+    &quot;private use&quot; ones starting with Q are used. <span class="old_changed">Such 
+    values are likely to change in the future. In such a case, the Q-names will 
+    be retained as aliases in the <a href="http://www.unicode.org/ucd/">UCD</a> 
+    for backwards compatibility.</span></p>
+  </blockquote>
+  <h2><a name="Data_File">4</a> Data File</h2>
+  <p>The Scripts.txt data file is available at [<a href="tr24-5.html#Scripts">Scripts</a>]. 
+  The format of the file is similar to that of <a href="http://www.unicode.org/Public/UNIDATA/Blocks.txt">Blocks.txt</a> 
+  [<a href="tr24-5.html#Blocks">Blocks</a>]. The fields are separated by semicolons. The 
+  first field contains either a single code point, or the first and last code 
+  points in a range separated by &quot;..&quot;. The second field provides the 
+  script name for that range. The comment (after a #) indicates the general 
+  category, and the character name. For a range, it adds the count in square 
+  brackets and uses the names for the first and last characters in the range. 
+  For example:</p>
+  <blockquote>
+    <pre>0B01;       ORIYA # Mn ORIYA SIGN CANDRABINDU
+0B02..0B03; ORIYA # Mc [2] ORIYA SIGN ANUSVARA..ORIYA SIGN VISARGA</pre>
+  </blockquote>
+  <p>The value COMMON is the default value, given to all code points that are 
+  not explicitly mentioned in the data file.</p>
+  <p>There is an additional set of <a href="charts">Script Charts</a> [<a href="tr24-5.html#Charts">Charts</a>] 
+  that can be used to see the assignment of scripts. These charts show the 
+  entire range of Unicode characters broken down by script name (and general 
+  category where the script is Common or Inherited). If your browser is not set 
+  up for Unicode, see <a href="http://www.unicode.org/help/display_problems.html">Display 
+  Problems</a>.</p>
+  <h2><a name="References">References</a></h2>
+  <table cellspacing="12" cellpadding="0" width="100%" border="0" class="noborder">
+    <tbody>
+      <tr>
+        <td valign="top" width="1" class="noborder">[<a name="Blocks">Blocks</a>]</td>
+        <td valign="top" class="noborder">Blocks.txt<a href="http://www.unicode.org/Public/UNIDATA/Blocks.txt"><br>
+          </a><i>For the latest version, see:<br>
+          </i><a href="http://www.unicode.org/Public/UNIDATA/Blocks.txt">http://www.unicode.org/Public/UNIDATA/Blocks.txt<br>
+          </a><i>For other versions, see:<br>
+          </i><a href="http://www.unicode.org/standard/versions/">http://www.unicode.org/standard/versions/</a></td>
+      </tr>
+      <tr>
+        <td valign="top" width="1" class="noborder">[<a name="Charts">Charts</a>]</td>
+        <td valign="top" class="noborder">Script Charts<a href="charts"><br>
+          http://www.unicode.org/reports/tr24/charts/</a></td>
+      </tr>
+      <tr>
+        <td class="noborder" valign="top" width="1">[<a name="Feedback">Feedback</a>]</td>
+        <td class="noborder" valign="top">Reporting Errors and Requesting 
+          Information Online<i><br>
+          </i><a href="http://www.unicode.org/reporting.html">http://www.unicode.org/reporting.html</a></td>
+      </tr>
+      <tr>
+        <td valign="top" width="1" class="noborder">[<a name="FAQ">FAQ</a>]</td>
+        <td valign="top" class="noborder">Unicode Frequently Asked Questions<br>
+          <a href="http://www.unicode.org/faq/">http://www.unicode.org/faq/<br>
+          </a><i>For answers to common questions on technical issues.</i></td>
+      </tr>
+      <tr>
+        <td valign="top" width="1" class="noborder">[<a name="Glossary">Glossary</a>]</td>
+        <td valign="top" class="noborder">Unicode Glossary<a href="http://www.unicode.org/glossary/"><br>
+          http://www.unicode.org/glossary/<br>
+          </a><i>For explanations of terminology used in this and other 
+          documents.</i></td>
+      </tr>
+      <tr>
+        <td valign="top" width="1" class="noborder">[<a name="ISO15924">ISO15924</a>]</td>
+        <td valign="top" class="noborder">ISO 15924: Code for the Representation 
+          of Names of Scripts<br>
+          <a href="http://www.evertype.com/standards/iso15924/">http://www.evertype.com/standards/iso15924/</a></td>
+      </tr>
+      <tr>
+        <td valign="top" width="1" class="noborder">[<a name="PropValue">PropValue</a>]</td>
+        <td valign="top" class="noborder">Property Value Aliases data file<br>
+          <i>For the latest version, see:<br>
+          </i><a href="http://www.unicode.org/Public/UNIDATA/PropertyValueAliases.txt">http://www.unicode.org/Public/UNIDATA/PropertyValueAliases.txt</a><a href="http://www.unicode.org/Public/UNIDATA/Scripts.txt"><br>
+          </a><i>For other versions, see:<br>
+          </i><a href="http://www.unicode.org/standard/versions/">http://www.unicode.org/standard/versions/</a></td>
+      </tr>
+      <tr>
+        <td valign="top" width="1" class="noborder">[<a name="Reports">Reports</a>]</td>
+        <td valign="top" class="noborder">Unicode Technical Reports<br>
+          <a href="../index.html">http://www.unicode.org/reports/<br>
+          </a><i>For information on the status and development process for 
+          technical reports, and for a list of technical reports.</i></td>
+      </tr>
+      <tr>
+        <td valign="top" width="1" class="noborder">[<a name="Scripts">Scripts</a>]</td>
+        <td valign="top" class="noborder">Scripts data file<br>
+          <i>For the latest version, see:<br>
+          </i><a href="http://www.unicode.org/Public/UNIDATA/Scripts.txt">http://www.unicode.org/Public/UNIDATA/Scripts.txt<br>
+          </a><i>For other versions, see:<br>
+          </i><a href="http://www.unicode.org/standard/versions/">http://www.unicode.org/standard/versions/</a></td>
+      </tr>
+      <tr>
+        <td class="noborder" valign="top" width="1">[<a name="UCD">UCD</a>]</td>
+        <td class="noborder" valign="top">Unicode Character Database<br>
+          <a href="http://www.unicode.org/ucd">http://www.unicode.org/ucd<br>
+          </a><i>For and overview of the Unicode Character Database and a list 
+          of its associated files</i></td>
+      </tr>
+      <tr>
+        <td class="noborder" valign="top" width="1">[<a name="Unicode">Unicode</a>]</td>
+        <td class="noborder" valign="top">The Unicode Consortium. <a href="http://www.unicode.org/versions/Unicode4.0.0/">The 
+          Unicode Standard, Version 4.0</a>. Reading, MA, Addison-Wesley, 2003. 
+          0-321-18578-1.</td>
+      </tr>
+      <tr>
+        <td valign="top" width="1" class="noborder">[<a name="UTR18">UTR18</a>]</td>
+        <td valign="top" class="noborder">UTR #18: Unicode Regular Expression 
+          Guidelines<a href="../tr18.1"><br>
+          http://www.unicode.org/reports/tr18/</a></td>
+      </tr>
+      <tr>
+        <td class="noborder" valign="top" width="1">[<a name="Versions">Versions</a>]</td>
+        <td class="noborder" valign="top">Versions of the Unicode Standard<br>
+          <a href="http://www.unicode.org/standard/versions">http://www.unicode.org/standard/versions<br>
+          </a><i>For information on version numbering, and citing and 
+          referencing the Unicode Standard, the Unicode Character Database, and 
+          Unicode Technical Reports.</i></td>
+      </tr>
+    </tbody>
+  </table>
+  <h2><a name="Modifications">Modifications</a></h2>
+  <p>The following summarizes modifications from the previous version of this 
+  document.</p>
+  <table cellspacing="4" cellpadding="0" width="100%" border="0" class="noborder">
+    <tbody>
+      <tr>
+        <td valign="top" width="1" class="noborder"><a name="TrackingNumber5">5</a></td>
+        <td valign="top" class="noborder">
+          <ul>
+            <li>Changed to Proposed Update UAX</li>
+            <li>Added note on the stability of Q names</li>
+            <li>Abbreviated the list of names, so that people would not get the 
+              mistaken impression that it was complete.</li>
+            <li>Added note on Braille.</li>
+            <li>Added note on Mn, Me characters</li>
+            <li>Added note on use of scripts with regard to spoofing.</li>
+            <li>Minor edits</li>
+          </ul>
+        </td>
+      </tr>
+      <tr>
+        <td valign="top" width="1" class="noborder"><a name="TrackingNumber4">4</a></td>
+        <td valign="top" class="noborder">
+          <ul>
+            <li>Updated references, including reference to Property Value 
+              Aliases</li>
+            <li>Clarified that the list is for illustration only; the definitive 
+              values are in the UCD.</li>
+            <li>Minor edits</li>
+          </ul>
+        </td>
+      </tr>
+      <tr>
+        <td valign="top" width="1" class="noborder"><a name="TrackingNumber3">3</a></td>
+        <td valign="top" class="noborder">
+          <ul>
+            <li>Minor link editing only</li>
+          </ul>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <hr width="50%">
+  <p class="copyright">Copyright © 1999-2003 Unicode, Inc. All Rights Reserved. 
+  The Unicode Consortium makes no expressed or implied warranty of any kind, and 
+  assumes no liability for errors or omissions. No liability is assumed for 
+  incidental and consequential damages in connection with or arising out of the 
+  use of the information or programs contained or accompanying this technical 
+  report. The Unicode <a href="http://www.unicode.org/copyright.html">Terms of Use</a> apply.</p>
+  <p class="copyright">Unicode and the Unicode logo are trademarks of Unicode, 
+  Inc., and are registered in some jurisdictions.</p>
+</div>
+
+</body>
+
+</html>

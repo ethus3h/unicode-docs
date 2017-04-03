@@ -1,0 +1,518 @@
+<!doctype HTML 
+PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta http-equiv="Content-Language" content="en-us">
+<meta name="GENERATOR" content="Microsoft FrontPage 6.0">
+<meta name="ProgId" content="FrontPage.Editor.Document">
+<link rel="stylesheet" href="../../unicode/reports/reports.css" 
+type="text/css">
+<title>UTN #27: Known anomalies in Unicode Character Names</title>
+</head>
+
+<body bgcolor="#ffffff">
+
+<table class="header" id="table1">
+	<tr>
+		<td class="icon"><a href="http://www.unicode.org">
+		<img height="33" alt="[Unicode]" src="../../webscripts/logo60s2.gif" width="34" align="middle" border="0"></a>&nbsp;&nbsp;
+		<font size="3"><a class="bar" href="../index.html">
+		Technical Notes</a></font></td>
+	</tr>
+	<tr>
+		<td class="gray">&nbsp;</td>
+	</tr>
+</table>
+<div style="MARGIN: 2em">
+	<h2 align="center">Unicode Technical Note #27</h2>
+	<h1 align="center">Known Anomalies in<br>Unicode Character Names</h1>
+	<table class="wide" id="table2">
+		<tr>
+			<td>Version</td>
+			<td><a href="tn27-1.html#TrackingNumber1">1</a></td>
+		</tr>
+		<tr>
+			<td>Authors</td>
+			<td>Asmus Freytag, Rick McGowan and Ken Whistler</td>
+		</tr>
+		<tr>
+			<td>Date</td>
+			<td>May 08, 2006</td>
+		</tr>
+		<tr>
+			<td>This Version</td>
+			<td><a href="tn27-1.html">
+			http://www.unicode.org/notes/tn27/tn27-1.html</a></td>
+		</tr>
+		<tr>
+			<td>Previous Version</td>
+			<td>n/a</td>
+		</tr>
+		<tr>
+			<td>Latest Version</td>
+			<td><a href="index.html">
+			http://www.unicode.org/notes/tn27/</a></td>
+		</tr>
+	</table>
+	<h3><i>Summary</i></h3>
+	<p><i><em>This document </em>provides information on many known anomalies in the 
+	formal character names in the 
+	Unicode Standard.</i></p>
+	<h3><i>Status</i></h3>
+	<p><i>This document is a <b>Unicode Technical Note</b>. Sole responsibility 
+	for its contents rests with the author(s). Publication does not imply any 
+	endorsement by the Unicode Consortium. This document is not subject to the
+	<a href="http://www.unicode.org/policies/patent_policy.html">Unicode Patent 
+	Policy</a>.</i></p>
+	<p>For information on Unicode Technical Notes including criteria for 
+	acceptance, see <a href="../index.html">
+	http://www.unicode.org/notes/</a>.</p>
+	<hr>
+<h2>Introduction</h2>
+<p>In this document we list all Unicode character 
+	names with known clerical errors in the spelling of their names at the time 
+of its writing. In addition, we have compiled 
+information on many misnamed characters, misleading character 
+	names, and characters with other known problems with their names. </p>
+<p>Because Unicode Standard is a <i>character encoding
+standard</i> and not the <i>Universal Encyclopedia of Writing
+Systems and Character Identity</i>, the <i>stability</i> and <i>uniqueness
+</i>of published character names is far more important than the correctness of 
+the name. The published character names are <i>normative</i> for the purposes of the
+Unicode standard and the large number of other IT standards that
+reference it. These standards require stable identifiers and character names must 
+therefore be <i>immutable </i>— any change of character names is almost
+as disruptive of the standards as changing code points for
+characters would be. Accordingly, the Unicode Consortium has adopted the
+<a href="http://www.unicode.org/standard/stability_policy.html">Unicode Standard Stability Policy</a>, 
+preventing changes in character names. As a result, errors in character names 
+cannot be corrected. Instead, important character name anomalies anomalies are 
+documented with annotations in the
+<a href="http://www.unicode.org/charts/">Unicode Character Code 
+	Charts</a>. </p>
+<p>The requirement for a unique and stable character name that can be used as a 
+formal identifier does <i>not</i> mean that the Unicode Standard dictates to
+anyone what the name of any given letter in their writing system
+should properly be, whether in English or in any other language. The Unicode 
+Code Charts provide informative aliases for a large number of characters, the 
+names of which are not anomalous or defective. This is because different user 
+communities often use different names for the same character, even in English.
+</p>
+<p>One of the reasons why the Unicode standard publishes many
+informative aliases in the Unicode names list is because there often are
+much better, more communicative names for particular characters, <i>even in English</i> than the normative names in the data file. 
+For example, U+002F SOLIDUS is more widely known among its American users as <i>
+slash.</i> Informal aliases are useful in describing a character, but cannot be 
+used as identifiers, because they are not guaranteed to be unique or stable. Users are free 
+to use such aliases and other names, as long as they are not mis-represented as corrections
+<i>to</i> the standard, but instead used as alternative, more useful
+names for characters <i>in</i> the standard.</p>
+<p>For character names that were encoded with misspelled words as part of their 
+name, or that exhibit other serious errors, 
+	The Unicode Standard has adopted normative character name aliases. These aliases can be used as a 
+	alternative, normative identifier for the character without the need to preserve 
+the original spelling or other error in the character name.<i> </i>While this 
+means that some characters can have more than one identifier, each identifier 
+continues to uniquely refer to a single character. Formal aliased are documented 
+in the NameAliases.txt file in the <a href="http://www.unicode.org/ucd/">Unicode 
+	Character Database</a>.<i> </i>Formal name aliases also documented in the<a href="http://www.unicode.org/charts/"> 
+Unicode Code Charts</a>. We have not documented them here, instead, we merely 
+indicate for which characters formal aliases exist at the time of this writing.</p>
+<p>In some cases, annotations have been added to the names list in the Unicode 
+Standard to document various lesser problems, but to date there has been no full 
+listing of all known problems. </p>
+	<p>The authors therefore intend this Technical Note to serve as a convenient summary of the information about character 
+	name anomalies in the Unicode Standard at the time of its writing. It will be updated from 
+time to time as additional anomalies become known. While the information in this 
+	technical note is based on information published in the Unicode Standard, 
+	the selection and manner of presentation in this document reflect choices 
+	made by its authors; it does not in any way supersede the information in the 
+	Unicode Standard. </p>
+<h2>List of Known Anomalies and Explanations</h2>
+<p>This section lists character names with known anomalies, including those for 
+which a formal alias has been defined. It 
+	provides further information about some names that have been the objects of 
+	discussion or inquiry. As issues are reported, additional entries may be 
+	added at any time and without notice. While many of the explanations below 
+are based on annotations in the Unicode Code charts, they have been edited or 
+re-stated by the authors.</p>
+
+<!-- Start List -->
+
+	<p>U+0149 LATIN SMALL LETTER N PRECEDED BY APOSTROPHE</p>
+<blockquote>
+	<ul>
+		<li>Even though this is encoded as single character, it is not usually 
+		considered a single <i>letter</i>.</li>
+	</ul>
+</blockquote>
+<p>U+01A2 LATIN CAPITAL LETTER OI<br>U+01A3 LATIN SMALL LETTER OI</p>
+<blockquote>
+	<ul>
+		<li>These should have been called letter GHA. They are neither 
+			pronounced &#39;oi&#39; nor based on the letters &#39;o&#39; and &#39;i&#39;.</li>
+	</ul>
+</blockquote>
+<p>U+01BE LATIN LETTER INVERTED GLOTTAL STOP WITH STROKE</p>
+<blockquote>
+	<ul>
+		<li>This is actually based on a ligation of &quot;ts&quot;, not an inverted glottal stop.</li>
+	</ul>
+</blockquote>
+<p>U+0238 LATIN SMALL LETTER DB DIGRAPH<br>U+0239 LATIN SMALL LETTER QP DIGRAPH</p>
+<blockquote>
+	<ul>
+		<li>These are actually ligatures, rather than digraphs</li>
+	</ul>
+</blockquote>
+<p>U+025B LATIN SMALL LETTER OPEN E</p>
+<blockquote>
+	<ul>
+		<li>This is actually a <i>Latin epsilon</i> and should have 
+			been so called.</li>
+	</ul>
+</blockquote>
+<p>U+025E LATIN SMALL LETTER CLOSED REVERSED OPEN E</p>
+<blockquote>
+	<ul>
+		<li>Actually a <i>closed reversed epsilon</i> (reversed form of U+025B). 
+		</li>
+	</ul>
+</blockquote>
+<p>U+0285 LATIN SMALL LETTER SQUAT REVERSED ESH</p>
+<blockquote>
+	<ul>
+		<li>This is actually a <i>reversed fishhook r with retroflex hook</i>.</li>
+	</ul>
+</blockquote>
+<p>U+02C7 CARON<br>U+030C COMBINING CARON</p>
+<blockquote>
+	<ul>
+		<li>The &quot;caron&quot; should have been called <i>hacek</i> and <i>
+		combining hacek</i>. The term &quot;caron&quot; 
+			is suspected by some to be an invention of some early standards 
+			body, but it has also been claimed by others to have been in use at Linotype before the days of digital 
+			typography. Its true origin may be lost in the mists of time.</li>
+	</ul>
+</blockquote>
+<p>U+034F COMBINING GRAPHEME JOINER</p>
+<blockquote>
+	<ul>
+		<li>The name does not describe the function of this character. Despite its name, it does not join graphemes. 
+		For more infomation, see Section 7.9 <i>Combining Marks,</i> of the 
+		Unicode Standard. </li>
+	</ul>
+</blockquote>
+<p>U+039B GREEK CAPITAL LETTER LAMDA<br>
+U+03BB GREEK SMALL LETTER LAMDA</p>
+<blockquote>
+	<ul>
+		<li>The use of the spelling <i>lamda</i> derives from ISO 10646. This 
+		does not mean that it 
+		is more correct than <i>lambda</i>, merely that the spelling without the &#39;b&#39; is 
+		the one used in the formal character names.</li>
+	</ul>
+</blockquote>
+<p>U+04A5 CYRILLIC SMALL LIGATURE EN GHE<br>
+U+04B5 CYRILLIC SMALL LIGATURE TE TSE<br>
+U+04D5 CYRILLIC SMALL LIGATURE A IE</p>
+<blockquote>
+	<ul>
+		<li>Despite their names, these are not decomposable ligatures.</li>
+	</ul>
+</blockquote>
+<p>U+0598 HEBREW ACCENT ZARQA</p>
+<blockquote>
+	<ul>
+		<li>Perhaps should have been called <i>Hebrew accent tsinnorit</i>. May also be used for zarqa when shown on accented non-final letter. See
+		<a href="tn27-1.html#Appendix_A">Appendix A</a>.</li>
+	</ul>
+</blockquote>
+<p>U+05AE HEBREW ACCENT ZINOR</p>
+<blockquote>
+	<ul>
+		<li>Should have been called <i>Hebrew accent zarqa</i> (= <i>tsinor</i>). 
+			See <a href="tn27-1.html#Appendix_A">Appendix A</a>.</li>
+	</ul>
+</blockquote>
+<p>U+0670 ARABIC LETTER SUPERSCRIPT ALEF</p>
+<blockquote>
+	<ul>
+		<li>Not an Arabic <i>letter</i>, but a vowel sign.</li>
+	</ul>
+</blockquote>
+<p>U+06C0 ARABIC LETTER HEH WITH YEH ABOVE<br>U+06C2 ARABIC LETTER HEH GOAL WITH HAMZA ABOVE<br>U+06D3 ARABIC LETTER YEH BARREE WITH HAMZA ABOVE</p>
+<blockquote>
+	<ul>
+		<li>These would have been better named ligature</li>
+	</ul>
+</blockquote>
+<p>U+0964 DEVANAGARI DANDA<br>
+U+0965 DEVANAGARI DOUBLE DANDA</p>
+<blockquote>
+	<ul>
+		<li>Despite the fact that these characters have &quot;DEVANAGARI&quot; in their 
+		names, these punctuation marks are intended for common use for the 
+		scripts of India.</li>
+	</ul>
+</blockquote>
+<p>U+0A01 GURMUKHI ADAK BINDI </p>
+<blockquote>
+	<ul>
+		<li>The spelling of the word Adak with a single &#39;d&#39; is inconsistent 
+			with U+0A71 GURMUKHI ADDAK and should really have had two d&#39;s.
+		</li>
+	</ul>
+</blockquote>
+<p>U+0B83 TAMIL SIGN VISARGA</p>
+<blockquote>
+	<ul>
+		<li>This character is the aaytham.</li>
+	</ul>
+</blockquote>
+<p>U+0CDE KANNADA LETTER FA</p>
+<blockquote>
+	<ul>
+		<li>There is no Kannada letter &#39;fa&#39;, this character represents the 
+			syllable &#39;llla&#39;</li>
+	</ul>
+</blockquote>
+<p>U+0E9D LAO LETTER <font color="#FF0000"><b>FO TAM</b></font></p>
+<blockquote>
+	<ul>
+		<li>The name for this character should have been <i>fo sung, </i>but 
+		that name is already used for U+0E9F. A formal alias LAO LETTER FO FON 
+		correcting this error has been defined.</li>
+	</ul>
+</blockquote>
+<p>U+0E9F LAO LETTER <font color="#FF0000"><b>FO SUNG</b></font></p>
+<blockquote>
+	<ul>
+		<li>The name for this character should have been <i>fo tam, </i>but that 
+		name is already used for U+0E9D. A formal alias&nbsp; LAO LETTER FO FAY 
+		correcting this error has been defined.</li>
+	</ul>
+</blockquote>
+<p>U+0EA3 LAO LETTER <font color="#FF0000"><b>LO LING</b></font></p>
+<blockquote>
+	<ul>
+		<li>The name for this character should have been <i>lo loot, </i>but 
+		that name is already used for U+0EA5. A formal alias LAO LETTER RO 
+		correcting this error has been defined.</li>
+	</ul>
+</blockquote>
+<p>U+0EA5 LAO LETTER <font color="#FF0000"><b>LO LOOT</b></font></p>
+<blockquote>
+	<ul>
+		<li>The name for this character should have been <i>lo ling, </i>but 
+		that name is already used for U+0EA3. A formal alias LAO LETTER LO 
+		correcting this error has been defined.</li>
+	</ul>
+</blockquote>
+<p>U+0F0A TIBETAN MARK BKA- SHOG YIG MGO</p>
+<blockquote>
+	<ul>
+		<li>This character is used to indicate that a document is addressed to a superior (the "petition honorific"), but the Tibetan name actually indicates a superior addressing an inferior ("starting flourish for giving a command").</li>
+	</ul>
+</blockquote>
+<p>U+0F0B TIBETAN MARK INTERSYLLABIC TSHEG</p>
+<blockquote>
+	<ul>
+		<li>The tsheg mark is not restricted to intersyllabic usage, and would have been better named<i> 
+		Tibetan mark tsheg.</i></li>
+	</ul>
+</blockquote>
+<p>U+0F0C TIBETAN MARK DELIMITER TSHEG BSTAR</p>
+<blockquote>
+	<ul>
+		<li>This character is not a delimiter, but is a non-breaking version of the tsheg mark (U+0F0B) that is used exclusively between the letter NGA (U+0F44) and the shad mark (U+0F0D).</li>
+	</ul>
+</blockquote>
+<p>U+0FD0 TIBETAN MARK B<font color="#FF0000"><b>S</b></font>KA- SHOG GI MGO RGYAN</p>
+<blockquote>
+	<ul>
+		<li>The syllable "BSKA-" does not occur naturally in Tibetan, and is a mistake for "BKA-" (cf. U+0F0A). 
+		A formal alias correcting this error has been defined.</li>
+	</ul>
+</blockquote>
+<p>U+156F CANADIAN SYLLABICS TTH</p>
+<blockquote>
+	<ul>
+		<li>There is no &#39;tth&#39; syllable. A better name would have been <i>
+		Canadian Syllabics asterisk.</i></li>
+	</ul>
+</blockquote>
+<p>U+178E KHMER LETTER NNO</p>
+<blockquote>
+	<ul>
+		<li>As this character belongs to the first register, its correct 
+		transliteration is <i>nna</i>, not NNO.</li>
+	</ul>
+</blockquote>
+<p>U+179E KHMER LETTER SSO</p>
+<blockquote>
+	<ul>
+		<li>As this character belongs to the first register, its correct 
+		transliteration is <i>ssa</i>, not SSO.</li>
+	</ul>
+</blockquote>
+<p>U+200B ZERO WIDTH SPACE</p>
+<blockquote>
+	<ul>
+		<li>This isn&#39;t a &quot;space&quot;. It is an invisible character 
+		that can be used to provide 
+		line break opportunities.</li>
+	</ul>
+</blockquote>
+<p>U+2113 SCRIPT SMALL L</p>
+<blockquote>
+	<ul>
+		<li>Despite its character name, this symbol is derived from a special 
+		italicized version of the small letter &quot;L&quot;.</li>
+	</ul>
+</blockquote>
+<p>U+2118 SCRIPT CAPITAL P</p>
+<blockquote>
+	<ul>
+		<li>Should have been called <i>calligraphic small p</i> or perhaps even
+		<i>Weierstrass elliptic function symbol</i>, which is what it is used for. It&#39;s not a capital &quot;P&quot; at all.</li>
+	</ul>
+</blockquote>
+<p>U+262B FARSI SYMBOL</p>
+<blockquote>
+	<ul>
+		<li>This symbol is so named because as<i> symbol of Iran </i>it 
+			cannot be encoded in ISO standards.</li>
+	</ul>
+</blockquote>
+<p>U+3021 HANGZHOU NUMERAL ONE<br>
+U+3022 HANGZHOU NUMERAL TWO<br>
+U+3023 HANGZHOU NUMERAL THREE<br>
+U+3024 HANGZHOU NUMERAL FOUR<br>
+U+3025 HANGZHOU NUMERAL FIVE<br>
+U+3026 HANGZHOU NUMERAL SIX<br>
+U+3027 HANGZHOU NUMERAL SEVEN<br>
+U+3028 HANGZHOU NUMERAL EIGHT<br>
+U+3029 HANGZHOU NUMERAL NINE</p>
+<blockquote>
+	<ul>
+		<li>The <i>Suzhou</i> numerals (Chinese su1zhou1ma3zi) are special 
+		numeric forms used by traders to display the prices of goods. The use of 
+		&quot;HANGZHOU&quot; in the names is a misnomer.</li>
+	</ul>
+</blockquote>
+<p>U+327C CIRCLED KOREAN CHARACTER CHAMKO<br>U+327D CIRCLED KOREAN CHARACTER JUEUI</p>
+<blockquote>
+	<ul>
+		<li>An instance of inconsistent transliterations, resulting from irreconciled North/South Korean positions.</li>
+	</ul>
+</blockquote>
+<p>U+A015 YI SYLLABLE WU</p>
+<blockquote>
+	<ul>
+		<li>This is not a syllable pronounced "wu", but is actually a syllable iteration mark.</li>
+	</ul>
+</blockquote>
+<p>U+FA0E CJK COMPATIBILITY IDEOGRAPH-FA0E<br>
+U+FA0F CJK COMPATIBILITY IDEOGRAPH-FA0F<br>
+U+FA11 CJK COMPATIBILITY IDEOGRAPH-FA11<br>
+U+FA13 CJK COMPATIBILITY IDEOGRAPH-FA13<br>
+U+FA14 CJK COMPATIBILITY IDEOGRAPH-FA14<br>
+U+FA1F CJK COMPATIBILITY IDEOGRAPH-FA1F<br>
+U+FA21 CJK COMPATIBILITY IDEOGRAPH-FA21<br>
+U+FA23 CJK COMPATIBILITY IDEOGRAPH-FA23<br>
+U+FA24 CJK COMPATIBILITY IDEOGRAPH-FA24<br>
+U+FA27 CJK COMPATIBILITY IDEOGRAPH-FA27<br>
+U+FA28 CJK COMPATIBILITY IDEOGRAPH-FA28<br>
+U+FA29 CJK COMPATIBILITY IDEOGRAPH-FA29</p>
+<blockquote>
+	<ul>
+		<li>These 12 characters are unified CJK ideographs, not compatibility 
+		ideographs, despite their names.</li>
+	</ul>
+</blockquote>
+<p>U+FE18 PRESENTATION FORM FOR VERTICAL RIGHT WHITE LENTICULAR BRA<b><font color="#FF0000">KC</font></b>ET</p>
+<blockquote>
+	<ul>
+		<li>A spelling error: &quot;brakcet&quot; should be &quot;bracket&quot;. 
+		A formal alias correcting this error has been defined.</li>
+	</ul>
+</blockquote>
+<p>U+FEFF ZERO WIDTH NO-BREAK SPACE</p>
+<blockquote>
+	<ul>
+		<li>Byte Order Mark (Naming it ZWNBSP was a mistake from the start.)</li>
+	</ul>
+</blockquote>
+<p>U+1D0C5 BYZANTINE MUSICAL SYMBOL F<b><font color="#FF0000">HT</font></b>ORA SKLIRON CHROMA VASIS</p>
+<blockquote>
+	<ul>
+		<li>A spelling error: &quot;fhtora&quot; should be &quot;fthora&quot;. A 
+		formal alias correcting this error has been defined.</li>
+	</ul>
+</blockquote>
+
+
+<!--
+	<p>U+nnnn - NAME</p>
+		<blockquote><ul><li>Explanation.</li></ul></blockquote>
+-->
+
+<!-- End List -->
+	<p>&nbsp;</p>
+<h2><a name="Appendix_A">Appendix A: Notes on Zarqa and Zinor</a></h2>
+<p align="justify">There are two separate
+    cantillation systems in the Hebrew Bible. One is
+    used for Psalms, Proverbs and (most of) Job, (the "poetic" books, hence
+    the "poetic system"), and the other is used everywhere else. The two systems
+    have structural similarities and share some graphemes, but not all.
+    In modern printing the accents have roughly the same shape; old manuscripts actually had them written slightly
+    differently. In the prose system there is an accent called ZARQA,
+    which is postposed (on or to the left of the last letter), and in the
+    poetic system there is one called TSINOR (and also zarqa and vice-versa;
+    each of these has many names) which has the same shape and placement and
+    even an analogous function in the structure of the cantillations. There
+    is another accent, only in the poetic system, called the TSINNORIT (a
+    diminutive of tsinor), which occurs directly above its letter, and is
+    (almost?) never on the last letter of its word. (More modern printing
+    tends to put the zarqa right on top of its letter too, but that's just a
+    printing preference). If you look closely at some old manuscripts, you
+    can tell that tsinnorit has a slightly different shape than zarqa/tsinor.<p align="justify">As encoded in Unicode, there are ZARQA (U+0598) and ZINOR (U+05AE) [sic]. By
+    the usual meanings of those names, those should properly be synonyms,
+    the same accent, but they're not. While the word"zinor" would be mnemonic of "tsinnorit," it's the wrong
+    way around in the character names: ZINOR has the combining class of 
+	above-postposed, and ZARQA is encoded to go directly above the letter. So, 
+	to encode a zarqa or a tsinor, you need to use ZINOR, and to encode a 
+	tsinnorit, you need to use ZARQA.</p>
+<p align="right"><font size="2">[contributed by: Mark Shoulson]</font></p>
+<h2><a name="Acknowledgements">Acknowledgements</a></h2>
+<p>Thanks to John Hudson, James Kass, Mark Shoulson, and Andrew West for their contributions.</p>
+
+		<h2><a name="Modifications">Modifications</a></h2>
+		<p>The following summarizes modifications from the previous version of 
+		this document.</p>
+		<table class="noborder" style="BORDER-COLLAPSE: collapse" cellSpacing="0" cellPadding="8" id="table3">
+			<tr>
+				<td class="noborder" width="1"><a name="TrackingNumber1">1</a></td>
+				<td class="noborder">Initial version</td>
+			</tr>
+		</table>
+		<p class="copyright">Copyright © 2006 the author(s) and Unicode, Inc. All 
+		Rights Reserved. The Unicode Consortium and the author(s) make no 
+		expressed or implied warranty of any kind, and assume no liability for 
+		errors or omissions. No liability is assumed for incidental and 
+		consequential damages in connection with or arising out of the use of 
+		the information or programs contained or accompanying this technical 
+		note. The Unicode <a href="http://www.unicode.org/copyright.html">Terms 
+		of Use</a> apply.</p>
+		<p class="copyright">Unicode and the Unicode logo are trademarks of 
+		Unicode, Inc., and are registered in some jurisdictions.
+	<p>&nbsp;</p>
+
+</div>
+
+</body>
+
+</html>

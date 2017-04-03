@@ -1,0 +1,1653 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
+
+       "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta http-equiv="Content-Language" content="en-us">
+<title>UAX #31: Unicode Identifier and Pattern Syntax</title>
+<!-- WEB ONLY -->
+<link rel="stylesheet" type="text/css" href="../reports-web.css">
+<!-- BOOK ONLY 
+<link rel="stylesheet" type="text/css" href="../reports-book.css"> -->
+<style type="text/css">
+<!--
+-->
+</style>
+</head>
+
+<body>
+
+<div class="book">
+	<!-- WEB ONLY-->
+	<div class="web-only">
+		<table class="header" cellspacing="0" cellpadding="0" width="100%">
+			<tr>
+				<td class="icon"><a href="http://www.unicode.org">
+				<img align="middle" alt="[Unicode]" border="0" src="../logo60s2.gif" width="34" height="33"></a>&nbsp;
+				<a class="bar" href="../index.html">Technical 
+				Reports</a></td>
+			</tr>
+			<tr>
+				<td class="gray">&nbsp;</td>
+			</tr>
+		</table>
+	</div>
+	<!-- END WEB ONLY -->
+	<div class="body">
+		<h2 class="uaxtitle">Unicode Standard Annex #31</h2>
+		<h1>Unicode Identifier
+		<span class="nocap">and</span> Pattern Syntax</h1>		
+		<!-- START WEB ONLY -->
+		<div class="web-only">
+			<table border="1" cellpadding="2" width="90%">
+				<tr>
+					<td valign="top" width="20%">Version</td>
+					<td valign="top">Unicode 5.1.0</td>
+				</tr>
+				<tr>
+					<td valign="top">Authors</td>
+					<td valign="top">Mark Davis (<a href="mailto:markdavis@google.com">markdavis@google.com</a>)</td>
+				</tr>
+				<tr>
+					<td valign="top">Date</td>
+					<td valign="top">2008-03-25</td>
+				</tr>
+				<tr>
+					<td valign="top">This Version</td>
+					<td valign="top">
+					<a href="tr31-9.html">http://www.unicode.org/reports/tr31/tr31-9.html</a></td>
+				</tr>
+				<tr>
+					<td valign="top">Previous Version</td>
+					<td valign="top">
+					<a href="tr31-7.html">http://www.unicode.org/reports/tr31/tr31-7.html</a></td>
+				</tr>
+				<tr>
+					<td valign="top">Latest Version</td>
+					<td valign="top">
+					<a href="index.html">http://www.unicode.org/reports/tr31/</a></td>
+				</tr>
+				<tr>
+					<td valign="top">Revision</td>
+					<td valign="top">
+					<a href="tr31-9.html#Modifications">9</a></td>
+				</tr>
+			</table>
+		</div>
+		<h4 class="summary">Summary</h4>
+		<p><i>This annex describes specifications for recommended defaults for the 
+		use of Unicode in the definitions of identifiers and in pattern-based syntax. 
+		It also supplies guidelines for use of normalization with identifiers.</i></p>
+		<div class="web-only">
+	   <!-- NOT YET APPROVED 
+	  <p><i>This is a<b><font color="#ff3333"> draft </font></b>document which 
+      may be updated, replaced, or superseded by other documents at any time. 
+      Publication does not imply endorsement by the Unicode Consortium. This is 
+      not a stable document; it is inappropriate to cite this document as other 
+      than a work in progress.</i></p>
+       END NOT YET APPROVED -->
+	  <!-- APPROVED -->
+      <p><i>This document has been reviewed by Unicode members and other interested 
+	parties, and has been approved for publication by the Unicode Consortium. 
+	This is a stable document and may be used as reference material or cited as 
+	a normative reference by other specifications.</i></p>
+     <!-- END APPROVED -->
+			<blockquote>
+				<p><i><b>A Unicode Standard Annex (UAX)</b> forms an integral part 
+				of the Unicode Standard, but is published online as a separate document. 
+				The Unicode Standard may require conformance to normative content 
+				in a Unicode Standard Annex, if so specified in the Conformance 
+				chapter of that version of the Unicode Standard. The version number 
+				of a UAX document corresponds to the version of the Unicode Standard 
+				of which it forms a part.</i></p>
+			</blockquote>
+			<p><i>Please submit corrigenda and other comments with the online reporting 
+			form [<a href="../tr41/tr41-3.html#Feedback">Feedback</a>]. Related 
+			information that is useful in understanding this annex is found in Unicode 
+			Standard Annex #41, “<a href="../tr41/tr41-3.html">Common References 
+			for Unicode Standard Annexes</a>.” For the latest version of the Unicode 
+			Standard, see [<a href="../tr41/tr41-3.html#Unicode">Unicode</a>]. For 
+			a list of current Unicode Technical Reports, see [<a href="../tr41/tr41-3.html#Reports">Reports</a>]. 
+			For more information about versions of the Unicode Standard, see [<a href="../tr41/tr41-3.html#Versions">Versions</a>].</i></p>
+		</div>
+		<!-- END WEB ONLY -->
+		<h4 class="contents">Contents</h4>
+		<blockquote>
+			<ul class="toc">
+				<li>1&nbsp; <a href="tr31-9.html#Introduction">Introduction</a><ul class="toc">
+					<li>1.1&nbsp; <a href="tr31-9.html#Conformance">Conformance</a></li>
+				</ul>
+				</li>
+				<li>2&nbsp; <a href="tr31-9.html#Default_Identifier_Syntax">Default Identifier 
+				Syntax</a><ul class="toc">
+					<li>2.1&nbsp; <a href="tr31-9.html#Combining_Marks">Combining Marks</a></li>
+					<li>2.2&nbsp;
+					<a href="tr31-9.html#Modifier_Letters">Modifier Letters</a></li>
+					<li>2.3&nbsp;
+					<a href="tr31-9.html#Layout_and_Format_Control_Characters">Layout and Format 
+					Control Characters</a></li>
+					<li>2.4&nbsp; <a href="tr31-9.html#Specific_Character_Adjustments">Specific 
+					Character Adjustments</a></li>
+					<li>2.5&nbsp; <a href="tr31-9.html#Backward_Compatibility">Backward Compatibility</a></li>
+				</ul>
+				</li>
+				<li>3&nbsp; <a href="tr31-9.html#Alternative_Identifier_Syntax">Alternative 
+				Identifier Syntax</a></li>
+				<li>4&nbsp; <a href="tr31-9.html#Pattern_Syntax">Pattern Syntax</a></li>
+				<li>5&nbsp; <a href="tr31-9.html#normalization_and_case">Normalization and 
+				Case</a><ul class="toc">
+					<li>5.1&nbsp; <a href="tr31-9.html#NFKC_Modifications">NFKC Modifications</a></li>
+				</ul>
+				</li>
+				<li><a href="tr31-9.html#Acknowledgments">Acknowledgments</a></li>
+				<li><a href="tr31-9.html#References">References</a></li>
+				<li><a href="tr31-9.html#Modifications">Modifications</a></li>
+			</ul>
+		</blockquote>
+		<hr>
+		<div class="book-only">
+			<p>&nbsp;</p>
+		</div>
+		<h2 class="section">1 <a name="Introduction">Introduction</a></h2>
+		<p>A common task facing an implementer of the Unicode Standard is the provision 
+		of a parsing and/or lexing engine for identifiers, such as programming language 
+		variables or domain names. To assist in the standard treatment of identifiers 
+		in Unicode character-based parsers and lexical analyzers, a set of specifications 
+		is provided here as a recommended default for the definition of identifier 
+		syntax.</p>
+		<p>These guidelines follow the typical pattern 
+		of identifier syntax rules in common programming languages, by defining 
+		an ID_Start class and an ID_Continue class and using a simple BNF rule for 
+		identifiers based on those classes; however, the composition of those classes 
+		is more complex and contains additional types of characters, due to the 
+		universal scope of the Unicode Standard.</p>
+		<p>This annex also provides guidelines for the user of normalization and 
+		case insensitivity with identifiers, expanding on a section that was 
+		originally in Unicode Standard Annex #15, “Unicode Normalization Forms” 
+		[<a href="../tr41/tr41-3.html#UAX15">UAX15</a>].</p>
+		<p>The specification in this annex provide a definition of identifiers that 
+		is guaranteed to be backward compatible with each successive release of 
+		Unicode, but also allows any appropriate new Unicode characters to become 
+		available in identifiers. In addition, Unicode character properties for 
+		stable pattern syntax are provided. The resulting pattern syntax is
+		backward compatible <i>and</i> forward compatible 
+		over future versions of the Unicode Standard. These properties can either 
+		be used alone or in conjunction with the identifier characters.</p>
+		<p><i>Figure 1</i> shows the disjoint categories of code points defined 
+		in this annex (the sizes of the boxes are not to scale):</p>
+		<div align="center">
+			<center>
+			<p class="caption">Figure 1. <span style="font-weight: 400">Code Point 
+			Categories for Identifier Parsing</span></p>
+			<table border="1" cellpadding="20" cellspacing="0" style="border-collapse: collapse">
+				<tr>
+					<td style="vertical-align: middle; text-align: center">ID_Start<br>
+					Characters</td>
+					<td style="vertical-align: middle; text-align: center" class="lightblue">
+					<p>Pattern_Syntax<br>
+					Characters</p>
+					</td>
+					<td style="vertical-align: middle; text-align: center" class="medgray" rowspan="3" width="50%">
+					Unassigned Code Points</td>
+				</tr>
+				<tr>
+					<td style="vertical-align: middle; text-align: center">ID Nonstart<br>
+					Characters</td>
+					<td style="text-align: center; vertical-align: middle" class="lightblue">
+					Pattern_White_Space<br>
+					Characters</td>
+				</tr>
+				<tr>
+					<td style="text-align: center; vertical-align: middle" height="66" colspan="2" class="lightyellow">&nbsp;<br>
+					Other Assigned<br>
+					Code Points<br>
+					</td>
+				</tr>
+			</table>
+			</center></div>
+		<p>The set consisting of the union of <i>ID_Start</i> and <i>ID Nonstart</i> 
+		characters is known as <i>Identifier Characters</i> and has the property
+		<i>ID_Continue</i>. The <i>ID Nonstart</i> set is defined as the set difference
+		<i>ID_Continue</i> minus <i>ID_Start</i>. While lexical rules are traditionally 
+		expressed in terms of the latter, the discussion here is simplified by referring 
+		to disjoint categories.</p>
+		<p><span class="run_in">Stability.</span> There are certain features that 
+		developers can depend on for stability:</p>
+		<ul>
+			<li>Identifier characters, Pattern_Syntax characters, and Pattern_White_Space 
+			are disjoint: they will never overlap.</li>
+			<li>The Identifier characters are always a superset of the ID_Start 
+			characters.</li>
+			<li>The Pattern_Syntax characters and Pattern_White_Space characters 
+			are immutable and will not change over successive versions of Unicode.</li>
+			<li>The ID_Start and ID Nonstart characters may grow over time, either 
+			by the addition of new characters provided in a future version of Unicode 
+			or (in rare cases) by the addition of characters that were in Other. 
+			However, neither will ever decrease.</li>
+		</ul>
+		<p>In successive versions of Unicode, the only allowed changes of characters 
+		from one of the above classes to another are those listed with a + sign 
+		in <i>Table 1.</i></p>
+		<div align="center">
+			<center>
+			<table border="1" cellpadding="0" cellspacing="1" style="border-collapse: collapse">
+				<caption>Table 1. Permitted Changes in Future Versions</caption>
+				<tr>
+					<td width="25%">&nbsp;</td>
+					<th width="25%" style="text-align: center">ID_Start</th>
+					<th width="25%" style="text-align: center">ID Nonstart</th>
+					<th width="25%" style="text-align: center">Other Assigned</th>
+				</tr>
+				<tr>
+					<th width="25%" style="text-align: center">Unassigned</th>
+					<td width="25%" style="text-align: center"><b>
+					<font size="4">+</font></b></td>
+					<td width="25%" style="text-align: center"><b>
+					<font size="4">+</font></b></td>
+					<td width="25%" style="text-align: center"><b>
+					<font size="4">+</font></b></td>
+				</tr>
+				<tr>
+					<th width="25%" style="text-align: center">&nbsp;Other Assigned
+					</th>
+					<td width="25%" style="text-align: center"><b>
+					<font size="4">+</font></b></td>
+					<td width="25%" style="text-align: center"><b>
+					<font size="4">+</font></b></td>
+					<td width="25%" style="text-align: center">&nbsp;</td>
+				</tr>
+				<tr>
+					<th width="25%" style="text-align: center">ID Nonstart</th>
+					<td width="25%" style="text-align: center"><b>
+					<font size="4">+</font></b></td>
+					<td width="25%" style="text-align: center">&nbsp;</td>
+					<td width="25%" style="text-align: center">&nbsp;</td>
+				</tr>
+			</table>
+			</center></div>
+		<p>The Unicode Consortium has formally adopted a stability policy on identifiers. 
+		For more information, see [<a href="../tr41/tr41-3.html#Stability">Stability</a>].</p>
+		<p><span class="run_in">Programming Languages.</span> Each programming language 
+		standard has its own identifier syntax; different programming languages 
+		have different conventions for the use of certain characters such as $, 
+		@, #, and _ in identifiers. To extend such a syntax to cover the full behavior 
+		of a Unicode implementation, implementers may combine those specific rules 
+		with the syntax and properties provided here.</p>
+		<p>Each programming language can define its identifier syntax as <i>relative</i> 
+		to the Unicode identifier syntax, such as saying that identifiers are defined 
+		by the Unicode properties, with the addition of “$”. By addition or subtraction 
+		of a small set of language specific characters, a programming language standard 
+		can easily track a growing repertoire of Unicode characters in a compatible 
+		way. See also Section 2.5&nbsp;
+		<a href="tr31-9.html#Backward_Compatibility">Backward Compatibility</a>.</p>
+		<p>Similarly, each programming language can define its own whitespace characters 
+		or syntax characters relative to the Unicode Pattern_White_Space or Pattern_Syntax 
+		characters, with some specified set of additions or subtractions.</p>
+		<p>Systems that want to extend identifiers so as to encompass words used 
+		in natural languages, or narrow identifiers for 
+		security may do so as described in Section 2.3&nbsp;
+		<a href="tr31-9.html#Layout_and_Format_Control_Characters">Layout and Format Control 
+		Characters</a>, Section 2.4&nbsp;
+		<a href="tr31-9.html#Specific_Character_Adjustments">Specific Character Adjustments</a>, 
+		and Section 5&nbsp; <a href="tr31-9.html#normalization_and_case">Normalization and 
+		Case</a>.</p>
+		<p>To preserve the disjoint nature of the categories illustrated in <i>Figure 
+		1</i>, any character <i>added</i> to one of the categories must be <i>subtracted</i> 
+		from the others.</p>
+		<blockquote>
+			<p><span class="note">Note:</span> In many cases there are important 
+			security implications that may require additional constraints on identifiers. 
+			For more information, see [<a href="../tr41/tr41-3.html#UTR36">UTR36</a>].</p>
+		</blockquote>
+		<h3 class="section">1.1 <a name="Conformance">Conformance</a></h3>
+		<p>The following describes the possible ways that an implementation can 
+		claim conformance to this specification.</p>
+		<table class="noborder" cellspacing="0" cellpadding="4">
+			<tr>
+				<td class="rule_head" nowrap>UAX31-<a name="C1">C1</a>.</td>
+				<td class="rule_body">An implementation claiming conformance to 
+				this specification at any Level shall identify the version of this 
+				specification and the version of the Unicode Standard.<br>
+				</td>
+			</tr>
+			<tr>
+				<td class="rule_head" nowrap>UAX31-<a name="C2">C2</a>.</td>
+				<td class="rule_body">An implementation claiming conformance to 
+				Level 1 of this specification shall describe which of the following 
+				it observes:<ul>
+					<li><a href="tr31-9.html#R1">R1 Default Identifiers</a></li>
+					<li><a href="tr31-9.html#R1a">R1a Restricted Format Characters</a></li>
+					<li><a href="tr31-9.html#R1b">R1b Stable Identifiers</a></li>
+					<li><a href="tr31-9.html#R2">R2 Alternative Identifiers</a></li>
+					<li><a href="tr31-9.html#R3">R3 Pattern_White_Space and Pattern_Syntax Characters</a></li>
+					<li><a href="tr31-9.html#R4">R4 Equivalent Normalized Identifiers</a></li>
+					<li><a href="tr31-9.html#R5">R5 Equivalent Case-Insensitive Identifiers</a></li>
+					<li><a href="tr31-9.html#R6">R6 Filtered Normalized Identifiers</a></li>
+					<li><a href="tr31-9.html#R7">R7 Filtered Case-Insensitive Identifiers</a></li>
+				</ul>
+				</td>
+			</tr>
+		</table>
+		<h2 class="section">2 <a name="Default_Identifier_Syntax">Default Identifier 
+		Syntax</a></h2>
+		<p>The formal syntax provided here captures the general intent that an identifier 
+		consists of a string of characters beginning with a letter or an ideograph, 
+		and following with any number of letters, ideographs, digits, or underscores. 
+		It provides a definition of identifiers that is guaranteed to be backward 
+		compatible with each successive release of Unicode, but also adds any appropriate 
+		new Unicode characters.</p>
+		<h4>D1. Default Identifier Syntax</h4>
+		<p><code>&lt;identifier&gt; := &lt;ID_Start&gt; &lt;ID_Continue&gt;*</code> </p>
+		<p>Identifiers are defined by the sets of lexical classes defined as properties 
+		in the Unicode Character Database. These properties are shown in <i>Table 
+		2</i>.</p>
+		<div align="center">
+			<center>
+			<table cellspacing="0" cellpadding="4" border="1">
+				<caption>Table 2. Lexical Classes for Identifiers</caption>
+				<tr>
+					<th align="left">Properties</th>
+					<th align="left">Alternates</th>
+					<th align="left">General Description of Coverage</th>
+				</tr>
+				<tr>
+					<td><code>ID_Start</code></td>
+					<td><code>XID_Start</code></td>
+					<td>Characters having the Unicode General_Category of uppercase 
+					letters (Lu), lowercase letters 
+					(Ll), titlecase letters (Lt), 
+					modifier letters (Lm), other 
+					letters (Lo), letter numbers 
+					(Lu), minus Pattern_Syntax and Pattern_White_Space code points, 
+					plus stability extensions.
+                    Note that “other letters” 
+					includes ideographs.<p>In set notation, 
+					this is [[:L:][:Nl:]--[:Pattern_Syntax:]--[:Pattern_White_Space:]] plus stability extensions.</td>
+				</tr>
+				<tr>
+					<td><code>ID_Continue</code></td>
+					<td><code>XID_Continue</code></td>
+					<td>All of the above, plus characters having the Unicode General_Category 
+					of nonspacing marks (Mn), spacing combining marks (Mc), decimal 
+					number (Nd), connector punctuations (Pc), plus stability 
+					extensions, minus Pattern_Syntax and Pattern_White_Space code points.<p>
+					In set notation, this is 
+					[[:L:][:Nl:][:Mn:][:Mc:][:Nd:][:Pc:]--[:Pattern_Syntax:]--[:Pattern_White_Space:]] 
+					plus stability extensions.<p>
+					These are also known simply 
+					as <i>Identifier Characters</i>, because they are a superset 
+					of the <code>ID_Start</code> characters.</td>
+				</tr>
+			</table>
+			</center></div>
+		<p>The innovations in the identifier syntax to cover the Unicode Standard 
+		include the following: </p>
+		<ul>
+			<li>Incorporation of proper handling of combining marks.</li>
+			<li>Allowance for layout and format control characters, which should 
+			be ignored when parsing identifiers.</li>
+			<li>The XID_Start and XID_Continue properties are improved lexical classes 
+			that incorporate the changes described in
+			<a href="tr31-9.html#NFKC_Modifications"><span class="section">Section </span>
+			<span class="secno">5.1,</span> <i>NFKC Modifications</i></a>. They 
+			are recommended for most purposes, especially for security, over the 
+			original ID_Start and ID_Continue properties.</li>
+		</ul>
+		<h3 class="section">2.1 <a name="Combining_Marks">Combining Marks</a></h3>
+		<p>Combining marks are accounted for in identifier syntax: a composed character 
+		sequence consisting of a base character followed by any number of combining 
+		marks is valid in an identifier. Combining marks are required in the representation 
+		of many languages, and the conformance rules in <i>Chapter 3, Conformance</i>, 
+		of [<a href="../tr41/tr41-3.html#Unicode">Unicode</a>] require the interpretation 
+		of canonical-equivalent character sequences. The 
+		simplest way to do this is to require (or transform) identifiers into the 
+		NFC format; see Section<i> 5&nbsp; <a href="tr31-9.html#normalization_and_case">Normalization 
+		and Case</a>.</i></p>
+		<p>Enclosing combining marks (such as U+20DD..U+20E0) are excluded from 
+		the definition of the<code> </code>lexical class <code>ID_Continue</code>, 
+		because the composite characters that result from their composition with 
+		letters are themselves not normally considered valid constituents of these 
+		identifiers. </p>
+		<h3>2.2 <a name="Modifier_Letters">Modifier Letters</a></h3>
+		Modifier letters (General_Category=Lm) are also 
+		included in the definition of the syntax classes for identifiers. Modifier 
+		letters are often part of natural language orthographies and are useful 
+		for making word-like identifiers in formal languages. On the other hand, 
+		modifier symbols (General_Category=Sk), which are seldom a part of language 
+		orthographies, are excluded from identifiers. For more discussion of modifier 
+		letters and their functioning, see [<a href="../tr41/tr41-3.html#Unicode">Unicode</a>].<p>
+		Implementations that tailor identifier syntax 
+		for special purposes may wish to take special note of modifier letters, 
+		as in some cases modifier letters have appearances, such as raised commas, 
+		which may be confused with common syntax characters such as quotation marks.</p>
+		<h3 class="section">2.3 <a name="Layout_and_Format_Control_Characters">Layout 
+		and Format Control Characters</a></h3>
+		<p>Certain Unicode characters are known as Default_Ignorable_Code_Points. 
+		These include variation selectors and control-like characters used to 
+		control joining behavior, bidirectional ordering control, and alternative 
+		formats for display (having the General_Category value of Cf).The recommendation 
+		is to not permit them in identifiers except in special cases, 
+		listed below. The use of default-ignorable 
+		characters in identifiers is problematical because the effects they represent 
+		are normally just stylistic or otherwise out of scope for identifiers. It 
+		is also possible to misapply these characters such that users can create 
+		strings that look the same but actually contain different characters, which 
+		can create security problems. In such environments, identifiers should also 
+		be limited to characters that are case-folded and normalized with NFKC. 
+		For more information, see Section<i> 5&nbsp;
+		<a href="tr31-9.html#normalization_and_case">Normalization and Case</a> </i>and&nbsp;
+		<i>UTR# 36: Unicode Security Considerations</i> [<a href="../tr41/tr41-3.html#UTR36">UTR36</a>].</p>
+		<p>For these reasons these characters are normally 
+		excluded from Unicode identifiers. However, visible distinctions created 
+		by certain format characters (particularly the <i>Join_Control characters</i>) 
+		are necessary and make necessary distinctions in certain languages. A blanket 
+		exclusion of these characters makes it impossible to create identifiers 
+		based on certain words or phrases in those languages. Identifier systems 
+		that attempt to provide more natural representations of terms in modern, 
+		customary use should consider allowing these characters, but limited to 
+		particular contexts where they are necessary.</p>
+		<p>Note: the term <i>modern customary usage</i> includes characters 
+		that are in common use in newspapers, journals, lay publications; on street 
+		signs; in commercial signage; and as part of common geographic names and 
+		company names, and so on. It does not include technical or academic usage 
+		such as in mathematical expressions, using archaic scripts or words, or 
+		pedagogical use (such as illustration of half-forms or joining forms in 
+		isolation).</p>
+		<p>The goals for such a restriction of format characters 
+		to particular contexts are to:</p>
+		<ul>
+			<li>allow the use of these characters where 
+			required in normal text </li>
+			<li>exclude as many cases as possible where 
+			no visible distinction results </li>
+			<li>be simple enough to be easily implemented 
+			with standard mechanisms such as regular expressions </li>
+		</ul>
+		<p>Thus for such circumstances, an implementation 
+		may choose to allow the following Join_Control characters, but only in very limited contexts 
+		as specified in A1, A2, and B below:</p>
+		<blockquote>
+				U+200C <span class="name">ZERO WIDTH NON-JOINER</span> [ZWNJ]<br>
+				U+200D <span class="name">ZERO WIDTH JOINER</span> [ZWJ]
+		</blockquote>
+		<p>Implementations may further restrict the contexts 
+		in which these characters may be used. For more information, see UTR# 36:
+		<i>Unicode Security Considerations</i> [<a href="../tr41/tr41-3.html#UTR36">UTR36</a>].</p>
+		<p><b>Performance. </b>Parsing identifiers can 
+		be a performance-sensitive task. However, these characters are quite rare 
+		in practice, thus the regular expressions (or equivalent processing) only 
+		rarely would need to be invoked. Thus these tests should not add any significant 
+		performance cost overall.</p>
+		<p><b>Comparison. </b>Typically the identifiers 
+		with and without these characters should not compare as equivalent. However, 
+		in certain language-specific cases, such as in Sinhala, they should compare 
+		as equivalent. See Section 2.4&nbsp;
+		<a href="tr31-9.html#Specific_Character_Adjustments">Specific Character Adjustments</a>.</p>
+		<p>The characters and their contexts are given 
+		by conditions A1, A2, and B below. There are two global conditions as well:</p>
+		<blockquote>
+			<p><b>Script Restriction.</b> In each of the 
+			following cases, the specified sequence must only consist of characters 
+			from a single script (after ignoring <i>Common</i> and <i>Inherited</i> 
+			script characters).</p>
+			<p><b>Normalization. </b>In each of the following 
+			cases, the specified sequence must be in NFC format. (To test an identifier 
+			that is not required to be in NFC, first transform into NFC format and 
+			then test the condition.)</p>
+		</blockquote>
+		<h4>A1. Allow ZWNJ in the following context:</h4>
+			<b>Breaking a cursive connection. </b>
+			That is, in the context based on the Arabic Shaping property, consisting 
+			of:
+			<ul>
+				<li>A Left-Joining character, followed 
+				by zero or more Transparent characters, followed by a ZWNJ, followed 
+				by zero or more Transparent characters, followed by a Right-Joining 
+				character </li>
+				<li>This corresponds to the following 
+				regular expression (in Perl-style syntax): <b>/$L
+				<font color="#666666">$T*</font> ZWNJ <font color="#666666">$T*</font> 
+				$R/</b><br>
+				where:
+				<blockquote>
+					$T = [:Joining_Type=Transparent:]<br>
+					$R = [[:Joining_Type=Dual_Joining:][:Joining_Type=Right_Joining:]]<br>
+					$L = [[:Joining_Type=Dual_Joining:][:Joining_Type=Left_Joining:]]
+				</blockquote>
+				</li>
+			</ul>
+				<b>Example:</b> 
+				Farsi &lt;Noon, Alef, Meem, Heh, Alef, Farsi Yeh&gt;. Without a ZWNJ, 
+				it translates to &quot;names&quot;; with a ZWNJ between Heh and Alef, it means 
+				&quot;a letter&quot;. Figure 2 illustrates this.
+
+<div align="center">
+				<table id="table6" style="BORDER-COLLAPSE: collapse; vert-align: top" border="0">
+					<caption>Figure 2. Farsi Example with ZWNJ</caption>
+					<tr>
+						<td class="noborder">
+						<img src="pr-96.farsi.gif" border="0" alt="diagram"></td>
+					</tr>
+				</table>
+			</div>
+		<h4>A2. Allow ZWNJ in the following context:</h4>
+			<b>In a conjunct context. </b>That is, 
+			a sequence of the form:
+			<ul>
+				<li>A Letter, followed by a Virama, followed 
+				by a ZWNJ, followed by an Letter</li>
+				<li>This corresponds to the following 
+				regular expression (in Perl-style syntax): <b>/$L $V ZWNJ/</b><br>
+				where:
+				<blockquote>
+					$L = [:General_Category=Letter:]<br>
+					$V = [:Canonical_Combining_Class=Virama:]
+				</blockquote>
+				</li>
+			</ul>
+				<b>Example:</b>
+				The Malayalam word for <i>eyewitness</i>. The form without 
+				the ZWNJ is incorrect in this case.
+<div align="center">
+					<table id="table7" style="BORDER-COLLAPSE: collapse; vert-align: top" border="0">
+						<caption>Figure 3. Malayalam Example with ZWNJ</caption>
+						<tr>
+							<td class="noborder">
+							<img height="177" src="pr-96.malayalam.gif" width="529" border="0" alt="diagram"></td>
+						</tr>
+					</table>
+				</div>
+		<h4>B. Allow ZWJ in the following context:
+		</h4>
+			<b>In a conjunct context. </b>That is, 
+			a sequence of the form:
+			<ul>
+				<li>A Letter, followed by a Virama, followed 
+				by a ZWJ</li>
+				<li>This corresponds to the following 
+				regular expression (in Perl-style syntax): <b>
+				/$L $V ZWJ/</b><br>
+				where:
+				<blockquote>
+					$L = [:General_Category=Letter:]<br>
+					$V = [:Canonical_Combining_Class=Virama:]
+				</blockquote>
+				</li>
+			</ul>
+				<b>Example:</b>
+				The Sinhala word for the country &#39;Sri Lanka&#39; in A in Figure 4, 
+				which uses both a space character and a ZWJ. Removing the space 
+				gives the text in B in Figure 4 which is still readable, but removing 
+				the ZWJ completely modifies the appearance of the &#39;Sri&#39; cluster 
+				and gives the text in C in Figure 4. 
+<div align="center">
+				<table style="BORDER-COLLAPSE: collapse; vert-align: top" border="0" id="table8">
+					<caption>Figure 4. Sinhala Example 
+					with ZWJ</caption>
+					<tr>
+						<td class="noborder">
+						<img src="pr-96.sinhala.gif" border="0" alt="diagram"></td>
+					</tr>
+				</table>
+				</div>
+		<h3 class="section">2.4 <a name="Specific_Character_Adjustments">Specific 
+		Character Adjustments</a></h3>
+		<p>Specific identifier syntaxes can be treated as tailorings (or <i>profiles</i>) 
+		of the generic syntax based on character properties. For example, SQL identifiers 
+		allow an underscore as an identifier continue, but not as an identifier 
+		start; C identifiers allow an underscore as either an identifier continue 
+		or an identifier start. Specific languages may also want to exclude the 
+		characters that have a Decomposition_Type other than Canonical or None, 
+		or to exclude some subset of those, such as those with a Decomposition_Type 
+		equal to Font.</p>
+		<p>There are circumstances in which identifiers are expected to more fully 
+		encompass words or phrases used in natural languages. In these cases, a 
+		profile should consider whether the characters in<i> Table 3 </i>should 
+		be allowed in identifiers, and perhaps others, depending on the languages 
+		in question. In some environments even spaces are allowed in identifiers, 
+		such as in SQL: <i>SELECT * FROM Employee Pension.</i></p>
+		<div align="center">
+			<table border="1" id="table10">
+				<caption>Table 3. Candidate Characters for Inclusion in Identifiers</caption>
+				<tr>
+					<td><code>0027 (&#39;) APOSTROPHE<br>
+					002D (-) HYPHEN-MINUS<br>
+					002E (.) FULL STOP<br>
+					003A (:) COLON<br>
+					00B7 (·) MIDDLE DOT<br>
+					058A (֊) ARMENIAN HYPHEN<br>
+					05F3 (׳) HEBREW PUNCTUATION GERESH<br>
+					05F4 (״) HEBREW PUNCTUATION GERSHAYIM<br>
+					200C () ZERO WIDTH NON-JOINER*<br>
+					200D () ZERO WIDTH JOINER*<br>
+					2010 (‐) HYPHEN<br>
+					2019 (’) RIGHT SINGLE QUOTATION MARK<br>
+					2027 (‧) HYPHENATION POINT<br>
+					30A0 (=) KATAKANA-HIRAGANA DOUBLE HYPHEN</code></td>
+				</tr>
+			</table>
+		</div>
+		<blockquote>
+			<p>* The Join_Control 
+			characters are discussed in <i>Section 2.3&nbsp;
+			<a href="tr31-9.html#Layout_and_Format_Control_Characters">Layout and Format Control 
+			Characters</a></i>.</p>
+		</blockquote>
+		<p>In identifiers that 
+		allow for unnormalized characters, the compatibility equivalents of these 
+		may also be appropriate. For more information on characters that 
+		may occur in words, see <span class="section">Section </span>
+		<span class="secno">4,</span> <i>Word Boundaries</i>, in [<a href="../tr41/tr41-3.html#UAX29">UAX29</a>].</p>
+		<p>Some characters are 
+		not in modern customary use, and thus implementations may want to exclude 
+		them from identifiers. These are historic and obsolete scripts, scripts 
+		used mostly liturgically, and regional scripts used only in very small communities 
+		or with very limited current usage. The set of characters in Table 4 provides 
+		candidates of these, plus some inappropriate technical blocks.</p>
+		<div align="center">
+			<table border="1" id="table9">
+				<caption><a name="Table_4">Table 4</a>. 
+				Candidate Characters for Exclusion from Identifiers</caption>
+				<tr>
+					<th>Property Notation</th>
+					<th>Description</th>
+				</tr>
+				<tr>
+					<td><code>[:script=Bugi:]</code></td>
+					<td>Buginese</td>
+				</tr>
+				<tr>
+					<td><code>[:script=Buhd:]</code></td>
+					<td>Buhid</td>
+				</tr>
+				<tr>
+					<td><code>[:script=Cari:]</code></td>
+					<td>Carian</td>
+				</tr>
+				<tr>
+					<td><code>[:script=Copt:]</code></td>
+					<td>Coptic</td>
+				</tr>
+				<tr>
+					<td><code>[:script=Cprt:]</code></td>
+					<td>Cypriot</td>
+				</tr>
+				<tr>
+					<td><code>[:script=Dsrt:]</code></td>
+					<td>Deseret</td>
+				</tr>
+				<tr>
+					<td><code>[:script=Glag:]</code></td>
+					<td>Glagolitic</td>
+				</tr>
+				<tr>
+					<td><code>[:script=Goth:]</code></td>
+					<td>Gothic</td>
+				</tr>
+				<tr>
+					<td><code>[:script=Hano:]</code></td>
+					<td>Hanunoo</td>
+				</tr>
+				<tr>
+					<td><code>[:script=Ital:]</code></td>
+					<td>Old_Italic</td>
+				</tr>
+				<tr>
+					<td><code>[:script=Khar:]</code></td>
+					<td>Kharoshthi</td>
+				</tr>
+				<tr>
+					<td><code>[:script=Linb:]</code></td>
+					<td>Linear_B</td>
+				</tr>
+				<tr>
+					<td><code>[:script=Lyci:]</code></td>
+					<td>Lycian</td>
+				</tr>
+				<tr>
+					<td><code>[:script=Lydi:]</code></td>
+					<td>Lydian</td>
+				</tr>
+				<tr>
+					<td><code>[:script=Ogam:]</code></td>
+					<td>Ogham</td>
+				</tr>
+				<tr>
+					<td><code>[:script=Osma:]</code></td>
+					<td>Osmanya</td>
+				</tr>
+				<tr>
+					<td><code>[:script=Phag:]</code></td>
+					<td>Phags_Pa</td>
+				</tr>
+				<tr>
+					<td><code>[:script=Phnx:]</code></td>
+					<td>Phoenician</td>
+				</tr>
+				<tr>
+					<td><code>[:script=Rjng:]</code></td>
+					<td>Rejang</td>
+				</tr>
+				<tr>
+					<td><code>[:script=Runr:]</code></td>
+					<td>Runic</td>
+				</tr>
+				<tr>
+					<td><code>[:script=Shaw:]</code></td>
+					<td>Shavian</td>
+				</tr>
+				<tr>
+					<td><code>[:script=Sund:]</code></td>
+					<td>Sundanese</td>
+				</tr>
+				<tr>
+					<td><code>[:script=Sylo:]</code></td>
+					<td>Syloti_Nagri</td>
+				</tr>
+				<tr>
+					<td><code>[:script=Syrc:]</code></td>
+					<td>Syriac</td>
+				</tr>
+				<tr>
+					<td><code>[:script=Tagb:]</code></td>
+					<td>Tagbanwa</td>
+				</tr>
+				<tr>
+					<td><code>[:script=Tglg:]</code></td>
+					<td>Tagalog</td>
+				</tr>
+				<tr>
+					<td><code>[:script=Ugar:]</code></td>
+					<td>Ugaritic</td>
+				</tr>
+				<tr>
+					<td><code>[:script=Xpeo:]</code></td>
+					<td>Old_Persian</td>
+				</tr>
+				<tr>
+					<td><code>[:script=Xsux:]</code></td>
+					<td>Cuneiform</td>
+				</tr>
+				<tr>
+					<td colspan="2"><code>[:block=Combining_Diacritical_Marks_for_Symbols:]<br>
+					[:block=Musical_Symbols:]<br>
+					[:block=Ancient_Greek_Musical_Notation:]<br>
+					[:block=Phaistos_Disc:]</code></td>
+				</tr>
+			</table>
+		</div>
+		<p>This is the recommendation as of Unicode 5.1; 
+		as new scripts or blocks are added to future versions of Unicode, they may 
+		be added to this list.</p>
+		<p>For comparison, the other scripts (listed in 
+		Table 5) are recommended for use in identifiers. They are in widespread 
+		current use, or are regional scripts with large communities of users, or 
+		have significant revival efforts.</p>
+		<div align="center">
+			<table border="1" id="table11">
+				<caption><a name="Table_5">Table 5</a>. 
+				Recommended Scripts</caption>
+				<tr>
+					<th>Property Notation</th>
+					<th>Description</th>
+				</tr>
+				<tr>
+					<td><code>[:script=Zyyy:]</code></td>
+					<td>Common</td>
+				</tr>
+				<tr>
+					<td><code>[:script=Qaai:]</code></td>
+					<td>Inherited</td>
+				</tr>
+				<tr>
+					<td><code>[:script=Arab:]</code></td>
+					<td>Arabic</td>
+				</tr>
+				<tr>
+					<td><code>[:script=Armn:]</code></td>
+					<td>Armenian</td>
+				</tr>
+				<tr>
+					<td><code>[:script=Bali:]</code></td>
+					<td>Balinese</td>
+				</tr>
+				<tr>
+					<td><code>[:script=Beng:]</code></td>
+					<td>Bengali</td>
+				</tr>
+				<tr>
+					<td><code>[:script=Bopo:]</code></td>
+					<td>Bopomofo</td>
+				</tr>
+				<tr>
+					<td><code>[:script=Cans:]</code></td>
+					<td>Canadian_Aboriginal</td>
+				</tr>
+				<tr>
+					<td><code>[:script=Cham:]</code></td>
+					<td>Cham</td>
+				</tr>
+				<tr>
+					<td><code>[:script=Cher:]</code></td>
+					<td>Cherokee</td>
+				</tr>
+				<tr>
+					<td><code>[:script=Cyrl:]</code></td>
+					<td>Cyrillic</td>
+				</tr>
+				<tr>
+					<td><code>[:script=Deva:]</code></td>
+					<td>Devanagari</td>
+				</tr>
+				<tr>
+					<td><code>[:script=Ethi:]</code></td>
+					<td>Ethiopic</td>
+				</tr>
+				<tr>
+					<td><code>[:script=Geor:]</code></td>
+					<td>Georgian</td>
+				</tr>
+				<tr>
+					<td><code>[:script=Grek:]</code></td>
+					<td>Greek</td>
+				</tr>
+				<tr>
+					<td><code>[:script=Gujr:]</code></td>
+					<td>Gujarati</td>
+				</tr>
+				<tr>
+					<td><code>[:script=Guru:]</code></td>
+					<td>Gurmukhi</td>
+				</tr>
+				<tr>
+					<td><code>[:script=Hani:]</code></td>
+					<td>Han</td>
+				</tr>
+				<tr>
+					<td><code>[:script=Hang:]</code></td>
+					<td>Hangul</td>
+				</tr>
+				<tr>
+					<td><code>[:script=Hebr:]</code></td>
+					<td>Hebrew</td>
+				</tr>
+				<tr>
+					<td><code>[:script=Hira:]</code></td>
+					<td>Hiragana</td>
+				</tr>
+				<tr>
+					<td><code>[:script=Knda:]</code></td>
+					<td>Kannada</td>
+				</tr>
+				<tr>
+					<td><code>[:script=Kana:]</code></td>
+					<td>Katakana</td>
+				</tr>
+				<tr>
+					<td><code>[:script=Kali:]</code></td>
+					<td>Kayah_Li</td>
+				</tr>
+				<tr>
+					<td><code>[:script=Khmr:]</code></td>
+					<td>Khmer</td>
+				</tr>
+				<tr>
+					<td><code>[:script=Laoo:]</code></td>
+					<td>Lao</td>
+				</tr>
+				<tr>
+					<td><code>[:script=Latn:]</code></td>
+					<td>Latin</td>
+				</tr>
+				<tr>
+					<td><code>[:script=Lepc:]</code></td>
+					<td>Lepcha</td>
+				</tr>
+				<tr>
+					<td><code>[:script=Limb:]</code></td>
+					<td>Limbu</td>
+				</tr>
+				<tr>
+					<td><code>[:script=Mlym:]</code></td>
+					<td>Malayalam</td>
+				</tr>
+				<tr>
+					<td><code>[:script=Mong:]</code></td>
+					<td>Mongolian</td>
+				</tr>
+				<tr>
+					<td><code>[:script=Mymr:]</code></td>
+					<td>Myanmar </td>
+				</tr>
+				<tr>
+					<td><code>[:script=Talu:]</code></td>
+					<td>New_Tai_Lue</td>
+				</tr>
+				<tr>
+					<td><code>[:script=Nkoo:]</code></td>
+					<td>Nko</td>
+				</tr>
+				<tr>
+					<td><code>[:script=Olck:]</code></td>
+					<td>Ol_Chiki</td>
+				</tr>
+				<tr>
+					<td><code>[:script=Orya:]</code></td>
+					<td>Oriya</td>
+				</tr>
+				<tr>
+					<td><code>[:script=Saur:]</code></td>
+					<td>Saurashtra</td>
+				</tr>
+				<tr>
+					<td><code>[:script=Sinh:]</code></td>
+					<td>Sinhala</td>
+				</tr>
+				<tr>
+					<td><code>[:script=Tale:]</code></td>
+					<td>Tai_Le</td>
+				</tr>
+				<tr>
+					<td><code>[:script=Taml:]</code></td>
+					<td>Tamil</td>
+				</tr>
+				<tr>
+					<td><code>[:script=Telu:]</code></td>
+					<td>Telugu</td>
+				</tr>
+				<tr>
+					<td><code>[:script=Thaa:]</code></td>
+					<td>Thaana</td>
+				</tr>
+				<tr>
+					<td><code>[:script=Thai:]</code></td>
+					<td>Thai</td>
+				</tr>
+				<tr>
+					<td><code>[:script=Tibt:]</code></td>
+					<td>Tibetan</td>
+				</tr>
+				<tr>
+					<td><code>[:script=Tfng:]</code></td>
+					<td>Tifinagh</td>
+				</tr>
+				<tr>
+					<td><code>[:script=Vaii:]</code></td>
+					<td>Vai</td>
+				</tr>
+				<tr>
+					<td><code>[:script=Yiii:]</code></td>
+					<td>Yi</td>
+				</tr>
+			</table>
+		</div>
+		<p>This is the recommendation as of Unicode 5.1; 
+		as new scripts are added to future versions of Unicode, they may be added 
+		to this list.</p>
+		<p>There are a few special cases. The Common and 
+		Inherited script values [[:script=Zyyy:][:script=Qaai:]] are used widely 
+		with other scripts, rather than being scripts per se. The Unknown script 
+		[:script=Zzzz:] is used for Unassigned characters; Braille [:script=Brai:] 
+		consists only of symbols, and Katakana_Or_Hiragana [:script=Hrkt:] is empty 
+		(used historically in Unicode, but no longer.) With respect to the scripts 
+		Balinese, Cham, Ol Chiki, Vai, Kayah Li, and Saurashtra, there may be large 
+		communities of people speaking an associated language, but the script itself 
+		is not not in widespread use. However, there are significant revival efforts. 
+		Bopomofo is used primarily in education.</p>
+		<p>For programming language identifiers, normalization and case have a number 
+		of important implications. For a discussion of these issues, see
+		<a href="tr31-9.html#normalization_and_case"><span class="section">Section </span>
+		<span class="secno">5,</span> <i>Normalization and Case</i></a>.</p>
+		<h3 class="section">2.5 <a name="Backward_Compatibility">Backward Compatibility</a></h3>
+		<p>Unicode General_Category values are kept as stable as possible, but they 
+		can change across versions of the Unicode Standard. The bulk of the characters 
+		having a given value are determined by other properties, and the coverage 
+		expands in the future according to the assignment of those properties. In 
+		addition, the Other_ID_Start property adds a small list of characters that 
+		qualified as ID_Start characters in some previous version of Unicode solely 
+		on the basis of their General_Category properties, but that no longer qualify 
+		in the current version. These are called <i>grandfathered</i> 
+		characters. This list consists of four characters:</p>
+		<blockquote>
+			U+2118 (<span class="mathsym3">℘</span>) <span class="name">SCRIPT CAPITAL P</span><br>
+			U+212E (<span class="mathsym3">℮</span>) <span class="name">ESTIMATED MARK</span><br>
+			U+309B (゛) <span class="name">KATAKANA-HIRAGANA VOICED SOUND MARK</span><br>
+			U+309C (゜) <span class="name">KATAKANA-HIRAGANA SEMI-VOICED SOUND MARK</span>
+		</blockquote>
+		<p>Similarly, the Other_ID_Continue property adds a small list of characters 
+		that qualified as ID_Continue characters in some previous version of Unicode 
+		solely on the basis of their General_Category properties, but that no longer 
+		qualify in the current version, or exceptional 
+		characters. This list consists of eleven characters:</p>
+		<blockquote>
+			U+1369 (፩) <span class="name">ETHIOPIC DIGIT ONE</span>...U+1371 (፱) <span class="name">ETHIOPIC DIGIT NINE</span><br>
+			U+00B7 ( · ) <span class="name">MIDDLE DOT</span><br>
+			U+0387 ( · ) <span class="name">GREEK ANO TELEIA</span>
+		</blockquote>
+		<p>The Other_ID_Start and Other_ID_Continue properties are thus designed 
+		to ensure that the Unicode identifier specification is backward compatible. 
+		Any sequence of characters that qualified as an identifier in some version 
+		of Unicode will continue to qualify as an identifier in future versions.</p>
+		<p>If a specification tailors the Unicode recommendations 
+		for identifiers, then this technique can also be used to maintain backwards 
+		compatibility across versions.</p>
+		<table class="noborder">
+			<tr>
+				<td class="noborder"><b><i><a name="R1" href="tr31-9.html#R1">R1</a></i>
+				</b></td>
+				<td class="noborder"><b><i>Default Identifiers</i></b></td>
+			</tr>
+			<tr>
+				<td class="noborder">&nbsp;</td>
+				<td class="noborder">
+				<p style="margin-bottom:.75em">To meet this requirement, an implementation 
+				shall use definition D1 and the properties ID_Start and ID_Continue 
+				(or XID_Start and XID_Continue) to determine whether a string is 
+				an identifier.</p>
+				<div class="book-only">
+					<p style="margin-bottom:.75em">&nbsp;</p>
+				</div>
+				<p>Alternatively, it shall declare that it uses a <i>profile</i> 
+				and define that profile with a precise 
+				specification of the characters 
+				that are added to or removed from the above properties and/or provide 
+				a list of additional constraints on identifiers.</p>
+				</td>
+			</tr>
+			<tr>
+				<td class="noborder"><i><b>
+				<a name="R1a" href="tr31-9.html#R1a">R1a</a></b></i></td>
+				<td class="noborder"><b><i>Restricted Format Characters</i></b></td>
+			</tr>
+			<tr>
+				<td class="noborder">&nbsp;</td>
+				<td class="noborder">To meet this requirement, 
+				an implementation shall define a profile for R1 which allows format 
+				characters as described in <i>Section 2.3
+				<a href="tr31-9.html#Layout_and_Format_Control_Characters">Layout and Format 
+				Control Characters</a>.</i> An implementation may further restrict 
+				the context for ZWJ or ZWNJ, such as by limiting the scripts, if 
+				a clear specification for such a further restriction is supplied.</td>
+			</tr>
+			<tr>
+				<td class="noborder"><i><b>
+				<a name="R1b" href="tr31-9.html#R1b">R1b</a></b></i></td>
+				<td class="noborder"><i><b>Stable Identifiers</b></i></td>
+			</tr>
+			<tr>
+				<td class="noborder">&nbsp;</td>
+				<td class="noborder">To meet this requirement, 
+				an implementation shall guarantee that identifiers are stable across 
+				versions of the Unicode Standard: that is, once a string qualifies 
+				as an identifier, it does so in all future versions. (The typical 
+				mechanism used to achieve this is by using grandfathered characters.)</td>
+			</tr>
+		</table>
+		<h2 class="section">3 <a name="Alternative_Identifier_Syntax">Alternative 
+		Identifier Syntax</a></h2>
+		<p>The disadvantage of working with the lexical classes defined previously 
+		is the storage space needed for the detailed definitions, plus the fact 
+		that with each new version of the Unicode Standard new characters are added, 
+		which an existing parser would not be able to recognize. In other words, 
+		the recommendations based on that table are not upwardly compatible. </p>
+		<p>This problem can be addressed by turning the question around. Instead 
+		of defining the set of code points that are allowed, define a small, fixed 
+		set of code points that are reserved for syntactic use and allow everything 
+		else (including unassigned code points) as part of an identifier. All parsers 
+		written to this specification would behave the same way for all versions 
+		of the Unicode Standard, because the classification of code points is fixed 
+		forever. </p>
+		<p>The drawback of this method is that it allows “nonsense” to be part of 
+		identifiers because the concerns of lexical classification and of human 
+		intelligibility are separated. Human intelligibility can, however, be addressed 
+		by other means, such as usage guidelines that encourage a restriction to 
+		meaningful terms for identifiers. For an example of such guidelines, see 
+		the XML 1.1 specification by the W3C [<a href="../tr41/tr41-3.html#XML1.1">XML1.1</a>].
+		</p>
+		<p>By increasing the set of disallowed characters, a reasonably intuitive 
+		recommendation for identifiers can be achieved. This approach uses the full 
+		specification of identifier classes, as of a particular version of the Unicode 
+		Standard, and permanently disallows any characters not recommended in that 
+		version for inclusion in identifiers. All code points unassigned as of that 
+		version would be allowed in identifiers, so that any future additions to 
+		the standard would already be accounted for. This approach ensures both 
+		upwardly compatible identifier stability and a reasonable division of characters 
+		into those that do and do not make human sense as part of identifiers.
+		</p>
+		<p>With or without such fine-tuning, such a compromise approach still incurs 
+		the expense of implementing large lists of code points. While they no longer 
+		change over time, it is a matter of choice whether the benefit of enforcing 
+		somewhat word-like identifiers justifies their cost.</p>
+		<p>Alternatively, one can use the properties described below and allow all 
+		sequences of characters to be identifiers that are neither Pattern_Syntax 
+		nor Pattern_White_Space. This has the advantage of simplicity and small 
+		tables, but allows many more “unnatural” identifiers.</p>
+		<table class="noborder">
+			<tr>
+				<td class="noborder"><b><i><a name="R2" href="tr31-9.html#R2">R2</a></i>
+				</b></td>
+				<td class="noborder"><b><i>Alternative Identifiers</i></b></td>
+			</tr>
+			<tr>
+				<td class="noborder">&nbsp;</td>
+				<td class="noborder">
+				<p style="margin-bottom:.75em">To meet this requirement, an implementation 
+				shall define identifiers to be any non-empty
+				string of characters that contains
+				no character having 
+				any of the following property values:</p>
+				<ul>
+					<li>Pattern_White_Space=True</li>
+					<li>Pattern_Syntax=True</li>
+					<li>General_Category=Private_Use, 
+					Surrogate, or Control</li>
+					<li>Noncharacter_Code_Point=True</li>
+				</ul>
+				<p>Alternatively, it shall declare that it uses a <i>profile</i> 
+				and define that profile with a precise 
+				specification of the characters 
+				that are added to or removed from the sets of code points defined 
+				by these properties.</p>
+				</td>
+			</tr>
+		</table>
+		<p>In its profile, a specification can define 
+		identifiers to be more in accordance with the Unicode identifier definitions 
+		at the time the profile is adopted, while still allowing for strict immutability. 
+		For example, an implementation adopting a profile after a particular version 
+		of Unicode is released (such as Unicode 5.0) could define the profile as 
+		follows:</p>
+		<ol>
+			<li>All characters satisfying
+			<a href="tr31-9.html#R1">R1 Default Identifiers</a> according to Unicode 5.0</li>
+			<li>Plus all code points unassigned in Unicode 
+			5.0 that do not have the property values specified in <a href="tr31-9.html#R2">
+			R2 Alternative Identifiers</a>.</li>
+		</ol>
+		<p>This technique allows identifiers to have a 
+		more natural format—excluding symbols and punctuation 
+		already defined—yet also providing for absolute 
+		code point immutability.</p>
+		<p>Specifications should also include 
+		guidelines and recommendations for those creating new identifiers. 
+		Although <i><a href="tr31-9.html#R2">R2 Alternative Identifiers</a></i> permits a 
+		wide range of characters, as a best practice identifiers should be in 
+		the format NFKC, without using any unassigned characters. For more 
+		information on NFKC, see Unicode Standard Annex #15, “Unicode 
+		Normalization Forms” [<a href="../tr41/tr41-3.html#UAX15">UAX15</a>].</p>
+		<h2 class="section">4 <a name="Pattern_Syntax">Pattern Syntax</a></h2>
+		<p>There are many circumstances where software interprets patterns that 
+		are a mixture of literal characters, whitespace, and syntax characters. 
+		Examples include regular expressions, Java collation rules, Excel or ICU 
+		number formats, and many others. In the past, regular expressions and other 
+		formal languages have been forced to use clumsy combinations of ASCII characters 
+		for their syntax. As Unicode becomes ubiquitous, some of these will start 
+		to use non-ASCII characters for their syntax: first as more readable optional 
+		alternatives, then eventually as the standard syntax.</p>
+		<p>For forward and backward compatibility, it is advantageous to have a 
+		fixed set of whitespace and syntax code points for use in patterns. This 
+		follows the recommendations that the Unicode Consortium made regarding completely 
+		stable identifiers, and the practice that is seen in XML 1.1 [<a href="../tr41/tr41-3.html#XML1.1">XML1.1</a>]. 
+		(In particular, the Unicode Consortium is committed to not allocating characters 
+		suitable for identifiers in the range U+2190..U+2BFF, which is being used 
+		by XML 1.1.)</p>
+		<p>With a fixed set of whitespace and syntax code points, a pattern language 
+		can then have a policy requiring all possible syntax characters (even ones 
+		currently unused) to be quoted if they are literals. Using this policy preserves 
+		the freedom to extend the syntax in the future by using those characters. 
+		Past patterns on future systems will always work; future patterns on past 
+		systems will signal an error instead of silently producing the wrong results.</p>
+		<h5>Example 1:</h5>
+		<blockquote>
+			<p>In version 1.0 of program X, &#39;≈&#39; is a reserved syntax character; 
+			that is, it does not perform an operation, and it needs to be quoted. 
+			In this example, &#39;\&#39; <i>quotes</i> the next character; that is, it causes 
+			it to be treated as a literal instead of a syntax character. In version 
+			2.0 of program X, &#39;≈&#39; is given a real meaning—for example, “uppercase 
+			the subsequent characters”. </p>
+			<ul>
+				<li>The pattern abc...\≈...xyz works on both versions 1.0 and 2.0, 
+				and refers to the literal character because it is quoted in both 
+				cases. </li>
+				<li>The pattern abc...≈...xyz works on version 2.0 and uppercases 
+				the following characters. On version 1.0, the engine (rightfully) 
+				has no idea what to do with ≈. Rather than silently fail (by ignoring 
+				≈ or turning it into a literal), it has the opportunity signal an 
+				error.</li>
+			</ul>
+		</blockquote>
+		<p>As of [<a href="../tr41/tr41-3.html#Unicode4.1">Unicode4.1</a>], two 
+		Unicode character properties can be used for for stable syntax: Pattern_White_Space 
+		and Pattern_Syntax.&nbsp; Particular pattern languages may, of course, override 
+		these recommendations (for example, adding or removing other characters 
+		for compatibility in ASCII). </p>
+		<p>For stability, the values of these properties are absolutely invariant, 
+		not changing with successive versions of Unicode. Of course, this does not 
+		limit the ability of the Unicode Standard to add more symbol or whitespace 
+		characters, but the syntax and whitespace characters recommended for use 
+		in patterns will not change.</p>
+		<p>When <i>generating</i> rules or patterns, all whitespace and syntax code 
+		points that are to be literals require quoting, using whatever quoting mechanism 
+		is available. For readability, it is recommended practice to quote or escape 
+		all literal whitespace and default ignorable code points as well.</p>
+		<h5>Example 2:</h5>
+		<blockquote>
+			<p>Consider the following, where the items in angle brackets indicate 
+			literal characters:</p>
+			<blockquote>
+				<p>a&lt;<span class="name">SPACE</span>&gt;b =&gt; x&lt;<span class="name">ZERO 
+				WIDTH SPACE</span>&gt;y&nbsp; + z;</p>
+			</blockquote>
+			<p>Because &lt;<span class="name">SPACE</span>&gt; is a Pattern_White_Space 
+			character, it requires quoting. Because &lt;<span class="name">ZERO WIDTH 
+			SPACE</span>&gt; is a default ignorable character, it should also be quoted 
+			for readability. So if in this example \uXXXX is used for hex expression, 
+			but resolved before quoting, and single quotes are used for quoting, 
+			this might be expressed as</p>
+			<blockquote>
+				<p>&#39;a\u0020b&#39; =&gt; &#39;x\u200By&#39; + z;</p>
+			</blockquote>
+		</blockquote>
+		<table class="noborder">
+			<tr>
+				<td class="noborder"><i><b><a name="R3" href="tr31-9.html#R3">R3</a></b>
+				</i></td>
+				<td class="noborder"><i><b>Pattern_White_Space and 
+				Pattern_Syntax Characters</b></i></td>
+			</tr>
+			<tr>
+				<td class="noborder">&nbsp;</td>
+				<td class="noborder">
+				<p class="stdp">To meet this requirement, an implementation shall 
+				use Pattern_White_Space characters as all and only those characters 
+				interpreted as whitespace in parsing, and shall use Pattern_Syntax 
+				characters as all and only those characters with syntactic use.</p>
+				<p>Alternatively, it shall declare that it uses a <i>profile</i> 
+				and define that profile with a precise 
+				specification of the characters 
+				that are added to or removed from the sets of code points defined 
+				by these properties.</p>
+				<ul>
+					<li>All characters other than those defined by these properties 
+					are available for use as identifiers or literals.</li>
+				</ul>
+				</td>
+			</tr>
+		</table>
+		<h2 class="section">5 <a name="normalization_and_case">Normalization and 
+		Case</a></h2>
+		<p>This section discusses issues that must be taken into account when considering 
+		normalization and case folding of identifiers in programming languages or 
+		scripting languages. Using normalization avoids many problems where apparently 
+		identical identifiers are not treated equivalently. Such problems can appear 
+		both during compilation and during linking—in particular across different 
+		programming languages. To avoid such problems, programming languages can 
+		normalize identifiers before storing or comparing them. Generally if the 
+		programming language has case-sensitive identifiers, then Normalization 
+		Form C is appropriate; whereas, if the programming language has case-insensitive 
+		identifiers, then Normalization Form KC is more appropriate.</p>
+		<p>Implementations that take normalization and 
+		case into account have two choices: to treat variants as equivalent, or 
+		to disallow variants.</p>
+		<table class="noborder">
+			<tr>
+				<td class="noborder"><i><b><a name="R4" href="tr31-9.html#R4">R4</a></b>
+				</i></td>
+				<td class="noborder"><i><b>Equivalent Normalized Identifiers</b></i></td>
+			</tr>
+			<tr>
+				<td class="noborder">&nbsp;</td>
+				<td class="noborder">
+				<p class="stdp">To meet this requirement, an implementation shall 
+				specify the Normalization Form and shall provide a precise
+				specification of
+				the characters that are excluded 
+				from normalization, if any. If 
+				the Normalization Form is NFKC, the implementation shall apply the 
+				modifications in <a href="tr31-9.html#NFKC_Modifications">
+				<span class="section">Section </span><span class="secno">5.1,</span><i> 
+				NFKC Modifications</i></a>, given by the properties XID_Start and 
+				XID_Continue. Except for identifiers containing excluded characters, 
+				any two identifiers that have the same Normalization Form shall 
+				be treated as equivalent by the implementation.</p>
+				</td>
+			</tr>
+			<tr>
+				<td class="noborder"><i><b><a name="R5" href="tr31-9.html#R5">R5</a></b></i></td>
+				<td class="noborder"><i><b>Equivalent Case-Insensitive Identifiers</b></i></td>
+			</tr>
+			<tr>
+				<td class="noborder">&nbsp;</td>
+				<td class="noborder">
+				<p class="stdp">To meet this requirement, an implementation shall 
+				specify either simple or full case folding, and adhere to the Unicode 
+				specification for that folding. Any two identifiers that have the 
+				same case-folded form shall be treated as equivalent by the implementation.</p>
+				</td>
+			</tr>
+			<tr>
+				<td class="noborder">
+				<a href="tr31-9.html#R4" name="R6"><b><i>R6</i></b></a></td>
+				<td class="noborder"><i><b>Filtered Normalized Identifiers</b></i></td>
+			</tr>
+			<tr>
+				<td class="noborder">&nbsp;</td>
+				<td class="noborder">
+				<p class="stdp">To meet this requirement, 
+				an implementation shall specify the Normalization Form and shall 
+				provide a precise specification of the characters that are excluded 
+				from normalization, if any. If the Normalization Form is NFKC, the 
+				implementation shall apply the modifications in 
+				<a href="tr31-9.html#NFKC_Modifications">
+				<span class="section">Section </span><span class="secno">5.1,</span><i> 
+				NFKC Modifications</i></a>, 
+				given by the properties XID_Start and XID_Continue. Except for identifiers 
+				containing excluded characters, no identifiers are allowed that 
+				are not in the specified Normalization Form.</p>
+				</td>
+			</tr>
+			<tr>
+				<td class="noborder">
+				<a href="tr31-9.html#R5" name="R7"><b><i>R7</i></b></a></td>
+				<td class="noborder"><i><b>Filtered Case-Insensitive Identifiers</b></i></td>
+			</tr>
+			<tr>
+				<td class="noborder">&nbsp;</td>
+				<td class="noborder">
+				<p class="stdp">To meet this requirement, 
+				an implementation shall specify either simple or full case folding, 
+				and adhere to the Unicode specification for that folding. Except 
+				for identifiers containing excluded characters, no identifiers are 
+				allowed that are not in the specified Normalization Form.</p>
+				</td>
+			</tr>
+		</table>
+		<p>For R6, this involves removing 
+		from identifiers any characters in the set [:NFKC_QuickCheck=No:] (or equivalently, 
+		removing [:^isNFKC:]). For R7, this involves removing from identifiers any 
+		characters in the set [:^isCaseFolded:].</p>
+		<blockquote>
+			<p><span class="note">Note:</span> In mathematically oriented programming 
+			languages that make distinctive use of the Mathematical Alphanumeric 
+			Symbols, such as U+1D400 <span class="name">MATHEMATICAL BOLD CAPITAL 
+			A</span>, an application of NFKC must filter characters to exclude characters 
+			with the property value Decomposition_Type=Font. For related information, 
+			see Unicode Technical Report #30, “<a href="../tr30/index.html">Character 
+			Foldings</a>.”</p>
+		</blockquote>
+		<h3 class="section">5.1 <a name="NFKC_Modifications">NFKC Modifications</a></h3>
+		<p>Where programming languages are using NFKC to fold differences between 
+		characters, they need the following modifications of the identifier syntax 
+		from the Unicode Standard to deal with the idiosyncrasies of a small number 
+		of characters. These modifications are reflected in the XID_Start and XID_Continue 
+		properties.</p>
+		<ol>
+			<li><span class="run_in">Characters that behave like combining marks.
+			</span>Certain characters are not formally combining characters, although 
+			they behave in most respects as if they were. In most cases, the mismatch 
+			does not cause a problem, but when these characters have compatibility 
+			decompositions, they can cause identifiers not to be closed under Normalization 
+			Form KC. In particular, the following four characters are included in 
+			XID_Continue and not XID_Start:
+			<ul style="list-style-type:none">
+				<li>U+0E33 <span class="name">THAI CHARACTER SARA AM </span>
+				</li>
+				<li>U+0EB3 <span class="name">LAO VOWEL SIGN AM </span></li>
+				<li>U+FF9E <span class="name">HALFWIDTH KATAKANA VOICED SOUND MARK
+				</span></li>
+				<li>U+FF9F <span class="name">HALFWIDTH KATAKANA SEMI-VOICED SOUND 
+				MARK</span> </li>
+			</ul>
+			</li>
+			<li><span class="run_in">Irregularly decomposing characters.</span> 
+			U+037A <span class="name">GREEK YPOGEGRAMMENI</span> and certain Arabic 
+			presentation forms have irregular compatibility decompositions and are 
+			excluded from both XID_Start and XID_Continue. It is recommended that 
+			all Arabic presentation forms be excluded from identifiers in any event, 
+			although only a few of them must be excluded for normalization to guarantee 
+			identifier closure. </li>
+		</ol>
+		<p>With these amendments to the identifier syntax, all identifiers are closed 
+		under all four Normalization Forms. Identifiers are also closed under case 
+		operations (with one exception). This means that for any string S:</p>
+		<div class="book-only">
+			<p>&nbsp;</p>
+		</div>
+		<div align="center">
+			<center>
+			<table border="1" cellspacing="0" style="border-collapse: collapse; padding-left:.2em; padding-right:.2em" id="table1">
+				<tr>
+					<td style="vertical-align: middle" rowspan="2"><code>isIdentifier(S)</code></td>
+					<td style="vertical-align: middle" rowspan="2">implies</td>
+					<td style="vertical-align: middle"><code>isIdentifier(toNFD(S))<br>
+					isIdentifier(toNFC(S))<br>
+					isIdentifier(toNFKD(S))<br>
+					isIdentifier(toNFKC(S))</code></td>
+					<th style="vertical-align: middle">Normalization Closure</th>
+				</tr>
+				<tr>
+					<td style="vertical-align: middle">
+					<p align="center"><code>isIdentifier(toLowercase(S))<br>
+					isIdentifier(toUppercase(S))<br>
+					isIdentifier(toFoldedcase(S))</code></p>
+					</td>
+					<th style="vertical-align: middle">Case Closure</th>
+				</tr>
+			</table>
+			</center></div>
+		<p>The one exception for casing is U+0345 <span class="name">COMBINING GREEK 
+		YPOGEGRAMMENI</span>. In the very unusual case that U+0345 is at the start 
+		of S, U+0345 is not in XID_Start, but its uppercase and case-folded versions 
+		are. In practice, this is not a problem because of the way normalization 
+		is used with identifiers.</p>
+		<p>The reverse implication is <i>not</i> true 
+		in the case of compatibility equivalence: <code>isIdentifier(toNFC(S))</code> 
+		does not imply <code>isIdentifier(S)</code>. There are many characters for 
+		which the reverse implication is not true, since there are many character 
+		counting as symbols or non-decimal numbers—and 
+		thus outside of identifiers—whose compatibility 
+		equivalents are letters or decimal numbers and thus in identifiers. Some 
+		examples are:</p>
+		<table style="BORDER-COLLAPSE: collapse" id="table3">
+			<tr>
+				<th>Code Points</th>
+				<th>GC</th>
+				<th>Samples</th>
+				<th>Names</th>
+			</tr>
+			<tr>
+				<td>2070</td>
+				<td>No</td>
+				<td>(⁰)</td>
+				<td>SUPERSCRIPT ZERO</td>
+			</tr>
+			<tr>
+				<td>20A8</td>
+				<td>Sc</td>
+				<td>(₨)</td>
+				<td>RUPEE SIGN</td>
+			</tr>
+			<tr>
+				<td>2116</td>
+				<td>So</td>
+				<td>(№)</td>
+				<td>NUMERO SIGN</td>
+			</tr>
+			<tr>
+				<td>2120..2122</td>
+				<td>So</td>
+				<td>(℠..™)</td>
+				<td>SERVICE MARK..TRADE MARK SIGN</td>
+			</tr>
+			<tr>
+				<td>2460..2473</td>
+				<td>No</td>
+				<td>(①..⑳)</td>
+				<td>CIRCLED DIGIT ONE..CIRCLED NUMBER 
+				TWENTY</td>
+			</tr>
+			<tr>
+				<td>3300..33A6</td>
+				<td>So</td>
+				<td>(㌀..㎦)</td>
+				<td>SQUARE APAATO..SQUARE KM CUBED</td>
+			</tr>
+		</table>
+		<p>If an implementation needs to ensure both directions 
+		for compatibility equivalence of identifiers, then these characters would 
+		be need to be tailored so as to be added to identifiers.</p>
+		<p>For canonical equivalence the implication is 
+		true in both directions. <code>isIdentifier(toNFC(S))</code> if and only 
+		if <code>isIdentifier(S)</code>.</p>
+			<p>There were two exceptions before Unicode 
+			5.1.</p>
+			<table id="table4">
+				<tr>
+					<th>isIdentifier(toNFC(S))=True</th>
+					<th>isIdentifier(S)=False</th>
+					<th>Different in:</th>
+				</tr>
+				<tr>
+					<td>U+02B9 ( ʹ ) MODIFIER LETTER PRIME</td>
+					<td>U+0374 ( ʹ ) GREEK NUMERAL SIGN</td>
+					<td>XID and ID</td>
+				</tr>
+				<tr>
+					<td>U+00B7 ( · ) MIDDLE DOT</td>
+					<td>U+0387 ( · ) GREEK ANO TELEIA</td>
+					<td>XID alone</td>
+				</tr>
+			</table>
+			<p>If an implementation needed to ensure full 
+			canonical equivalence of identifiers, then these characters had to be 
+			tailored to have the same value, so that either both isIdentifier(S) 
+			and isIdentifier(toNFC(S)) are true, or so that both values are false.</p>
+		<p>Those programming languages with case-insensitive identifiers should 
+		use the case foldings described in <i>Section 3.13, Default Case Algorithms</i>, 
+		of [<a href="../tr41/tr41-3.html#Unicode">Unicode</a>] to produce a case-insensitive 
+		normalized form.</p>
+		<p>When source text is parsed for identifiers, the folding of distinctions 
+		(using case mapping or NFKC) must be delayed until after parsing has located 
+		the identifiers. Thus such folding of distinctions should not be applied 
+		to string literals or to comments in program source text.</p>
+		<p>The Unicode Character Database (UCD) provides support for handling case 
+		folding with normalization: the property FC_NFKC_Closure can be used in 
+		case folding, so that a case folding of an NFKC string is itself normalized. 
+		These properties, and the files containing them, are described in the UCD 
+		documentation [<a href="../tr41/tr41-3.html#UCD">UCD</a>].</p>
+		<h2 class="nonumber"><a name="Acknowledgments">Acknowledgments</a></h2>
+		<p>Mark Davis is the author of the initial version and has added to and 
+		maintained the text of this annex.</p>
+		<p>Thanks to Eric Muller, Asmus Freytag, Julie Allen, Kenneth Whistler, 
+		and Martin Duerst for feedback on this annex.</p>
+		<h2 class="nonumber"><a name="References">References</a></h2>
+		<p>For references for this annex, see Unicode Standard Annex #41, “<a href="../tr41/tr41-3.html">Common 
+		References for Unicode Standard Annexes</a>.”</p>
+		<h2 class="nonumber"><a name="Modifications">Modifications</a></h2>
+		<!-- BOOK ONLY -->
+		<div class="book-only">
+			<p>For details of the change history, see the online copy of this annex 
+			at http://www.unicode.org/reports/tr31/.</p>
+		</div>
+		<!-- WEB ONLY -->
+		<div class="web-only">
+			<p>The following summarizes modifications from previous revisions of 
+			this annex.</p>
+			<h3>Revision 9</h3>
+			<ul>
+				<li>Updated for Unicode 5.1.0.</li>
+				<li>Fixed Table 2 to exclude Pattern_Syntax and Pattern_White_Space explicitly.</li>
+				<li>Added note under <a href="tr31-9.html#R2">R2 Alternative Identifiers</a></li>
+				<li>Removed surrogates, private-use, and control from R2, added notes.</li>
+				<li>Noted restrictions on ZWJ/ZWNJ are as applied to NFC.</li>
+				<li>Added Section 2.2&nbsp;
+					<a href="tr31-9.html#Modifier_Letters">Modifier Letters</a> and renumbered sections.</li>
+				<li>Added <a href="tr31-9.html#Table_5">Table 5</a>, to show other scripts.</li>
+				<li>Noted that both Tables will require 
+					updating with successive versions of Unicode, as new scripts are added.</li>
+				<li>Broadened the discussion of Layout 
+					Controls to include other Default Ignorables in 2.3&nbsp;
+					<a href="tr31-9.html#Layout_and_Format_Control_Characters">Layout and Format 
+					Control Characters</a>.</li>
+				<li>Minor reformatting of tables and figures, and addition of captions to tables.</li>
+				<li>Added descriptions of scripts 
+					in <a href="tr31-9.html#Table_4">Table 4</a>, Candidate Characters for 
+					Exclusion from Identifiers.</li>
+				<li>Added sentence about further restrictions to R1a.</li>
+				<li>Added line pointing to UTR36 for information about further restrictions.</li>
+				<li>Added to discussion of canonical equivalence of identifiers.</li>
+				<li>Added filtered identifiers and rules.</li>
+				<li>Added format character discussion and rules.</li>
+			</ul>
+			<p>Revision 8 being a proposed update, only changes between revisions 
+			9 and 7 are noted here.</p>
+			<h3>Revision 7</h3>
+			<ul>
+				<li>Introduced the term <i>profile.</i></li>
+				<li>Added note on profiles of identifiers for natural language in
+				<i>Section 2.3 <a href="tr31-9.html#Specific_Character_Adjustments">Specific 
+				Character Adjustments</a></i></li>
+				<li>Minor editing for clarity in 2
+				<a href="tr31-9.html#Default_Identifier_Syntax">Default Identifier Syntax</a></li>
+				<li>Added note on spaces in identifiers (eg in SQL)</li>
+			</ul>
+			<p>Revision 6 being a proposed update, only changes between revisions 
+			7 and 5 are noted here.</p>
+			<h3>Revision 5</h3>
+			<ul>
+				<li>Removed section 4.1, because the two properties have been accepted 
+				for Unicode 4.1.</li>
+				<li>Expanded introduction</li>
+				<li>Adding information about stability, and tailoring for identifiers.</li>
+				<li>Added the list of characters in Other_ID_Continue .</li>
+				<li>Changed &lt;identifier_continue&gt; and &lt;identifier_start&gt; to just 
+				use the property names, to avoid confusion.</li>
+				<li>Included XID_Start and XID_Continue in R1 and elsewhere.</li>
+				<li>Added reference to UTR #36, and the phrase “or a list of additional 
+				constraints on identifiers” to R1.</li>
+				<li>Changed “Coverage” to “General Description of Coverage,” because 
+				the UCD value are definitive.</li>
+				<li>Added clarifications in 2.4</li>
+				<li>Revamped 2.2 Layout and Format Control Characters</li>
+				<li>Minor editing</li>
+			</ul>
+			<h3>Revision 3</h3>
+			<ul>
+				<li>Made draft UAX</li>
+				<li>Incorporated Annex 7 from UAX #15</li>
+				<li>Added Other_ID_Continue for Unicode 4.1</li>
+				<li>Added conformance clauses</li>
+				<li>Changed &lt;identifier_extend&gt; to &lt;identifier_continue&gt; to better 
+				match the property name.</li>
+				<li>Some additional edits.</li>
+			</ul>
+			<h3>Revision 2</h3>
+			<ul>
+				<li>Modified Pattern_White_Space to remove compatibility characters</li>
+				<li>Added example explaining use of Pattern_White_Space</li>
+			</ul>
+			<h3>Revision 1</h3>
+			<ul>
+				<li>First version: incorporated section from Unicode 4.0 on Identifiers 
+				plus new section on patterns.</li>
+			</ul>
+			<hr>
+			<p class="copyright">Copyright © 2000-2008 
+			Unicode, Inc. All Rights Reserved. The Unicode Consortium makes no expressed 
+			or implied warranty of any kind, and assumes no liability for errors 
+			or omissions. No liability is assumed for incidental and consequential 
+			damages in connection with or arising out of the use of the information 
+			or programs contained or accompanying this technical report. The Unicode
+			<a href="http://www.unicode.org/copyright.html">Terms of Use</a> apply.</p>
+			<p class="copyright">Unicode and the Unicode logo are trademarks of 
+			Unicode, Inc., and are registered in some jurisdictions.</p>
+		</div>
+		<!-- web only --></div>
+	<!-- body --></div>
+<!-- book -->
+
+</body>
+
+</html>

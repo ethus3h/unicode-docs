@@ -1,0 +1,61 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE characterMapping
+  SYSTEM "http://www.unicode.org/unicode/reports/tr22/CharacterMapping.dtd">
+<!-- NOTE: THIS IS ONLY A SAMPLE: THE DATA IS PURELY FOR ILLUSTRATION-->
+<characterMapping
+ id="windows-1252-2000"
+ description="Sun variant of CP942 for Japanese"
+ version="2"
+ contact="mailto:mark@unicode.org"
+ registrationAuthority="Microsoft"
+ registrationName="cp666"
+ copyright="Microsoft"
+ bidiOrder="logical"
+ normalization="NFC"
+>
+ <history >
+  <modified version="2" date="1999-09-25">
+   Added Euro.
+  </modified>
+  <modified version="1" date="1997-01-01">
+   Made out of whole cloth for illustration.
+  </modified>
+ </history>
+
+<validity>
+  <state type="FIRST" next="VALID" s="00" e="80" />
+  <state type="FIRST" next="VALID" s="A0" e="DF" />
+  <state type="FIRST" next="VALID" s="FD" e="FF" />
+  <state type="FIRST" next="LAST" s="81" e="9F" />
+  <state type="FIRST" next="LAST" s="E0" e="FC" />
+  <state type="LAST" next="VALID" s="40" e="7E" />
+  <state type="LAST" next="VALID" s="80" e="FC"  max="FFFF" />
+</validity>
+
+ <assignments sub="A3">
+
+<!--Main mappings-->
+  <a b="A1" u="FF61" c="｡" />
+  <a b="A2" u="FF62" c="｢" />
+  <a b="A3" u="FF63" c="｣" />
+  <a b="A4" u="FF64" c="､" />
+  <a b="81 41" u="3001" c="、" />
+  <a b="81 42" u="3002" c="。" />
+  <a b="81 43" u="FF0C" c="，" />
+  <a b="81 44" u="FF0E FF03" c="．" /> 
+
+  <!--Fallbacks-->
+  <fub u="00A1" b="21" ru="0021" c="¡" rc="!" />
+  <fub u="00A2" b="81 91" ru="FFE0" c="¢" rc="￠" />
+  <fub u="00A3" b="81 92" ru="FFE1" c="£" rc="￡" />
+  <fub u="00A5" b="5C" ru="005C" c="¥" rc="\" />
+  <fub u="00A6" b="7C" ru="007C" c="¦" rc="|" />
+  <fub u="00A9" b="63" ru="0063" c="©" rc="c" />
+
+  <!--Ranges-->
+  <range bFirst="90 30 81 30" bLast="E3 32 9A 35"
+    uFirst="10000" uLast="10ffff"
+    bMin="90 30 81 30" bMax="E3 39 FE 39"/>
+
+ </assignments>
+</characterMapping>

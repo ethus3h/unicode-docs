@@ -1,0 +1,321 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<link rel="stylesheet" type="text/css" href="../reports-web.css"/>
+<title>UTR #45: U-source Ideographs</title>
+</head>
+<!-- WEB ONLY -->
+<body><div class="book"><!-- WEB ONLY--><div class="web-only">
+<table class="header" cellpadding="0" cellspacing="0" width="100%">
+<tbody>
+<tr>
+<td class="icon">
+<a href="http://www.unicode.org/">
+<img style="vertical-align:middle;border:0" alt="[Unicode]" src="../../webscripts/logo60s2.gif" height="33" width="34"/>
+</a>  <a class="bar" href="../index.html">Technical Reports</a>
+</td>
+</tr>
+<tr>
+<td class="gray"> </td>
+</tr>
+</tbody>
+</table>
+<div class="body">
+	<h2 style="text-align:center"><span class="changed">Proposed Update </span>Unicode Technical Report #45</h2>
+	<h1 style="text-align:center">U-source Ideographs</h1>
+	<table class="wide" border="1" cellpadding="2">
+					<tr>
+						<td valign="top" width="20%">Editor</td>
+						<td valign="top">John Jenkins &#x4E95;&#x4F5C;&#x6046; (<a href="mailto:jenkins@apple.com">jenkins@apple.com</a>)<br/>
+						</td>
+					</tr>
+					<tr>
+						<td valign="top">Date</td>
+					<td valign="top"><span class="changed">2011-07-25</span></td>
+					</tr>
+					<tr>
+						<td valign="top">This Version</td>
+						<td valign="top">
+						<a class="changed" href="tr45-4.html">http://www.unicode.org/reports/tr45/tr45-4.html</a></td>
+					</tr>
+					<tr>
+						<td valign="top">Previous Version</td>
+						<td valign="top">
+						<a href="tr45-3.html" class="changed">http://www.unicode.org/reports/tr45/tr45-3.html</a></td>
+					</tr>
+					<tr>
+						<td valign="top">Latest Version</td>
+						<td valign="top"><a href="index.html">http://www.unicode.org/reports/tr45/</a></td>
+					</tr>
+					<tr>
+						<td valign="top">Latest Proposed Update</td>
+						<td valign="top"><a href="proposed.html">
+						http://www.unicode.org/reports/tr45/proposed.html</a></td>
+					</tr>
+					<tr>
+						<td valign="top">Tracking Number</td>
+						<td valign="top"><a href="tr45-4.html#Modifications">4</a></td>
+					</tr>
+			</table>
+<h4 style="margin-top: 1em;">Summary</h4>
+    <p><i>This document describes U-source ideographs as used by the Ideographic Rapporteur Group (IRG) in its CJK 
+	ideograph unification work.</i></p>
+  <h4>
+<i>Status</i>
+</h4>
+
+	   <!-- NOT YET APPROVED -->
+	  <p><i class="changed">This is a<b><font color="#ff3333"> draft </font></b>document which 
+      may be updated, replaced, or superseded by other documents at any time. 
+      Publication does not imply endorsement by the Unicode Consortium. This is 
+      not a stable document; it is inappropriate to cite this document as other 
+      than a work in progress.</i></p>
+      <!-- END NOT YET APPROVED -->
+	  <!-- APPROVED
+      <p><i>This document has been reviewed by Unicode members and other interested 
+	parties, and has been approved for publication by the Unicode Consortium. 
+	This is a stable document and may be used as reference material or cited as 
+	a normative reference by other specifications.</i></p>
+    END APPROVED -->
+  
+<blockquote>
+<p><i><b>A Unicode Technical Report (UTR)</b> contains
+	informative material. Conformance to the Unicode Standard does
+	not imply conformance to any UTR. Other specifications,
+	however, are free to make normative references to a
+	UTR.</i>
+</p>
+</blockquote>
+<p>
+<i>Please submit corrigenda and other comments with the online
+  reporting form [<a href="tr45-4.html#Feedback">Feedback</a>].  Related
+  information that is useful in understanding this document is found
+  in <a href="tr45-4.html#References">References</a>.  For the latest version of
+  the Unicode Standard see  [<a href="tr45-4.html#Unicode">Unicode</a>]. For a list of current Unicode
+  Technical Reports see [<a href="tr45-4.html#Reports">Reports</a>]. For
+  more information about versions of the Unicode Standard, see [<a href="tr45-4.html#Versions">Versions</a>].</i>
+</p>
+			<h4>Contents</h4>
+			<ul class="toc">
+				<li>1     <a href="tr45-4.html#Section1">Introduction</a></li>
+				<li>2     <a href="tr45-4.html#Section2">Text File Data</a>
+					<ul class="toc">
+						<li>2.1 <a href="tr45-4.html#Section21">The Status Field</a></li>
+						<li>2.2 <a href="tr45-4.html#Section22">The Source Field</a></li>
+					</ul>
+				</li>
+				<li><a href="tr45-4.html#References">References</a></li>
+				<li><a href="tr45-4.html#Acknowledgements">Acknowledgements</a></li>
+				<li><a href="tr45-4.html#Modifications">Modifications</a></li>
+			</ul>
+			<hr/>
+			<h2><a name="Section1">1 Introduction</a></h2>
+							<p>This document describes U-source ideographs as used by the <a href="http://appsrv.cse.cuhk.edu.hk/~irg/">Ideographic Rapporteur Group (IRG)</a> in its CJK ideograph unification work. The IRG is a subgroup of ISO/IEC JTC1/SC2/WG2 and has the formal responsibility of developing extensions to the encoded repertoires of unified CJK ideographs. The IRG consists of members of ISO/IEC member bodies and liaison organizations, including many East Asian countries and the USA. The Unicode Consortium participates in this group as a liaison member of ISO.</p>
+							<p>This document serves two purposes.  First, it provides a formal reference to U-source ideographs, so that they may be referred to in other documents by their U-source identifiers.  Second, it provides a public record of all ideographs which have been submitted to the Unicode Technical Committee for consideration.  As such, it provides data on the nature, content, and disposition of these submissions.</p>
+							<p class="changed">The U-source database consists of three classes of CJK ideograph:</p>
+							<ol class="changed">
+								<li class="changed">Ideographs which have been submitted to the UTC as potential candidates for encoding. Note that not all such ideographs are actually suitable for encoding. Those that are not have a status of &quot;W&quot;.</li>
+								<li class="changed">Placeholder ideographs required to maintain continuity of U-source indices. Early versions of the U-source database allowed for the possibility of ideographs being withdrawn, generally because they had been added erroneously. Replacement ideographs were added in their place to keep any U-source index from being skipped. All such ideographs have a status of &quot;W&quot;. (Ideographs are no longer withdrawn from the U-source database after they have been added.)</li>
+								<li class="changed">Placeholder ideographs required to provide encoded CJK Unified Ideographs with IRG source information. All CJK Unified Ideographs in ISO/IEC10646 are required to have at least one source identifier. Changes to IRG source information, however, can leave a given ideograph without any such sources. In such cases, the ideograph is included in the U-source database to guarantee it has at least one source.  Such ideographs are indicated by a source prefix of &quot;UCI&quot; instead of &quot;UTC&quot;.</li>
+							</ol>
+							<p>The actual U-source data are found in two additional files:</p>
+							<ul>
+								<li>[<a href="tr45-4.html#Glyphs">Glyphs</a>], a PDF showing the glyphs for the U-source ideographs.  This document is a simple matrix with the representative glyph for a U-source ideograph and its identifier in each cell. The representative glyphs used are drawn in a modern style, such as is used by the IRG in its work.  The use of modern forms for some characters originally drawn in a seal style should not be taken as implying any mechanism for the inclusion of seal forms as a whole in the Unicode Standard.</li>
+								<li>[<a href="tr45-4.html#Data">Data</a>], a text file containing information regarding the ideographs. A detailed description of this file follows.</li>
+							</ul>
+							<h2><a name="Section2">2 Text File Data</a></h2>The text file consists of UTF-8 text. Each line consists of seven fields separated by semicolons.<ol>
+								<li>The ideograph's U-source identifier. This consists of the letters &quot;UTC&quot; <span class="changed">or &quot;UCI&quot;, followed by a hyphen and</span> five decimal digits, starting with 00001. Identifier numbers are not skipped, and are not reused. Identifier numbers are assigned sequentially.
+								<span class="changed">Ideographs whose prefix is &quot;UTC&quot; are either those submitted to the UTC for consideration or those included in the U-source database for placeholder purposes. Ideographs included to guarantee an IRG source reference have the prefix &quot;UCI&quot;.</span></li>
+								<li>A single character indicating the ideograph's current status. These are described below.</li>
+				<li>A Unicode code point. This field is empty if the status is not C, <span class="changed">D,</span> U, or V. The meaning of this field in these <span class="changed">four</span> cases is described below.</li>
+				<li>A radical-stroke index for the ideograph, as described in [<a href="tr45-4.html#UAX38">UAX38</a>].</li>
+				<li>A KangXi dictionary index for the ideograph, as described in [<a href="tr45-4.html#UAX38">UAX38</a>].</li>
+								<li>An ideographic description sequence (IDS) for the ideograph, if one can be generated.</li>
+								<li>A string indicating the ideograph's source and an optional index within the source.</li>
+							</ol>
+							<h3><a name="Section21">2.1 The Status Field</a></h3>
+							<p>The status field reflects the ideograph's current status. The value of this field can change over time. The possible values are C, D, N, U, V, W, and X; new values may be added in the future.</p>
+							<p>A status of C means that the ideograph is found in Extension C. The Unicode field here indicates the character's code point.</p>
+							<p>A status of D means that the ideograph <span class="changerd">is found in Extension D. The Unicode field here indicates the character's code point.</span></p>
+							<p>A status of E means that the ideograph has been submitted to the IRG as part of the UTC's Extension E proposal.</p>
+							<p class="changed">A status of N means that the character is earmarked to be included to the IRG as part of the UTC's proposal for a future extension.</p>
+							<p>A status of U means that the ideograph is already encoded in Unicode. Characters with a status of U were either added to the U-source database in error, or are characters encoded in Unicode before the IRG began its work. The Unicode field here is the code point for the encoded character.</p>
+							<p>A status of V means that the ideograph is a variant of a character encoded in Unicode. These variants are not limited to Z-variants. Other variants include glyphs with components rearranged (for 
+							example UTC<span class="changed">-</span>00344, which rearranges the components of U+69AB but is pronounced the same and means the same), simplified versions of encoded characters (for 
+							example UTC<span class="changed">-</span>00842), and ideographs which mean the same and are pronounced the same as encoded ideographs and have a sufficiently similar shape as to be easily mistaken for one another (for 
+							example UTC<span class="changed">-</span>00399). This is a deliberately less strict, if somewhat more subjective, standard than is used for unification work. The Unicode field here indicates the encoded character of which this is a variant.</p>
+							<p>A status of W means that the ideograph is not suitable for encoding. An example here is UTC<span class="changed">-</span>00118, which is used as a decoration in the novels <i>Xenocide</i> and <i>Children of the Mind</i> by Orson Scott Card. While the character does have an apparent intended meaning (something like &quot;monster-killer&quot;), it isn't suitable for encoding because of its ad hoc nature and lack of generalized use outside of the context of two specific English-language novels.  Another example would be UTC<span class="changed">-</span>00643, which is a transcription error for U+5709.</p>
+							<p>The bulk of the characters with a status of W are Wenlin-specific Z-variants which should be represented (if at all), via a variation sequence defined by Wenlin, not by the UTC.</p>
+							<p>A status of X means <span class="changed">the final disposition of this ideograph has not been determined.</span></p>
+							<h3><a name="Section22">2.2 The Source Field</a></h3>
+							<p>The source field consists of source information, which consists of a source tag usually followed by a source-specific index string. Source tags and indices are separated by a space, and multiple source indices are separated by commas.  Multiple sources are separated by asterisks.  </p>
+							<p>Note that the sources listed here may not provide adequate evidence of use for IRG work.  This is partly because
+							characters listed here may not be suitable candidates for encoding, but also because IRG requirements for evidence have become
+							increasingly stringent over time.  Many of the characters in each of the sets encoded prior to Extension D do not have adequate evidence of use
+							by current IRG standards.</p>
+			<p>The source tag may be a URI, in which case the index string is the date (year-month-day) when the URI was accessed.  The source tag may also be a U-source index for cases where an ideograph was added to the U-source twice. The source tags beginning with a lowercase k correspond to fields within the Unihan database. Please consult [<a href="tr45-4.html#UAX38">UAX38</a>] for information on these sources and the format and meaning of the index strings.</p>
+			<p>The remaining sources are listed below.  The left column contains the source tag.  The center column contains bibliographic information for the source.
+			The third column contains a description of source index, if any.  The description frequently includes a regular expression which the index matches; see [<a href="tr45-4.html#UAX38">UAX38</a>] for more information.</p>
+			<table cellpadding="3" cellspacing="0" border="1" class="values">
+				<tbody>
+					<tr>
+						<th width="20%" valign="top">Source Tag</th>
+						<th width="40%" valign="top">Source Bibliographic Information</th>
+						<th width="40%" valign="top">Source Index</th>
+					</tr>
+					<tr>
+						<td width="20%" valign="top">ABC2</td>
+						<td width="40%" valign="top">DeFrancis, John. <i>ABC Chinese-English Dictionary.</i> Honolulu: University of Hawai&#x2bc;i Press, 1999.</td>
+						<td width="40%" valign="top">None</td>
+					</tr>
+					<tr>
+						<td width="20%" valign="top">Adobe-Japan1</td>
+						<td width="40%" valign="top">The Adobe-Japan1 glyph collection</td>
+						<td width="40%" valign="top">The glyph index within the set</td>
+					</tr>
+					<tr>
+						<td width="20%" valign="top">Cheng</td>
+						<td width="40%" valign="top">Cheng Tso-Hsin, ed. <i>A complete checklist of species and subspecies of the Chinese birds.</i> Beijing: Science Press, 2000.</td>
+						<td width="40%" valign="top">None</td>
+					</tr>
+					<tr>
+						<td width="20%" valign="top">CN</td>
+						<td width="40%" valign="top">V&#x169; V&#x103;n K&#xed;nh, ed. <i>&#x110;&#x1ea1;i T&#x1ef1; &#x110;i&#x1ec3;n Ch&#x1eef; N&#xf4;m.</i> Ho Chi Minh City: Nh&#xe0; xu&#x1ea5; b&#x1ea3;n v&#x103;n ngh&#x1ec7;. 1998</td>
+						<td width="40%" valign="top">A string matching the regular expression [01][0-9]{3}\.[0-9]{2} indicating the page and position on the page.</td>
+					</tr>
+					<tr>
+						<td width="20%" valign="top">DYC</td>
+						<td width="40%" valign="top">&#x300a;&#x8aaa;&#x6587;&#x89e3;&#x5b57;&#x2022;&#x6ce8;&#x300b; Shu&#x14d; W&#xe9;n Ji&#x11b; Zh&#xec; &#x2014; Zh&#xf9; [Annotated Q&#xed;ng Dynasty recension of the Eastern H&#xe0;n Chinese analytic dictionary SWJZ]. &#x3016;&#x6771;&#x6f22;&#x3017;&#x8a31;&#x614e;&#x8457; (121 AD)&#xff0c; &#x3016;&#x6e05;&#x3017;&#x6bb5;&#x7389;&#x88c1;&#x6ce8; &#xa0;(1815)&#x3002; [&#x4e0a;&#x6d77;&#x53e4;&#x7c4d;&#x51fa;&#x7248;&#x793e;, 1981.] See Cook (2003:461 ff; UMI #3105189) for complete references to the various editions: <a href="http://linguistics.berkeley.edu/~rscook/html/writing.html#EHC">http://linguistics.berkeley.edu/~rscook/html/writing.html#EHC</a>.
+						Characters from the DYC were added to the U-source database as part of a preliminary exploration of the possibility of encoding them.  They will not be used for any effort to actually encode the contents of the DYC and should
+						not be taken as the basis for any such encoding.</td>
+						<td width="40%" valign="top">A string matching the regular expression [0-9]{3}\.[0-9]{2}[01] indicating the page and position on the page.</td>
+					</tr>
+					<tr>
+						<td width="20%" valign="top">GB18030-2000</td>
+						<td width="40%" valign="top">GB18030-2000</td>
+						<td width="40%" valign="top">None</td>
+					</tr>
+					<tr>
+						<td width="20%" valign="top">LDS</td>
+						<td width="40%" valign="top">&quot;Required Character List Supplied by The Church of Jesus Christ of Latter-day Saints&quot;</td>
+						<td width="40%" valign="top">The character index within the document</td>
+					</tr>
+					<tr>
+						<td width="20%" valign="top">Shangwu</td>
+						<td width="40%" valign="top">Huang Giangshang, ed. <i>Shangwu Xin Cidian.</i> Hong Kong: The Commercial Press, 1991. ISBN 962-07-0133-X</td>
+						<td width="40%" valign="top">A string matching the regular expression [0-9]{3}\.[0-9]{2} indicating the page and position on the page.</td>
+					</tr>
+					<tr>
+						<td width="20%" valign="top">TUS</td>
+						<td width="40%" valign="top">The Unicode Consortium. <i>The Unicode Standard, Version 1.0, Volume 2.</i> Reading, Mass.: Addison-Wesley Publishing Company, 1992. ISBN 0-201-60845-6</td>
+						<td width="40%" valign="top">The character's code point in the form U\+FA[0-9A-F]{2}</td>
+					</tr>
+					<tr>
+						<td width="20%" valign="top">UDR</td>
+						<td width="40%" valign="top">A defect report filed against the Unicode Standard or other direct communication with the Unicode editorial committee</td>
+						<td width="40%" valign="top">None</td>
+					</tr>
+					<tr>
+						<td width="20%" valign="top">XHC</td>
+						<td width="40%" valign="top">《现代汉语词典》 [Xiàndài Hànyǔ Cídiǎn = XHC; ‘Modern Chinese Dictionary’]. 中国社会科学院语言研究所词典编辑室编 [Chinese Academy of Social Sciences, Linguisitics Research Institute, Dictionary Editorial Office, eds.]. 北京: 商务印书馆, 2002.  This is a later edition of the kXHC1983 source.</td>
+						<td width="40%" valign="top">The page and position information in the format used by the kXHC1983 source</td>
+					</tr>
+					<tr>
+						<td width="20%" valign="top">WG2</td>
+						<td width="40%" valign="top">A WG2 document</td>
+						<td width="40%" valign="top">The document number</td>
+					</tr>
+					<tr>
+						<td width="20%" valign="top">WL</td>
+						<td width="40%" valign="top">Wenlin v. 3.1.8 <a href="http://www.wenlin.com">http://www.wenlin.com</a></td>
+						<td width="40%" valign="top">The PUA code point assigned the ideograph in the form E[0-9A-F]{3}</td>
+					</tr>
+				</tbody>
+			</table>
+	<h2><a name="References">References</a></h2>
+	<table cellspacing="0" cellpadding="4" border="0" class="noborder" style="border-collapse: collapse">
+		<tr>
+			<td class="noborder" valign="top">[<a name="Data">Data</a>]</td>
+			<td class="noborder" valign="top">Text Data<br/>
+			<i>For the latest version, see:</i><br/>
+			<a class="changed" href="tr45-sourcedata-4.txt">http://www.unicode.org/reports/tr45/tr45-sourcedata-4.txt</a><br/>
+			</td>
+		</tr>
+		<tr>
+			<td class="noborder" valign="top">[<a name="Feedback">Feedback</a>]</td>
+			<td class="noborder" valign="top">Reporting Form<br/>
+			<a href="http://www.unicode.org/reporting.html">http://www.unicode.org/reporting.html</a><br/>
+			<i>For reporting errors and requesting information online.</i></td>
+		</tr>
+		<tr>
+			<td class="noborder" valign="top">[<a name="Glyphs">Glyphs</a>]</td>
+			<td class="noborder" valign="top">Glyph Table<br/>
+			<i>For the latest version, see:</i><br/>
+			<a class="changed" href="tr45-glyphs-4.pdf">http://www.unicode.org/reports/tr45/tr45-glyphs-4.pdf</a><br/>
+			</td>
+		</tr>
+		<tr>
+			<td class="nb" valign="top">[<a name="Reports">Reports</a>]</td>
+			<td class="nb" valign="top">Unicode Technical Reports<br/>
+			<a href="../index.html">http://www.unicode.org/reports/</a><br/>
+			<i>For information on the status and development process for technical reports, and for a list of technical reports.</i></td>
+		</tr>
+		<tr>
+			<td class="noborder" valign="top">[<a name="UAX38">UAX38</a>]</td>
+			<td class="noborder" valign="top">UAX #38: <i>Unicode Han Database (Unihan)</i><br/>
+			<a href="../tr38/index.html">http://www.unicode.org/reports/tr38/</a></td>
+		</tr>
+		<tr>
+			<td class="nb" valign="top">[<a name="Unicode">Unicode</a>]</td>
+			<td class="nb" valign="top">The Unicode Standard<i><br/>For the latest version, see:<br/>
+			</i><a href="http://www.unicode.org/versions/latest/">http://www.unicode.org/versions/latest/</a><br/>
+			<i>For the 5.2.0 version, see:</i><br/>
+			<a href="http://www.unicode.org/versions/Unicode5.2.0/">http://www.unicode.org/versions/Unicode5.2.0/</a></td>
+		</tr>
+		<tr>
+			<td class="nb" valign="top">[<a name="Versions">Versions</a>]</td>
+			<td class="nb" valign="top">Versions of the Unicode Standard<br/>
+			<a href="http://www.unicode.org/versions/">http://www.unicode.org/versions/</a><br/>
+			<i>For information on version numbering, and citing and referencing the Unicode Standard, 
+			the Unicode Character Database, and Unicode Technical Reports.</i></td>
+		</tr>
+	</table>
+	
+	<h2><a name="Acknowledgements">Acknowledgements</a></h2>
+		<p>John Jenkins is the author of the initial version and has added to 
+		and maintains the text of this report.</p>
+
+	<h2><a name="Modifications">Modifications</a></h2>
+		<p>The following summarizes modifications from the previous revision of this document.</p>
+
+	<p class="changed"><b>Revision 4:</b></p>
+	<ul>
+		<li class="changed">Inclusion of characters with an index prefix of &quot;UCI&quot;.</li>
+		<li class="changed">Clarified the use of dummy characters as placeholders.</li>
+		<li class="changed">General updates to the data files</li>
+	</ul>
+	<p><b>Revision 3:</b></p>
+	<ul>
+		<li>Changes in character status per actions taken at WG2 meeting 54</li>
+		<li>Clarified nature of characters from the DYC</li>
+		<li>Clarified relationship between UTC sources and IRG evidence</li>
+	</ul>
+	<p><b>Revision 2:</b></p>
+	<ul>
+		<li>First approved version.</li>
+		<li>Changes in character status per actions taken at IRG meeting 31. </li>
+		<li>Revisions per input from UTC.</li>
+	</ul>
+	<p><b>Revision 1:</b></p>
+	<ul>
+		<li>First draft version.</li>
+	</ul>
+	<hr/>
+	<p class="copyright">Copyright © 2008-<span class="changed">2011 </span>Unicode, Inc. All Rights Reserved. The Unicode Consortium makes no expressed or implied warranty of any kind, and assumes no liability for errors or omissions. No liability is assumed for incidental and consequential damages in connection with or arising out of the use of the information or programs contained or accompanying this technical report. The Unicode <a href="http://www.unicode.org/copyright.html">Terms of Use</a> apply.</p>
+	<p class="copyright">Unicode and the Unicode logo are trademarks of Unicode, Inc., and are registered in some jurisdictions.</p>
+</div>
+</div>
+</div>
+</body>
+</html>

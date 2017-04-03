@@ -1,0 +1,358 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
+       "http://www.w3.org/TR/REC-html40/loose.dtd"> 
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta http-equiv="Content-Language" content="en-us">
+<link rel="stylesheet" href="http://www.unicode.org/unicode.css" type="text/css">
+<meta name="GENERATOR" content="Microsoft FrontPage 4.0">
+<meta name="ProgId" content="FrontPage.Editor.Document">
+<title>UTR #13: Unicode Newline Guidelines</title>
+</head>
+
+<body>
+
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+  <tbody>
+    <tr>
+      <td>
+        <table border="0" cellpadding="0" cellspacing="0" width="100%">
+          <tbody>
+            <tr>
+              <td class="icon"><a href="http://www.unicode.org"><img
+                align="middle" alt="[Unicode]" border="0"
+                src="../../webscripts/logo60s2.gif" width="34"
+                height="33"></a>&nbsp;&nbsp;<a class="bar"
+                href="http://www.unicode.org/unicode/reports">Technical Reports</a></td>
+            </tr>
+          </tbody>
+        </table>
+      </td>
+    </tr>
+    <tr>
+      <td class="gray">&nbsp;</td>
+    </tr>
+  </tbody>
+</table>
+<h2 align="center">Unicode Standard Annex #13</h2>
+<h1 align="center">Unicode Newline Guidelines</h1>
+<table border="1" width="100%" cellspacing="2" cellpadding="0">
+  <tr>
+    <td width="120">Version</td>
+    <td>3.0.1</td>
+  </tr>
+  <tr>
+    <td width="120">Authors</td>
+    <td>Mark Davis (<a href="mailto:mark.davis@us.ibm.com">mark.davis@us.ibm.com</a>)</td>
+  </tr>
+  <tr>
+    <td width="120">Date</td>
+    <td>2000-8-31</td>
+  </tr>
+  <tr>
+    <td width="120">This Version</td>
+    <td><a href="http://www.unicode.org/unicode/reports/tr13/tr13-6.html">http://www.unicode.org/unicode/reports/tr13/tr13-6</a></td>
+  </tr>
+  <tr>
+    <td width="120">Previous Version</td>
+    <td><a href="http://www.unicode.org/unicode/reports/tr13/tr13-5.html">http://www.unicode.org/unicode/reports/tr13/tr13-5</a></td>
+  </tr>
+  <tr>
+    <td width="120">Latest Version</td>
+    <td><a href="http://www.unicode.org/unicode/reports/tr13">http://www.unicode.org/unicode/reports/tr13</a></td>
+  </tr>
+  <tr>
+    <td width="120">Tracking Number</td>
+    <td>6</td>
+  </tr>
+</table>
+<br>
+<h3><i>Summary</i></h3>
+<p><i><em>This document describes guidelines for how to handle different 
+characters used to represent CRLF and other representations of new lines on 
+different platforms.</em></i></p>
+<h3><i>Status</i></h3>
+<p><i>This document has been reviewed by Unicode members and other interested 
+parties, and has been approved by the Unicode Technical Committee as a <b>Unicode 
+Standard Annex</b>. It is a stable document and may be used as reference 
+material or cited as a normative reference from another document.</i></p>
+<blockquote>
+  <p><i><b>A Unicode Standard Annex (UAX)</b> forms an integral part of the 
+  Unicode Standard, carrying the same version number, but is published as a 
+  separate document. Note that conformance to a version of the Unicode Standard 
+  includes conformance to its Unicode Standard Annexes.</i></p>
+</blockquote>
+<p><i>A list of current Unicode Technical Reports is found on <a
+href="http://www.unicode.org/unicode/reports/">http://www.unicode.org/unicode/reports/</a>. 
+For more information about versions of the Unicode Standard, see <a
+href="http://www.unicode.org/unicode/standard/versions/">http://www.unicode.org/unicode/standard/versions/</a>.</i></p>
+<p><i>Please mail corrigenda and other comments to the author(s).</i></p>
+<h3><i>Contents</i></h3>
+<ul>
+  <li><a href="tr13-6.html#Introduction">1 Introduction</a></li>
+  <li><a href="tr13-6.html#Definitions">2 Definitions</a></li>
+  <li><a href="tr13-6.html#Background">3 Background</a></li>
+  <li><a href="tr13-6.html#Recommendations">4 Recommendations</a>
+    <ul>
+      <li><a href="tr13-6.html#Converting from other character code sets">4.1 Converting 
+        from other character code sets</a></li>
+      <li><a href="tr13-6.html#Interpreting characters in text">4.2 Interpreting characters 
+        in text</a></li>
+      <li><a href="tr13-6.html#Converting to other code sets">4.3 Converting to other code 
+        sets</a></li>
+      <li><a href="tr13-6.html#Input and Output">4.4 Input and Output</a></li>
+      <li><a href="tr13-6.html#Page Separator">4.5 Page Separator</a></li>
+    </ul>
+  </li>
+</ul>
+<hr align="LEFT">
+<h2>1 <a name="Introduction">Introduction</a></h2>
+<p>Newlines are represented on different platforms by carriage return (CR), line 
+feed (LF), CRLF, or next line (NEL). Unfortunately, not only are newlines 
+represented by different characters on different platforms, they also have 
+ambiguous behavior even on the same platform. Especially with the advent of the 
+web, where text on a single machine can arise from many sources, this causes a 
+significant problem.</p>
+<p>Unfortunately, these characters are often transcoded directly into the 
+corresponding Unicode codes when a character set is transcoded; this means that 
+even programs handling pure Unicode have to deal with the problems. For 
+information on handling newlines in regular expressions, see <a
+href="http://www.unicode.org/unicode/reports/tr18/">UTR #18: Unicode Regular 
+Expression Guidelines</a>.</p>
+<h2>2 <a name="Definitions">Definitions</a></h2>
+<p>The following table provides hexadecimal values for the acronyms used in the 
+text. The Unicode Standard does not formally assign control characters, instead 
+it provides the 65 code values for use as in the 7 and 8-bit standards. See <i>The 
+Unicode Standard, Version 2.0, Section 2.6 Controls and Control Sequences.</i></p>
+<center>
+<table border="0" cellspacing="2" cellpadding="2">
+  <tr>
+    <td align="CENTER"><b>Hex Values for Acronyms</b></td>
+  </tr>
+  <tr>
+    <td><center>
+      <table border="1" cellspacing="2" cellpadding="2">
+        <tr>
+          <th>
+            <p align="LEFT">&nbsp;</th>
+          <th>
+            <p align="LEFT">Unicode</th>
+          <th>
+            <p align="LEFT">ASCII</th>
+          <th colspan="2">EBCDIC*</th>
+        </tr>
+        <tr>
+          <th align="LEFT">
+            <p align="LEFT">&nbsp;<tt>CR</tt></th>
+          <td>&nbsp;<tt>000D</tt></td>
+          <td>&nbsp;<tt>0D</tt></td>
+          <td>&nbsp;<tt>0D</tt></td>
+          <td>&nbsp;<tt>0D</tt></td>
+        </tr>
+        <tr>
+          <th align="LEFT">
+            <p align="LEFT">&nbsp;<tt>LF</tt></th>
+          <td>&nbsp;<tt>000A</tt></td>
+          <td>&nbsp;<tt>0A</tt></td>
+          <td>&nbsp;<tt>25</tt></td>
+          <td>&nbsp;<tt>15</tt></td>
+        </tr>
+        <tr>
+          <th align="LEFT">
+            <p align="LEFT">&nbsp;<tt>CRLF</tt></th>
+          <td>&nbsp;<tt>000D,000A</tt></td>
+          <td>&nbsp;<tt>0D,0A</tt></td>
+          <td>&nbsp;<tt>0D,25</tt></td>
+          <td>&nbsp;<tt>0D,15</tt></td>
+        </tr>
+        <tr>
+          <th align="LEFT">
+            <p align="LEFT">&nbsp;<tt>NEL*</tt></th>
+          <td>&nbsp;<tt>0085</tt></td>
+          <td>&nbsp;<tt>85</tt></td>
+          <td>&nbsp;<tt>15</tt></td>
+          <td>&nbsp;<tt>25</tt></td>
+        </tr>
+        <tr>
+          <th align="LEFT">
+            <p align="LEFT">&nbsp;<tt>VT</tt></th>
+          <td>&nbsp;<tt>000B</tt></td>
+          <td>&nbsp;<tt>0B</tt></td>
+          <td>&nbsp;<tt>0B</tt></td>
+          <td>&nbsp;<tt>0B</tt></td>
+        </tr>
+        <tr>
+          <th align="LEFT">
+            <p align="LEFT">&nbsp;<tt>FF</tt></th>
+          <td>&nbsp;<tt>000C</tt></td>
+          <td>&nbsp;<tt>0C</tt></td>
+          <td>&nbsp;<tt>0C</tt></td>
+          <td>&nbsp;<tt>0C</tt></td>
+        </tr>
+        <tr>
+          <th align="LEFT">
+            <p align="LEFT">&nbsp;<tt>LS</tt></th>
+          <td>&nbsp;<tt>2028</tt></td>
+          <td>&nbsp;n/a</td>
+          <td>&nbsp;n/a</td>
+          <td>&nbsp;n/a</td>
+        </tr>
+        <tr>
+          <th align="LEFT">
+            <p align="LEFT">&nbsp;<tt>PS</tt></th>
+          <td>&nbsp;<tt>2029</tt></td>
+          <td>&nbsp;n/a</td>
+          <td>&nbsp;n/a</td>
+          <td>&nbsp;n/a</td>
+        </tr>
+      </table>
+      </center></td>
+  </tr>
+</table>
+</center>
+<ul>
+  <li>There are two mappings of LF and NEL used by EBCDIC systems. The first 
+    EBCDIC column shows the MVS Open Edition (including CP1047) mapping of these 
+    characters, while the second column shows the CDRA mapping. This difference 
+    arises from the use of LF character as 'New Line' in ASCII-based Unix 
+    environments and in some data transfer protocols that use the Unix 
+    assumptions. The second column is based on the standardized definitions — 
+    both in ASCII and EBCDIC of LF.</li>
+  <li>NEL is not actually defined in ASCII: it is defined in ISO 6429 as a C1 
+    control.</li>
+</ul>
+<p>For clarity, when referring to the function that a particular character has, 
+we will use lowercase (e.g., <i>paragraph separator</i>); when referring to the 
+specific characters that represent those functions, we will use titlecase or an 
+acronym (e.g., <i>Paragraph Separator</i> or <i>PS</i>).]</p>
+<p>The term <i>NLF (new line function) </i>stands for different characters 
+depending on the platform; that is, any of CR, LF, CRLF, or NEL.</p>
+<hr align="LEFT">
+<h2>3 <a name="Background">Background</a></h2>
+<p>A paragraph separator is used to indicate a separation between paragraphs, 
+while a line separator indicates where a line break alone should occur, 
+typically within a paragraph. For example:</p>
+<blockquote>
+  <p>This is a paragraph with a line separator at this point,<br>
+  causing the word &quot;causing&quot; to appear on a different line, but not 
+  causing the typical paragraph indentation, sentence-breaking, line spacing, or 
+  change in flush (right, center or left paragraphs).</p>
+</blockquote>
+<p>For comparison, line separators basically correspond to HTML &lt;BR&gt;, and 
+paragraph separators to older usage of HTML &lt;P&gt; (modern HTML delimits 
+paragraphs by enclosing them in &lt;P&gt;...&lt;/P&gt;). In word processors, 
+paragraph separators are usually entered using a keyboard RETURN or ENTER; line 
+separators are usually entered using a modified RETURN or ENTER, such as 
+SHIFT-ENTER.</p>
+<p>A record separator is used to separate records. For example, when exchanging 
+tabular data, a common format is to tab-separate the cells, and use a CRLF at 
+the end of a line of cells. This function is not precisely the same as line 
+separation, but the same characters are often used.</p>
+<p>Traditionally, <i>NLF</i> started out as a line separator (and sometimes 
+record separator). It is still used as a line separator in simple text editors 
+such as program editors. As platforms and programs started to handle word 
+processing with automatic line-wrap, these characters were reinterpreted to 
+stand for paragraph separators. For example, even such simple programs as the 
+Windows Notepad program or the Mac SimpleText program interpret their platform's 
+<i>NLF</i> as a paragraph separator, not a line separator.</p>
+<p>Once <i>NLF</i> was reinterpreted to stand for a paragraph separator, in some 
+cases some other control character was impressed into service as a line 
+separator. For example, vertical tabulation VT is used in Microsoft Word. 
+However, the choice of character for line separator is even less standardized 
+than the choice of character for <i>NLF</i>.</p>
+<p>Yet, many internet protocols and a lot of existing text treats <i>NLF</i> as 
+a line separator, so you can't just simply treat <i>NLF</i> as a paragraph 
+separator in all circumstances.&nbsp;</p>
+<hr align="LEFT">
+<h2>4 <a name="Recommendations">Recommendations</a></h2>
+<p>The Unicode Standard defines two unambiguous separator characters, Paragraph 
+Separator (PS = 2029<sub>16</sub>) and Line Separator (LS = 2028<sub>16</sub>). 
+In Unicode text, the PS and LS characters should be used wherever the desired 
+function is unambiguous. Otherwise, the following specifies how to cope with an <i>NLF</i> 
+when converting from other character sets to Unicode, when interpreting 
+characters in text, and when converting from Unicode to other character sets.</p>
+<blockquote>
+  <p><b>Note: </b>Even if you know which characters represents <i>NLF</i> on 
+  your particular platform, on input and in interpretation, treat CR, LF, CRLF, 
+  and NEL the same. Only on output do you need to distinguish between them.</p>
+</blockquote>
+<h3><a name="Converting from other character code sets"></a>4.1 Converting <i>from</i> 
+other character code sets</h3>
+<ol>
+  <li>If you do know the exact usage of any <i>NLF</i>, then convert it to LS or 
+    PS.
+  <li>If you don't know the exact usage of any <i>NLF</i>, remap it to your 
+    platform <i>NLF.</i> (This doesn't really help you in interpreting Unicode 
+    text unless you are the <i>only</i> source of that text, since someone else 
+    may have left in LF, CR, CRLF, or NEL.)
+</ol>
+<h3><a name="Interpreting characters in text"></a>4.2 Interpreting characters in 
+text</h3>
+<ol>
+  <li>Always interpret PS as paragraph separator and LS as line separator.
+  <li>In word processing, interpret any <i>NLF</i> the same as PS.
+  <li>In simple text editors, interpret any <i>NLF</i> the same as LS.
+  <li>In parsing, choose the safest interpretation. For example, if you are 
+    dealing with sentence-break heuristics, you would reason in the following 
+    way that it is safer to interpret any <i>NLF</i> as a LS:
+    <ul>
+      <li>Suppose you misinterpret an <i>NLF</i> as LS, when it was meant to be 
+        PS. Since most paragraphs are terminated with punctuation anyway, in 
+        only a few cases would this cause misidentification of sentence 
+        boundaries.
+      <li>Suppose you misinterpret an <i>NLF</i> as PS, when it was meant to be 
+        LS. In this case, line breaks would cause sentence breaks, which would 
+        mess up the sentence break heuristics significantly.
+    </ul>
+</ol>
+<h3><a name="Converting to other code sets"></a>4.3 Converting <i>to</i> other 
+character code sets</h3>
+<ol>
+  <li>If you know the intended target, map <i>NLF</i>, LS, and PS appropriately, 
+    depending on the target conventions. For example, when mapping to Microsoft 
+    Word's internal conventions for Windows documents you would map LS to VT, 
+    and PS and any <i>NLF</i> to CRLF.
+  <li>If you don't know the intended target, map <i>NLF</i>, LS, and PS to the 
+    platform newline convention (CR, LF, CRLF, or NEL). In Java, for example, 
+    this is done by mapping to a string <tt>nlf</tt>, defined as:<br>
+    <tt>String nlf = System.getProperties(&quot;line.separator&quot;);</tt>
+</ol>
+<h3><a name="Input and Output"></a>4.4 Input and Output</h3>
+<ol>
+  <li>A <tt>readline</tt> function should stop at <i>NLF</i>, LS, FF, or PS. In 
+    the typical implementation it does not include the <i>NLF</i>, LS, PS, or FF 
+    that caused it to stop. Note that since the separator is lost, the use of 
+    readline is limited to text processing, where there is no difference among 
+    the flavors of separators.
+  <li>A <tt>writeline</tt> (or <tt>newline</tt>) function should convert <i>NLF</i>, 
+    LS, and PS according to the conventions in <a
+    href="tr13-6.html#Converting to other code sets">§4.3 Converting to other character 
+    code sets</a>.
+  <li>In C, <tt>gets</tt> is defined to terminate at a newline and replaces the 
+    newline with <tt>'\0'</tt>, while <tt>fgets</tt> is defined to terminate at 
+    a newline and includes the newline in the array it copies the data into. C 
+    implementations interpret <tt>'\n'</tt> either as LF or as the underlying 
+    platform newline <i>NLF</i> depending on where it occurs. EBCDIC C compilers 
+    substitute the relevant codes, based on the EBCDIC execution set.
+</ol>
+<h3><a name="Page Separator"></a>4.5 Page Separator</h3>
+<p>FF is commonly used as a page separator, and it should be interpreted that 
+way in text. When displaying on the screen, it causes the text after the 
+separator to be forced to the next page. It should be independent of paragraph 
+separation: a paragraph can start on one page and continue on the next page. 
+Except when displaying on pages, in most parsing and in <tt>readline</tt> it is 
+interpreted in the same way as a LS.</p>
+<hr align="LEFT">
+<p><font size="-1">Copyright © 1998-2000 Unicode, Inc. All Rights Reserved. The 
+Unicode Consortium makes no expressed or implied warranty of any kind, and 
+assumes no liability for errors or omissions. No liability is assumed for 
+incidental and consequential damages in connection with or arising out of the 
+use of the information or programs contained or accompanying this technical 
+report.</font></p>
+<p><font size="-1">Unicode and the Unicode logo are trademarks of Unicode, Inc., 
+and are registered in some jurisdictions.</font></p>
+
+</body>
+
+</html>

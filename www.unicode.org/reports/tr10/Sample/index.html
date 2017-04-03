@@ -1,0 +1,117 @@
+<HTML>
+<HEAD>
+  <META NAME="GENERATOR" CONTENT="Microsoft FrontPage 4.0">
+  <TITLE>Unicode Collation Algorithm Demo</TITLE>
+</HEAD>
+<BODY bgcolor="#FFFFFF">
+
+<h1 align="center">&nbsp;Unicode Collation Algorithm Demo<br>
+&nbsp;<APPLET CODE="http://www.unicode.org/reports/tr10/Sample/CollationApplet.class" CODEBASE="./" WIDTH="72" HEIGHT="36"
+ARCHIVE="CollationAppletProject.jar" align="middle" > <!---->
+</APPLET></h1>
+
+<p>This page contains a simple demonstration of collation code using for the <i><a href="http://www.unicode.org/unicode/reports/tr10/">Unicode
+Collation Algorithm</a>. </i>The source for this was written in Java, and can be
+found at <a HREF="DemoCollation.java">source</a>. (If your browser doesn't
+display the source properly, choose the <b>View&nbsp;&gt;&nbsp;Source</b>  menu.)</p>
+
+<h2><a name="Operation">Operation</a> </h2>
+
+<P>Hit the <b>Load</b> button above. (If you don't see a <b>Load</b> button,
+there is a problem with Java in your browser.) Once the window opens, you will
+see a box labeled <i>Strings</i>  containing sample strings to be sorted. Click on <b> Sort</b> to see the strings in sorted order in the <i>Sorted</i> <b>
+</b> box.
+The format is as follows:</P>
+
+<pre>ä =&gt; &lt;0061,0308&gt; =&gt; [06C3 0713| 0020 0020| 0070 0002| FFFF FFFF]</pre>
+
+<P>First is the string itself, then its <i><a href="http://www.unicode.org/unicode/reports/tr15/">Normalization
+Form D</a></i>, then the (uncompressed) sort key. (To improve Applet download time, I am only loading information (decompositions
+and rules) for characters 0000-00FF (excluding most controls) and 0300-03FF.)</P>
+
+<P>You can change the contents of the <i>Strings</i> box to try out different
+strings. If your system doesn't let you type in non-ASCII characters, use \uXXXX,
+where XXXX is the Unicode codepoint number. For example, a <i> micro sign</i> would be
+<b>\u00B5</b>.</P>
+
+<P> The controls above the <i>Sorted</i> box allow you to fine-tune the results of the sort. As you click them on
+and off, the strings from the samples will resort.</P>
+
+<UL>
+  <LI><b>*=Shifted, *=Blanked, *=Not Ignored: </b> changes the choice of how to handle <i>variables</i>
+    (those marked with a * in the Rules). Watch the variants of sample
+  strings containing spaces as you click.
+  <LI><b>L1, L2, L3, L4: </b> Sets the maximum level to be considered. Watch similar strings
+  as you click. Notice that if the level is below the distinction in the
+  strings, then each time you hit the Sort button those strings will be randomly
+  ordered.
+  <LI><b>French: </b> sorts all secondaries backwards. Scroll down to watch the variants of <I>c&ocirc;t&eacute;</I>
+  as you click.
+</UL>
+
+<h3>Changing Rules </h3>
+
+<P>The <i>Rules</i> box contains a set of rules. If you try changing any of
+them, click on <b> Rebuild</b> afterwards.&nbsp;[If you've made any errors, a
+message will appear in the bottom box.]</P>
+
+<table border="1" align="right" bgcolor="#C0C0C0">
+  <tr>
+    <th width="100%">
+
+<P>Sample Rearrangement</P>
+
+    </th>
+  </tr>
+  <tr>
+    <td width="100%">qaa<br>
+qaz<br>
+qa<br>
+a<br>
+qzz<br>
+qza<br>
+qz<br>
+z</td>
+  </tr>
+</table>
+<P>Rearrangement is used in Thai and Laotian. For illustration, both q and Q are
+set to rearrange in the sample rules. To see how it works, copy the sample in
+the sidebar into the <i>Strings</i> box, and <b>Sort</b>. You can delete the @rearrange line
+to see the difference.</P>
+
+<P>To check out the handling of unsupported characters, you can remove some of
+the Rules, add those characters to the String box, and rebuild.&nbsp; For example, delete
+the rule for e:</P>
+
+<pre>0065 ; [.0713.0020.0002.0065] # LATIN SMALL LETTER E</pre>
+
+<P>click on <b> Rebuild</b>. Now strings starting with <i><b>e</b></i> will sort
+at the end.</P>
+
+<P>The rules in the &quot;Rules&quot; box have some tailored test rules
+with contracting characters for testing. These include <I><b>ch</b></I> as in traditional
+Spanish, <I><b>&auml;</b></I> <b> </b> as in traditional German, and <I><b>&aring;</b></I> as in
+Danish. Notice also that intervening accents don't interfere with successive
+contracting accents unless  they are blocked by other accents of the same
+canonical class: e.g. with <i><b>a + dot_under + umlaut,</b></i> the <I><b>a-umlaut</b></I>
+will form, but in <i><b>a + grave + umlaut,</b></i> the <I><b>grave</b></I> will block
+the <I><b>umlaut</b></I>. (Intervening accents always block successive contracting
+base characters: e.g. any accent in between will block <I>ch</I> from forming.)</P>
+
+<P>Note that contracting characters must be <i><b>closed</b></i>. That is, if
+you have the contracting character in the table, such as <b><i>abc</i></b>, then
+any initial substrings of that string (e.g. <b><i>ab </i></b>and <b><i>a</i></b>)
+must be present in the table. Otherwise you will get an error. To see this, cut
+the line for the letter <b><i>a</i></b> from the Rules box:</P>
+
+<pre>0061 ; [.06C3.0020.0002.0061] # LATIN SMALL LETTER A</pre>
+
+<P>When you click on <b> Rebuild</b>, you get an error. To fix it, paste back
+the line for <b><i>a</i></b>, or remove the contracting characters that start
+with <b><i>a</i></b>.</P>
+
+<P><!-- BEGIN FASTCOUNTER CODE --><A HREF="http://member.linkexchange.com/cgi-bin/fc/fastcounter-login?750641"
+TARGET="_top"><IMG SRC="http://fastcounter.linkexchange.com/fastcounter?750641+1501289"
+BORDER="0" ALIGN="BOTTOM"></A> <!-- END FASTCOUNTER CODE -->
+</BODY>
+</HTML>

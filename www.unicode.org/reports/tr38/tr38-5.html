@@ -1,0 +1,3085 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
+       "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<meta http-equiv="Content-Language" content="en-us">
+	<link type="text/css" href="../../unicode/reports/reports.css" rel="stylesheet">
+	<title>UAX #38: Unicode Han Database (Unihan)</title>
+</head>
+<body bgcolor="#ffffff">
+	<table width="100%" cellspacing="0" cellpadding="0" class="header"><tbody><tr><td class="icon"><a href="http://www.unicode.org/"><img width="34" height="33" border="0" align="middle" src="../../webscripts/logo60s2.gif" alt="[Unicode]"></a>&nbsp;&nbsp;<a href="../index.html" class="bar">Technical Reports</a></td></tr><tr><td class="gray">&nbsp;</td></tr></tbody></table>
+	<div class="body">
+		<h2 align="center">Unicode Standard Annex #38</h2>
+		<h1 align="center">Unicode Han Database (Unihan)</h1>
+		<table cellpadding="2" border="1" class="wide">
+			<tbody>
+				<tr>
+					<td valign="top">Version</td>
+					<td valign="top">5.1.0</td>
+				</tr>
+				<tr>
+					<td valign="top">Authors</td>
+					<td valign="top">John H. Jenkins 井作恆<br>
+						Richard Cook 曲理查<br>
+					</td>
+				</tr>
+				<tr>
+					<td valign="top">Date</td>
+					<td valign="top">2008-03-28</td>
+				</tr>
+				<tr>
+					<td valign="top">This Version</td>
+					<td valign="top"><a href="tr38-5.html">http://www.unicode.org/reports/tr38/tr38-5.html</a></td>
+				</tr>
+				<tr>
+					<td valign="top">Previous Version</td>
+					<td valign="top">n/a</td>
+				</tr>
+				<tr>
+					<td valign="top">Latest Version</td>
+					<td valign="top"><a href="index.html">http://www.unicode.org/reports/tr38/</a></td>
+				</tr>
+				<tr>
+					<td valign="top">Revision</td>
+					<td valign="top">5</td>
+				</tr>
+			</tbody>
+		</table>
+		<h4 style="margin-top: 1em;">Summary</h4>
+		<p><i>This document describes the organization and content of the Unihan database.</i></p>
+  <h4>Status</h4>
+  <p><i>This document has been reviewed by Unicode members and other interested 
+  parties, and has been approved for publication by the Unicode Consortium. 
+  This is a stable document and may be used as reference material or cited as a 
+  normative reference by other specifications.</i></p>
+  <blockquote>
+    <p><i><b>A Unicode Standard Annex (UAX)</b> forms an integral part of the 
+	Unicode Standard, but is published online as a separate document. The 
+	Unicode Standard may require conformance to normative content in a Unicode 
+	Standard Annex, if so specified in the Conformance chapter of that version 
+	of the Unicode Standard. The version number of a UAX document corresponds to 
+	the version of the Unicode Standard of which it forms a part.</i></p>
+  </blockquote>
+  <p><i>Please submit corrigenda and other comments with the online reporting
+  form [<a href="../tr41/tr41-3.html#Feedback">Feedback</a>]. Related 
+	information that is useful in understanding this annex is found in Unicode 
+	Standard Annex #41, “<a href="../tr41/tr41-3.html">Common References for Unicode Standard Annexes</a>.” For the latest version of the
+  Unicode Standard, see [<a href="../tr41/tr41-3.html#Unicode">Unicode</a>]. For a list of current Unicode Technical Reports, 
+	see [<a href="../tr41/tr41-3.html#Reports">Reports</a>].
+  For more information about versions of the Unicode Standard, see [<a href="../tr41/tr41-3.html#Versions">Versions</a>].</i></p>
+		<h4>Contents</h4>
+		<ul class="toc">
+			<li>1  <a href="tr38-5.html#N10046">Introduction</a>
+			<li>2  <a href="tr38-5.html#N10067">Mechanics</a>
+				<ul class="toc">
+					<li>2.1 <a href="tr38-5.html#DatabaseDesign">Database Design</a>
+					<li>2.2 <a href="tr38-5.html#WebAccess">Web Access</a>
+					<li>2.3 <a href="tr38-5.html#Unihan.txt">Unihan.txt</a>
+				</ul>
+			<li>3  <a href="tr38-5.html#N100FB">Field Types</a>
+				<ul class="toc">
+					<li>3.1  <a href="tr38-5.html#N10106">IRG Sources</a>
+					<li>3.2  <a href="tr38-5.html#N10130">Other Mappings</a>
+					<li>3.3  <a href="tr38-5.html#N1013C">Dictionary Indices</a>
+					<li>3.4  <a href="tr38-5.html#N1019C">Readings</a>
+					<li>3.5  <a href="tr38-5.html#N101BA">Dictionary-like Data</a>
+					<li>3.6  <a href="tr38-5.html#N101E4">Radical-Stroke Counts</a>
+					<li>3.7  <a href="tr38-5.html#N10211">Variants</a>
+					<li>3.8  <a href="tr38-5.html#N1024D">Numeric Values</a>
+				</ul>
+			<li>4  <a href="tr38-5.html#N10260">The Fields</a>
+				<ul class="toc">
+					<li>4.1 <a href="tr38-5.html#AlphabeticalListing">Alphabetical Listing</a>
+					<li>4.2 <a href="tr38-5.html#ChronologicalListing">Listing by Date of Addition to the Unicode Standard</a></ul>
+			
+			<li><a href="tr38-5.html#References">References</a>
+			<li><a href="tr38-5.html#Modifications">Modifications</a>
+		</ul>
+		<hr>
+		<h2><a name="N10046">1 Introduction</a></h2>
+		<p>The Unihan database is the repository for the Unicode Consortium’s collective knowledge regarding the CJK Unified Ideographs contained in the Unicode Standard. It contains mapping data to allow conversion to and from other coded character sets and additional information to help implement support for the various languages which use the Han ideographic script.</p>
+		<p>Formally, ideographs are defined within the Unicode Standard via their mappings. That is, the Unicode Standard does not formally define what the ideograph U+4E00 is; rather, it defines it as being the equivalent of, say, 0x523B in GB 2312, 0x14421 in CNS 11643, 0x306C in JIS X 0208, and so on.</p>
+		<p>In practice, implementation of ideographs requires large amounts of ancillary data. Input methods require information such as pronunciations, as do collation algorithms. Data in character sets not included in the world of international standards bodies needs to be converted. Relationships between ideographs need to be defined to allow for fuzzy string matching. Beyond all this, it’s important to track not only what properties a given ideograph has, but who claims it has those properties.</p>
+		<p>Unlike characters in Western scripts such as Latin and Greek, whose basic property is their sound, which stays largely constant across languages, the basic property for Han ideographs is their meaning. This isn’t to say that ideographs are truly ideographic, in that they represent abstract ideas; but they generally have one root meaning from which the others derive, and generally retain the bulk of their semantic content across linguistic boundaries. Most ideographs are divided into a radical, which gives a vague sense of meaning, and a phonetic, which gives a vague sense of pronunciation. The Unihan database therefore includes structural analyses and definitions for ideographs.</p>
+		<p>The Unihan database is available to the public in two forms: one, as a text file, Unihan.txt, which is distributed as part of the Unicode Standard; two, via the World Wide Web on the Unicode Web site. The text file is the best indication of the overall size of the database, consisting as it does of twenty-nine megabytes of data with over one million lines, covering over 71,000 ideographs.</p>
+		<p>This document is a guide to that data, describing the mechanics of the Unihan database, the nature of its contents, and the status of the various fields. The Unihan database is truly a work in progress, with new data (and even new fields) being added on a regular basis. If the Unihan database has a weakness, however, it is that it is maintained by volunteers. Nobody is paid to work on it. There is a great deal of useful information which would be added if only someone would provide it. Despite this, the Unihan database provides solid, useful data for everyday implementation needs and beyond.</p>
+		<h2><a name="N10067">2 Mechanics</a></h2>
+		<h3><a name="DatabaseDesign">2.1 Database design</a></h3>
+		<p>The working copy of the Unihan database is maintained privately by the Unicode Consortium.  The two public versions are reflections of this data at a particular point of time.  </p>
+		<p>The database consists of a number of fields containing data for each Han ideograph in the Unicode Standard. The fields are all named, and the names consist entirely of ASCII letters and digits with no spaces or other puncutation except for underscore. For historical reasons, they all start with a lower-case “k.” </p>
+		<p>Most of these are made available in the public releases. The fields not part of the public releases are, with two exceptions, either needed only for internal accounting purposes or are fields which are in the process of being filled and which will be made public in a future release. The remaining two private fields are convenience fields only; since their values can be determined algorithmically from other data in the database, there is no need to actually include them in the public releases. They are:</p>
+		<ul>
+			<li>
+				<h4><tt>kDefaultSortKey</tt></h4>
+				<p>This is a 32-bit integer which provides a default radical-stroke ordering for the characters in the database. 31 of the 32 bits are used as a bitfield as follows:</p>
+				<p>Bits 0-16 are a representation of the character’s code point:</p>
+				<ul>
+					<li>U+4E00 through U+9FFF are mapped to 0x00000 through 0x051FF; that is, 0x4E00 is subtracted from the Unicode Scalar Value.
+					<li>U+3400 through U+4DBF are mapped to 0x05200 through 0x06BBF; that is, 0x1E00 is added to the Unicode Scalar Value.
+					<li>U+20000 through U+2A6DF are mapped to 0x06C00 through 0x112DF; that is, 0x19400 is subtracted from the Unicode Scalar Value.
+					<li>U+F900 through U+FAFF are mapped to 0x1F600 through 0x1F7FF; that is, 0xFD00 is added to the Unicode Scalar Value.
+					<li>U+2F800 through U+2FA1F are mapped to 0x1F800 through 0x1FA1F; that is, 0x10000 is subtracted from the Unicode Scalar Value.
+				</ul>
+				<p>The net result of these remappings is to reorder the blocks (main CJK Unified Ideographs, Extension A, Extension B, Compatibility Ideographs, Compatibility Extension), and to leave a gap of over 58,000 code points between the end of Extension B and the first Compatibility Ideographs block, and over 12,000 after the Compatibility Ideographs Extension.</p>
+				<p>Bits 17-22 are the character’s residual stroke count (0 through 63). The residual stroke count taken is from the first value in the character’s <tt>kRSUnicode</tt> field.</p>
+				<p>Bits 23-30 are the character’s KangXi radical number used (1 through 214). The radical number used is that of the first value in the character’s <tt>kRSUnicode</tt> field. The difference between simplified and traditional radical is ignored.</p>
+				<p>Note that bit 31 is unused, so it makes no difference whether the sort key is treated as signed or unsigned.</p>
+				<p>The <tt>kDefaultSortKey</tt> field thus defines a consistent way of ordering all the characters in Unihan, first by radical-stroke, then by Unicode block (with the compatibility blocks coming last), and finally by code point. It is not the most efficient sorting key possible, but it has the advantage of being easily generated and does not require existing keys to be regenerated when new ideographs or compatibility ideographs are added to the standard.</p>
+					
+			
+			<li>
+				<h4><code>UTF8</code></h4>
+				<p>This is (as one might expect) the character’s UTF-8 encoding. It is also the only field name not starting with “k”.</p>
+		</ul>
+		<p>All data in the Unihan database is stored in UTF-8. </p>
+		<h3><a name="WebAccess">2.2 Web Access</a></h3>
+		<p>The URI for accessing the Unihan database via the Web is <a href="http://www.unicode.org/charts/unihan.html">http://www.unicode.org/charts/unihan.html</a>.</p>
+		<p>Chinese and Japanese compound data are presented in the online database and come from the online <a href="http://www.mandarintools.com/cedict.html">CEDICT</a> and <a href="http://www.csse.monash.edu.au/~jwb/j_edict.html">Jim Breen’s EDICT</a> projects. These additional data are not available in the other versions.</p>
+		<p>There are also two indices for the database, a grid index grouping the characters in blocks of 256 and a radical-stroke index. A search page is also available. Individual characters can be accessed through the index or via the “Lookup” button and text field above. You enter the four- or five-digit hexadecimal identifier for the character, and click “Lookup”. You will be taken to an information page for the character. The “UTF-8” check-box allows you to control whether UTF-8 or embedded GIFs will be used in to display ideographs. The latter technique is less dependent on your browser and system support for Unicode but is much slower.</p>
+		<h3><a name="Unihan.txt">2.3 Unihan.txt</a></h3>
+		<p>The final form of the Unihan database is the <code>Unihan.txt</code> file. This is the only version included in beta releases of the Unicode Standard.</p>
+		<p>The released version of <code>Unihan.txt</code> consists of a header followed by data. Unix line breaks are used. Each line in the data section is one entry with three, tab-separated fields: the Unicode Scalar Value, the database field name, and the value for the database field for the given Unicode Scalar Value. For most of the fields, if multiple values are possible, the values are separated by spaces. No character may have more than one instance of a given field associated with it, and no empty fields are included in the <code>Unihan.txt</code> file.</p>
+		<p>There is no formal limit on the lengths of any of the field values. Any Unicode characters may be used in the field values except for double quotes and control characters (especially tab, newline, and carriage return). Most fields have more a more restricted syntax, such as the <tt>kKangXi</tt> field which consists of multiple, space-separated entries, with each entry consisting of four digits 0 through 9, followed by a period, followed by three more digits.</p>
+		<p>The data lines are sorted by Unicode Scalar Value and field-type as primary and secondary keys, respectively.</p>
+		<p>The header contains detailed information on the database and its contents, including the specific syntax for and contents of individual fields.</p>
+		<h2><a name="N100FB">3 Field Types</a></h2>
+		<p>The data in the Unihan database serves a multitude of purposes, and the fields are most conveniently grouped into categories according to the purpose they fulfil. We provide here a general discussion of the various categories, followed by a detailed description of the individual fields, alphabetically arranged.</p>
+		<p>Again, it is important to remember that all data in the Unihan database has been donated to the Unicode Consortium. Unicode currently has no staff with the responsibility to maintain or update the Unihan database. This means that, for example, the data is more complete for Chinese than for other languages simply because more data has been donated for Chinese than for other languages.</p>
+		<h3><a name="N10106">3.1 IRG Sources</a></h3>
+		<p>Among the few normative parts of the Unihan database, and the most exhaustively checked fields, are the eight IRG source fields: <tt>kIRG_GSource</tt> (PRC and Singapore), <tt>kIRG_HSource</tt> (Hong Kong SAR), <tt>kIRG_JSource</tt> (Japan), <tt>kIRG_KPSource</tt> (North Korea), <tt>kIRG_KSource</tt> (South Korea), <tt>kIRG_TSource</tt> (Taiwan), <tt>kIRG_USource</tt> (Unicode/USA), and <tt>kIRG_VSource</tt> (Vietnam).</p>
+		<p>These represent the official mappings between Unihan and the various encoded character sets or collections which have been submitted by IRG members. The versions of these standards may differ from the published versions generally available, particularly for PRC standards. This is because in the early days of Unicode, the PRC would occasionally add characters to their standards on an ad hoc basis in order to make sure they were included. The various procedures involved in submitting characters to the IRG for consideration no longer make this necessary.</p>
+		<p>At the moment, the U-source consists only of the Unicode Standard itself, and the field value is always equal to the character’s Unicode Scalar Value. This will change when Extension C1 is formally encoded, because Extension C1 contains a small number of characters submitted by the Unicode Technical Committee which use a different indexing system.</p>
+		<p>Note that we do not include the four IRG dictionary fields in this category, largely because they are not normative parts of the standard.</p>
+		<p>The <code>kIICore</code> field is also defined by the IRG and normative. It indicates that a character is in IICore, the IRG-produced minimal set of required ideographs for East Asian use.</p>
+		<p>Each individual value in this field is either P (for preliminary, meaning it has been approved by the IRG but not by WG2), or the ISO/IEC 10646 subset identifier for the subset(s) containing this character.</p>
+		<h3><a name="N10130">3.2 Other Mappings</a></h3>
+		<p>There are twenty-four fields in this category. They consist of mapping tables between the ideographic portions of Unicode and those of other encoded character sets or character collections. Some of the character sets covered mirror official IRG sources. For example, we have data for mapping GB 12345, which is a part of the IRG’s G-source. The difference between the two is that the <tt>kGB1</tt> field maps all of GB 12345 to Unicode, and not just that portion included in the G-source, and it doesn’t map any of the informal extension to GB 12345.</p>
+		<h3><a name="N1013C">3.3 Dictionary Indices</a></h3>
+		<p>There are three main reasons for providing indices into standard dictionaries.</p>
+		<p>One, standard dictionaries provide a “paper trail” for fields such as the English gloss (<tt>kDefinition</tt>) and the various pronunciations or readings, as well as variant data.</p>
+		<p>Two, standard dictionaries provide a reference for scholars or students who wish more information about a character.</p>
+		<p>Third, standard dictionaries are a source for unencoded characters. This is particularly important for Cantonese, where the Cantonese lexicon is not standardized and has been neglected by the authors and architects of previous character set encodings other than HK SCS.</p>
+		<p>As elsewhere, the set of dictionaries covered represent data that has been volunteered. There are important dictionaries (e.g., the <i>Hanyu Da Cidian</i>, the <i>Shuowen</i>) for which formal indices should be provided. And as elsewhere, the data which has been volunteered is weighted heavily in favor of Chinese.</p>
+		<p>Four of the dictionary fields represent official IRG indices for the dictionaries used in the four dictionary sorting algorithm. Two (<tt>kIRGHanyuDaZidian</tt> and <tt>kIRGKangXi</tt>) are still being used by the IRG, but the other two (<tt>kIRGDaeJaweon</tt> and <tt>kIRGDaiKanwaZiten</tt>) are not. We have, nonetheless, retained their data for reference purposes.</p>
+		<p>For all four, there are clone fields to hold Unicode indices into the same four dictionaries. By and large, the data in the IRG fields and their Unicode counterparts is the same—but not always.</p>
+		<p>The remaining dictionaries can be grouped into three categories: general-purpose Chinese (including classical Chinese and Mandarin), Cantonese, and other.</p>
+		<p>The general-purpose Chinese dictionary fields are: <tt>kCihaiT</tt>, <code>kFennIndex</code>, <tt>kGSR</tt>, <tt>kKarlgren</tt>, <tt>kMatthews</tt>, and <tt>kSBGY</tt>. These represent large, standard Chinese-Chinese, Chinese-English dictionaries, or definitive sinological studies.</p>
+		<p>The Cantonese dictionary fields are <tt>kCheungBauerIndex</tt>, <tt>kCowles</tt>, <tt>kLau</tt>, and <tt>kMeyerWempe</tt>. All but Cheung-Bauer are large character-based Cantonese-English dictionaries.</p>
+		<p>At present, the only other dictionary field is <tt>kNelson</tt>, the character’s index in the first edition of Andrew N. Nelson’s excellent and popular <i>Modern Reader’s Japanese-English Character Dictionary</i>.</p>
+		<p>In selecting dictionaries for inclusion—outside of the general consideration of who is willing to volunteer what data—we aim for including large dictionaries rather than small ones, and standard dictionaries such as serious students might have on their shelves.</p>
+		<h3><a name="N1019C">3.4 Readings</a></h3>
+		<p>We include in this category the pronunciations for a given character in Mandarin, Cantonese, Tang-dynasty Chinese, Japanese, Sino-Japanese, Korean, and Vietnamese. We also include here the English gloss for a given character.</p>
+		<p>Any attempt at providing a reading or set of readings for a character is bound to be fraught with difficulty, because the readings will vary over time and from place to place, even within a language. Mandarin is the official language of both the PRC and Taiwan (with some differences between the two) and is the primary language over much of northern and central China, with vast differences from place to place. Even Cantonese, the modern language covered by the Unihan database with the least range, is spoken throughout Guangdong Province and in much of neighboring Guangxi, and covers two large urban centers (Guangzhou and Hong Kong), with Guangzhou Cantonese somewhat infected by Mandarin and Hong Kong Cantonese more than a little infected by English.</p>
+		<p>Indeed, even the same speaker will pronounce the same word differently depending on the social context. For example, in Cantonese, the -ing and -eng finals are fairly interchangeable, with the former preferred in more formal settings, and the latter having a distinct colloquial feel.</p>
+		<p>Add to this the fact that in none of these languages—the various forms of Chinese, Japanese, Korean, Vietnamese—is the syllable the fundamental unit of the language. As in the West, it’s the word, and the pronunciation of a character is tied to the word of which it is a part. In Chinese (followed by Vietnamese and Korean), the rule is one ideograph/one syllable, with most words written using multiple ideographs. In most cases, an ideograph has only one reading (or only one important reading), but there are numerous exceptions.</p>
+		<p>In Japanese, the situation is enormously more complex. Japanese has two pronunciation systems, one derived from Chinese (the <i>on</i> pronunciation, or Sino-Japanese), and the other from Japanese (the <i>kun</i> pronunciation). The <i>kun</i> pronunciation for a single kanji can easily be polysyllablic (e.g., <i>ichi</i> for 一). In essence, the <i>on</i> pronunciation is the Japanese way of pronouncing the Chinese word, whereas the <i>kun</i> pronunciation is the Japanese translation of the word.</p>
+		<p>Moreover, some characters have rare pronunciations known only to a minority of even native speakers, or are so rare themselves that few, if any, native speakers know how to pronounce them (e.g., U+40DF &#x40DF;, used in a Hong Kong place name). In many cases, the pronunciations given by professional lexicographers are little more than educated guesses.</p>
+		<p>Thus, unlike mappings between Unicode and other character sets, providing definitive data on pronunciations or, similarly, providing a definitive English gloss is impossible, and not something which has been achieved. While we make every effort to use our sources judiciously, we are aware of the fact that this data can always be improved and extended. Users should not naïvely assume that learning to pronounce an East Asian language is all about learning to pronounce the individual ideographs, or that reading is done by parsing the ideographs, one at a time.</p>
+		<p>Despite these caveats, the reading and definition data is very useful both for the student attempting to learn these languages, and for the professional attempting to use them, and so the data is included in the Unihan database.</p>
+		<h3><a name="N101BA">3.5 Dictionary-like Data</a></h3>
+		<p>This category is something of a hodge-podge, consisting of various fields including information one might find in a dictionary (such as a characters cangjie input code), or data useful in determining levels of support (such as frequency), or structural analyses which can be helpful in lookup systems (such as the characters’ phonetic).</p>
+		<p>As with the readings and English gloss, this data does not cover as much of Unihan as is theoretically possible, although it does cover the bulk of what is used day-to-day.</p>
+		<p>The fields included in this category are <tt>kCangjie</tt>, <code>kCheungBauer</code>, <tt>kFenn</tt>, <code>kFourCornerCode</code>, <tt>kFrequency</tt>, <tt>kGradeLevel</tt>, <tt>kHanyuPinlu</tt>, <tt>kHKGlyph</tt>, <tt>kPhonetic</tt>, and <tt>kXHC1983</tt>. Note that in the case of <tt>kFenn</tt>, <code>kCheungBauer</code>, and <tt>kHanyuPinlu</tt>, the data is named for the dictionary from which the data is derived, not for the type of data it is.</p>
+		<h3><a name="N101E4">3.6 Radical-Stroke Counts</a></h3>
+		<p>We include six radical-stroke counts for Unihan, although only three are actively used at the moment. Three are based on IRG standard dictionaries: the <i>Hanyu Da Zidian</i>, which uses a slightly different radical system from the others, is not included, although <i>Hanyu Da Zidian</i> radical-stroke data can be calculated using the <code>kHDZRadBreak</code> field.</p>
+		<p>All the radical-stroke fields are based on the radical-system introduced by the 18th century <i>KangXi</i> dictionary. Each ideograph is assigned one of 214 radicals. In most cases, the radical assigned is the natural radical, giving a clue as to the character’s meaning; in the rest, the radical is arbitrary, based on the character’s structure. One also counts the character’s residual strokes, that is, the number of brush strokes required to write everything in the character except the radical.</p>
+		<p>To find a character using the radical-stroke system, one determines its radical and the number of residual strokes, then looks through the list of characters with those characteristics. This is a clumsy system compared to alphabetical lookup, but is one of the most widespread systems throughout East Asia. Unfortunately, it is also ambiguous.</p>
+		<p>First of all, if a character does not have a natural radical, it can sometimes be hard to tell what the radical ought to be (e.g., 井 being assigned arbitrarily the radical 二). Even if the character naturally falls into radical-like pieces, it can be hard to tell which is the radical and which the phonetic (e.g., 和, which looks like it belongs to the radical 禾, actually belongs to the radical 口). Moreover, since Unicode encodes characters, not glyphs, two different glyphs for the same character may have different residual strokes (such as 者, which can be written either with or without a dot, altering its stroke count between nine and eight, respectively).</p>
+		<p>We include multiple radical-stroke systems to allow for this. Three of the radical-stroke fields represent the character’s radical-stroke count as determined by its position within a standard IRG dictionary. Two more (<code>kRSJapanese</code> and <tt>kRSUnicode</tt>) are intended to cover a “typical” Japanese radical-stroke count, and everything else, respectively. Finally, there is the <code>kRSAdobe_Japan1_6</code> field which contains more detailed information on the glyph used for the character in the Adobe Japan 1-6 character set.</p>
+		<p>The primary use for the <tt>kRSUnicode</tt> field is to cover the form of the character as drawn in the Unicode Standard. However, it is also used for cases where there is sufficient ambiguity that a reasonable person might look for a character in multiple places, particularly where one of our source dictionaries categorizes a character under a different radical or with a different stroke count.</p>
+		<p>The <tt>kRSUnicode</tt> field also uses an apostrophe after the radical number to indicate that the character uses a standard simplification. In simplified Chinese, many radicals have standard, simplified forms, such as 讠, which is the simplified form of the radical 言</p>
+		<p>There is, by the way, no standard way of ordering characters within a given radical-stroke group. Unicode’s radical-stroke charts order characters with the same radical-stroke count by the Unicode block in which they occur. If looking for a character with radical 64 (手) and ten residual strokes, one knows that of the 173 candidates in Unicode 4.0.1, the most common ones come towards the head of the list and the less common ones later.</p>
+		<p>The IRG is in the process of adopting a common system of assigning the first stroke of the phonetic element to one of five categories, and sorting by those categories. When this “first stroke” data is available for all of Unihan, it will be added to the Unihan database and simplify the process of finding a character within a particular radical-stroke block.</p>
+		<h3><a name="N10211">3.7 Variants</a></h3>
+		<p>Although Unicode encodes characters and not glyphs, the line between the two can sometimes be hard to draw, particularly in East Asia. There, thousands of years worth of writing have produced thousands of pairs which can be used more-or-less interchangeably.</p>
+		<p>To deal with this situation, the Unicode Standard has adopted a three-dimensional model for determining the relationship between ideographs, and has formal rules for when two forms may be unified. Both are described in some detail in the Unicode Standard. Briefly, however, the three-dimensional model uses the x-axis to represent meaning, and the y-axis to represent abstract shape. The z-axis is used for stylistic variations.</p>
+		<p>To illustrate, 說 and 貓 have different positions along the x-axis, since they mean two entirely different things (<i>to speak</i> and <i>cat</i>, respectively). 貓 and 猫 mean the same thing and are pronounced the same way but have different abstract shapes, so they have the same position on the x-axis (semantics) but different positions on the y-axis (abstract shape). They are said to be y-variants of one another. On the other hand, 說 and 説 have the same meaning and pronunciation and the same abstract shape, and so have the same positions on both the x- and y-axes but different positions on the z-axis. They are z-variants of one another.</p>
+		<p>Ideally, there would be no pairs of z-variants in the Unicode Standard; however, the need to provide for round-trip compatibility with earlier standards, and some out-and-out mistakes along the way mean that there are some. These are marked using the <tt>kZVariant</tt> field.</p>
+		<p>The Unihan database also includes the <tt>kCompatibilityVariant</tt> field, which marks compatibility variants as defined by the Unicode Standard.</p>
+		<p>The remaining variant fields are used to mark different types of y-variation.</p>
+		<p>The <tt>kSimplifiedVariant</tt> and <tt>kTraditionalVariant</tt> fields are used to aid in the process of going between simplified and traditional Chinese. The People’s Republic of China, beginning in the 1950’s, undertook a series of language reforms aimed at boosting literacy by making Chinese easier to read and write, largely by reducing the number of strokes needed to write a number of characters. These reforms have also been adopted in Singapore. The traditional forms, however, are predominant in Taiwan, overseas Chinese communities, and even in China’s two Special Administrative Regions, Hong Kong and Macao.</p>
+		<p>The mapping between simplified and traditional Chinese can be quite complex. In many cases, the official simplification is an acceptable alternative even within traditional Chinese, as with our two cats above: both 猫 and 貓 are acceptable in traditional Chinese, but only 猫 is used in simplified Chinese. In a few cases, a single simplified form corresponds to multiple traditional forms, such as 台, which is not only a traditional character in its own right, but also the simplification for 檯, 臺, and 颱. And a character-by-character conversion isn’t sufficient to convert between simplified and traditional Chinese because of lexical differences. A hard disk, for example, is called 硬磁盤 in the PRC, and 硬碟 in Taiwan.</p>
+		<p>The remaining two variation fields, <tt>kSemanticVariant</tt> and <tt>kSpecializedSemanticVariant</tt>, are used to mark cases where two characters have identical and overlapping meanings, respectively.</p>
+		<p>Thus U+514E 兎 and U+5154 兔 are y-variants of one another; both mean <i>rabbit</i>. U+4E3C 丼 and U+4E95 井 are not pure y-variants of one another. 井 means <i>a well</i>, and although 丼 can also mean <i>a well</i> and be used for 井, it can also mean <i>a bowl of food</i>. We use <tt>kSemanticVariant</tt>, then, for the former pair, and <tt>kSpecializedSemanticVariant</tt> for the latter. In many cases, data is provided listing the Unihan sources which indicate the variant relationship. The syntax is described in detail below, but as an example, U+792E &#x792E; has the <code>kSemanticVariant</code> 
+		value <code>U+70AE&lt;kMeyerWempe U+7832&lt;kLau,kMatthews,kMeyerWempe U+791F&lt;kLau,kMatthews</code>. 
+		This means that the Mathews, Lau, and Meyer-Wempe dictionaries all say that it is a y-variant of U+7832 &#x7832;, whereas only Mathews and Lau identify it as a variant of U+791F &#x791F; and only Meyer-Wempe identifies it as a variant of U+70AE &#x70AE;.</p>
+		<h3><a name="N1024D">3.8 Numeric Values</a></h3>
+		<p>Finally, we have three fields, <tt>kAccountingNumeric</tt>, <tt>kOtherNumeric</tt>, and <tt>kPrimaryNumeric</tt> to indicate the numerical values an ideograph may have. Traditionally, ideographs were used both for numbers and words, and so many ideographs have (or can have) numeric values. The various kinds of numeric values are specified by these three fields.</p>
+		<h2><a name="N10260">4 The Fields</a></h2>
+		<p>We now give two listings of the fields in the Unihan database.  The first is an alphabetical listing, with information on the field contents and syntax.  The second is a listing of the fields by the release of the Unicode Standard in which they were first found.</p>
+		<h3><a name="AlphabeticalListing">4.1 Alphabetical Listing</a></h3>
+		<p>For each field we give the following information in the alphabetical listing: its <i>tag</i>, its <i>Unicode status</i>, its <i>category</i> as defined above, its <i>level of completion</i>, its <i>separator</i>, its <i>syntax</i>, and its <i>description</i>.</p>
+		<p>The <i>tag</i> is the tag used in the <code>Unihan.txt</code> file and MySQL database to mark instances of this field.</p>
+		<p>The <i>Unicode status</i> is either <i>normative</i>, <i>informative</i>, or <i>provisional</i>, depending on whether it is a normative part of the standard, an informative part of the standard, or neither. We also include <i>deprecated</i> as a Unicode status if the field is no longer to be used.</p>
+		<p>We use three values for the <i>level of completion</i>.</p>
+		<p>A <i>complete</i> field is one which could not cannot contain more data. The <tt>kMatthews</tt> field is complete, for example, because there are only so many characters in Mathews’ dictionary, and all of them which are encoded have their indices in the Unihan database.</p>
+		<p>We also include as complete fields such as <tt>kKangXi</tt> which are Unicode counterparts to IRG data fields which are truly complete.</p>
+		<p>An <i>extendable</i> field is one which is complete as far as it goes. Fields such as the readings and definition fields are extendable, because they could theoretically be extended to cover all of Unihan, but they are sufficiently complete for most needs and we are unlikely to need to go back and revise existing data in the field.</p>
+		<p>An <i>incomplete</i> field is one which has known gaps and needs more data before it can be truly useable.</p>
+		<p>Fields which allow multiple values have a <i>separator</i> defined, usually a space. Fields which do not need or cannot have a separator do not have this defined, such as the IRG source fields.</p>
+		<p>The <i>syntax</i> is a Perl-like regular expression describing the formal structure of an individual entry in the field. The syntax for the <tt>kKangXi</tt> field is <code>[0-9]{4}\.[0-9]{2}[01]</code>, which means four decimal digits followed by a period, followed by two more decimal digits, followed by a zero or a one. The syntax can be used to validate the contents of a field. (Note: We may have to do more than just regexps for some fields. We’ll see when we get to them.) Of course, just complying with the formal syntax is no guarantee that the data is correct: a <tt>kKangXi</tt> value of 9999.990 is syntactically correct but wrong anyway, since there is no page 9999 in the KangXi dictionary.</p>
+		<p>Finally, the description contains not only a description of what the field contains, but also source information, known limitations, methodology used in deriving the data, and so on.</p>
+		<table cellpadding="2" cellspacing="2" style="border-width: 0px;">
+			<tbody>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Tag:</td>
+					<td style="border-width: 0px;" valign="top"><tt><code>kAccountingNumeric</code></tt></td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Status:</td>
+					<td style="border-width: 0px;" valign="top">Informative</td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Category:</td>
+					<td style="border-width: 0px;" valign="top">Numeric Values</td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Separator:</td>
+					<td style="border-width: 0px;" valign="top"><tt>space</tt></td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Syntax:</td>
+					<td style="border-width: 0px;" valign="top"><tt><code>[0-9]+</code></tt></td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Description:</td>
+					<td style="border-width: 0px;" valign="top">The value of the character when used in the writing of accounting numerals.
+						<p>Accounting numerals are used in East Asia to prevent fraud. Because a number like ten (十) is easily turned into one thousand (千) with a stroke of a brush, monetary documents will often use an accounting form of the numeral ten (such as 拾) in their place.</p>
+						<p>The three numeric-value fields should have no overlap; that is, characters with a <code>kAccountingNumeric</code> value should not have a <code>kPrimaryNumeric</code> or <code>kOtherNumeric</code> value as well.</p>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+		<p> </p>
+		<table cellpadding="2" cellspacing="2" style="border-width: 0px;">
+			<tbody>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Tag:</td>
+					<td style="border-width: 0px;" valign="top"><tt><code>kBigFive</code></tt></td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Status:</td>
+					<td style="border-width: 0px;" valign="top">Provisional</td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Category:</td>
+					<td style="border-width: 0px;" valign="top">Other Mappings</td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Separator:</td>
+					<td style="border-width: 0px;" valign="top"><tt>space</tt></td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Syntax:</td>
+					<td style="border-width: 0px;" valign="top"><tt><code>[0-9A-F]{4}</code></tt></td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Description:</td>
+					<td style="border-width: 0px;" valign="top">The Big Five mapping for this character in hex; note that this does not cover any of the Big Five extensions in common use, including the ETEN extensions.</td>
+				</tr>
+			</tbody>
+		</table>
+		<p> </p>
+		<table cellpadding="2" cellspacing="2" style="border-width: 0px;">
+			<tbody>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Tag:</td>
+					<td style="border-width: 0px;" valign="top"><tt><code>kCCCII</code></tt></td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Status:</td>
+					<td style="border-width: 0px;" valign="top">Provisional</td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Category:</td>
+					<td style="border-width: 0px;" valign="top">Other Mappings</td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Separator:</td>
+					<td style="border-width: 0px;" valign="top"><tt>space</tt></td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Syntax:</td>
+					<td style="border-width: 0px;" valign="top"><tt><code>[0-9A-F]{6}</code></tt></td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Description:</td>
+					<td style="border-width: 0px;" valign="top">The CCCII mapping for this character in hex.</td>
+				</tr>
+			</tbody>
+		</table>
+		<p> </p>
+		<table cellpadding="2" cellspacing="2" style="border-width: 0px;">
+			<tbody>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Tag:</td>
+					<td style="border-width: 0px;" valign="top"><code>kCNS1986</code></td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Status:</td>
+					<td style="border-width: 0px;" valign="top">Provisional</td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Category:</td>
+					<td style="border-width: 0px;" valign="top">Other Mappings</td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Separator:</td>
+					<td style="border-width: 0px;" valign="top">space</td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Syntax:</td>
+					<td style="border-width: 0px;" valign="top"><code>[12E]-[0-9A-F]{4}</code></td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Description:</td>
+					<td style="border-width: 0px;" valign="top">The CNS 11643-1986 mapping for this character in hex.</td>
+				</tr>
+			</tbody>
+		</table>
+		<p> </p>
+		<table cellpadding="2" cellspacing="2" style="border-width: 0px;">
+			<tbody>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Tag:</td>
+					<td style="border-width: 0px;" valign="top"><code>kCNS1992</code></td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Status:</td>
+					<td style="border-width: 0px;" valign="top">Provisional</td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Category:</td>
+					<td style="border-width: 0px;" valign="top">Other Mappings</td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Separator:</td>
+					<td style="border-width: 0px;" valign="top">space</td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Syntax:</td>
+					<td style="border-width: 0px;" valign="top"><code>[123]-[0-9A-F]{4}</code></td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Description:</td>
+					<td style="border-width: 0px;" valign="top">The CNS 11643-1992 mapping for this character in hex.</td>
+				</tr>
+			</tbody>
+		</table>
+		<p> </p>
+		<table cellpadding="2" cellspacing="2" style="border-width: 0px;">
+			<tbody>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Tag:</td>
+					<td style="border-width: 0px;" valign="top"><code>kCangjie</code></td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Status:</td>
+					<td style="border-width: 0px;" valign="top">Provisional</td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Category:</td>
+					<td style="border-width: 0px;" valign="top">Dictionary-like Data</td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Separator:</td>
+					<td style="border-width: 0px;" valign="top">space</td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Syntax:</td>
+					<td style="border-width: 0px;" valign="top"><code>[A-Z]+</code></td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Description:</td>
+					<td style="border-width: 0px;" valign="top">The <i>cangjie</i> input code for the character. This incorporates data from the file <code>cangjie-table.b5</code> by Christian Wittern.</td>
+				</tr>
+			</tbody>
+		</table>
+		<p> </p>
+		<table cellpadding="2" cellspacing="2" style="border-width: 0px;">
+			<tbody>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Tag:</td>
+					<td style="border-width: 0px;" valign="top"><code>kCantonese</code></td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Status:</td>
+					<td style="border-width: 0px;" valign="top">Provisional</td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Category:</td>
+					<td style="border-width: 0px;" valign="top">Readings</td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Separator:</td>
+					<td style="border-width: 0px;" valign="top">space</td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Syntax:</td>
+					<td style="border-width: 0px;" valign="top"><code>[a-z]+[1-6]</code></td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Description:</td>
+					<td style="border-width: 0px;" valign="top">The Cantonese pronunciation(s) for this character using the <i>jyutping</i> romanization.
+						<p>A full description of <i>jyutping</i> can be found at http://cpct92.cityu.edu.hk/lshk/Jyutping/Jyutping.htm. The main differences between <i>jyutping</i> and the Yale romanization previously used are:</p>
+						<p>1) <i>Jyutping</i> always uses tone numbers and does not distinguish the high falling and high level tones.</p>
+						<p>2) <i>Jyutping</i> always writes a long <i>a</i> as &quot;<i>aa</i>&quot;.</p>
+						<p>3) <i>Jyutping</i> uses &quot;oe&quot; and &quot;eo&quot; for the Yale &quot;eu&quot; vowel.</p>
+						<p>4) <i>Jyutping</i> uses &quot;c&quot; instead of &quot;ch&quot;, &quot;z&quot; instead of &quot;j&quot;, and &quot;j&quot; instead of &quot;y&quot; as initials.</p>
+						<p>5) A non-null initial is always explicitly written (thus &quot;jyut&quot; in jyutping instead of Yale's &quot;yut&quot;).</p>
+						<p>Cantonese pronunciations are sorted alphabetically, not in order of frequency.</p>
+						<p>N.B., the Hong Kong dialect of Cantonese is in the process of dropping initial NG- before non-null finals. Any word with an initial NG- may actually be pronounced without it, depending on the speaker and circumstances. Many words with a null initial may similarly be pronounced with an initial NG-. Similarly, many speakers use an initial L- for words previously pronounced with an initial N-.</p>
+						<p>Cantonese data are derived from the following sources:</p>
+						<p>Casey, G. Hugh, S.J. <i>Ten Thousand Characters: An Analytic Dictionary</i>. Hong Kong: Kelley and Walsh,1980 (kPhonetic).</p>
+						<p>Cheung Kwan-hin and Robert S. Bauer, <i>The Representation of Cantonese with Chinese Characters</i>, Journal of Chinese Linguistics Monograph Series Number 18, 2002.</p>
+						<p>Roy T. Cowles, <i>A Pocket Dictionary of Cantonese</i>, Hong Kong: University Press, 1999 (kCowles).</p>
+						<p>Sidney Lau, <i>A Practical Cantonese-English Dictionary</i>, Hong Kong: Government Printer, 1977 (kLau).</p>
+						<p>Bernard F. Meyer and Theodore F. Wempe, <i>Student's Cantonese-English Dictionary</i>, Maryknoll, New York: Catholic Foreign Mission Society of America, 1947 (kMeyerWempe).</p>
+						<p>饒秉才, ed. 廣州音字典, Hong Kong: Joint Publishing (H.K.) Co., Ltd., 1989.</p>
+						<p>中華新字典, Hong Kong:中華書局, 1987.</p>
+						<p>黃港生, ed. 商務新詞典, Hong Kong: The Commercial Press, 1991.</p>
+						<p>朗文初級中文詞典, Hong Kong: Longman, 2001.</p>
+						<p>The <i>jyutping</i> phrase box from the Linguistic Society of Hong Kong, http://cpct92.cityu.edu.hk/lshk/Jyutping/ . The copyright of the <i>jyutping</i> phrase box belongs to the Linguistic Society of Hong Kong.  We would like to thank the Jyutping Group of the Linguistic Society of Hong Kong for permission to use the electronic file in our research and/or product development. Note that the inclusion of the phrase box in the Unihan database requires that any products developed using the <code>kCantonese</code> field needs to include this acknowledgment.</p>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+		<p> </p>
+		<table cellpadding="2" cellspacing="2" style="border-width: 0px;">
+			<tbody>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Tag:</td>
+					<td style="border-width: 0px;" valign="top"><code>kCheungBauer</code></td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Status:</td>
+					<td style="border-width: 0px;" valign="top">Provisional</td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Category:</td>
+					<td style="border-width: 0px;" valign="top">Dictionary-like Data</td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Separator:</td>
+					<td style="border-width: 0px;" valign="top">NA</td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Introduced:</td>
+					<td style="border-width: 0px;" valign="top">5.0</td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Description:</td>
+					<td style="border-width: 0px;" valign="top">Data regarding the character in Cheung Kwan-hin and Robert S. Bauer, <i>The Representation of Cantonese with Chinese Characters</i>, Journal of Chinese Linguistics, Monograph Series Number 18, 2002. The data consist of three pieces, separated by semicolons: (1) the character's radical-stroke index as a three-digit radical, slash, two-digit stroke count; (2) the character's cangjie input code (if any); and (3) a comma-separated list of Cantonese readings using the <i>jyutping</i> romanization in alphabetical order.</td>
+				</tr>
+			</tbody>
+		</table>
+		<p> </p>
+		<table cellpadding="2" cellspacing="2" style="border-width: 0px;">
+			<tbody>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Tag:</td>
+					<td style="border-width: 0px;" valign="top"><code>kCheungBauerIndex</code></td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Status:</td>
+					<td style="border-width: 0px;" valign="top">Provisional</td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Category:</td>
+					<td style="border-width: 0px;" valign="top">Dictionary Indices</td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Separator:</td>
+					<td style="border-width: 0px;" valign="top">space</td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Syntax:</td>
+					<td style="border-width: 0px;" valign="top"><code>[0-9]{3}\.[0-9]{2}</code></td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Introduced:</td>
+					<td style="border-width: 0px;" valign="top">5.0</td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Description:</td>
+					<td style="border-width: 0px;" valign="top">The position of the character in Cheung Kwan-hin and Robert S. Bauer, <i>The Representation of Cantonese with Chinese Characters</i>, Journal of Chinese Linguistics, Monograph Series Number 18, 2002. The format is a three-digit page number followed by a two-digit position number, separated by a period.</td>
+				</tr>
+			</tbody>
+		</table>
+		<p> </p>
+		<table cellpadding="2" cellspacing="2" style="border-width: 0px;">
+			<tbody>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Tag:</td>
+					<td style="border-width: 0px;" valign="top"><code>kCihaiT</code></td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Status:</td>
+					<td style="border-width: 0px;" valign="top">Provisional</td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Category:</td>
+					<td style="border-width: 0px;" valign="top">Dictionary-like Data</td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Separator:</td>
+					<td style="border-width: 0px;" valign="top">space</td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Syntax:</td>
+					<td style="border-width: 0px;" valign="top"><code>[1-9][0-9]{0,3}\.[0-9]{3}</code></td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Description:</td>
+					<td style="border-width: 0px;" valign="top">The position of this character in the Cihai (辭海) dictionary, single volume edition, published in Hong Kong by the Zhonghua Bookstore, 1983 (reprint of the 1947 edition), ISBN 962-231-005-2.
+						<p>The position is indicated by a decimal number. The digits to the left of the decimal are the page number. The first digit after the decimal is the row on the page, and the remaining two digits after the decimal are the position on the row.</p>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+		<p> </p>
+		<table cellpadding="2" cellspacing="2" style="border-width: 0px;">
+			<tbody>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Tag:</td>
+					<td style="border-width: 0px;" valign="top"><code>kCompatibilityVariant</code></td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Status:</td>
+					<td style="border-width: 0px;" valign="top">Normative</td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Category:</td>
+					<td style="border-width: 0px;" valign="top">Variants</td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Separator:</td>
+					<td style="border-width: 0px;" valign="top">space</td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Syntax:</td>
+					<td style="border-width: 0px;" valign="top"><code>U\+2?[0-9A-F]{4}</code></td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Description:</td>
+					<td style="border-width: 0px;" valign="top">The compatibility decomposition for this ideograph, derived from the <code>UnicodeData.txt</code> file.</td>
+				</tr>
+			</tbody>
+		</table>
+		<p> </p>
+		<table cellpadding="2" cellspacing="2" style="border-width: 0px;">
+			<tbody>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Tag:</td>
+					<td style="border-width: 0px;" valign="top"><code>kCowles</code></td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Status:</td>
+					<td style="border-width: 0px;" valign="top">Provisional</td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Category:</td>
+					<td style="border-width: 0px;" valign="top">Dictionary Indices</td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Separator:</td>
+					<td style="border-width: 0px;" valign="top">space</td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Syntax:</td>
+					<td style="border-width: 0px;" valign="top"><code>[0-9]{1,4}(\.[0-9]{1,2})?</code></td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Description:</td>
+					<td style="border-width: 0px;" valign="top">The index or indices of this character in Roy T. Cowles,<i> A Pocket Dictionary of Cantonese</i>, Hong Kong: University Press, 1999.
+						<p>The Cowles indices are numerical, usually integers but occasionally fractional where a character was added after the original indices were determined. Cowles is missing indices 1222 and 4949, and four characters in Cowles are part of Unicode's &quot;Hangzhou&quot; numeral set: 2964 (U+3025), 3197 (U+3028), 3574 (U+3023), and 4720 (U+3027).</p>
+						<p>Approximately 100 characters from Cowles which are not currently encoded are being submitted to the IRG by Unicode for inclusion in future versions of the standard.</p>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+		<p> </p>
+		<table cellpadding="2" cellspacing="2" style="border-width: 0px;">
+			<tbody>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Tag:</td>
+					<td style="border-width: 0px;" valign="top"><code>kDaeJaweon</code></td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Status:</td>
+					<td style="border-width: 0px;" valign="top">Provisional</td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Category:</td>
+					<td style="border-width: 0px;" valign="top">Dictionary Indices</td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Separator:</td>
+					<td style="border-width: 0px;" valign="top">space</td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Syntax:</td>
+					<td style="border-width: 0px;" valign="top"><code>[0-9]{4}\.[0-9]{2}[0158]</code></td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Description:</td>
+					<td style="border-width: 0px;" valign="top">The position of this character in the <i>Dae Jaweon</i> (Korean) dictionary used in the four-dictionary sorting algorithm. The position is in the form &quot;page.position&quot; with the final digit in the position being &quot;0&quot; for characters actually in the dictionary and &quot;1&quot; for characters not found in the dictionary and assigned a &quot;virtual&quot; position in the dictionary.
+						<p>Thus, &quot;1187.060&quot; indicates the sixth character on page 1187. A character not in this dictionary but assigned a position between the 6th and 7th characters on page 1187 for sorting purposes would have the code &quot;1187.061&quot;</p>
+						<p>The edition used is the first edition, published in Seoul by Samseong Publishing Co., Ltd., 1988.</p>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+		<p> </p>
+		<table cellpadding="2" cellspacing="2" style="border-width: 0px;">
+			<tbody>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Tag:</td>
+					<td style="border-width: 0px;" valign="top"><code>kDefinition</code></td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Status:</td>
+					<td style="border-width: 0px;" valign="top">Provisional</td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Category:</td>
+					<td style="border-width: 0px;" valign="top">Dictionary-like Data</td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Separator:</td>
+					<td style="border-width: 0px;" valign="top">space</td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Syntax:</td>
+					<td style="border-width: 0px;" valign="top"><code>See Description</code></td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Description:</td>
+					<td style="border-width: 0px;" valign="top">An English definition for this character. Definitions are for modern written Chinese and are usually (but not always) the same as the definition in other Chinese dialects or non-Chinese languages. In some cases, synonyms are indicated. Fuller variant information can be found using the various variant fields.
+						<p>Definitions specific to non-Chinese languages or Chinese dialects other than modern Mandarin are marked, e.g., (Cant.) or (J).</p>
+						<p>Major definitions are separated by semicolons, and minor definitions by commas. Any valid Unicode character (except for tab, double-quote, and any line break character) may be used within the definition field.</p>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+		<p> </p>
+		<table cellpadding="2" cellspacing="2" style="border-width: 0px;">
+			<tbody>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Tag:</td>
+					<td style="border-width: 0px;" valign="top"><code>kEACC</code></td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Status:</td>
+					<td style="border-width: 0px;" valign="top">Provisional</td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Category:</td>
+					<td style="border-width: 0px;" valign="top">Other Mappings</td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Separator:</td>
+					<td style="border-width: 0px;" valign="top">space</td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Syntax:</td>
+					<td style="border-width: 0px;" valign="top"><code>[0-9A-F]{6}</code></td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Description:</td>
+					<td style="border-width: 0px;" valign="top">The EACC mapping for this character in hex.</td>
+				</tr>
+			</tbody>
+		</table>
+		<p> </p>
+		<table cellpadding="2" cellspacing="2" style="border-width: 0px;">
+			<tbody>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Tag:</td>
+					<td style="border-width: 0px;" valign="top"><code>kFenn</code></td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Status:</td>
+					<td style="border-width: 0px;" valign="top">Provisional</td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Category:</td>
+					<td style="border-width: 0px;" valign="top">Dictionary-like Data</td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Separator:</td>
+					<td style="border-width: 0px;" valign="top">space</td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Syntax:</td>
+					<td style="border-width: 0px;" valign="top"><code>[0-9]+a?[A-KP*]</code></td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Description:</td>
+					<td style="border-width: 0px;" valign="top">Data on the character from <i>The Five Thousand Dictionary</i> (aka <i>Fenn's Chinese-English Pocket Dictionary</i>) by Courtenay H. Fenn, Cambridge, Mass.: Harvard University Press, 1979.
+						<p>The data here consists of a decimal number followed by a letter A through K, the letter P, or an asterisk. The decimal number gives the Soothill number for the character's phonetic, and the letter is a rough frequency indication, with A indicating the 500 most common ideographs, B the next five hundred, and so on.</p>
+						<p>P is used by Fenn to indicate a rare character included in the dictionary only because it is the phonetic element in other characters.</p>
+						<p>An asterisk is used instead of a letter in the final position to indicate a character which belongs to one of Soothill's phonetic groups but is not found in Fenn's dictionary.</p>
+						<p>Characters which have a frequency letter but no Soothill phonetic group are assigned group 0.</p>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+		<p> </p>
+		<table cellpadding="2" cellspacing="2" style="border-width: 0px;">
+			<tbody>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Tag:</td>
+					<td style="border-width: 0px;" valign="top"><code>kFennIndex</code></td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Status:</td>
+					<td style="border-width: 0px;" valign="top">Provisional</td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Category:</td>
+					<td style="border-width: 0px;" valign="top">Dictionary Indices</td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Separator:</td>
+					<td style="border-width: 0px;" valign="top">space</td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Syntax:</td>
+					<td style="border-width: 0px;" valign="top"><code>[1-9][0-9]{2}\.[01][0-9]</code></td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Description:</td>
+					<td style="border-width: 0px;" valign="top">The position of this character in <i>Fenn's Chinese-English Pocket Dictionary</i> by Courtenay H. Fenn, Cambridge, Mass.: Harvard University Press, 1942. The position is indicated by a three-digit page number followed by a period and a two-digit position on the page.</td>
+				</tr>
+			</tbody>
+		</table>
+		<p> </p>
+		<table cellpadding="2" cellspacing="2" style="border-width: 0px;">
+			<tbody>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Tag:</td>
+					<td style="border-width: 0px;" valign="top"><code>kFourCornerCode</code></td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Status:</td>
+					<td style="border-width: 0px;" valign="top">Provisional</td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Category:</td>
+					<td style="border-width: 0px;" valign="top">Dictionary-like Data</td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Separator:</td>
+					<td style="border-width: 0px;" valign="top">space</td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Syntax:</td>
+					<td style="border-width: 0px;" valign="top"><code>[0-9]{4}(\.[0-9])?</code></td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Description:</td>
+					<td style="border-width: 0px;" valign="top">The four-corner code(s) for the character. This data is derived from data provided in the public domain by Hartmut Bohn, Urs App, and Christian Wittern. 
+						<p>The four-corner system assigns each character a four-digit code from 0 through 9. The digit is derived from the &quot;shape&quot; of the four corners of the character (upper-left, upper-right, lower-left, lower-right). An optional fifth digit can be used to further distinguish characters; the fifth digit is derived from the shape in the character's center or region immediately to the left of the fourth corner. </p>
+						<p>The four-corner system is now used only rarely. Full descriptions are available online, e.g., at &lt;<a href="http://en.wikipedia.org/wiki/Four_corner_input">http://en.wikipedia.org/wiki/Four_corner_input</a>&gt;. </p>
+						<p>Values in this field consist of four decimal digits, optionally followed by a period and fifth digit for a five-digit form.</p>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+		<p> </p>
+		<table cellpadding="2" cellspacing="2" style="border-width: 0px;">
+			<tbody>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Tag:</td>
+					<td style="border-width: 0px;" valign="top"><code>kFrequency</code></td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Status:</td>
+					<td style="border-width: 0px;" valign="top">Provisional</td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Category:</td>
+					<td style="border-width: 0px;" valign="top">Dictionary-like Data</td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Separator:</td>
+					<td style="border-width: 0px;" valign="top">space</td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Syntax:</td>
+					<td style="border-width: 0px;" valign="top"><code>[1-5]</code></td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Description:</td>
+					<td style="border-width: 0px;" valign="top">A rough frequency measurement for the character based on analysis of traditional Chinese USENET postings; characters with a <code>kFrequency</code> of 1 are the most common, those with a <code>kFrequency</code> of 2 are less common, and so on, through a <code>kFrequency</code> of 5.</td>
+				</tr>
+			</tbody>
+		</table>
+		<p> </p>
+		<table cellpadding="2" cellspacing="2" style="border-width: 0px;">
+			<tbody>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Tag:</td>
+					<td style="border-width: 0px;" valign="top"><code>kGB0</code></td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Status:</td>
+					<td style="border-width: 0px;" valign="top">Provisional</td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Category:</td>
+					<td style="border-width: 0px;" valign="top">Other Mappings</td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Separator:</td>
+					<td style="border-width: 0px;" valign="top">space</td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Syntax:</td>
+					<td style="border-width: 0px;" valign="top"><code>[0-9A-F]{4}</code></td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Description:</td>
+					<td style="border-width: 0px;" valign="top">The GB 2312-80 mapping for this character in ku/ten form.</td>
+				</tr>
+			</tbody>
+		</table>
+		<p> </p>
+		<table cellpadding="2" cellspacing="2" style="border-width: 0px;">
+			<tbody>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Tag:</td>
+					<td style="border-width: 0px;" valign="top"><code>kGB1</code></td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Status:</td>
+					<td style="border-width: 0px;" valign="top">Provisional</td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Category:</td>
+					<td style="border-width: 0px;" valign="top">Other Mappings</td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Separator:</td>
+					<td style="border-width: 0px;" valign="top">space</td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Syntax:</td>
+					<td style="border-width: 0px;" valign="top"><code>[0-9A-F]{4}</code></td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Description:</td>
+					<td style="border-width: 0px;" valign="top">The GB 12345-90 mapping for this character in ku/ten form.</td>
+				</tr>
+			</tbody>
+		</table>
+		<p> </p>
+		<table cellpadding="2" cellspacing="2" style="border-width: 0px;">
+			<tbody>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Tag:</td>
+					<td style="border-width: 0px;" valign="top"><code>kGB3</code></td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Status:</td>
+					<td style="border-width: 0px;" valign="top">Provisional</td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Category:</td>
+					<td style="border-width: 0px;" valign="top">Other Mappings</td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Separator:</td>
+					<td style="border-width: 0px;" valign="top">space</td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Syntax:</td>
+					<td style="border-width: 0px;" valign="top"><code>[0-9A-F]{4}</code></td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Description:</td>
+					<td style="border-width: 0px;" valign="top">The GB 7589-87 mapping for this character in ku/ten form.</td>
+				</tr>
+			</tbody>
+		</table>
+		<p> </p>
+		<table cellpadding="2" cellspacing="2" style="border-width: 0px;">
+			<tbody>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Tag:</td>
+					<td style="border-width: 0px;" valign="top"><code>kGB5</code></td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Status:</td>
+					<td style="border-width: 0px;" valign="top">Provisional</td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Category:</td>
+					<td style="border-width: 0px;" valign="top">Other Mappings</td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Separator:</td>
+					<td style="border-width: 0px;" valign="top">space</td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Syntax:</td>
+					<td style="border-width: 0px;" valign="top"><code>[0-9A-F]{4}</code></td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Description:</td>
+					<td style="border-width: 0px;" valign="top">The GB 7590-87 mapping for this character in ku/ten form.</td>
+				</tr>
+			</tbody>
+		</table>
+		<p> </p>
+		<table cellpadding="2" cellspacing="2" style="border-width: 0px;">
+			<tbody>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Tag:</td>
+					<td style="border-width: 0px;" valign="top"><code>kGB7</code></td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Status:</td>
+					<td style="border-width: 0px;" valign="top">Provisional</td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Category:</td>
+					<td style="border-width: 0px;" valign="top">Other Mappings</td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Separator:</td>
+					<td style="border-width: 0px;" valign="top">space</td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Syntax:</td>
+					<td style="border-width: 0px;" valign="top"><code>[0-9A-F]{4}</code></td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Description:</td>
+					<td style="border-width: 0px;" valign="top">The GB 8565-89 mapping for this character in ku/ten form.</td>
+				</tr>
+			</tbody>
+		</table>
+		<p> </p>
+		<table cellpadding="2" cellspacing="2" style="border-width: 0px;">
+			<tbody>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Tag:</td>
+					<td style="border-width: 0px;" valign="top"><code>kGB8</code></td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Status:</td>
+					<td style="border-width: 0px;" valign="top">Provisional</td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Category:</td>
+					<td style="border-width: 0px;" valign="top">Other Mappings</td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Separator:</td>
+					<td style="border-width: 0px;" valign="top">space</td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Syntax:</td>
+					<td style="border-width: 0px;" valign="top"><code>[0-9]{4}</code></td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Description:</td>
+					<td style="border-width: 0px;" valign="top">The GB 8565-89 mapping for this character in ku/ten form</td>
+				</tr>
+			</tbody>
+		</table>
+		<p> </p>
+		<table cellpadding="2" cellspacing="2" style="border-width: 0px;">
+			<tbody>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Tag:</td>
+					<td style="border-width: 0px;" valign="top"><code>kGSR</code></td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Status:</td>
+					<td style="border-width: 0px;" valign="top">Provisional</td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Category:</td>
+					<td style="border-width: 0px;" valign="top">Dictionary Indices</td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Separator:</td>
+					<td style="border-width: 0px;" valign="top">space</td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Syntax:</td>
+					<td style="border-width: 0px;" valign="top"><code>[0-9]{4}[a-vx-z]\'*</code></td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Description:</td>
+					<td style="border-width: 0px;" valign="top">The position of this character in Bernhard Karlgren's Grammata Serica Recensa (1957).
+						<p>This dataset contains a total of 7,403 records. References are given in the form DDDDa('), where &quot;DDDD&quot; is a set number in the range [0001..1260] zero-padded to 4-digits, &quot;a&quot; is a letter in the range [a..z] (excluding &quot;w&quot;), optionally followed by (') apostrophe. The data from which this mapping table is extracted contains a total of 10,023 references. References to inscriptional forms have been omitted.</p>
+						<p>Release notes</p>
+						<p>22-Dec-2003: Initial release. The following 32 references are to unencoded forms: 0059k, 0069y, 0079d, 0275b, 0286a, 0289a, 0289f, 0293a, 0325a, 0389o, 0391h, 0392s, 0468h, 0480a, 0516a, 0526o, 0566g', 0642y, 0661a, 0739i,0775b, 0837h, 0893r, 0969a, 0969e, 1019e, 1062b, 1112d, 1124l, 1129c', 1144a, 1144b. In some cases a variant mapping has been substituted in the mapping table, in other cases the reference is omitted.</p>
+						<p>Bibliographic information</p>
+						<p>Karlgren, Klas Bernhard Johannes 高本漢 (1889–1978): 2000. Grammata Serica Recensa Electronica. Electronic version of GSR, including indices, syllable canon, &amp; images of the original Karlgren (1957) text. Prepared for the STEDT Project by Richard Cook; based in part on work by Tor Ulving &amp; Ferenc Tafferner (see below), used by permission. Berkeley: University of California, <a href="http://stedt.berkeley.edu/">http://stedt.berkeley.edu/</a></p>
+						<p>Karlgren 1957. Grammata Serica Recensa. First published in the Bulletin of the Museum of Far Eastern Antiquities (BMFEA) No. 29, Stockholm, Sweden. Reprinted by Elanders Boktrycker Aktiebolag, Kungsbacka, [1972]. Reprinted also by SMC Publishing Inc., Taipei, Taiwan, ROC, [1996]. ISBN: 957-638-269-6.</p>
+						<p>Karlgren 1940. Grammata Serica: Script and Phonetics in Chinese and Sino-Japanese 《中日漢字形聲論》Zhong-Ri Hanzi Xingsheng Lun [A study of Sino-Japanese semantic-phonetic compound characters:] BMFEA No. 12. Reprinted, Taipei: Ch'eng-Wen Publishing Company, [1966].</p>
+						<p>Ulving, Tor: 1997. Dictionary of Old and Middle Chinese: Bernhard Karlgren's Grammata Serica Recensa Alphabetically Arranged. With Ferenc Tafferner. Göteborg, Sweden: Acta Universitatis Gothoburgensis. Orientalia Gothoburgensia, 11. ISBN: 91-7346-294-2.</p>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+		<p> </p>
+		<table cellpadding="2" cellspacing="2" style="border-width: 0px;">
+			<tbody>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Tag:</td>
+					<td style="border-width: 0px;" valign="top"><code>kGradeLevel</code></td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Status:</td>
+					<td style="border-width: 0px;" valign="top">Provisional</td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Category:</td>
+					<td style="border-width: 0px;" valign="top">Dictionary-like Data</td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Separator:</td>
+					<td style="border-width: 0px;" valign="top">space</td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Syntax:</td>
+					<td style="border-width: 0px;" valign="top"><code>[1-6]</code></td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Description:</td>
+					<td style="border-width: 0px;" valign="top">The primary grade in the Hong Kong school system by which a student is expected to know the character; this data is derived from 朗文初級中文詞典, Hong Kong: Longman, 2001.</td>
+				</tr>
+			</tbody>
+		</table>
+		<p> </p>
+		<table cellpadding="2" cellspacing="2" style="border-width: 0px;">
+			<tbody>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Tag:</td>
+					<td style="border-width: 0px;" valign="top"><code>kHDZRadBreak</code></td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Status:</td>
+					<td style="border-width: 0px;" valign="top">Provisional</td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Category:</td>
+					<td style="border-width: 0px;" valign="top">Dictionary-like Data</td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Separator:</td>
+					<td style="border-width: 0px;" valign="top">NA</td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Syntax:</td>
+					<td style="border-width: 0px;" valign="top"><code>[\x{2F00}-\x{2FD5}][U+2?[0-9A-F]{4}]:[1-8][0-9]{4}\.[0-9]{2}[012]</code></td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Introduced:</td>
+					<td style="border-width: 0px;" valign="top">4.1</td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Description:</td>
+					<td style="border-width: 0px;" valign="top">Indicates that 《漢語大字典》 <i>Hanyu Da Zidian</i> has a radical break beginning at this character's position. The field consists of the radical (with its Unicode code point), a colon, and then the Hanyu Da Zidian position as in the <code>kHanyu</code> field.</td>
+				</tr>
+			</tbody>
+		</table>
+		<p> </p>
+		<table cellpadding="2" cellspacing="2" style="border-width: 0px;">
+			<tbody>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Tag:</td>
+					<td style="border-width: 0px;" valign="top"><code>kHKGlyph</code></td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Status:</td>
+					<td style="border-width: 0px;" valign="top">Provisional</td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Category:</td>
+					<td style="border-width: 0px;" valign="top">Dictionary-like Data</td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Separator:</td>
+					<td style="border-width: 0px;" valign="top">space</td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Syntax:</td>
+					<td style="border-width: 0px;" valign="top"><code>[0-9]{4}</code></td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Description:</td>
+					<td style="border-width: 0px;" valign="top">The index of the character in 常用字字形表 (二零零零年修訂本),香港: 香港教育學院, 2000, ISBN 962-949-040-4. This publication gives the &quot;proper&quot; shapes for 4759 characters as used in the Hong Kong school system. The index is an integer, zero-padded to four digits.</td>
+				</tr>
+			</tbody>
+		</table>
+		<p> </p>
+		<table cellpadding="2" cellspacing="2" style="border-width: 0px;">
+			<tbody>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Tag:</td>
+					<td style="border-width: 0px;" valign="top"><code>kHKSCS</code></td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Status:</td>
+					<td style="border-width: 0px;" valign="top">Provisional</td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Category:</td>
+					<td style="border-width: 0px;" valign="top">Other Mappings</td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Separator:</td>
+					<td style="border-width: 0px;" valign="top">space</td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Syntax:</td>
+					<td style="border-width: 0px;" valign="top"><code>[0-9A-F]{4}</code></td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Description:</td>
+					<td style="border-width: 0px;" valign="top">Mappings to the Big Five extended code points used for the Hong Kong Supplementary Character Set.</td>
+				</tr>
+			</tbody>
+		</table>
+		<p> </p>
+		<table cellpadding="2" cellspacing="2" style="border-width: 0px;">
+			<tbody>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Tag:</td>
+					<td style="border-width: 0px;" valign="top"><code>kHangul</code></td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Status:</td>
+					<td style="border-width: 0px;" valign="top">Provisional</td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Category:</td>
+					<td style="border-width: 0px;" valign="top">Readings</td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Separator:</td>
+					<td style="border-width: 0px;" valign="top">space</td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Syntax:</td>
+					<td style="border-width: 0px;" valign="top"><code>[\x{AC00}-\x{D7AF}]+</code></td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Description:</td>
+					<td style="border-width: 0px;" valign="top">The modern Korean pronunciation(s) for this character in Hangul.</td>
+				</tr>
+			</tbody>
+		</table>
+		<p> </p>
+		<table cellpadding="2" cellspacing="2" style="border-width: 0px;">
+			<tbody>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Tag:</td>
+					<td style="border-width: 0px;" valign="top"><code>kHanYu</code></td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Status:</td>
+					<td style="border-width: 0px;" valign="top">Provisional</td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Category:</td>
+					<td style="border-width: 0px;" valign="top">Dictionary Indices</td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Separator:</td>
+					<td style="border-width: 0px;" valign="top">space</td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Syntax:</td>
+					<td style="border-width: 0px;" valign="top"><code>[1-8][0-9]{4}\.[0-9]{2}[0-3]</code></td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Description:</td>
+					<td style="border-width: 0px;" valign="top">The position of this character in the Hanyu Da Zidian (HDZ) Chinese character dictionary (bibliographic information below).
+						<p>The character references are given in the form &quot;ABCDE.XYZ&quot;, in which: &quot;A&quot; is the volume number [1..8]; &quot;BCDE&quot; is the zero-padded page number [0001..4809]; &quot;XY&quot; is the zero-padded number of the character on the page [01..32]; &quot;Z&quot; is &quot;0&quot; for a character actually in the dictionary, and greater than 0 for a character assigned a &quot;virtual&quot; position in the dictionary. For example, 53024.060 indicates an actual HDZ character, the 6th character on Page 3,044 of Volume 5 (i.e. 籉). Note that the Volume 8 &quot;BCDE&quot; references are in the range [0008..0044] inclusive, referring to the pagination of the &quot;Appendix of Addendum&quot; at the end of that volume (beginning after p. 5746).</p>
+						<p>The first character assigned a given virtual position has an index ending in 1; the second assigned the same virtual position has an index ending in 2; and so on.</p>
+						<p>Release information</p>
+						<p>This data set contains a total of 56097 records, 54728 of which are actual HDZ character references (positions are given for all HDZ head entries, including source-internal unifications), and 1369 of which are virtual character positions (see note below).</p>
+						<p>All 55817 HDZ references in this data set are unique. Because of IRG source-internal unifications, a given UCS-4 Scalar Value (USV) may have more than one HDZ reference. Source-internal unifications are of two types: (1) unifications of graphical variants; (2) unifications of duplicate head entries.</p>
+						<p>The proofing of all references was done primarily on the basis of cross-checks of three versions of the reference data: (1) the original print source; (2) the &quot;<code>kIRGHanyuDaZidian</code>&quot; field of Unihan.txt (release 3.1.1d1); (3) &quot;HDZ.txt&quot;, originally produced and proofed for Academia Sinica's Institute of Information Technology (Document Processing Laboratory). In addition, the data was checked against the &quot;<code>kHanYu</code>&quot; and &quot;<code>kAlternateHanYu</code>&quot; fields of Unihan.txt (release 3.1.1d1), which the present data set supersedes.</p>
+						<p>String value, string length, compound key, field count, and page total validations were all performed. Altogether, 578 omissions/ errors in source (2) were identified/corrected. Any remaining errors will likely relate to virtual positions, or to the ordering of actual characters within a given page. It is unlikely that errors across page breaks remain. Possible future deunifications of source-internal unifications will necessitate update of USV for some references. Under no circumstances should the source-internal unification (duplicate USV) mappings be removed from this data set.</p>
+						<p>Note: Source (3) contributed only actual HDZ character references to the proofing process, while source (2) contributed all virtual positions. It seems that the compilers of source (2) usually assigned virtual positions based on stroke count, though occasionally the virtual position brings the virtual character together with the actual HDZ character of which it is a variant, without regard to actual stroke count.</p>
+						<p>Bibliographic information for the print source:</p>
+						<p>&lt;Hanyu Da Zidian&gt; ['Great Chinese Character Dictionary' (in 8 Volumes)]. XU Zhongshu (Editor in Chief). Wuhan, Hubei Province (PRC): Hubei and Sichuan Dictionary Publishing Collectives, 1986-1990. ISBN: 7-5403-0030-2/H.16.</p>
+						<p>《漢語大字典》。許力以主任，徐中舒主編，（漢語大字典工作委員會）。武漢：四川辭書出版社，湖北辭書出版社,1986-1990. ISBN: 7-5403-0030-2/H.16.</p>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+		<p> </p>
+		<table cellpadding="2" cellspacing="2" style="border-width: 0px;">
+			<tbody>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Tag:</td>
+					<td style="border-width: 0px;" valign="top"><code>kHanyuPinlu</code></td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Status:</td>
+					<td style="border-width: 0px;" valign="top">Provisional</td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Category:</td>
+					<td style="border-width: 0px;" valign="top">Dictionary Indices</td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Separator:</td>
+					<td style="border-width: 0px;" valign="top">space</td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Syntax:</td>
+					<td style="border-width: 0px;" valign="top"><code>[a-zü]+[1-5]\([0-9]+\)</code></td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Description:</td>
+					<td style="border-width: 0px;" valign="top">The Pronunciations and Frequencies of this character, based in part on those appearing in 《現代漢語頻率詞典》 &lt;Xiandai Hanyu Pinlu Cidian&gt; (XDHYPLCD) [Modern Standard Beijing Chinese Frequency Dictionary] (complete bibliographic information below).
+						<p>Data Format</p>
+						<p>This dataset contains a total of 3800 records. Each entry is comprised of two pieces of data.</p>
+						<p>The Hanyu Pinyin (HYPY) pronunciation(s) of the character, with numeric tone marks (1-5, where 5 indicates the &quot;neutral tone&quot;) immediately following each alphabetic string.</p>
+						<p>Immediately following the numeric tone mark, a numeric string appears in parentheses: e.g. in &quot;a1(392)&quot; the numeric string &quot;392&quot; indicates the sum total of the frequencies of the pronunciations of the character as given in HYPLCD.</p>
+						<p>Where more than one pronunciation exists, these are sorted by descending frequency, and the list elements are &quot;comma + space&quot; delimited.</p>
+						<p>Release Information</p>
+						<p>The XDHYPLCD data here for Modern Standard Chinese (Putonghua) cuts across 4 genres (&quot;News,&quot; &quot;Scientific,&quot; &quot;Colloquial,&quot; and &quot;Literature&quot;), and was derived from a 440799 character corpus. See that text for additional information.</p>
+						<p>The 8548 entries (8586 with variant writings) from p. 491-656 of XDHYPLCD were input by hand and proof-read from 1994/08/04 to 1995/03/22 by Richard Cook.</p>
+						<p>Current Release Date above reflects date of last proofing.</p>
+						<p>HYPY transcription for the data in this release was semiautomated and hand-corrected in 1995, based in part on data provided by Ross Paterson (Department of Computing, Imperial College, London).</p>
+						<p>Tom Bishop <a href="http://www.wenlin.com">http://www.wenlin.com</a> is also due thanks for early assistance in proof-reading this data.</p>
+						<p>The character set used for this digitization of HYPLCD (a &quot;simplified&quot; PRC text) was (Mac OS 7-9) GB 2312-80 (plus 嗐).</p>
+						<p>These data were converted to Big5 (plus 腈), and both GB and Big5 versions were separately converted to Unicode 4.0, and then merged, resulting in the 3800 records in the current release. Frequency data for simplified polysyllabic words has been employed to generate both simplified and traditional character frequencies.</p>
+						<p>Bibliographic information for the primary print source</p>
+						<p>《現代漢語頻率詞典》，北京語言學院語言教學研究所編著。</p>
+						<p>&lt;Xiandai Hanyu Pinlu Cidian&gt; = XDHYPLCD First edition 1986/6, 2nd printing 1990/4. ISBN 7-5619-0094-5/H.67.</p>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+		<p> </p>
+		<table cellpadding="2" cellspacing="2" style="border-width: 0px;">
+			<tbody>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Tag:</td>
+					<td style="border-width: 0px;" valign="top"><code>kIBMJapan</code></td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Status:</td>
+					<td style="border-width: 0px;" valign="top">Provisional</td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Category:</td>
+					<td style="border-width: 0px;" valign="top">Other Mappings</td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Separator:</td>
+					<td style="border-width: 0px;" valign="top">space</td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Syntax:</td>
+					<td style="border-width: 0px;" valign="top"><code>F[ABC][0-9A-F]{2}</code></td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Description:</td>
+					<td style="border-width: 0px;" valign="top">The IBM Japanese mapping for this character in hexadecimal.</td>
+				</tr>
+			</tbody>
+		</table>
+		<p> </p>
+		<table cellpadding="2" cellspacing="2" style="border-width: 0px;">
+			<tbody>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Tag:</td>
+					<td style="border-width: 0px;" valign="top"><code>kIICore</code></td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Status:</td>
+					<td style="border-width: 0px;" valign="top">Normative</td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Category:</td>
+					<td style="border-width: 0px;" valign="top">Dictionary-like Data</td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Separator:</td>
+					<td style="border-width: 0px;" valign="top">space</td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Syntax:</td>
+					<td style="border-width: 0px;" valign="top"><code>[1-9]\.[1-9]</code></td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Description:</td>
+					<td style="border-width: 0px;" valign="top">Indicates that a character is in IICore, the IRG-produced minimal set of required ideographs for East Asian use.
+						<p>Each individual value in this field is either P (for preliminary, meaning it has been approved by the IRG but not by WG2), or the ISO/IEC 10646 subset identifier for the subset(s) containing this character.</p>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+		<p> </p>
+		<table cellpadding="2" cellspacing="2" style="border-width: 0px;">
+			<tbody>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Tag:</td>
+					<td style="border-width: 0px;" valign="top"><code>kIRGDaeJaweon</code></td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Status:</td>
+					<td style="border-width: 0px;" valign="top">Provisional</td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Category:</td>
+					<td style="border-width: 0px;" valign="top">Dictionary Indices</td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Separator:</td>
+					<td style="border-width: 0px;" valign="top">space</td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Syntax:</td>
+					<td style="border-width: 0px;" valign="top"><code>[0-9]{4}\.[0-9]{2}[01]|0000\.555</code></td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Description:</td>
+					<td style="border-width: 0px;" valign="top">The position of this character in the Dae Jaweon (Korean) dictionary used in the four-dictionary sorting algorithm. The position is in the form &quot;page.position&quot; with the final digit in the position being &quot;0&quot; for characters actually in the dictionary and &quot;1&quot; for characters not found in the dictionary and assigned a &quot;virtual&quot; position in the dictionary.
+						<p>Thus, &quot;1187.060&quot; indicates the sixth character on page 1187. A character not in this dictionary but assigned a position between the 6th and 7th characters on page 1187 for sorting purposes would have the code &quot;1187.061&quot;</p>
+						<p>This field represents the official position of the character within the <i>Dae Jaweon</i> dictionary as used by the IRG in the four-dictionary sorting algorithm.</p>
+						<p>The edition used is the first edition, published in Seoul by Samseong Publishing Co., Ltd., 1988.</p>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+		<p> </p>
+		<table cellpadding="2" cellspacing="2" style="border-width: 0px;">
+			<tbody>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Tag:</td>
+					<td style="border-width: 0px;" valign="top"><code>kIRGDaiKanwaZiten</code></td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Status:</td>
+					<td style="border-width: 0px;" valign="top">Provisional</td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Category:</td>
+					<td style="border-width: 0px;" valign="top">Dictionary Indices</td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Separator:</td>
+					<td style="border-width: 0px;" valign="top">space</td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Syntax:</td>
+					<td style="border-width: 0px;" valign="top"><code>[0-9]{5}\'?</code></td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Description:</td>
+					<td style="border-width: 0px;" valign="top">The index of this character in the <i>Dai Kanwa Ziten</i>, aka Morohashi dictionary (Japanese) used in the four-dictionary sorting algorithm.
+						<p>This field represents the official position of the character within the <i>DaiKanwa</i> dictionary as used by the IRG in the four-dictionary sorting algorithm. The edition used is the revised edition, published in Tokyo by Taishuukan Shoten, 1986.</p>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+		<p> </p>
+		<table cellpadding="2" cellspacing="2" style="border-width: 0px;">
+			<tbody>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Tag:</td>
+					<td style="border-width: 0px;" valign="top"><code>kIRGHanyuDaZidian</code></td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Status:</td>
+					<td style="border-width: 0px;" valign="top">Provisional</td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Category:</td>
+					<td style="border-width: 0px;" valign="top">Dictionary Indices</td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Separator:</td>
+					<td style="border-width: 0px;" valign="top">space</td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Syntax:</td>
+					<td style="border-width: 0px;" valign="top"><code>[1-8][0-9]{4}\.[0-3][0-9][01]</code></td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Description:</td>
+					<td style="border-width: 0px;" valign="top">The position of this character in the <i>Hanyu Da Zidian</i> (PRC) dictionary used in the four-dictionary sorting algorithm. The position is in the form &quot;volume page.position&quot; with the final digit in the position being &quot;0&quot; for characters actually in the dictionary and &quot;1&quot; for characters not found in the dictionary and assigned a &quot;virtual&quot; position in the dictionary.
+						<p>Thus, &quot;32264.080&quot; indicates the eighth character on page 2264 in volume 3. A character not in this dictionary but assigned a position between the 8th and 9th characters on this page for sorting purposes would have the code &quot;32264.081&quot;</p>
+						<p>This field represents the official position of the character within the <i>Hanyu Da Zidian</i> dictionary as used by the IRG in the four-dictionary sorting algorithm.</p>
+						<p>The edition of the <i>Hanyu Da Zidian</i> used is the first edition, published in Chengdu by Sichuan Cishu Publishing, 1986.</p>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+		<p> </p>
+		<table cellpadding="2" cellspacing="2" style="border-width: 0px;">
+			<tbody>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Tag:</td>
+					<td style="border-width: 0px;" valign="top"><code>kIRGKangXi</code></td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Status:</td>
+					<td style="border-width: 0px;" valign="top">Provisional</td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Category:</td>
+					<td style="border-width: 0px;" valign="top">Dictionary Indices</td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Separator:</td>
+					<td style="border-width: 0px;" valign="top">space</td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Syntax:</td>
+					<td style="border-width: 0px;" valign="top"><code>[01][0-9]{3}\.[0-7][0-9][01]</code></td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Description:</td>
+					<td style="border-width: 0px;" valign="top">The position of this character in the <i>KangXi</i> dictionary used in the four-dictionary sorting algorithm. The position is in the form &quot;page.position&quot; with the final digit in the position being &quot;0&quot; for characters actually in the dictionary and &quot;1&quot; for characters not found in the dictionary and assigned a &quot;virtual&quot; position in the dictionary.
+						<p>Thus, &quot;1187.060&quot; indicates the sixth character on page 1187. A character not in this dictionary but assigned a position between the 6th and 7th characters on page 1187 for sorting purposes would have the code &quot;1187.061&quot;</p>
+						<p>This field represents the official position of the character within the <i>KangXi</i> dictionary as used by the IRG in the four-dictionary sorting algorithm. The edition of the <i>KangXi</i> dictionary used is the 7th edition published by Zhonghua Bookstore in Beijing, 1989.</p>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+		<p> </p>
+		<table cellpadding="2" cellspacing="2" style="border-width: 0px;">
+			<tbody>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Tag:</td>
+					<td style="border-width: 0px;" valign="top"><code>kIRG_GSource</code></td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Status:</td>
+					<td style="border-width: 0px;" valign="top">Normative</td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Category:</td>
+					<td style="border-width: 0px;" valign="top">IRG Sources</td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Separator:</td>
+					<td style="border-width: 0px;" valign="top">space</td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Syntax:</td>
+					<td style="border-width: 0px;" valign="top"><code>(4K|BK|CH|CY|FZ(_BK)?|HC|HZ|KX|[0135789ES]-[0-9A-F]{4})</code></td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Description:</td>
+					<td style="border-width: 0px;" valign="top">The IRG &quot;G&quot; source mapping for this character in hex. The IRG G source consists of data from the following national standards, publications, and lists from the People's Republic of China and Singapore. The versions of the standards used are those provided by the PRC to the IRG and may not always reflect published versions of the standards generally available.
+						<ul>
+							<li>4K Siku Quanshu
+							<li>BK Chinese Encyclopedia
+							<li>CH The Ci Hai (PRC edition)
+							<li>CY The Ci Yuan
+							<li>FZ and FZ_BK Founder Press System
+							<li>G0 GB2312-80
+							<li>G1 GB12345-90 with 58 Hong Kong and 92 Korean &quot;Idu&quot; characters
+							<li>G3 GB7589-87 unsimplified forms
+							<li>G5 GB7590-87 unsimplified forms
+							<li>G7 General Purpose Hanzi List for Modern Chinese Language, and General List of Simplified Hanzi
+							<li>GS Singapore characters
+							<li>G8 GB8685-88
+							<li>GE GB16500-95
+							<li>HC The Hanyu Da Cidian
+							<li>HZ The Hanyu Da Zidian
+							<li>KX The KangXi dictionary
+						</ul>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+		<p> </p>
+		<table cellpadding="2" cellspacing="2" style="border-width: 0px;">
+			<tbody>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Tag:</td>
+					<td style="border-width: 0px;" valign="top"><code>kIRG_HSource</code></td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Status:</td>
+					<td style="border-width: 0px;" valign="top">Normative</td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Category:</td>
+					<td style="border-width: 0px;" valign="top">IRG Sources</td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Separator:</td>
+					<td style="border-width: 0px;" valign="top">N/A</td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Syntax:</td>
+					<td style="border-width: 0px;" valign="top"><code>[0-9A-F]{4}</code></td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Description:</td>
+					<td style="border-width: 0px;" valign="top">The IRG &quot;H&quot; source mapping for this character in hex. The IRG &quot;H&quot; source consists of data from the Hong Kong Supplementary Characer Set.</td>
+				</tr>
+			</tbody>
+		</table>
+		<p> </p>
+		<table cellpadding="2" cellspacing="2" style="border-width: 0px;">
+			<tbody>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Tag:</td>
+					<td style="border-width: 0px;" valign="top"><code>kIRG_JSource</code></td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Status:</td>
+					<td style="border-width: 0px;" valign="top">Normative</td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Category:</td>
+					<td style="border-width: 0px;" valign="top">IRG Sources</td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Separator:</td>
+					<td style="border-width: 0px;" valign="top">space</td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Syntax:</td>
+					<td style="border-width: 0px;" valign="top"><code>([0134A]|3A)-[0-9A-F]{4}</code></td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Description:</td>
+					<td style="border-width: 0px;" valign="top">The IRG &quot;J&quot; source mapping for this character in hex. The IRG J source consists of data from the following national standards and lists from Japan.
+						<ul>
+							<li>J0 JIS X 0208:1990
+							<li>J1 JIS X 0212:1990
+							<li>J3 JIS X 0213:2000
+							<li>J4 JIS X 0213:2000
+							<li>JA Unified Japanese IT Vendors Contemporary Ideographs, 1993
+							<li>J3A JIS X 0213:2004 level-3
+						</ul>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+		<p> </p>
+		<table cellpadding="2" cellspacing="2" style="border-width: 0px;">
+			<tbody>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Tag:</td>
+					<td style="border-width: 0px;" valign="top"><code>kIRG_KPSource</code></td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Status:</td>
+					<td style="border-width: 0px;" valign="top">Normative</td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Category:</td>
+					<td style="border-width: 0px;" valign="top">IRG Sources</td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Separator:</td>
+					<td style="border-width: 0px;" valign="top">N/A</td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Syntax:</td>
+					<td style="border-width: 0px;" valign="top"><code>KP[01]-[0-9A-F]{4}</code></td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Description:</td>
+					<td style="border-width: 0px;" valign="top">The IRG &quot;KP&quot; source mapping for this character in hex. The IRG &quot;KP&quot; source consists of data from the following national standards and lists from the Democratic People's Republic of Korea (North Korea).
+						<ul>
+							<li>KP0 KPS 9566-97
+							<li>KP1 KPS 10721-2000
+						</ul>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+		<p> </p>
+		<table cellpadding="2" cellspacing="2" style="border-width: 0px;">
+			<tbody>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Tag:</td>
+					<td style="border-width: 0px;" valign="top"><code>kIRG_KSource</code></td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Status:</td>
+					<td style="border-width: 0px;" valign="top">Normative</td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Category:</td>
+					<td style="border-width: 0px;" valign="top">IRG Sources</td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Separator:</td>
+					<td style="border-width: 0px;" valign="top">N/A</td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Syntax:</td>
+					<td style="border-width: 0px;" valign="top"><code>[01234]-[0-9A-F]{4}</code></td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Description:</td>
+					<td style="border-width: 0px;" valign="top">The IRG &quot;K&quot; source mapping for this character in hex. The IRG &quot;K&quot; source consists of data from the following national standards and lists from the Republic of Korea (South Korea).
+						<ul>
+							<li>K0 KS C 5601-1987
+							<li>K1 KS C 5657-1991
+							<li>K2 PKS C 5700-1 1994
+							<li>K3 PKS C 5700-2 1994
+							<li>K4 PKS 5700-3:1998
+						</ul>
+						<p>Note that the K4 source is expressed in hexadecimal, but unlike the other sources, it is not organized in row/column.</p>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+		<p> </p>
+		<table cellpadding="2" cellspacing="2" style="border-width: 0px;">
+			<tbody>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Tag:</td>
+					<td style="border-width: 0px;" valign="top"><code>kIRG_TSource</code></td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Status:</td>
+					<td style="border-width: 0px;" valign="top">Normative</td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Category:</td>
+					<td style="border-width: 0px;" valign="top">IRG Sources</td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Separator:</td>
+					<td style="border-width: 0px;" valign="top">N/A</td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Syntax:</td>
+					<td style="border-width: 0px;" valign="top"><code>[1-7F]-[0-9A-F]{4}</code></td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Description:</td>
+					<td style="border-width: 0px;" valign="top">The IRG &quot;T&quot; source mapping for this character in hex. The IRG &quot;T&quot; source consists of data from the following national standards and lists from the Republic of China (Taiwan).
+						<ul>
+							<li>T1 CNS 11643-1992, plane 1
+							<li>T2 CNS 11643-1992, plane 2
+							<li>T3 CNS 11643-1992, plane 3 (with some additional characters)
+							<li>T4 CNS 11643-1992, plane 4
+							<li>T5 CNS 11643-1992, plane 5
+							<li>T6 CNS 11643-1992, plane 6
+							<li>T7 CNS 11643-1992, plane 7
+							<li>TF CNS 11643-1992, plane 15
+						</ul>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+		<p> </p>
+		<table cellpadding="2" cellspacing="2" style="border-width: 0px;">
+			<tbody>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Tag:</td>
+					<td style="border-width: 0px;" valign="top"><code>kIRG_USource</code></td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Status:</td>
+					<td style="border-width: 0px;" valign="top">Normative</td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Category:</td>
+					<td style="border-width: 0px;" valign="top">IRG Sources</td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Separator:</td>
+					<td style="border-width: 0px;" valign="top">space</td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Syntax:</td>
+					<td style="border-width: 0px;" valign="top"><code>U\+2?[0-9A-F]{4}</code></td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Description:</td>
+					<td style="border-width: 0px;" valign="top">The IRG &quot;U&quot; source mapping for this character. Currently, the IRG U source is limited to a small number of characters in the CJK Compatibility Ideographs block, where the value is the Unicode code point.</td>
+				</tr>
+			</tbody>
+		</table>
+		<p> </p>
+		<table cellpadding="2" cellspacing="2" style="border-width: 0px;">
+			<tbody>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Tag:</td>
+					<td style="border-width: 0px;" valign="top"><code>kIRG_VSource</code></td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Status:</td>
+					<td style="border-width: 0px;" valign="top">Normative</td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Category:</td>
+					<td style="border-width: 0px;" valign="top">IRG Sources</td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Separator:</td>
+					<td style="border-width: 0px;" valign="top">space</td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Syntax:</td>
+					<td style="border-width: 0px;" valign="top"><code>[0123]-[0-9A-F]{4}</code></td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Description:</td>
+					<td style="border-width: 0px;" valign="top">The IRG &quot;V&quot; source mapping for this character in hex. The IRG V source consists of data from the following national standards and lists from Vietnam.
+						<ul>
+							<li>V0 TCVN 5773:1993
+							<li>V1 VHN 01:1998
+							<li>V2 VHN 02:1998
+							<li>V3 TCVN 6056:1995
+						</ul>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+		<p> </p>
+		<table cellpadding="2" cellspacing="2" style="border-width: 0px;">
+			<tbody>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Tag:</td>
+					<td style="border-width: 0px;" valign="top"><code>kJIS0213</code></td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Status:</td>
+					<td style="border-width: 0px;" valign="top">Provisional</td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Category:</td>
+					<td style="border-width: 0px;" valign="top">Other Mappings</td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Separator:</td>
+					<td style="border-width: 0px;" valign="top">space</td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Syntax:</td>
+					<td style="border-width: 0px;" valign="top"><code>[12],[0-9]{2},[0-9]{1,2}</code></td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Description:</td>
+					<td style="border-width: 0px;" valign="top">The JIS X 0213-2000 mapping for this character in min,ku,ten form.</td>
+				</tr>
+			</tbody>
+		</table>
+		<p> </p>
+		<table cellpadding="2" cellspacing="2" style="border-width: 0px;">
+			<tbody>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Tag:</td>
+					<td style="border-width: 0px;" valign="top"><code>kJapaneseKun</code></td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Status:</td>
+					<td style="border-width: 0px;" valign="top">Provisional</td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Category:</td>
+					<td style="border-width: 0px;" valign="top">Readings</td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Separator:</td>
+					<td style="border-width: 0px;" valign="top">space</td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Syntax:</td>
+					<td style="border-width: 0px;" valign="top"><code>[A-Z]+</code></td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Description:</td>
+					<td style="border-width: 0px;" valign="top">The Japanese pronunciation(s) of this character.</td>
+				</tr>
+			</tbody>
+		</table>
+		<p> </p>
+		<table cellpadding="2" cellspacing="2" style="border-width: 0px;">
+			<tbody>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Tag:</td>
+					<td style="border-width: 0px;" valign="top"><code>kJapaneseOn</code></td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Status:</td>
+					<td style="border-width: 0px;" valign="top">Provisional</td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Category:</td>
+					<td style="border-width: 0px;" valign="top">Readings</td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Separator:</td>
+					<td style="border-width: 0px;" valign="top">space</td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Syntax:</td>
+					<td style="border-width: 0px;" valign="top"><code>[A-Z]+</code></td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Description:</td>
+					<td style="border-width: 0px;" valign="top">The Sino-Japanese pronunciation(s) of this character.</td>
+				</tr>
+			</tbody>
+		</table>
+		<p> </p>
+		<table cellpadding="2" cellspacing="2" style="border-width: 0px;">
+			<tbody>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Tag:</td>
+					<td style="border-width: 0px;" valign="top"><code>kJis0</code></td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Status:</td>
+					<td style="border-width: 0px;" valign="top">Provisional</td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Category:</td>
+					<td style="border-width: 0px;" valign="top">Other Mappings</td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Separator:</td>
+					<td style="border-width: 0px;" valign="top">space</td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Syntax:</td>
+					<td style="border-width: 0px;" valign="top"><code>[0-9]{4}</code></td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Description:</td>
+					<td style="border-width: 0px;" valign="top">The JIS X 0208-1990 mapping for this character in ku/ten form.</td>
+				</tr>
+			</tbody>
+		</table>
+		<p> </p>
+		<table cellpadding="2" cellspacing="2" style="border-width: 0px;">
+			<tbody>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Tag:</td>
+					<td style="border-width: 0px;" valign="top"><code>kJis1</code></td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Status:</td>
+					<td style="border-width: 0px;" valign="top">Provisional</td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Category:</td>
+					<td style="border-width: 0px;" valign="top">Other Mappings</td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Separator:</td>
+					<td style="border-width: 0px;" valign="top">space</td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Syntax:</td>
+					<td style="border-width: 0px;" valign="top"><code>[0-9]{4}</code></td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Description:</td>
+					<td style="border-width: 0px;" valign="top">The JIS X 0212-1990 mapping for this character in ku/ten form.</td>
+				</tr>
+			</tbody>
+		</table>
+		<p> </p>
+		<table cellpadding="2" cellspacing="2" style="border-width: 0px;">
+			<tbody>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Tag:</td>
+					<td style="border-width: 0px;" valign="top"><code>kKPS0</code></td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Status:</td>
+					<td style="border-width: 0px;" valign="top">Provisional</td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Category:</td>
+					<td style="border-width: 0px;" valign="top">Other Mappings</td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Separator:</td>
+					<td style="border-width: 0px;" valign="top">space</td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Syntax:</td>
+					<td style="border-width: 0px;" valign="top"><code>[0-9A-F]{4}</code></td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Description:</td>
+					<td style="border-width: 0px;" valign="top">The KPS 9566-97 mapping for this character in hexadecimal form.</td>
+				</tr>
+			</tbody>
+		</table>
+		<p> </p>
+		<table cellpadding="2" cellspacing="2" style="border-width: 0px;">
+			<tbody>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Tag:</td>
+					<td style="border-width: 0px;" valign="top"><code>kKPS1</code></td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Status:</td>
+					<td style="border-width: 0px;" valign="top">Provisional</td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Category:</td>
+					<td style="border-width: 0px;" valign="top">Other Mappings</td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Separator:</td>
+					<td style="border-width: 0px;" valign="top">space</td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Syntax:</td>
+					<td style="border-width: 0px;" valign="top"><code>[0-9A-F]{4}</code></td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Description:</td>
+					<td style="border-width: 0px;" valign="top">The KPS 10721-2000 mapping for this character in hexadecimal form.</td>
+				</tr>
+			</tbody>
+		</table>
+		<p> </p>
+		<table cellpadding="2" cellspacing="2" style="border-width: 0px;">
+			<tbody>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Tag:</td>
+					<td style="border-width: 0px;" valign="top"><code>kKSC0</code></td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Status:</td>
+					<td style="border-width: 0px;" valign="top">Provisional</td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Category:</td>
+					<td style="border-width: 0px;" valign="top">Other Mappings</td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Separator:</td>
+					<td style="border-width: 0px;" valign="top">space</td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Syntax:</td>
+					<td style="border-width: 0px;" valign="top"><code>[0-9]{4}</code></td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Description:</td>
+					<td style="border-width: 0px;" valign="top">The KS X 1001:1992 (KS C 5601-1989) mapping for this character in ku/ten form.</td>
+				</tr>
+			</tbody>
+		</table>
+		<p> </p>
+		<table cellpadding="2" cellspacing="2" style="border-width: 0px;">
+			<tbody>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Tag:</td>
+					<td style="border-width: 0px;" valign="top"><code>kKSC1</code></td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Status:</td>
+					<td style="border-width: 0px;" valign="top">Provisional</td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Category:</td>
+					<td style="border-width: 0px;" valign="top">Other Mappings</td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Separator:</td>
+					<td style="border-width: 0px;" valign="top">space</td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Syntax:</td>
+					<td style="border-width: 0px;" valign="top"><code>[0-9]{4}</code></td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Description:</td>
+					<td style="border-width: 0px;" valign="top">The KS X 1002:1991 (KS C 5657-1991) mapping for this character in ku/ten form.</td>
+				</tr>
+			</tbody>
+		</table>
+		<p> </p>
+		<table cellpadding="2" cellspacing="2" style="border-width: 0px;">
+			<tbody>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Tag:</td>
+					<td style="border-width: 0px;" valign="top"><code>kKangXi</code></td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Status:</td>
+					<td style="border-width: 0px;" valign="top">Provisional</td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Category:</td>
+					<td style="border-width: 0px;" valign="top">Dictionary Indices</td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Separator:</td>
+					<td style="border-width: 0px;" valign="top">space</td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Syntax:</td>
+					<td style="border-width: 0px;" valign="top"><code>[0-9]{4}\.[0-9]{2}[01]</code></td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Description:</td>
+					<td style="border-width: 0px;" valign="top">The position of this character in the <i>KangXi</i> dictionary used in the four-dictionary sorting algorithm. The position is in the form &quot;page.position&quot; with the final digit in the position being &quot;0&quot; for characters actually in the dictionary and &quot;1&quot; for characters not found in the dictionary and assigned a &quot;virtual&quot; position in the dictionary.
+						<p>Thus, &quot;1187.060&quot; indicates the sixth character on page 1187. A character not in this dictionary but assigned a position between the 6th and 7th characters on page 1187 for sorting purposes would have the code &quot;1187.061&quot;</p>
+						<p>The edition of the <i>KangXi</i> dictionary used is the 7th edition published by Zhonghua Bookstore in Beijing, 1989.</p>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+		<p> </p>
+		<table cellpadding="2" cellspacing="2" style="border-width: 0px;">
+			<tbody>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Tag:</td>
+					<td style="border-width: 0px;" valign="top"><code>kKarlgren</code></td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Status:</td>
+					<td style="border-width: 0px;" valign="top">Provisional</td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Category:</td>
+					<td style="border-width: 0px;" valign="top">Dictionary Indices</td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Separator:</td>
+					<td style="border-width: 0px;" valign="top">space</td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Syntax:</td>
+					<td style="border-width: 0px;" valign="top"><code>[1-9][0-9]{0,3}[A*]?</code></td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Description:</td>
+					<td style="border-width: 0px;" valign="top">The index of this character in <i>Analytic Dictionary of Chinese and Sino-Japanese</i> by Bernhard Karlgren, New York: Dover Publications, Inc., 1974.
+						<p>If the index is followed by an asterisk (*), then the index is an interpolated one, indicating where the character would be found if it were to have been included in the dictionary. Note that while the index itself is usually an integer, there are some cases where it is an integer followed by an &quot;A&quot;.</p>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+		<p> </p>
+		<table cellpadding="2" cellspacing="2" style="border-width: 0px;">
+			<tbody>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Tag:</td>
+					<td style="border-width: 0px;" valign="top"><code>kKorean</code></td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Status:</td>
+					<td style="border-width: 0px;" valign="top">Provisional</td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Category:</td>
+					<td style="border-width: 0px;" valign="top">Readings</td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Separator:</td>
+					<td style="border-width: 0px;" valign="top">space</td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Syntax:</td>
+					<td style="border-width: 0px;" valign="top"><code>[A-Z]+</code></td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Description:</td>
+					<td style="border-width: 0px;" valign="top">The Korean pronunciation(s) of this character, using the Yale romanization system. (See http://www.coffeesigns.com/Resources/romanization/korean.asp for a comparison of the various Korean romanization systems.)</td>
+				</tr> 
+			</tbody>
+		</table>
+		<p> </p>
+		<table cellpadding="2" cellspacing="2" style="border-width: 0px;">
+			<tbody>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Tag:</td>
+					<td style="border-width: 0px;" valign="top"><code>kLau</code></td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Status:</td>
+					<td style="border-width: 0px;" valign="top">Provisional</td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Category:</td>
+					<td style="border-width: 0px;" valign="top">Dictionary Indices</td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Separator:</td>
+					<td style="border-width: 0px;" valign="top">space</td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Syntax:</td>
+					<td style="border-width: 0px;" valign="top"><code>[1-9][0-9]{0,3}</code></td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Description:</td>
+					<td style="border-width: 0px;" valign="top">The index of this character in<i> A Practical Cantonese-English Dictionary</i> by Sidney Lau, Hong Kong: The Government Printer, 1977.
+						<p>The index consists of an integer. Missing indices indicate unencoded characters which are being submitted to the IRG for inclusion in future versions of the standard.</p>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+		<p> </p>
+		<table cellpadding="2" cellspacing="2" style="border-width: 0px;">
+			<tbody>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Tag:</td>
+					<td style="border-width: 0px;" valign="top"><code>kMainlandTelegraph</code></td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Status:</td>
+					<td style="border-width: 0px;" valign="top">Provisional</td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Category:</td>
+					<td style="border-width: 0px;" valign="top">Other Mappings</td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Separator:</td>
+					<td style="border-width: 0px;" valign="top">space</td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Syntax:</td>
+					<td style="border-width: 0px;" valign="top"><code>[0-9]{4}</code></td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Description:</td>
+					<td style="border-width: 0px;" valign="top">The PRC telegraph code for this character, derived from &quot;Kanzi denpou koudo henkan-hyou&quot; (&quot;Chinese character telegraph code conversion table&quot;), Lin Jinyi, KDD Engineering and Consulting, Tokyo, 1984.</td>
+				</tr>
+			</tbody>
+		</table>
+		<p> </p>
+		<table cellpadding="2" cellspacing="2" style="border-width: 0px;">
+			<tbody>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Tag:</td>
+					<td style="border-width: 0px;" valign="top"><code>kMandarin</code></td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Status:</td>
+					<td style="border-width: 0px;" valign="top">Provisional</td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Category:</td>
+					<td style="border-width: 0px;" valign="top">Readings</td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Separator:</td>
+					<td style="border-width: 0px;" valign="top">space</td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Syntax:</td>
+					<td style="border-width: 0px;" valign="top"><code>[A-ZÜ]+[1-5]</code></td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Description:</td>
+					<td style="border-width: 0px;" valign="top">The Mandarin pronunciation(s) for this character in pinyin; Mandarin pronunciations are sorted in order of frequency, not alphabetically.</td>
+				</tr>
+			</tbody>
+		</table>
+		<p> </p>
+		<table cellpadding="2" cellspacing="2" style="border-width: 0px;">
+			<tbody>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Tag:</td>
+					<td style="border-width: 0px;" valign="top"><code>kMatthews</code></td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Status:</td>
+					<td style="border-width: 0px;" valign="top">Provisional</td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Category:</td>
+					<td style="border-width: 0px;" valign="top">Dictionary Indices</td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Separator:</td>
+					<td style="border-width: 0px;" valign="top">space</td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Syntax:</td>
+					<td style="border-width: 0px;" valign="top"><code>[0-9]{1,4}(a|\.5)?</code></td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Description:</td>
+					<td style="border-width: 0px;" valign="top">The index of this character in Mathews' <i>Chinese-English Dictionary</i> by Robert H. Mathews, Cambrige: Harvard University Press, 1975.
+						<p>Note that the field name is <code>kMatthews</code> instead of <code>kMathews</code> to maintain compatibility with earlier versions of this file, where it was inadvertently misspelled.</p>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+		<p> </p>
+		<table cellpadding="2" cellspacing="2" style="border-width: 0px;">
+			<tbody>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Tag:</td>
+					<td style="border-width: 0px;" valign="top"><code>kMeyerWempe</code></td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Status:</td>
+					<td style="border-width: 0px;" valign="top">Provisional</td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Category:</td>
+					<td style="border-width: 0px;" valign="top">Dictionary Indices</td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Separator:</td>
+					<td style="border-width: 0px;" valign="top">space</td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Syntax:</td>
+					<td style="border-width: 0px;" valign="top"><code>[1-9][0-9]{0,3}[a-t*]?</code></td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Description:</td>
+					<td style="border-width: 0px;" valign="top">The index of this character in the <i>Student's Cantonese-English Dictionary</i> by Bernard F. Meyer and Theodore F. Wempe (3rd edition, 1947). The index is an integer, optionally followed by a lower-case Latin letter if the listing is in a subsidiary entry and not a main one. In some cases where the character is found in the radical-stroke index, but not in the main body of the dictionary, the integer is followed by an asterisk (e.g., U+50E5, which is listed as 736* as well as 1185a).</td>
+				</tr>
+			</tbody>
+		</table>
+		<p> </p>
+		<table cellpadding="2" cellspacing="2" style="border-width: 0px;">
+			<tbody>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Tag:</td>
+					<td style="border-width: 0px;" valign="top"><code>kMorohashi</code></td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Status:</td>
+					<td style="border-width: 0px;" valign="top">Provisional</td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Category:</td>
+					<td style="border-width: 0px;" valign="top">Dictionary Indices</td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Separator:</td>
+					<td style="border-width: 0px;" valign="top">space</td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Syntax:</td>
+					<td style="border-width: 0px;" valign="top"><code>[0-9]{5}'?</code></td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Description:</td>
+					<td style="border-width: 0px;" valign="top">The index of this character in the <i>Dae Kanwa Ziten</i>, aka Morohashi dictionary (Japanese) used in the four-dictionary sorting algorithm.
+						<p>The edition used is the revised edition, published in Tokyo by Taishuukan Shoten, 1986.</p>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+		<p> </p>
+		<table cellpadding="2" cellspacing="2" style="border-width: 0px;">
+			<tbody>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Tag:</td>
+					<td style="border-width: 0px;" valign="top"><code>kNelson</code></td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Status:</td>
+					<td style="border-width: 0px;" valign="top">Provisional</td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Category:</td>
+					<td style="border-width: 0px;" valign="top">Dictionary Indices</td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Separator:</td>
+					<td style="border-width: 0px;" valign="top">space</td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Syntax:</td>
+					<td style="border-width: 0px;" valign="top"><code>[0-9]{4}</code></td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Description:</td>
+					<td style="border-width: 0px;" valign="top">The index of this character in <i>The Modern Reader's Japanese-English Character Dictionary</i> by Andrew Nathaniel Nelson, Rutland, Vermont: Charles E. Tuttle Company, 1974.</td>
+				</tr>
+			</tbody>
+		</table>
+		<p> </p>
+		<table cellpadding="2" cellspacing="2" style="border-width: 0px;">
+			<tbody>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Tag:</td>
+					<td style="border-width: 0px;" valign="top"><code>kOtherNumeric</code></td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Status:</td>
+					<td style="border-width: 0px;" valign="top">Informative</td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Category:</td>
+					<td style="border-width: 0px;" valign="top">Numeric Values</td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Separator:</td>
+					<td style="border-width: 0px;" valign="top">space</td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Syntax:</td>
+					<td style="border-width: 0px;" valign="top"><code>[0-9]+</code></td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Description:</td>
+					<td style="border-width: 0px;" valign="top">The numeric value for the character in certain unusual, specialized contexts.
+						<p>The three numeric-value fields should have no overlap; that is, characters with a <code>kOtherNumeric</code> value should not have a <code>kAccountingNumeric</code> or <code>kPrimaryNumeric</code> value as well.</p>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+		<p> </p>
+		<table cellpadding="2" cellspacing="2" style="border-width: 0px;">
+			<tbody>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Tag:</td>
+					<td style="border-width: 0px;" valign="top"><code>kPhonetic</code></td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Status:</td>
+					<td style="border-width: 0px;" valign="top">Provisional</td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Category:</td>
+					<td style="border-width: 0px;" valign="top">Dictionary-like Data</td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Separator:</td>
+					<td style="border-width: 0px;" valign="top">space</td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Syntax:</td>
+					<td style="border-width: 0px;" valign="top"><code>[1-9][0-9]{0,3}[A-D]?*?</code></td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Description:</td>
+					<td style="border-width: 0px;" valign="top">The phonetic index for the character from <i>Ten Thousand Characters: An Analytic Dictionary</i> by G. Hugh Casey, S.J. Hong Kong: Kelley and Walsh,1980.</td>
+				</tr>
+			</tbody>
+		</table>
+		<p> </p>
+		<table cellpadding="2" cellspacing="2" style="border-width: 0px;">
+			<tbody>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Tag:</td>
+					<td style="border-width: 0px;" valign="top"><code>kPrimaryNumeric</code></td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Status:</td>
+					<td style="border-width: 0px;" valign="top">Informative</td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Category:</td>
+					<td style="border-width: 0px;" valign="top">Numeric Values</td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Separator:</td>
+					<td style="border-width: 0px;" valign="top">space</td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Syntax:</td>
+					<td style="border-width: 0px;" valign="top"><code>[0-9]+</code></td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Description:</td>
+					<td style="border-width: 0px;" valign="top">The value of the character when used in the writing of numbers in the standard fashion.
+						<p>The three numeric-value fields should have no overlap; that is, characters with a <code>kPrimaryNumeric</code> value should not have a <code>kAccountingNumeric</code> or <code>kOtherNumeric</code> value as well.</p>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+		<p> </p>
+		<table cellpadding="2" cellspacing="2" style="border-width: 0px;">
+			<tbody>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Tag:</td>
+					<td style="border-width: 0px;" valign="top"><code>kPseudoGB1</code></td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Status:</td>
+					<td style="border-width: 0px;" valign="top">Provisional</td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Category:</td>
+					<td style="border-width: 0px;" valign="top">Other Mappings</td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Separator:</td>
+					<td style="border-width: 0px;" valign="top">space</td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Syntax:</td>
+					<td style="border-width: 0px;" valign="top"><code>[0-9]{4}</code></td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Description:</td>
+					<td style="border-width: 0px;" valign="top">A &quot;GB 12345-90&quot; code point assigned this character for the purposes of including it within Unihan. Pseudo-GB1 codes were used to provide official code points for characters not already in national standards, such as characters used to write Cantonese, and so on.</td>
+				</tr>
+			</tbody>
+		</table>
+		<p> </p>
+		<table cellpadding="2" cellspacing="2" style="border-width: 0px;">
+			<tbody>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Tag:</td>
+					<td style="border-width: 0px;" valign="top"><code>kRSAdobe_Japan1_6</code></td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Status:</td>
+					<td style="border-width: 0px;" valign="top">Provisional</td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Category:</td>
+					<td style="border-width: 0px;" valign="top">Radical-Stroke Counts</td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Separator:</td>
+					<td style="border-width: 0px;" valign="top">space</td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Syntax:</td>
+					<td style="border-width: 0px;" valign="top"><code>[CV]\+[0-9]{1,5}\+[1-9][0-9]{0,2}\.[1-9][0-9]?\.[0-9]{1,2}</code></td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Introduced:</td>
+					<td style="border-width: 0px;" valign="top">4.1</td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Description:</td>
+					<td style="border-width: 0px;" valign="top">Information on the glyphs in Adobe-Japan1-6 as contributed by Adobe. The value consists of a number of space-separated entries. Each entry consists of three pieces of information separated by a plus sign:
+						<p>1) C or V. &quot;C&quot; indicates that the Unicode code point maps directly to the Adobe-Japan1-6 CID that appears after it, and &quot;V&quot; indicates that it is considered a variant form, and thus not directly encoded.</p>
+						<p>2) The Adobe-Japan1-6 CID.</p>
+						<p>3) Radical-stroke data for the indicated Adobe-Japan1-6 CID. The radical-stroke data consists of three pieces separated by periods: the KangXi radical (1-214), the number of strokes in the form the radical takes in the glyph, and the number of strokes in the residue. The standard Unicode radical-stroke form can be obtained by omitting the second value, and the total strokes in the glyph from adding the second and third values.</p>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+		<p> </p>
+		<table cellpadding="2" cellspacing="2" style="border-width: 0px;">
+			<tbody>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Tag:</td>
+					<td style="border-width: 0px;" valign="top"><code>kRSJapanese</code></td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Status:</td>
+					<td style="border-width: 0px;" valign="top">Provisional</td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Category:</td>
+					<td style="border-width: 0px;" valign="top">Radical-Stroke Counts</td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Separator:</td>
+					<td style="border-width: 0px;" valign="top">space</td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Syntax:</td>
+					<td style="border-width: 0px;" valign="top"><code>[0-9]{1,3}\.[0-9]{1,2}</code></td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Description:</td>
+					<td style="border-width: 0px;" valign="top">A Japanese radical/stroke count for this character in the form &quot;radical.additional strokes&quot;. A ' after the radical indicates the simplified version of the given radical.</td>
+				</tr>
+			</tbody>
+		</table>
+		<p> </p>
+		<table cellpadding="2" cellspacing="2" style="border-width: 0px;">
+			<tbody>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Tag:</td>
+					<td style="border-width: 0px;" valign="top"><code>kRSKanWa</code></td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Status:</td>
+					<td style="border-width: 0px;" valign="top">Provisional</td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Category:</td>
+					<td style="border-width: 0px;" valign="top">Radical-Stroke Counts</td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Separator:</td>
+					<td style="border-width: 0px;" valign="top">space</td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Syntax:</td>
+					<td style="border-width: 0px;" valign="top"><code>[0-9]{1,3}\.[0-9]{1,2}</code></td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Description:</td>
+					<td style="border-width: 0px;" valign="top">A Morohashi radical/stroke count for this character in the form &quot;radical.additional strokes&quot;. A ' after the radical indicates the simplified version of the given radical.</td>
+				</tr>
+			</tbody>
+		</table>
+		<p> </p>
+		<table cellpadding="2" cellspacing="2" style="border-width: 0px;">
+			<tbody>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Tag:</td>
+					<td style="border-width: 0px;" valign="top"><code>kRSKangXi</code></td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Status:</td>
+					<td style="border-width: 0px;" valign="top">Provisional</td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Category:</td>
+					<td style="border-width: 0px;" valign="top">Radical-Stroke Counts</td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Separator:</td>
+					<td style="border-width: 0px;" valign="top">space</td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Syntax:</td>
+					<td style="border-width: 0px;" valign="top"><code>[0-9]{1,3}\.[0-9]{1,2}</code></td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Description:</td>
+					<td style="border-width: 0px;" valign="top">The <i>KangXi</i> radical/stroke count for this character consistent with the value of the kKangXi field in the form &quot;radical.additional strokes&quot;. A ' after the radical indicates the simplified version of the given radical.</td>
+				</tr>
+			</tbody>
+		</table>
+		<p> </p>
+		<table cellpadding="2" cellspacing="2" style="border-width: 0px;">
+			<tbody>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Tag:</td>
+					<td style="border-width: 0px;" valign="top"><code>kRSKorean</code></td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Status:</td>
+					<td style="border-width: 0px;" valign="top">Provisional</td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Category:</td>
+					<td style="border-width: 0px;" valign="top">Radical-Stroke Counts</td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Separator:</td>
+					<td style="border-width: 0px;" valign="top">space</td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Syntax:</td>
+					<td style="border-width: 0px;" valign="top"><code>[0-9]{1,3}\.[0-9]{1,2}</code></td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Description:</td>
+					<td style="border-width: 0px;" valign="top">A Korean radical/stroke count for this character in the form &quot;radical.additional strokes&quot;. A ' after the radical indicates the simplified version of the given radical</td>
+				</tr>
+			</tbody>
+		</table>
+		<p> </p>
+		<table cellpadding="2" cellspacing="2" style="border-width: 0px;">
+			<tbody>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Tag:</td>
+					<td style="border-width: 0px;" valign="top"><code>kRSUnicode</code></td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Status:</td>
+					<td style="border-width: 0px;" valign="top">Informative</td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Category:</td>
+					<td style="border-width: 0px;" valign="top">Radical-Stroke Counts</td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Separator:</td>
+					<td style="border-width: 0px;" valign="top">space</td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Syntax:</td>
+					<td style="border-width: 0px;" valign="top"><code>[0-9]{1,3}\'?\.[0-9]{1,2}</code></td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Description:</td>
+					<td style="border-width: 0px;" valign="top">A standard radical/stroke count for this character in the form &quot;radical.additional strokes&quot;. A ' after the radical indicates the simplified version of the given radical
+						<p>This field is used for additional radical-stroke indices where either a character may be reasonably classified under more than one radical, or alternate stroke count algorithms may provide different stroke counts.</p>
+						<p>The first value is intended to reflect the same radical as the kRSKangXi field and the stroke count of the glyph used to print the character within the Unicode Standard.</p>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+		<p> </p>
+		<table cellpadding="2" cellspacing="2" style="border-width: 0px;">
+			<tbody>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Tag:</td>
+					<td style="border-width: 0px;" valign="top"><code>kSBGY</code></td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Status:</td>
+					<td style="border-width: 0px;" valign="top">Provisional</td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Category:</td>
+					<td style="border-width: 0px;" valign="top">Dictionary Indices</td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Separator:</td>
+					<td style="border-width: 0px;" valign="top">space</td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Syntax:</td>
+					<td style="border-width: 0px;" valign="top"><code>[0-9]{3}\.[0-9]{2}</code></td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Description:</td>
+					<td style="border-width: 0px;" valign="top">The position of this character in the <i>Song Ben Guang Yun</i> (SBGY) Medieval Chinese character dictionary (bibliographic and general information below).
+						
+						<p>The character references are given in the form &quot;ABC.XY&quot;, in which: &quot;ABC&quot; is the zero-padded page number [004..546]; &quot;XY&quot; is the zero-padded number of the character on the page [01..73]. For example, 364.38 indicates the 38th character on Page 364 (i.e. 澍). Where a given Unicode Scalar Value (USV) has more than one reference, these are space-delimited.</p>
+						<p>The current data set contains a total of 25334 references, for 19572 different hanzi (up from 25330 and 19511 in the previous release).</p>
+						<p>This release of the <code>kSBGY</code> data fixes a number of mappings, based on extensive work done since the initial release (compare the initial release counts given below). See the end of this header for additional information.</p>
+						<p>The original data was input under the direction of Prof. LUO Fengzhu at Taiwan Taoyuanxian Yuan Zhi University (see below) using an early version of the Big5- based CDP encoding scheme developed at Academia Sinica. During 2000-2002 this raw data was processed and revised by Richard Cook as follows: the data was converted to Unicode encoding using his revised <code>kHanYu</code> mapping tables (first provided to the Unicode Consortium for the Unihan.txt release 3.1.1d1) and also using several other mapping tables developed specifically for this project; the kSBGY indices were generated based on hand-counts of all page totals; numerous indexing errors were corrected; and the data underwent final proofing.</p>
+						<p>-- About the print sources --</p>
+						<p>The SBGY text, which dates to the beginning of the Song Dynasty (c. 1008, edited by 陳彭年 CHEN Pengnian et al.) is an enlargement of an earlier text known as 《切韻》 Qie Yun (dated to c. 601, edited by 陸法言 LU Fayan). With 25,330 head entries, this large early lexicon is important in part for the information which it provides for historical Chinese phonology. The GY dictionary employs a Chinese transcription method (known as 反切) to give pronunciations for each of its head entries. In addition, each syllable is also given a brief gloss.</p>
+						<p>It must be emphasized that the mapping of a particular SBGY glyph to a single USV may in some cases be merely an approximation or may have required the choice of a &quot;best possible glyph&quot; (out of those available in the Unicode repertoire). This indexing data in conjunction with the print sources will be useful for evaluating the degree of distinctive variation in the character forms appearing in this text, and future proofing of this data may reveal additional Chinese glyphs for IRG encoding.</p>
+						<p>-- Bibliographic information on the print sources --</p>
+						<p>《宋本廣韻》 &lt;&lt;Song Ben Guang Yun&gt;&gt; ['Song Dynasty edition of the Guang Yun Rhyming Dictionary'], edited by 陳彭年 CHEN Pengnian et al. (c. 1008).</p>
+						<p>Two modern editions of this work were consulted in building the kSBGY indices:</p>
+						<p>《新校正切宋本廣韻》。台灣黎明文化事業公司 出版，林尹校訂1976 年出版。[This was the edition used by Prof. LUO (台灣桃園縣元智大學中語系羅鳳珠), and in the subsequent revision, conversion, indexing and proofing.]</p>
+						<p>《新校互註‧宋本廣韻》。香港中文大學,余迺永 1993, 2000 年出版。ISBN: 962-201-413-5; 7-5326-0685-6. [Textual problems were resolved on the basis of this extensively annotated modern edition of the text.]</p>
+						<p>-- Additional Information --</p>
+						<p>For further information on this index data and the databases from which it is excerpted, see:</p>
+						<p>Cook, Richard S. 2003. 《說文解字‧電子版》 Shuo Wen Jie Zi - Dianzi Ban: Digital Recension of the Eastern Han Chinese Grammaticon. PhD Dissertation. Department of Linguistics. Berkeley: University of California.</p>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+		<p> </p>
+		<table cellpadding="2" cellspacing="2" style="border-width: 0px;">
+			<tbody>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Tag:</td>
+					<td style="border-width: 0px;" valign="top"><code>kSemanticVariant</code></td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Status:</td>
+					<td style="border-width: 0px;" valign="top">Provisional</td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Category:</td>
+					<td style="border-width: 0px;" valign="top">Variants</td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Separator:</td>
+					<td style="border-width: 0px;" valign="top">space</td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Syntax:</td>
+					<td style="border-width: 0px;" valign="top"><code>U+2?[0-9A-F]{4}(&lt;k[A-Za-z:]+(,k[A-Za-z]+)*)?</code></td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Description:</td>
+					<td style="border-width: 0px;" valign="top">The Unicode value for a semantic variant for this character. A semantic variant is an x- or y-variant with similar or identical meaning which can generally be used in place of the indicated character.
+						<p>The basic syntax is a Unicode scalar value. It may optionally be followed by additional data. The additional data is separated from the Unicode scalar value by a less-than sign (&lt;), and may be subdivided itself into substrings by commas, each of which may be divided into two pieces by a colon. The additional data consists of a series of field tags for another field in the Unihan database indicating the source of the information. If subdivided, the final piece is a string consisting of the letters T (for <i>tòng</i>, U+540C 同) B (for <i>bù</i>, U+4E0D 不), or Z (for <i>zhèng</i>, U+6B63 正).</p>
+						<p>T is used if the indicated source explicitly indicates the two are the same (e.g., by saying that the one character is &quot;the same as&quot; the other).</p>
+						<p>B is used if the source explicitly indicates that the two are used improperly one for the other.</p>
+						<p>Z is used if the source explicitly indicates that the given character is the preferred form. Thus, the Hanyu Da Zidian indicates that U+5231 刱 and U+5275 創 are semantic variants and that U+5275 創 is the preferred form.</p>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+		<p> </p>
+		<table cellpadding="2" cellspacing="2" style="border-width: 0px;">
+			<tbody>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Tag:</td>
+					<td style="border-width: 0px;" valign="top"><code>kSimplifiedVariant</code></td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Status:</td>
+					<td style="border-width: 0px;" valign="top">Provisional</td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Category:</td>
+					<td style="border-width: 0px;" valign="top">Variants</td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Separator:</td>
+					<td style="border-width: 0px;" valign="top">space</td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Syntax:</td>
+					<td style="border-width: 0px;" valign="top"><code>U\+2?[0-9A-F]{4}</code></td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Description:</td>
+					<td style="border-width: 0px;" valign="top">The Unicode value for the simplified Chinese variant for this character (if any).
+						<p>Note that a character can be *both* a traditional Chinese character in its own right *and* the simplified variant for other characters (e.g., U+53F0).</p>
+						<p>In such case, the character is listed as its own simplified variant and one of its own traditional variants. This distinguishes this from the case where the character is not the simplified form for any character (e.g., U+4E95).</p>
+						<p>Much of the of the data on simplified and traditional variants was supplied by Wenlin <a href="http://www.wenlin.com">http:/www.wenlin.com</a>.</p>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+		<p> </p>
+		<table cellpadding="2" cellspacing="2" style="border-width: 0px;">
+			<tbody>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Tag:</td>
+					<td style="border-width: 0px;" valign="top"><code>kSpecializedSemanticVariant</code></td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Status:</td>
+					<td style="border-width: 0px;" valign="top">Provisional</td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Category:</td>
+					<td style="border-width: 0px;" valign="top">Variants</td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Separator:</td>
+					<td style="border-width: 0px;" valign="top">space</td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Syntax:</td>
+					<td style="border-width: 0px;" valign="top"><code>U+2?[0-9A-F]{4}(&lt;k[A-Za-z]+(,k[A-Za-z]+)*)?</code></td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Description:</td>
+					<td style="border-width: 0px;" valign="top">The Unicode value for a specialized semantic variant for this character. The syntax is the same as for the <code>kSemanticVariant</code> field.
+						<p>A specialized semantic variant is an x- or y-variant with similar or identical meaning only in certain contexts (such as accountants' numerals).</p>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+		<p> </p>
+		<table cellpadding="2" cellspacing="2" style="border-width: 0px;">
+			<tbody>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Tag:</td>
+					<td style="border-width: 0px;" valign="top"><code>kTaiwanTelegraph</code></td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Status:</td>
+					<td style="border-width: 0px;" valign="top">Provisional</td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Category:</td>
+					<td style="border-width: 0px;" valign="top">Other Mappings</td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Separator:</td>
+					<td style="border-width: 0px;" valign="top">space</td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Syntax:</td>
+					<td style="border-width: 0px;" valign="top"><code>[0-9]{4}</code></td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Description:</td>
+					<td style="border-width: 0px;" valign="top">The Taiwanese telegraph code for this character, derived from &quot;Kanzi denpou koudo henkan-hyou&quot; (&quot;Chinese character telegraph code conversion table&quot;), Lin Jinyi, KDD Engineering and Consulting, Tokyo, 1984.</td>
+				</tr>
+			</tbody>
+		</table>
+		<p> </p>
+		<table cellpadding="2" cellspacing="2" style="border-width: 0px;">
+			<tbody>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Tag:</td>
+					<td style="border-width: 0px;" valign="top"><code>kTang</code></td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Status:</td>
+					<td style="border-width: 0px;" valign="top">Provisional</td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Category:</td>
+					<td style="border-width: 0px;" valign="top">Readings</td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Separator:</td>
+					<td style="border-width: 0px;" valign="top">space</td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Syntax:</td>
+					<td style="border-width: 0px;" valign="top"><code>*?[A-Za-z()\x{E6}\x{251}\x{259}\x{25B}\x{300}\x{30C}]+</code></td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Description:</td>
+					<td style="border-width: 0px;" valign="top">The Tang dynasty pronunciation(s) of this character, derived from or consistent with <i>T'ang Poetic Vocabulary</i> by Hugh M. Stimson, Far Eastern Publications, Yale Univ. 1976.</td>
+				</tr>
+			</tbody>
+		</table>
+		<p> </p>
+		<table cellpadding="2" cellspacing="2" style="border-width: 0px;">
+			<tbody>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Tag:</td>
+					<td style="border-width: 0px;" valign="top"><code>kTotalStrokes</code></td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Status:</td>
+					<td style="border-width: 0px;" valign="top">Provisional</td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Category:</td>
+					<td style="border-width: 0px;" valign="top">Dictionary-like Data</td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Separator:</td>
+					<td style="border-width: 0px;" valign="top">space</td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Syntax:</td>
+					<td style="border-width: 0px;" valign="top"><code>[1-9][0-9]{0,2}</code></td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Description:</td>
+					<td style="border-width: 0px;" valign="top">The total number of strokes in the character (including the radical). This value is for the character as drawn in the Unicode charts.</td>
+				</tr>
+			</tbody>
+		</table>
+		<p> </p>
+		<table cellpadding="2" cellspacing="2" style="border-width: 0px;">
+			<tbody>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Tag:</td>
+					<td style="border-width: 0px;" valign="top"><code>kTraditionalVariant</code></td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Status:</td>
+					<td style="border-width: 0px;" valign="top">Provisional</td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Category:</td>
+					<td style="border-width: 0px;" valign="top">Variants</td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Separator:</td>
+					<td style="border-width: 0px;" valign="top">space</td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Syntax:</td>
+					<td style="border-width: 0px;" valign="top"><code>U\+2?[0-9A-F]{4}</code></td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Description:</td>
+					<td style="border-width: 0px;" valign="top">The Unicode value(s) for the traditional Chinese variant(s) for this character.
+						<p>Note that a character can be <i>both</i> a traditional Chinese character in its own right <i>and</i> the simplified variant for other characters (e.g., 台 U+53F0).</p>
+						<p>In such case, the character is listed as its own simplified variant and one of its own traditional variants. This distinguishes this from the case where the character is not the simplified form for any character (e.g., 井 U+4E95).</p>
+						<p>Much of the of the data on simplified and traditional variants was supplied by Wenlin <a href="http://www.wenlin.com">http:/www.wenlin.com</a>.</p>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+		<p> </p>
+		<table cellpadding="2" cellspacing="2" style="border-width: 0px;">
+			<tbody>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Tag:</td>
+					<td style="border-width: 0px;" valign="top"><code>kVietnamese</code></td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Status:</td>
+					<td style="border-width: 0px;" valign="top">Provisional</td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Category:</td>
+					<td style="border-width: 0px;" valign="top">Readings</td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Separator:</td>
+					<td style="border-width: 0px;" valign="top">space</td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Syntax:</td>
+					<td style="border-width: 0px;" valign="top"><code>[A-Za-z\x{E0}-\x{1B0}\x{1EA1}-\x{1EF9}]+</code></td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Description:</td>
+					<td style="border-width: 0px;" valign="top">The character's pronunciation(s) in Quốc ngữ.</td>
+				</tr>
+			</tbody>
+		</table>
+		<p> </p>
+		<table cellpadding="2" cellspacing="2" style="border-width: 0px;">
+			<tbody>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Tag:</td>
+					<td style="border-width: 0px;" valign="top"><code>kXerox</code></td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Status:</td>
+					<td style="border-width: 0px;" valign="top">Provisional</td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Category:</td>
+					<td style="border-width: 0px;" valign="top">Other Mappings</td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Separator:</td>
+					<td style="border-width: 0px;" valign="top">space</td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Syntax:</td>
+					<td style="border-width: 0px;" valign="top"><code>[0-9]{3}:[0-9]{3}</code></td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Description:</td>
+					<td style="border-width: 0px;" valign="top">The Xerox code for this character.</td>
+				</tr>
+			</tbody>
+		</table>
+		<p> </p>
+		<table cellpadding="2" cellspacing="2" style="border-width: 0px;">
+			<tbody>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Tag:</td>
+					<td style="border-width: 0px;" valign="top"><code>kXHC1983</code></td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Status:</td>
+					<td style="border-width: 0px;" valign="top">Provisional</td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Category:</td>
+					<td style="border-width: 0px;" valign="top">Dictionary-like Data</td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Separator:</td>
+					<td style="border-width: 0px;" valign="top">space</td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Syntax:</td>
+					<td style="border-width: 0px;" valign="top"><code>[0-9,.*]+:[a-z\x{FC}\x{300}\x{301}\x{304}\x{308}\x{30C}]+</code></td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Description:</td>
+					<td style="border-width: 0px;" valign="top">One or more Hànyǔ pīnyīn readings as given in the Xiàndài Hànyǔ Cídiǎn (full bibliographic information below).
+						<p>Each reading is preceded by the character's location(s) in the dictionary, separated from the reading by a colon (:).  Multiple locations for a given reading are separated by commas (,).  Each location reference is of the form [0-9]{4}\.[0-9]{3}\*?.  The number preceding the period is the page number, zero justified to four digits.  The first two digits of the number following the period are the entry's position on the page, zero-justified.  The third digit is 0 for a main entry and greater than 0 for a parenthesized variant.  A trailing askterisk (*) indicates an encoded variant substituted for an unencoded character (see below).</p>
+						<p>Bibliographical information:</p>
+						<p>《现代汉语词典》 [Xiàndài Hànyǔ Cídiǎn = XHC; ‘Modern Chinese Dictionary’]. 中国社会科学院语言研究所词典编辑室编 [Chinese Academy of Social Sciences, Linguisitics Research Institute, Dictionary Editorial Office, eds.]. 北京: 商务印书馆, 1983 [1978 年 12 月第 1 版; 1983 年 1 月第 2 版; 1984 年 1 月北京第 49 次印刷印张 54; 统一书号: 17017.91].</p>
+						<p>The Unihan version of this data was originally prepared by Richard Cook (initial release 2007-12-12), proofing and revising a subset of data contributed by Dr. George Bell (who input it with the help of Joy Zhao Rouzer, Steve Mann, et al., as one part of their “Quick and Easy Index of Chinese Characters with Attributes”; Bell 1995-2005).</p>
+						<p>As of the present writing (Unicode 5.1), the XHC source data contains 204 unencoded characters, for the most part simplified variants. Each unencoded character in the source is replaced by one or more encoded variants (references in these cases are marked with a trailing “*”; see above). Many of these unencoded forms are already in the pipeline for future encoding, and future revisions of this data will eliminate trailing asterisks from mappings.</p>
+						<p>Note that there are subsequent editions of this important PRC dictionary, reflecting later developments and refinements in language and orthographic standardization, and other editions should not be used in future revision of this field.</p>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+		<p> </p>
+		<table cellpadding="2" cellspacing="2" style="border-width: 0px;">
+			<tbody>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Tag:</td>
+					<td style="border-width: 0px;" valign="top"><code>kZVariant</code></td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Status:</td>
+					<td style="border-width: 0px;" valign="top">Provisional</td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Category:</td>
+					<td style="border-width: 0px;" valign="top">Variants</td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Separator:</td>
+					<td style="border-width: 0px;" valign="top">space</td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Syntax:</td>
+					<td style="border-width: 0px;" valign="top"><code>U+2?[0-9A-F]{4}(:k[A-Za-z]+)?</code></td>
+				</tr>
+				<tr>
+					<td style="border-width: 0px;" valign="top">Description:</td>
+					<td style="border-width: 0px;" valign="top">The Unicode value(s) for known z-variants of this character.</td>
+				</tr>
+			</tbody>
+		</table>
+		<p> </p>
+		<h3><a name="ChronologicalListing">4.2 Listing by Date of Addition to the Unicode Standard</a></h3>
+		The table below lists the fields of the Unihan database by the release where they were first added.  Also included are fields which were dropped in a particular release.  These are indicated by italics.  
+		<p> </p>
+		<table border="0" cellspacing="2" cellpadding="2">
+			<tr>
+				<td>Unicode Version</td>
+				<td>Fields Added or Dropped</td>
+			</tr>
+			<tr>
+				<td>5.1</td>
+				<td>kXHC1983</td>
+			</tr>
+			<tr>
+				<td>5.0</td>
+				<td>kCheungBauer, kCheungBauerIndex, kFourCornerCode, kHangul</td>
+			</tr>
+			<tr>
+				<td>4.1</td>
+				<td><i>kAlternateKangXi (dropped)</i>, <i>kAlternateMorohashi (dropped)</i>, kFennIndex, kIICore, kRSAdobe_Japan1_6</td>
+			</tr>
+			<tr>
+				<td>4.0.1</td>
+				<td>kGSR, kHanyuPinlu, kIRG_USource</td>
+			</tr>
+			<tr>
+				<td>3.2</td>
+				<td>kAccountingNumeric, <i>kAlternateHanYu (dropped)</i>, kCihaiT, kCompatibilityVariant, kFrequency, kGradeLevel, kOtherNumeric, kPrimaryNumeric, kSBGY</td>
+			</tr>
+			<tr>
+				<td>3.1.1</td>
+				<td>kCangjie, kCowles, kFenn, kHKGlyph, kHKSCS, kIRG_KPSource, kJIS0213, kKPS0, kKPS1, kKarlgren, kLau, kVietnamese</td>
+			</tr>
+			<tr>
+				<td>3.1</td>
+				<td><i>kAlternateJEF (dropped)</i>, kIRG_HSource, kMeyerWempe, kPhonetic, <i>kRSMerged (dropped)</i>, kTotalStrokes</td>
+			</tr>
+			<tr>
+				<td>3</td>
+				<td>kAlternateJEF, kIRGDaeJaweon, kIRGDaiKanwaZiten, kIRGHanyuDaZidian, kIRGKangXi, kIRG_GSource, kIRG_JSource, kIRG_KSource, kIRG_TSource, kIRG_VSource, kRSMerged, kSemanticVariant (reintroduced), kSpecializedSemanticVariant (reintroduced)</td>
+			</tr>
+			<tr>
+				<td>2.1</td>
+				<td><i>kSemanticVariant (dropped)</i>, <i>kSpecializedSemanticVariant (dropped)</i></td>
+			</tr>
+		</table>
+		<p>The remaining fields were added prior to Unicode 2.1.  </p>
+		<h2 class="nonumber"><a name="References">References</a></h2>
+		<p>For references for this annex, see Unicode Standard Annex #41, “<a href="../tr41/tr41-3.html">Common References for Unicode Standard Annexes</a>.”</p>
+		<h2><a name="Modifications">Modifications</a></h2>
+		<p>This section indicates the changes introduced by each revision.</p>
+		<p><b>Revision 5</b></p>
+		<ul>
+			<li>First approved version, for Unicode 5.1.0.</li>
+			
+		</ul>
+		<p><b>Revision 4</b></p>
+		<ul>
+			<li>Upgrade from Proposed Draft to Draft.</li>
+			<li>Correct syntax for a number of regular expressions.</li>
+			
+		</ul>
+		<p><b>Revision 3</b></p>
+		<ul>
+			<li>Changes per UTC input.</li>
+			
+		</ul>
+		<p><b>Revision 2</b></p>
+		<ul>
+			<li>Rewrite for Unicode 5.0.</li>
+			
+		</ul>
+		<p><b>Revision 1</b></p>
+		<ul>
+			<li>First working draft</li>
+			
+		</ul>
+		<hr>
+		<p><font size="-1">Copyright © 2006-2008 Unicode, Inc. All Rights Reserved. The Unicode Consortium makes no expressed or implied warranty of any kind, and assumes no liability for errors or omissions. No liability is assumed for incidental and consequential damages in connection with or arising out of the use of the information or programs contained or accompanying this technical report. The Unicode <a href="http://www.unicode.org/copyright.html">Terms of Use</a> apply.</font></p>
+		<p><font size="-1">Unicode and the Unicode logo are trademarks of Unicode, Inc., and are registered in some jurisdictions.</font></p>
+	</div>
+</body>
+</html>

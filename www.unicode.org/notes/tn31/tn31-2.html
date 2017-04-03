@@ -1,0 +1,459 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+<head>
+	<meta http-equiv="CONTENT-TYPE" content="text/html; charset=utf-8">
+	<title>Fast Compression Algorithm for UNICODE Text</title>
+	<meta name="author" content="Pavel Studen&yacute;">
+	<meta name="created" content="20061204;14282400">
+	<link rel="stylesheet" href="../../unicode/reports/reports.css" type="text/css">
+	<style type="text/css">
+	<!--
+	.fig_ex
+	{
+	font-family:sans-serif;
+	font-size:115%;
+	font-weight:bold;
+	text-align:center;
+	}
+	.fig_text
+	{
+	font-size:80%;
+	font-style:italic;
+	font-family:serif;
+	margin-left: 2cm;
+	margin-right: 2cm;
+	border-top: 1px solid #000000;
+	border-bottom: none;
+	border-left: none;
+	border-right: none;
+	padding: 0cm;
+	text-align:left;
+	}
+	.comment {
+	color: #00dd22;
+	}
+	.code_sample {
+	margin-left: 2cm;
+	}
+	 -->
+	</style>
+</head>
+<body lang="en" dir="LTR">
+<table class="header">
+  <tr>
+    <td class="icon"><a href="http://www.unicode.org"><img align="middle" 
+    alt="[Unicode]" border="0" 
+    src="../../webscripts/logo60s2.gif" width="34" height="33"></a>&nbsp;&nbsp;
+    <font size="3"><a class="bar" href="../index.html">Technical 
+    Notes</a></font></td>
+  </tr>
+  <tr>
+    <td class="gray">&nbsp;</td>
+  </tr>
+</table>
+
+<div style="margin: 2em">
+
+<h2 align="center">Unicode Technical Note #31</h2>
+<h1 align="center">Fast Compression Algorithm for Unicode Text</h1>
+<table class="wide" id="table2">
+	<tr>
+		<td>Version</td>
+		<td>2</td>
+	</tr>
+	<tr>
+		<td>Author</td>
+		<td>Pavel Studen&yacute;, Ond&#345;ej Hole&#269;ek, Opera Software ASA</td>
+	</tr>
+	<tr>
+		<td>Date</td>
+		<td>2008-01-17</td>
+	</tr>
+	<tr>
+		<td>This Version</td>
+		<td><a href="tn31-2.html">http://www.unicode.org/notes/tn31/tn31-2.html</a></td>
+	</tr>
+	<tr>
+		<td>Previous Version</td>
+		<td><a href="tn31-1.html">http://www.unicode.org/notes/tn31/tn31-1.html</a></td>
+	</tr>
+	<tr>
+		<td>Latest Version</td>
+		<td><a href="index.html">http://www.unicode.org/notes/tn31/</a></td>
+	</tr>
+</table>
+<h2><i>Summary</i></h2>
+<p><i>Compression algorithms derived from Lempel-Ziv operate on 8 bit data.
+This article shows a window-less compression algorithm specialized on
+16 bit Unicode characters, which achieves significantly better
+performance than for example current zip implementations and has a
+reasonable compression ratio.</i></p>
+<h2><i>Status</i></h2>
+<p><i>This document is a Unicode Technical
+Note. Sole responsibility for its contents rests with the author(s).
+Publication does not imply any endorsement by the Unicode Consortium.
+This document is not subject to the <a href="http://www.unicode.org/policies/patent_policy.html">Unicode
+Patent Policy</a>.</i></p>
+<p><i>For information on Unicode Technical Notes including criteria for
+acceptance, see <a href="../index.html">http://www.unicode.org/notes/</a>.</i></p>
+<h2>Contents</h2>
+<ol>
+	<li><a href="tn31-2.html#Intro">Introduction</a></li>
+	<li><a href="tn31-2.html#UNICODE_Text_Compression">Unicode Text Compression</a></li>
+	<li><a href="tn31-2.html#Output_Format">Output Format</a></li>
+	<li><a href="tn31-2.html#Comp_Algorithm">Compression Algorithm</a></li>
+	<li><a href="tn31-2.html#Decompression">Decompression</a></li>
+	<li><a href="tn31-2.html#Performance">Performance and compression ratio</a></li>
+	<li><a href="tn31-2.html#References">References</a></li>
+</ol>
+<hr>
+
+<h2><a name="Intro">Introduction</a></h2>
+<p>Lempel-Ziv compression<sup>[<a href="tn31-2.html#LZ77">1</a>]</sup> is based on
+replacing sequences of bytes by references to matching sequences
+already processed by the encoder. The references are called <i>matches</i>.
+The data which don't have any matches are left unmodified. Those are
+called <i>literals</i>. See
+Fig. 1<sup>[<a href="tn31-2.html#Bible">4</a>]</sup> as an example.
+<p class="fig_ex">Eli, Eli, lamah azavtani?<br>
+Eli, <span style="font-weight: normal;">[5,5]</span>lamah azavtani?</p>
+<p class="fig_text">Fig. 1: &ldquo;Eli,
+&ldquo; appears twice in the text. We can thus replace the second
+reference by a match saying &ldquo;take the sequence 5 characters
+before and 5 characters long&rdquo;. The other character sequences
+appear once in the text. Those are unmodified in the compressed data
+as literals.</p>
+<p>There are various modifications of Lempel-Ziv algorithm, differing in
+methods of finding the matches and how to store them in the
+compressed output. In LZ77, there is a <i>sliding window</i>
+holding the last 2, 4 or 32 kB of input. There is also a <i>dictionary</i>
+in most of the compression methods, serving as an index to find the
+matches quickly.</p>
+
+<h2><a name="UNICODE_Text_Compression">Unicode Text Compression</a></h2>
+<p>A few adjustments can be done if the
+input is an in-memory block of 16 bit Unicode characters. First of
+all, the input can be considered as a series of true 16 bit units,
+instead of arbitrary 8 bit data. There is also no need for a sliding
+window, since all the data is already present in memory.</p>
+<p>The dictionary is organized as a hash
+table. The hash is made from two consecutive 16 bit characters. It
+serves as an index to an array of pointers to the previous
+occurrences of the couple of characters in the text. No effort is
+made to find the longest match or to avoid conflicts in hashes. It
+results in a worse compression ratio, but much better performance.
+The characters found by the hash are simply compared to find the
+length of the match and the hash is then updated to point to the
+current location. Fig. 2<sup>[<a href="tn31-2.html#Kant">5</a>]</sup>
+ shows finding a match in the dictionary.</p>
+<p class="fig_ex"><img src="hash.gif" alt="hash matching" border="0"></p>
+<p class="fig_text">Fig. 2: We get to the position of the previous
+occurrence by hashing ' ' and 'k' and looking up the pointer in the
+dictionary.</p>
+<p>Since the method of looking up the match is fairly
+simple, there is quite a lot of literals left in the output. Further
+effort is done to reduce the size of the literals as well. The vast
+majority of texts uses mainly one alphabet/script. The character
+values of a script in the Unicode table are close together. That's
+why it's possible to store differences between two 2 byte characters
+as a single byte signed value of a range of &lt;-64, 63&gt;. If the
+difference between the two characters doesn't fit into the range, the
+extra bits are stored in the subsequent byte. That gives a range of
+&lt;-8192, 8191&gt;. Three bytes are used in rare cases, when it's
+necessary to store the highest bits of the difference as well. The
+most significant bit of the bytes is used to mark whether the next
+byte holds the extra bits of the current value or the next
+difference. Only the first character of a literal is stored directly,
+so that we can restore the original values from the differences.</p>
+<p class="fig_ex">
+A<span style="font-weight: normal"><sub>0041</sub></span>,<span style="font-weight: normal"><sub>002C</sub></span>&nbsp;<span style="font-weight: normal"><sub>0020</sub></span>&Sigma;<span style="font-weight: normal"><sub>03A3</sub></span><br>
+0041 15 0C FD 78</p>
+<p class="fig_text">Fig. 3: Encoding
+of literal &ldquo;A, &Sigma;&rdquo;.
+'A' is stored straight as 41 (on 2 bytes).Then we store ',' as 41 &ndash;
+2C = 15 and space as 2C &ndash; 20 = C. &Sigma; doesn't fit to a
+single byte, because 20 &ndash; 3A3 = FC7D. It's lowest 7 bits (7D)
+are stored in the first byte with its most significant bit set to 1,
+signalling that the next byte holds the next bits. The next 7 bits of
+FC7D (78) are stored in the next byte and its most significant bit is
+left as zero.</p>
+
+<h2><a name="Output_Format">Output Format</a></h2>
+<p>Output consists of either literals of
+a certain length or matches. A match is a pair of a length and an
+offset. To distinguish between literals and matches, we can use one
+bit from the length field of both literals and matches. Also both
+offset and length of a match and length of a literal can be encoded
+in a similar way as the differences between characters in literals &ndash;
+one bit saying whether there are more data and the rest of the byte
+filled by the value.</p>
+<center>
+	<table width=227 cellpadding=4 cellspacing=0 style="border: 1px solid black">
+		<tr>
+			<td bgcolor="#ff0000">
+			<p><br></p>
+			</td>
+			<td bgcolor="#008000">
+			<p><br></p>
+			</td>
+			<td bgcolor="#99ccff">
+			<p><br></p>
+			</td>
+			<td bgcolor="#99ccff">
+			<p><br></p>
+			</td>
+			<td bgcolor="#99ccff">
+			<p><br></p>
+			</td>
+			<td bgcolor="#99ccff">
+			<p><br></p>
+			</td>
+			<td bgcolor="#99ccff">
+			<p><br></p>
+			</td>
+			<td bgcolor="#99ccff">
+			<p><br></p>
+			</td>
+		</tr>
+	</table>
+</center>
+<p class="fig_text">Fig. 4:
+The most significant bit in the length field is used to
+distinguish between a match and a literal, the second most
+significant bit says whether the length fits into the remaining 6
+bits and the rest holds the lowest 6 bits of the length. If the
+length doesn't fit into the 6 bits, another byte (or more) is used to
+store the rest. Then the most significant bit says whether the next
+byte also holds a part of the length and 7 bits contain another
+portion of length.</p>
+<p>It's also convenient to store the
+original length of uncompressed data for decompression.</p>
+
+<h2><a name="Comp_Algorithm">Compression Algorithm</a></h2>
+<p>First of all it's necessary to allocate an output buffer and a dictionary.
+Output buffer should be 50% bigger than the input data. Size of the
+dictionary depends on a programmer's choice. The more memory the dictionary
+uses, the better compression ratio can be reached. The dictionary used for
+this article holds 16384 pointers, that's 64KB on a 32-bit machine.</p>
+<p>The smallest size of a match is sixteen bits (1B length and 1B offset).
+The size of the data replaced by a match must therefore be greater than
+sixteen bits in order to reach any compression. That's two Unicode
+characters (32 bits) in this case. These two characters must be hashed
+to make up an index to the dictionary. An example of a hash is shown in Fig. 5.
+</p>
+<pre class="code_sample"><code>
+int hash(int char0, int char1)
+{
+  return ((char1 * 37 ^ ((char0 >> 7) * 5) ^ (char0)) * 33) &amp; 16383;
+}
+</code></pre>
+<p class="fig_text">Fig. 5: Hash makes a number ranging from 0 to 16383.
+Several character combinations share the same hash value. It's important that
+the character values making the same hash are evenly distributed.</p>
+<p>A simplified compression is in Fig. 6. OutputMatch is straightforward, just
+writing the length and the offset to the output in the format explained above.
+OutputLiteral is covered in details are in Fig. 7.</p>
+<pre class="code_sample"><code>
+literal = input;
+while (length-- > 0) {
+  match_index = hash(*input, *(input + 1));
+  match = dictionary[match_index];
+  dictionary[match_index] = input;
+  
+  if (valid_pointer(match) &amp;&amp; *match == *input &amp;&amp; *(match + 1) == *(input + 1))   {
+    if (literal < input)
+      OutputLiteral(literal, input - literal);
+      
+    i = 2;
+    while (*(match + i) == *(input + i))
+      ++i;
+      
+    OutputMatch(input - match, i);
+    
+    input += i;
+    literal = input;
+    length -= (i - 1);
+  }
+  else
+    ++input;
+}
+
+if (literal < input)
+  OutputLiteral(literal, input - literal);
+</code></pre>
+<p class="fig_text">Fig. 6: Whenever a match is found, the not-matched part of
+data is sent to output, followed by the match.</p>
+<pre class="code_sample"><code>
+<span class="comment">// most significant bit is 0 to mark a literal</span>
+*(output++) = (unsigned char)(length &amp; 0x3F) | ((length > 0x3F) << 6);
+
+length >>= 6;
+
+while (length > 0) {
+  *(output++) = (unsigned char)(length &amp; 0x7F) | ((length > 0x7F) << 7);
+  length >>= 7;
+}
+
+<span class="comment">// save the first Unicode character</span>
+previous = *input++;
+*output++ = previous &amp; 0xFF;
+*output++ = previous >> 8;
+
+<span class="comment">// save differences between the characters</span>
+while (length-- > 0) {
+  diff = previous - *input;
+  if ((diff &amp; 0xFFFFFFC0) == 0 || (diff | 0x3F) == -1)
+    *output++ = (unsigned char)(diff &amp; 0x7F);
+  else {
+    *output++ = (unsigned char)((diff &amp; 0x7F) | 0x80);
+    diff >>= 7;
+
+    if ((diff &amp; 0xFFFFFFC0) == 0 || (diff | 0x3F) == -1)
+      *output++ = (unsigned char)(diff &amp; 0x7F);
+    else {
+      *output++ = (unsigned char)((diff &amp; 0x7F) | 0x80);
+      *output++ = diff >> 7;
+    }
+  }
+
+  previous = *input++;
+}
+</code></pre>
+<p class="fig_text">Fig. 7 (<b>OutputLiteral</b>):
+The length is saved first on as many bytes as needed. Then follows the first
+character of the literal (two bytes). After that, differences from the previous
+character are saved on one, two or three bytes.</p>
+
+<h2><a name="Decompression">Decompression</a></h2>
+<p>Decompression is straightforward and
+simple. There is no need to allocate any memory except a buffer to
+store the decompressed data.</p>
+<p>The most significant bit of a strip of
+data says whether it's a match or a literal. Literals are encoded
+from the differential code to the output buffer. Since a literal is
+always the first strip of the compressed data and a match can only
+reference backwards, the matches are copied from the previous data in
+the output buffer.</p>
+<pre class="code_sample"><code>
+while (input < end) {
+  if (*input &amp; 0x80) {  <span class="comment">// match</span>
+    length = DecodeLength(&amp;input);
+    offset = DecodeOffset(&amp;input);  <span class="comment">// same algorithm as DecodeLength</span>
+    while (length-- > 0)
+    {
+      *output = *(output - offset);
+      ++output;
+    }
+  }
+  else {  <span class="comment">// literal</span>
+    length = DecodeLength(&amp;input);
+    *output = *input++;
+    *output++ |= ((unsigned int)(*input++)) << 8;
+    --length;
+
+    while (length-- > 0) {
+      c = *input &amp; 0x7F;
+      
+      if (*input++ &amp; 0x80) {    <span class="comment">// two bytes</span>
+        c |= ((unsigned int)*input &amp; 0x7F) << 7;
+        
+        if (*input++ &amp; 0x80) {  <span class="comment">// three bytes</span>
+          c |= *input++ << 14;
+          
+          if (c &amp; 0x10000)      <span class="comment">// negative number</span>
+            c |= 0xFFFF0000;
+        }
+        else if (c &amp; 0x2000)    <span class="comment">// negative number</span>
+          c |= 0xFFFFC000;
+      }
+      else if (c &amp; 0x40)        <span class="comment">// negative number</span>
+        c |= 0xFFFFFF80;
+
+      *output = *(output - 1) - c;
+      ++output;
+    }
+  }
+}
+</code></pre>
+<p class="fig_text">Fig. 8: When decoding a literal, the differences between
+the characters might be either positive or negative. We must fill the top bits
+by 1 for negative numbers. The code here assumes that c is a 32 bit
+integer.<br>
+DecodeLength and DecodeOffset just keeps adding
+7 bits to the resulting length value as long as the most significant bit of
+the byte on input is set.</p>
+
+<h2><a name="Performance">Performance and compression ratio</a></h2>
+<p>This algorithm is more than 10 times
+faster than standard zip compression<sup>[<a href="tn31-2.html#zlib">2</a>]</sup>,
+almost independently of a compression level used
+(1-9 and even 0 &ndash; no compression). The
+speed is the same as LZO<sup>[<a href="tn31-2.html#LZO">3</a>]</sup>,
+the worlds fastest compression algorithm.
+Text is usually compressed to 60% of its original size.</p>
+<table>
+	<tr bgcolor="#cceeff"><td bgcolor="#ffffff"></td>
+		<th colspan=2 bgcolor="#99ccff">Unicode compression</th>
+		<th colspan=2>zlib, level 1</th>
+		<th colspan=2 bgcolor="#99ccff">zlib, level 9</th></tr>
+	<tr bgcolor="#cceeff"><td bgcolor="#ffffff"></td>
+		<th bgcolor="#99ccff">compressed size [B]</th><th bgcolor="#99ccff">time [&micro;s]</th>
+		<th>compressed size [B]</th><th>time [&micro;s]</th>
+		<th bgcolor="#99ccff">compressed size [B]</th><th bgcolor="#99ccff">time [&micro;s]</th></tr>
+	<tr><th>English (1014 B)</th>
+		<td bgcolor="#cceeff">560</td><td bgcolor="#cceeff">0.18</td>
+		<td>405</td><td>2.8</td>
+		<td bgcolor="#cceeff">377</td><td bgcolor="#cceeff">3.2</td></tr>
+	<tr bgcolor="#cceeff"><th>Russian (982 B)</th>
+		<td bgcolor="#99ccff">618</td><td bgcolor="#99ccff">0.19</td>
+		<td>464</td><td>2.9</td>
+		<td bgcolor="#99ccff">443</td><td bgcolor="#99ccff">3.3</td></tr>
+	<tr><th>Chinese (1018 B)</th>
+		<td bgcolor="#cceeff">841</td><td bgcolor="#cceeff">0.23</td>
+		<td>726</td><td>3.8</td>
+		<td bgcolor="#cceeff">719</td><td bgcolor="#cceeff">3.8</td></tr>
+</table>
+<p>The values in the table were measured on a machine with Pentium 4 / 3.4 GHz
+processor, compiler was Microsoft Visual C++ 6.0. The texts were parts of the
+<a href="http://www.unicode.org/unicode/standard/WhatIsUnicode.html">&#8220;What is
+Unicode&#8221; pages from www.unicode.org</a></p>
+
+<h2><a name="Ref_Code">Reference Code</a></h2>
+<p>A sample <a href="utf16_compressor.tar.gz">source code in C</a> is attached.
+It is subject to the Unicode
+<a href="http://www.unicode.org/copyright.html">Terms of Use</a>. The purpose
+of the sample code is to explain details of the compression algorithm.
+Therefore it isn't optimized for speed as much as the code used for 
+performance testing and aims to be easy to understand instead.</p>
+
+
+<h2><a name="References">References</a></h2>
+<ol>
+	<li>Jacob Ziv, Abraham Lempel: <a name="LZ77">A Universal Algorithm for
+	Sequential Data Compression</a>, IEEE Transactions on Information
+	Theory, 23(3), pp.337-343, May 1977.</li>
+	<li><a name="zlib">zlib</a>, <a href="http://www.zlib.net/">http://www.zlib.net/</a></li>
+	<li><a name="LZO">LZO</a>, <a href="http://www.oberhumer.com/opensource/lzo/">http://www.oberhumer.com/opensource/lzo/</a></li>
+	<li><a name="Bible"></a><a href="http://www.jewishvirtuallibrary.org/jsource/Bible/Ketuvimtoc.html">Ketuvim</a></li>
+	<li>Immanuel Kant: <a name="Kant">Kritik der reinen Vernunft</a>, 1781</li>
+</ol>
+
+</div>
+
+<blockquote>
+	<blockquote>
+		<p class="copyright">Copyright &#169; 2008 Pavel Studen&#253;, Ond&#345;ej Hole&#269;ek
+		and Unicode, Inc. All Rights Reserved. The Unicode Consortium,
+		Ond&#345;ej Hole&#269;ek and Pavel Studen&#253; make no expressed or implied warranty
+		of any kind, and assume no liability for errors or omissions. No
+		liability is assumed for incidental and consequential damages in
+		connection with or arising out of the use of the information or
+		programs contained or accompanying this technical note. The Unicode
+		<a href="http://www.unicode.org/copyright.html">Terms of Use</a> apply.</p>
+		<p class="copyright">Unicode and the Unicode logo are trademarks of 
+		Unicode, Inc.</p>
+	</blockquote>
+</blockquote>
+
+</body>
+</html>

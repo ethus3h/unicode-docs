@@ -1,0 +1,627 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
+       "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="GENERATOR" content="Microsoft FrontPage 6.0">
+<meta name="ProgId" content="FrontPage.Editor.Document">
+<meta name="Template" content="C:\Apps\MsOffice\Office\html.dot">
+<link rel="stylesheet" type="text/css" href="../../unicode/reports/reports.css">
+
+<title>UAX #11: East Asian Width</title>
+</head>
+
+<body>
+
+<table class="header" cellpadding="0" cellspacing="0" width="100%">
+  <tr>
+    <td class="icon"><a href="http://www.unicode.org" name="_Toc21"><img align="middle" alt="[Unicode]" border="0" src="../../webscripts/logo60s2.gif" width="34" height="33"></a>&nbsp;&nbsp;<a class="bar" href="../index.html">Technical
+      Reports</a></td>
+  </tr>
+  <tr>
+    <td class="gray">&nbsp;</td>
+  </tr>
+</table>
+<div class="body">
+ <!-- TR TITLE: -->
+  <h2 align="center">Unicode Standard Annex #11</h2>
+  <h1>East Asian Width</h1>
+  <table class="wide" border="1" cellspacing="2">
+    <tr>
+      <td valign="top">Version</td>
+      <td valign="top">4.1.0</td>
+    </tr>
+    <tr>
+      <td valign="top">Authors</td>
+      <td valign="top">Asmus Freytag (<a href="mailto:e0104@unicode.org">asmus@unicode.org</a>)</td>
+    </tr>
+    <tr>
+      <td valign="top">Date</td>
+      <td valign="top">2005-03-28</td>
+    </tr>
+    <tr>
+      <td valign="top">This Version</td>
+      <td valign="top">
+		<a href="tr11-14.html">
+		http://www.unicode.org/reports/tr11/tr11-14.html</a></td>
+    </tr>
+    <tr>
+      <td valign="top">Previous Version</td>
+      <td valign="top">
+		<a href="tr11-13.html">
+		http://www.unicode.org/reports/tr11/tr11-13.html</a></td>
+    </tr>
+    <tr>
+      <td valign="top">Latest Version</td>
+      <td valign="top"><a href="index.html">
+		http://www.unicode.org/reports/tr11/</a></td>
+    </tr>
+    <tr>
+      <td valign="top">Revision</td>
+      <td valign="top"><a href="tr11-14.html#Changes">14</a></td>
+    </tr>
+  </table>
+  <h4 style="margin-top:1em">Summary</h4>
+  <p><i>This report presents the specifications of an informative property for
+  Unicode characters that is useful when interoperating with East Asian Legacy
+  character sets.</i></p>
+  <h4>Status</h4>
+  <p><i>This document has been reviewed by Unicode members and other interested 
+  parties, and has been approved for publication by the Unicode Consortium. 
+  This is a stable document and may be used as reference material or cited as a 
+  normative reference by other specifications.</i></p>
+  <blockquote>
+    <p><i><b>A Unicode Standard Annex (UAX)</b> forms an integral part of the 
+	Unicode Standard, but is published as a separate document. The Unicode 
+	Standard may require conformance to normative content in a Unicode Standard 
+	Annex, if so specified in the Conformance chapter of that version of the 
+	Unicode Standard. The version number of a UAX document corresponds to the 
+	version number of the Unicode Standard at the last point that the UAX 
+	document was updated.</i></p>
+  </blockquote>
+  <p><i>Please submit corrigenda and other comments with the online reporting
+  form [<a href="tr11-14.html#Feedback">Feedback</a>]. Related information that is useful in understanding this
+  document is found in the <a href="tr11-14.html#References"> References</a> section. For the latest version of the
+  Unicode Standard see [<a href="tr11-14.html#Unicode">Unicode</a>]. See [<a href="tr11-14.html#Reports">Reports</a>] for a list of current Unicode Technical Reports.
+  For more information about versions of the Unicode Standard, see [<a href="tr11-14.html#Versions">Versions</a>].</i></p>
+  <h4><i>Contents</i></h4>
+  <ul class="toc">
+     <li>1&nbsp; <a href="tr11-14.html#Overview">Overview</a></li>
+     <li>2&nbsp; <a href="tr11-14.html#Scope">Scope</a></li>
+     <li>3&nbsp; <a href="tr11-14.html#Description">Description</a></li>
+     <li>4&nbsp; <a href="tr11-14.html#Definitions">Definitions</a>
+       <ul class="toc">
+         <li> 4.1&nbsp; <a href="tr11-14.html#Relation">Relation to the Terms
+                 &quot;Full-width&quot; and &quot;Half-width&quot;</a></li>
+        <li>4.2&nbsp; <a href="tr11-14.html#Ambiguous">Ambiguous Characters</a></li>
+       </ul>
+      </li>
+      <li>5&nbsp; <a href="tr11-14.html#Conformance">Conformance</a></li>
+      <li>6&nbsp; <a href="tr11-14.html#Recommendations">Recommendations</a></li>
+      <li>7&nbsp; <a href="tr11-14.html#Classifications">Classifications</a>
+      <ul class="toc">
+       <li> 7.1&nbsp; <a href="tr11-14.html#Unassigned">Unassigned and Private Use Characters</a></li>
+        <li>7.2&nbsp; <a href="tr11-14.html#Combining">Combining Marks</a></li>
+        <li>7.3&nbsp; <a href="tr11-14.html#DataFile">Data file</a></li>
+        <li>7.4&nbsp; <a href="tr11-14.html#Adding">Adding Characters</a></li>
+      </ul>
+      </li>
+    <li><a href="tr11-14.html#References">References</a></li>
+    <li><a href="tr11-14.html#Acknowledgments">Acknowledgments</a></li>
+    <li><a href="tr11-14.html#Changes">Modifications</a></li>
+  </ul>
+  <hr>
+  <h2><a name="Overview">1 Overview</a></h2>
+<p>When dealing with East Asian Text there is the concept of an <i>inherent</i> 
+width of a character. This width takes on either of two values: <i>narrow </i>or
+<i>wide.</i> For traditional mixed-width East Asian legacy character sets this classification into
+narrow and wide corresponds with few exceptions directly to the storage size for each
+character: a few narrow characters use a single byte per character and all other
+characters (usually wide) use two or more bytes.</p>
+	<p>Layout and line breaking (to cite only two examples) in East 
+Asian context show systematic variations depending on the value of this East-Asian 
+Width property. <i>Wide</i> characters  behave like ideographs; they tend to allow 
+line breaks after each character and remain upright in vertical text layout. 
+<i>Narrow</i> characters are kept together in words or runs that are rotated 
+sideways in vertical text layout.</p>
+	<p>For a traditional East Asian <em>fixed pitch</em> font, this width
+  translates to a display width of either one half or a whole unit width. A
+  common name for this unit width is &quot;Em&quot;. While 
+  an Em is   customarily the <em>height</em>  of the letter 'M',  
+  it is the same as the unit <em>width</em> in East 
+  Asian fonts, because in these fonts  the standard character cell  is square.
+  In contrast the character width for a fixed pitch Latin font
+    like Courier is generally 3/5 of an Em.</p>
+    <p>In modern practice, most alphabetic characters
+    are rendered by variable width fonts using narrow characters, even if their
+    encoding in common legacy sets uses multiple bytes.</p>
+    
+  <p>Except for a few characters, which are explicitly
+  called out as <i>full-width</i> or <i>half-width</i> in the Unicode Standard, 
+	characters are not duplicated based on distinction in width. 
+  Some characters,  such as the ideographs, are always wide, others are always narrow, and some
+  can be narrow or wide, depending on context. The Unicode character property,
+  <i>East Asian Width,</i> provides a default classification of characters, which an
+  implementation can use to decide at run-time whether to treat a character
+  as narrow or wide.</p>
+
+  <h2>2 <a name="Scope">Scope</a></h2>
+  <p>The East Asian Width is an informative property and provides a useful
+  concept for implementations that:
+  <ul>
+    <li>have to interwork with East Asian legacy character encodings</li>
+    <li>support both East Asian and Western typography and line layout</li>
+    <li>need to associate fonts with unmarked text runs containing East Asian
+      characters</li>
+  </ul>
+  <p>This Unicode Technical Report gives general guidelines how to use this
+  property. It does not provide rules or specifications of how this property
+  might be used in font design or line layout, since, while a useful property
+  for this purpose, it is only one of several character properties that would
+  need to be considered. The specific assignments of property values for given
+  characters may change over time to reflect evolving practice and should be
+  considered recommendations that may be overridden by implementations.</p>
+  <h2>3 <a name="Description">Description</a></h2>
+  <p>By convention, 1/2 Em wide characters of East Asian legacy encodings are
+  called &quot;half-width&quot; (or <em>hankaku</em> characters in Japanese),
+  the others are called correspondingly &quot;full-width&quot; (or <em>zenkaku</em>)
+  characters. Legacy encodings often use a single byte for the half-width
+  characters and two bytes for the full-width characters. In the Unicode
+  Standard, no such distinction is made, but understanding the distinction is
+  often necessary when interchanging data with legacy systems, especially when
+  fixed size buffers are involved.</p>
+  <p>Some character blocks in the compatibility zone contain characters that are
+  explicitly marked &quot;half-width&quot; and &quot;full-width&quot; in their
+  character name but for all other characters the width property must be
+  implicitly derived. Some characters behave differently in East Asian context
+  than in non-East Asian content. Their default width property is considered
+  ambiguous and needs to be resolved into an actual width property based on
+  context.</p>
+  <p>The Unicode Character Database [<a href="tr11-14.html#UCD">UCD</a>] assigns to each
+  Unicode character one of the six values <em>Ambiguous, Full Width, Half Width,
+  Narrow, Wide</em>, or <em>Not East Asian Neutral</em> (defined below) as its
+  default width property. For any given operation, these six default property
+  values resolve into only two property values <em>narrow </em>and <em>wide, </em>depending
+  on context.</p>
+  <h2>4 <a name="Definitions">Definitions</a></h2>
+  <dl>
+    <dt><em>All terms not defined here shall be as defined in the Unicode
+      Standard.</em></dt>
+  </dl>
+  <p><em>ED1. East Asian Width</em> - in the context of interoperating with East
+  Asian legacy character encodings and implementing East Asian typography, the
+  East Asian Width is a categorization of character. It can take on two abstract
+  values, <strong>narrow</strong> and <strong>wide</strong>. In legacy
+  implementations, there is often a corresponding difference in encoding length
+  (one or two bytes), as well as a difference in displayed width. However, the <em>actual</em>
+  display width of a glyph is given by the font and may be further adjusted by
+  layout. An important class of fixed width legacy fonts contains glyphs of just
+  two widths, with the wider glyphs twice as wide as the narrower glyphs.</p>
+  <blockquote>
+    <p><strong>Note</strong>: For convenience, the classification further
+    distinguishes among explicitly or implicitly wide and narrow characters.<font color="#0000FF"></font></p>
+  </blockquote>
+  <p><em>ED2. East Asian Full-width </em>(<em>F</em>) - all characters that are
+  defined as FULL WIDTH in the Unicode Standard [<a href="tr11-14.html#Unicode">Unicode</a>]
+  by having a compatibility decomposition of type &lt;wide&gt; to characters
+  elsewhere in the Unicode Standard that are implicitly narrow but unmarked.</p>
+  <p><em>ED3. East Asian Half-width</em> (<em>H</em>) - all characters that are
+  explicitly defined as HALF WIDTH in the Unicode Standard by having a
+  compatibility decomposition of type &lt;narrow&gt; to characters elsewhere in
+  the Unicode Standard that are implicitly wide but unmarked, plus the WON SIGN.</p>
+  <p><em>ED4. East Asian Wide (W) </em>- all other characters that are <i>always</i>
+  wide. These characters occur only in the context of East Asian typography
+  where they are wide characters (such as the Unified Han Ideographs or Squared
+  Katakana Symbols). This category includes characters that have explicit
+  half-width counterparts.</p>
+  <p><em>ED5. East Asian Narrow (Na) - </em>all other characters that are <i>always</i>
+  narrow and&nbsp;have explicit full-width or wide counterparts. These
+  characters are implicitly narrow in East Asian typography and legacy character
+  sets&nbsp; because they have explicit full-width or wide counterparts. All of ASCII is
+  an example of East Asian Narrow characters.</p>
+  <blockquote>
+    <p>It is useful to distinguish characters explicitly defined as half-width
+    from other narrow characters. In particular, half-width punctuation behaves
+    in some important ways like ideographic punctuation, and knowing a character
+    is a half-width character can aid in font selection when binding a font to
+    unstyled text.</p>
+  </blockquote>
+  <p><em>ED6. East Asian Ambiguous (A) </em>- all characters that can be
+  sometimes wide and sometimes narrow. Ambiguous characters require additional
+  information not contained in the character code to further resolve their
+  width.</p>
+  <blockquote>
+    <p>Ambiguous characters occur in East Asian legacy character sets as <em>wide</em>
+    characters, but as <em>narrow</em> (i.e. normal-width) characters in
+    non-East Asian usage. (Examples are the Greek and Cyrillic alphabet found in
+    East Asian character sets, but also some of the mathematical symbols.)&nbsp;
+    Private Use characters are considered ambiguous by 
+    default,&nbsp; because additional
+    information is required to know whether they should be treated as wide or
+    narrow.</p>
+  </blockquote>
+  <blockquote>
+    <p align="center">&nbsp;<img src="tr11.h1.gif" alt="diagram (informative)" width="272" height="208"></p>
+  </blockquote>
+  <p align="CENTER">Figure 1: Venn diagram showing the set relations for five of
+  the six categories.</p>
+  <blockquote>
+    <p>Because East Asian legacy character sets do not always include complete
+    case pairs of Latin characters, two members of a case pair may have
+    different East Asian Width properties:</p>
+  </blockquote>
+  <blockquote>
+    <blockquote>
+      <pre><tt>Ambiguous: 	01D4    LATIN SMALL LETTER U WITH CARON
+NEA Neutral:	01D3    LATIN CAPITAL LETTER U WITH CARON</tt></pre>
+    </blockquote>
+    <p>When they are treated as <i>wide</i> characters, ambiguous characters
+    would typically be rendered upright in vertical text runs.</p>
+  </blockquote>
+  <p><em>ED7. Not East Asian (Neutral)</em> - all other characters. Neutral
+  characters do not occur in legacy East Asian character sets. By extension,
+  they also do not occur in East Asian typography.&nbsp; For example, there is
+  no traditional Japanese way of typesetting Devanagari.</p>
+  <blockquote>
+    <p>Strictly speaking, it makes no sense to talk of narrow and wide for
+    neutral characters, but&nbsp; because for all practical purposes they behave like
+    Na, they are treated as narrow characters (the same as Na) under the
+    recommendations below.</p>
+  </blockquote>
+  <blockquote>
+    <p>In a broad sense, <em>wide characters</em> include W, F, and A (when in
+    EA context), while <em>narrow characters</em> include N, Na, H, and A (when
+    not in EA context).</p>
+    <p align="center"><img src="tr11-h2.gif" alt="wpe1.gif (3120 bytes)" width="233" height="341"></p>
+    <p align="CENTER">Figure 2: Examples for each character class and their
+    resolved widths</p>
+  </blockquote>
+  <h3><a name="Relation">4.1 Relation to the Terms &quot;Full-width&quot; and
+  &quot;Half-width&quot;</a></h3>
+  <p>When converting a DBCS mixed-width encoding to and from Unicode, the
+  full-width characters in such a mixed-width encoding are mapped to the
+  full-width compatibility characters in the FFxx block, whereas the
+  corresponding half-width characters are mapped to ordinary Unicode characters
+  (for example, ASCII in U+0021..U+007E, plus a few other scattered characters).</p>
+  <p>In the context of interoperability with DBCS character encodings, this
+  restricted set of Unicode characters in the General Scripts area can be
+  construed as half-width, rather than full-width. (This applies only to the
+  restricted set of characters that can be paired with the full-width
+  compatibility characters.)</p>
+  <p>In the context of interoperability with DBCS character encodings, all other
+  Unicode characters, which are not explicitly marked as half-width can be
+  construed as full-width.</p>
+  <p>In any other context, Unicode characters not explicitly marked as being
+  either full-width or half-width compatibility forms are neither half-width nor
+  full-width.</p>
+  <p>Seen in this light, the &quot;half-width&quot; and &quot;full-width&quot;
+  properties are not unitary character properties in the same sense as
+  &quot;space&quot; or &quot;combining&quot; or &quot;alphabetic&quot;. They
+  are, instead, relational properties of a pair of characters, one of which is
+  explicitly encoded as a half-width or full-width form for compatibility in
+  mapping to DBCS mixed-width character encodings.</p>
+  <p>What is &quot;full-width&quot; by default today could in theory become
+  &quot;half-width&quot; tomorrow by the introduction of another character on
+  the SBCS part of a mixed-width code page somewhere, requiring the introduction
+  of another full-width compatibility character to complete the mapping.
+  However,&nbsp; because the single byte part of mixed-width character sets is limited,
+  there are not going to be many candidates and neither the Unicode Technical
+  Committee [<a href="tr11-14.html#UTC">UTC</a>] nor WG2 have any intention to add
+  additional compatibility characters for this purpose.</p>
+  <h3>4.2 <a name="Ambiguous">Ambiguous Characters</a></h3>
+  <p>Ambiguous width characters are all those characters that can occur as
+  full-width characters in any of a number of East Asian legacy character
+  encodings. They have a 'resolved' width of either narrow or wide depending on
+  the context of their use. If they are not used in the context of the specific
+  legacy encoding to which they belong, their width resolves to narrow. Otherwise it
+  resolves to full-width or half-width. The term <i>context</i> as used here
+  includes extra information such as explicit markup, knowledge of the source
+  codepage, font information, or language and script identification. For
+  example:
+  <ul>
+    <li>Greek characters resolve to narrow when used with a standard Greek font,&nbsp; 
+	because there is no East Asian legacy context.</li>
+    <li>Private use character codes and the replacement character have ambiguous
+      width,&nbsp; because they may stand in for characters of any width.</li>
+    <li>Ambiguous quotation marks are generally resolved to wide, when they
+      enclose and are adjacent to a wide character, and to narrow otherwise.</li>
+  </ul>
+  <p><b>Note:</b> Modern practice is evolving towards rendering ever more of the
+  ambiguous characters with proportionally spaced, narrow forms that rotate with
+  the direction of writing, making a distinction within the 
+	legacy character set. In
+  other words, context information beyond the choice of font or source character
+  set is employed to resolve the width of the character. This document does not
+  attempt to track such changes in practice; therefore, the set of characters with mappings to legacy character sets 
+  that have been assigned ambiguous width form a superset of the set of
+  such characters that may be rendered as 
+  wide characters in a given context. In 
+  particular, an application might find it useful to treat characters from alphabetic scripts as narrow by default.
+  On the other hand, many of the symbols in the Unicode Standard have 
+	no mappings
+  to legacy character sets, yet they may be rendered as 'wide' characters if they appear
+  in an East Asian context. An implementation might therefore elect to treat them as ambiguous
+ even though they are classified as <i>neutral</i> here.</p>
+  <h2>5 <a name="Conformance">Conformance</a></h2>
+  <p>East Asian Width is an informative character property and implies no
+  conformance requirements.</p>
+  <h2>6 <a name="Recommendations">Recommendations</a></h2>
+  <p><em>When mapping Unicode to East Asian legacy character encodings</em>
+  <ul>
+    <li>Wide Unicode characters <strong>always </strong>map to full-width
+      characters</li>
+    <li>Narrow (and neutral) Unicode characters <strong>always </strong>map to
+      half-width characters</li>
+    <li>Half-width Unicode characters <strong>always </strong>map to half-width
+      characters</li>
+    <li>Ambiguous Unicode characters <strong>always </strong>map to full-width
+      characters</li>
+  </ul>
+  <p><em>When mapping Unicode to non-East Asian legacy character encodings</em>
+  <ul>
+    <li>Wide Unicode characters <strong>do not</strong> map to <strong>non</strong>-East
+      Asian legacy character encodings</li>
+    <li>Narrow (and neutral) Unicode characters <strong>always </strong>map to 
+	regular (narrow) characters</li>
+    <li>Half-width Unicode characters <strong>do not </strong>map</li>
+    <li>Ambiguous Unicode characters <strong>always</strong> map to regular 
+	(narrow) characters</li>
+  </ul>
+  <p><em>When processing or displaying data</em>
+  <ul>
+    <li>Wide characters behave like ideographs in important ways, such as
+      layout. Except for certain punctuation characters, they are not rotated
+      when appearing in vertical text runs. In fixed pitched fonts, they take up
+      one Em of space.</li>
+    <li>Half-width characters behave like ideographs in some ways, however, they
+      are rotated like narrow characters when appearing in vertical text runs.
+      In fixed pitched fonts, they take up 1/2 Em of space.</li>
+    <li>Narrow characters behave like Western characters, for example, in line
+      breaking. They are rotated sideways, when appearing in vertical text. In
+      fixed pitched East Asian fonts, they take up 1/2 Em of space, but in
+      rendering, a non-East Asian, proportional font is often substituted.</li>
+    <li>Ambiguous characters behave like wide or narrow characters depending on
+      context (language tag, script identification, associated font, source of
+      data, or explicit markup; all can provide the context). 
+      If the context cannot be established reliably they should be treated as
+      narrow characters by default.</li>
+  </ul>
+  <h2>7 <a name="Classifications">Classifications</a></h2>
+  <p>The classifications presented here are based on the most widely used
+  mixed-width legacy character sets in use in East Asia as of this writing. In
+  particular, the assignments of the <strong>neutral</strong> or <strong>ambiguous</strong>
+  categories depend on the contents of these character sets. For example, an
+  implementation that knows <i>a priori</i> that it <em>only</em> needs to interchange
+  data with the Japanese Shift-JIS character set, but not other East Asian
+  character sets, could reduce the number of characters in the <strong>ambiguous</strong>
+  classification to those actually encoded in Shift-JIS. Or such a reduction
+  could be done implicitly at runtime in the context of interoperating with
+  Shift-JIS fonts or data sources. Conversely, if additional character sets are
+  created and widely adopted for legacy purposes, more characters would need to
+  be classified as ambiguous.</p>
+  <h3><a name="Unassigned">7.1 Unassigned and Private Use Characters</a></h3>
+  <p>All unassigned characters are by default classified as non-East Asian
+  neutral, except for the range U+20000 to U+2FFFD,&nbsp; because all code positions
+  from U+20000 to U+2FFFD and U+30000 to U+3FFFD are intended for CJK ideographs (W). All Private use
+  characters are by default classified as ambiguous,&nbsp; because their definition
+  depends on context.</p>
+  <p>For additional recommendation for handling the default property value for
+  unassigned characters, see Section 5.3,<i> Unknown and Missing Characters,</i> 
+	in The Unicode Standard, Version 4.0 [<a href="tr11-14.html#Unicode">Unicode</a>].</p>
+  <h3><a name="Combining">7.2 Combining Marks</a></h3>
+  <p>Combining marks have been classified and are given a property assignment
+  based on their typical applicability. For example, combining marks typically
+  applied to characters of class <strong>N</strong>, <strong>Na</strong> or <strong>W</strong>
+  are classified as <strong>A</strong>. Combining marks for purely non-East
+  Asian scripts are marked as <strong>N</strong>, and nonspacing marks used
+  only with wide characters are given a <strong>W</strong>. Even more so than
+  for other characters, the <em>East Asian width</em> property for combining
+  marks is not the same as their display width.</p>
+  <p>In particular, nonspacing marks do not possess actual advance width.
+  Therefore, even when displaying combining marks, the East Asian Width property
+  cannot be related to the advance width of these characters. However, it can be
+  useful in determining the encoding length in a legacy encoding, or the choice
+  of font for the range of characters including that nonspacing mark. The width
+  of the glyph image of a nonspacing mark should always be chosen as the
+  appropriate one for the width of the base character.</p>
+  <h3><a name="DataFile">7.3 Data File</a></h3>
+  <p>The East Asian Width classification of all Unicode characters at the time
+  of the publication of this document is available in the current
+  version of the file EastAsianWidth.txt [<a href="tr11-14.html#Data">Data</a>] in the 
+  <a href="http://www.unicode.org/ucd/">Unicode
+  Character Database</a> [<a href="tr11-14.html#UCD">UCD</a>]. This is a tab-delimited, two
+  column plain text file, with code position and East Asian Width designator.&nbsp;
+  A comment at the end of each line indicates the character name. Ideographic,
+  Hangul, Surrogate, and Private Use ranges are collapsed by giving a range in
+  the first column.</p>
+  <p>As more characters are added to the Unicode Standard, or if additional
+  character sets are created and widely adopted for legacy purposes, the
+  assignment of East Asian Width may be changed for some characters.
+  Implementations should not make any assumptions to the contrary. Any future
+  updates will be reflected in the <a href="http://www.unicode.org/Public/UNIDATA/EastAsianWidth.txt">latest
+  version</a> of the data file. (See the <a href="http://www.unicode.org/ucd/">Unicode
+  Character Database</a> [<a href="tr11-14.html#UCD">UCD</a>] for any specific version of
+  the datafile).</p>
+  <h3>7.4 <a name="Adding">Adding Characters</a></h3>
+  <p>The sets of East Asian Narrow, East Asian Full-width and East Asian
+  Half-width are fixed for all practical purposes. New characters for most
+  scripts will be East Asian Neutral characters, unless the script is an East
+  Asian script using wide characters, and then the new characters will be
+  classified as East Asian Wide. One important exception consists of those new
+  symbol characters that are, or are expected to be used both as wide characters
+  in East Asian usage and as narrow characters in non-East Asian usage. These would
+  need to be classified as East Asian Ambiguous.</p>
+  <h2><a name="References">References</a></h2>
+  <table class="nbwide" cellspacing="0" cellpadding="6">
+    <tr>
+      <td class="nb" valign="top">[<a name="Data">Data</a>]</td>
+      <td class="nb" valign="top">East Asian width property data file <br>
+        <i>For the latest version, see:</i> <a href="http://www.unicode.org/Public/UNIDATA/EastAsianWidth.txt">http://www.unicode.org/Public/UNIDATA/EastAsianWidth.txt</a><i><br>
+		For the current version, see:</i>
+		<a href="http://www.unicode.org/Public/4.1.0/ucd/EastAsianWidth.txt">
+		http://www.unicode.org/Public/4.1.0/ucd/EastAsianWidth.txt</a><i><br>
+		For other versions, see:
+          </i><a href="http://www.unicode.org/versions/">http://www.unicode.org/versions/</a></td>
+    </tr>
+    <tr>
+      <td class="nb" valign="top">[<a name="FAQ">FAQ</a>]</td>
+      <td class="nb" valign="top">Unicode Frequently Asked Questions<br>
+        <a href="http://www.unicode.org/faq/">http://www.unicode.org/faq/<br>
+        </a><i>For answers to common questions on technical issues.</i></td>
+    </tr>
+    <tr>
+      <td class="nb" valign="top">[<a name="Feedback">Feedback</a>]</td>
+      <td class="nb" valign="top"><a href="http://www.unicode.org/reporting.html">http://www.unicode.org/reporting.html<br>
+        </a><i>For reporting errors and requesting information online.</i></td>
+    </tr>
+    <tr>
+      <td class="nb" valign="top">[<a name="Glossary">Glossary</a>]</td>
+      <td class="nb" valign="top">Unicode Glossary<a href="http://www.unicode.org/glossary/"><br>
+        http://www.unicode.org/glossary/<br>
+        </a><i>For explanations of terminology used in this and other documents.</i></td>
+    </tr>
+    <tr>
+      <td class="nb" valign="top">[<a name="Reports">Reports</a>]</td>
+      <td class="nb" valign="top">Unicode Technical Reports<br>
+        <a href="../index.html">http://www.unicode.org/reports/<br>
+        </a><i>For information on the status and development process for
+        technical reports, and for a list of technical reports.</i></td>
+    </tr>
+    <tr>
+      <td class="nb" valign="top">[<a name="Unicode">Unicode</a>]</td>
+      <td class="nb" valign="top">The Unicode Standard<i><br>
+		For the latest version see:</i>
+		<a href="http://www.unicode.org/versions/latest/">
+		http://www.unicode.org/versions/latest/</a>.<br>
+		<i>For the current version see:</i>
+		<a href="http://www.unicode.org/versions/Unicode4.1.0/">
+		http://www.unicode.org/versions/Unicode4.1.0</a>/.<br>
+		<i>For the last major version see:</i> The Unicode Consortium. <a href="http://www.unicode.org/versions/Unicode4.0.0/">The 
+          Unicode Standard, Version 4.0</a>. (Boston, MA, Addison-Wesley, 2003. 
+		0-321-18578-1).</td>
+    </tr>
+    <tr>
+      <td class="nb" valign="top">[<a name="UCD">UCD</a>]</td>
+      <td class="nb" valign="top">Unicode Character Database<br>
+        <a href="http://www.unicode.org/ucd/">http://www.unicode.org/ucd/<br>
+        </a><i>For an overview of the Unicode Character Database and a list of
+        its associated files see<br>
+        </i><a href="http://www.unicode.org/Public/UNIDATA/UCD.html">http://www.unicode.org/Public/UNIDATA/UCD.html
+        </a></td>
+    </tr>
+    <tr>
+      <td class="nb" valign="top">[<a name="UTC">UTC</a>]</td>
+      <td class="nb" valign="top">Unicode Technical Committee<br>
+        <a href="http://www.unicode.org/consortium/utc.html">http://www.unicode.org/consortium/utc.html</a>
+    </tr>
+    <tr>
+      <td class="nb" valign="top">[<a name="Versions">Versions</a>]</td>
+      <td class="nb" valign="top">Versions of the Unicode Standard<br>
+        <a href="http://www.unicode.org/versions/">http://www.unicode.org/versions/<br>
+        </a><i>For details on the precise contents of each version of the
+        Unicode Standard, and how to cite them.</i></td>
+    </tr>
+  </table>
+  <h2><a name="Acknowledgments">Acknowledgments</a></h2>
+  <p>Michel Suignard provided extensive input into the analysis and source
+  material for the detail assignments of these properties. Mark Davis and Ken
+  Whistler performed consistency checks on the data files at various times.
+  Tomohiro Kubota reviewed the East Asian Width assignments against some common
+  legacy encodings.</p>
+  <h2><a name="Changes">Modifications</a></h2>
+		<p>The following summarizes modifications from the previous revision of this 
+  document.</p>
+  <p><b>Revision 14:</b></p>
+	<ul>
+		<li>Reissued without change in content for 4.1.0, except minor 
+		typographical corrections.</li>
+		<li>Updated references and links, in particular to new version of data file. </li>
+		<li>Updated headers and boilerplate texts as required.</li>
+	</ul>
+	<p><b>Revision 13:</b></p>
+  <ul>
+	<li>Further clarified the definition of ambiguous width. Migrated some formatting to stylesheet.</li>
+	</ul>
+  <p><b>Revision 11:</b></p>
+  <ul>
+	<li><b>Extended</b> the range for the default wide property value to 30000–3FFFD.</li>
+	</ul>
+  <p><b>Revision 10:</b></p>
+  <ul>
+	<li>Reworded the definitions of <b>F</b> and <b>H</b> to explicitly refer to
+  the compatibility decomposition. </li>
+	<li><b>Changed</b> 3000 from <b>W</b> to <b>F</b>,
+  to align with the revised definitions. Extended the definition for <b>Na </b>to
+  include all characters that have a wide equivalent, whether F or W. </li>
+	<li><b>Changed</b>
+  2329..232A, 3008..3009, and 301A..301B from <b>A</b> to <b>W</b> to reflect
+  the addition of 27E6..27EB which are their <b>Na</b> equivalents. </li>
+	<li>Also <b>changed</b>
+  3018..3019 from <b>A</b> to <b>W</b> to reflect their intended use as CJK-only
+  punctuation. </li>
+	<li><b>Changed</b> 2155 and 2574 from <b>A</b> to <b>N</b>, as they
+  were mistaken entries. </li>
+	<li><b>Changed</b> 24C0..24CF and 2776..277F from <b>N</b>
+  to <b>A</b> to reflect their treatment in practice. Revised sections 2, 4.2
+  and 6.</li>
+	</ul>
+  <p><b>Revision 9:</b></p>
+  <ul>
+	<li>Updated links to new version of data file. </li>
+	<li><b>Changed</b> 00AE, 014B, 02C4,
+  02DF, 2022, 2024, 203E, 2116, 2153, 215C..215D, 21B8..21B9, 21E7and 273D from 
+	<b>N</b>
+  to <b>A</b> . This is a result of a recent review of existing mapping tables
+  showing their use as wide characters in widely implemented East Asian legacy
+  encodings. <br>
+	[Revision 9 was never published].</li>
+	</ul>
+  <p><b>Revision 8:</b></p>
+  <ul>
+	<li>Change in header for Unicode 3.1. </li>
+	<li>New status section and new format for
+  references. </li>
+	<li>Properties assigned to the new characters added to Unicode 3.1. </li>
+	<li><b>Changed</b>
+  2329..232A and 3008-3009 from <b>N</b> to <b>A</b> and <b>W</b> to <b>A</b>
+  respectively. This is a result of their canonical equivalence.</li>
+	</ul>
+  <p><b>Revision 7:</b></p>
+  <ul>
+	<li>Change in header for Unicode 3.0.1, change in file versioning format.</li>
+	</ul>
+  <p><b>Version 6.0:</b></p>
+  <ul>
+	<li>Restated the definitions so that the wording more clearly reflects the
+  intent. </li>
+	<li><b>No changes</b> to the assignments of properties to any character
+  were made. </li>
+	<li>Added a section on classifying characters that are to be added to
+  the standard in the future. Also added figure 2.</li>
+	</ul>
+  <p><b>Version 5.0:</b></p>
+  <ul>
+	<li>Changed the spelling of the title and made minor clarifying changes to the
+  definitions and the description of ambiguous characters and combining marks.
+  	</li>
+	<li>As result of the Unicode 3.0 beta process, <b>changed</b> some CJK punctuation
+  characters from W to A&nbsp; because they are also used in Western mathematical
+  notation. </li>
+	<li>Removed some historic information and made other edits to prepare TR
+  for publication as part of Unicode 3.0.</li>
+	</ul>
+  <hr>
+  <p><font size="-1">Copyright © 2000-2005 Unicode, Inc. All Rights Reserved.
+  The Unicode Consortium makes no expressed or implied warranty of any kind, and
+  assumes no liability for errors or omissions. No liability is assumed for
+  incidental and consequential damages in connection with or arising out of the
+  use of the information or programs contained or accompanying this technical
+  report. The Unicode <a href="http://www.unicode.org/copyright.html">Terms of Use</a> apply.</font></p>
+  <p><font size="-1">Unicode and the Unicode logo are trademarks of Unicode,
+  Inc., and are registered in some jurisdictions.</font></p>
+</div>
+
+</body>
+
+</html>

@@ -1,0 +1,393 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
+       "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta http-equiv="Content-Language" content="en-us">
+<link rel="stylesheet" href="../unicode/reports/reports.css" type="text/css">
+<title>Canonical Equivalence in Applications</title>
+</head>
+
+<body bgcolor="#ffffff">
+
+<table class="header">
+  <tr>
+    <td class="icon"><a href="http://www.unicode.org">
+    <img align="middle" alt="[Unicode]" border="0" src="../webscripts/logo60s2.gif" width="34" height="33"></a>&nbsp;&nbsp;   
+    <font size="3">   
+    <a class="bar" href="http://www.unicode.org/notes">Technical Notes</a></font></td>   
+  </tr>   
+  <tr>   
+    <td class="gray">&nbsp;</td>   
+  </tr>   
+</table>   
+<div style="margin: 2em">   
+  <h2 align="center">Unicode Technical Note #5</h2>   
+  <h1 align="center">Canonical Equivalence in Applications</h1>   
+  <table class="wide">   
+    <tr>   
+      <td>Version</td>   
+      <td><a href="tn5.1#TrackingNumber1">1</a></td>   
+    </tr>   
+    <tr>   
+      <td>Authors</td>   
+      <td><a href="http://www.unicode.org/unicode/reporting.html">Markus W. Scherer</a></td>   
+    </tr>   
+    <tr>   
+      <td>Date</td>   
+      <td>2002-07-24</td>   
+    </tr>   
+    <tr>   
+      <td>This Version</td>   
+      <td><a href="tn5/tn5-1.html">http://www.unicode.org/notes/tn5/tn5-1.html</a></td>   
+    </tr>   
+    <tr>   
+      <td>Previous Version</td>   
+      <td><a href="tn5/tn5-1.html">http://www.unicode.org/notes/tn5/tn5-1.html</a></td>   
+    </tr>   
+    <tr>   
+      <td>Latest Version</td>   
+      <td><a href="tn5.1">http://www.unicode.org/notes/tn5</a></td>   
+    </tr>   
+  </table>   
+  <br>   
+  <h3><i>Summary</i></h3>   
+  <p><i><em>This document describes methods and formats for efficient processing of text under   
+  canonical equivalence, as defined in <a href="../reports/tr15.1">UAX #15   
+  Unicode Normalization Forms</a> [<a href="tn5.1#UAX15">UAX15</a>]:</em></i></p>   
+  <ul>   
+    <li><i><em>Canonical closure of data for processing most unnormalized texts.</em></i></li>   
+    <li><i><em>Fast mechanisms for dealing with unnormalized texts (FCD).</em></i></li>   
+    <li><i><em>A unique format that is useful for internal processing (FCC).</em></i></li>   
+  </ul>   
+  <p><i><em>The reader should be familiar   
+  with [<a href="tn5.1#UAX15">UAX15</a>] and with Unicode normalization and canonical equivalence in   
+  general.</em></i></p>   
+  <h3><i>Status</i></h3>   
+  <p><i>This document is a <b>Unicode   
+  Technical Note</b>. It is supplied purely for informational purposes and   
+  publication does not imply any endorsement by the Unicode   
+  Consortium. For general information on Unicode Technical Notes, see <a href="http://www.unicode.org/notes">   
+  http://www.unicode.org/notes</a>.</i></p>   
+  <h3><i>Contents</i></h3>   
+  <ol>   
+    <li><a href="tn5.1#Introduction">Introduction</a>   
+    </li>   
+    <li><a href="tn5.1#Canonical_Closure">Canonical Closure</a></li>   
+    <li><a href="tn5.1#FCD">FCD Condition and Test</a>   
+      <ol>   
+        <li><a href="tn5.1#FCD_Test">FCD Test</a></li>   
+      </ol>   
+    </li>   
+    <li><a href="tn5.1#FCC">FCC Form</a></li>   
+    <li><a href="tn5.1#Enumerating_Equivalent_Strings">Enumerating Equivalent Strings</a></li>   
+    <li><a href="tn5.1#Sample_Implementation">Sample Implementation</a></li>   
+    <li><a href="tn5.1#References">References</a></li>   
+    <li><a href="tn5.1#Modifications">Modifications</a></li>   
+  </ol>   
+  <h2>1 <a name="Introduction">Introduction</a></h2>   
+  <p>As described in [<a href="tn5.1#UAX15">UAX15</a>], multiple Unicode strings can be canonically   
+  equivalent. Such strings are not distinguishable by a user and therefore the standard requires   
+  them to be treated the same (see <a href="http://www.unicode.org/unicode/standard/versions/enumeratedversions.html#Unicode_3_0_0">Conformance Requirement C9 of Unicode 3.0</a>   
+  [<a href="tn5.1#C9">C9</a>]). This means that canonically equivalent   
+  strings should normally be displayed identically, sort identically, be case-mapped equivalently,   
+  and so on.</p>   
+  <p>It is sometimes necessary to normalize a string before processing in order to fulfill this   
+  requirement. Such additional normalization decreases performance.</p>   
+  <p>For most strings it is possible to avoid or minimize an additional normalization step by   
+  preparing the supporting data appropriately. This document describes conditions that such strings   
+  must meet, including a test algorithm, and describes how to modify the supporting data   
+  accordingly.&nbsp; It also reintroduces a variation of the NFC normalization form that transforms   
+  strings into a unique, compact form that always fulfills these conditions.</p>   
+  <p>While normalization is very fast, for time-critical processes the cost of simply traversing the   
+  text an extra time (or for allocating extra buffers) can be too expensive.</p>   
+  <p>This Technical Note collects concepts and definitions from earlier documents as referenced.</p>   
+  <h2>2 <a name="Canonical_Closure"> Canonical Closure</a></h2>   
+  <p>Unicode text processing is primarily done based on per-code point data. At the same time, many processes are specified for text in   
+  NFD. This is done to simplify the specification of a process including the requirement to produce equivalent   
+  results for equivalent strings. Any conformant   
+  implementation must yield equivalent results even if it does not normalize its input.</p>   
+  <p>For example, the <a href="../reports/tr10/index.html">Unicode Collation Algorithm</a>   
+  [<a href="tn5.1#UCA">UCA</a>] assigns collation weights to code points (and sometimes to sequences of   
+  code points). An implementation must map canonically equivalent strings to the same sequences of   
+  collation weights.</p>   
+  <p>Decomposition to NFD is not necessary for many strings if an implementation has “precomposed data” for precomposed characters. That is, the implementation data maps   
+  each code point to the same sequence of collation weights as it does for the canonical   
+  decomposition of that code point. Such data is called “canonically closed”, and the   
+  process of building such data from the original table is called “canonical closure”.</p>   
+  <p>For example, if a collation table maps the character A to the collation weight (A) and the   
+  combining ring to the weight (ring), then the string A+ring will be mapped to the   
+  sequence of collation weights (A)+(ring). A canonically closed collation table also directly maps   
+  the character A-ring to that same sequence of weights.</p>   
+  <table border="1" cellpadding="0" cellspacing="0">   
+    <tr>   
+      <th>Character</th>   
+      <th>Weights</th>   
+      <th>Comment</th>   
+    </tr>   
+    <tr>   
+      <td>A</td>   
+      <td>(A)</td>   
+      <td>From original table</td>   
+    </tr>   
+    <tr>   
+      <td>ring</td>   
+      <td>(ring)</td>   
+      <td>From original table</td>   
+    </tr>   
+    <tr>   
+      <td>A-ring</td>   
+      <td>(A)(ring)</td>   
+      <td>From canonical closure</td>   
+    </tr>   
+  </table>   
+  <p>The decomposition is effectively performed directly with a data lookup instead of on the text   
+  because its data is the same as for its equivalent decomposition. This avoids the normalization   
+  process.</p>   
+  <h2>3 <a name="FCD">FCD Condition and Test</a></h2>   
+  <p>An implementation can use canonically closed data without normalizing input strings only if the   
+  strings fulfill a certain condition: The decompositions of adjacent code points must not need   
+  canonical reordering. This guarantees that the concatenation of per-code point data (like   
+  collation weights) yields the same data sequence as for the NFD form of the strings.</p>   
+  <p>Since all NFD strings and most NFC strings fulfill this condition, they are said to be in “Fast C or D” form, or   
+  “FCD”. Note that FCD does not describe a unique form:   
+  Unlike with regular Normalization Forms, two FCD strings can be canonically equivalent but <em> not   
+  </em>   
+  identical.</p>   
+  <p>Example:</p>   
+  <table border="1" cellpadding="0" cellspacing="0">   
+    <tr>   
+      <th>Text</th>   
+      <th>Weights</th>   
+      <th>Comment</th>   
+    </tr>   
+    <tr>   
+      <td>A</td>   
+      <td>(A)</td>   
+      <td>&nbsp;</td>   
+    </tr>   
+    <tr>   
+      <td>ring</td>   
+      <td>(ring)</td>   
+      <td>&nbsp;</td>   
+    </tr>   
+    <tr>   
+      <td>cedilla</td>   
+      <td>(cedilla)</td>   
+      <td>&nbsp;</td>   
+    </tr>   
+    <tr>   
+      <td>A-ring</td>   
+      <td>(A)(ring)</td>   
+      <td>NFC, FCD</td>   
+    </tr>   
+    <tr>   
+      <td>A+ring</td>   
+      <td>(A)+(ring)</td>   
+      <td>NFD, FCD</td>   
+    </tr>   
+    <tr>   
+      <td>A+cedilla+ring</td>   
+      <td>(A)+(cedilla)+ (ring)</td>   
+      <td>NFD, FCD</td>   
+    </tr>   
+    <tr>   
+      <td>A-ring+cedilla</td>   
+      <td>(A)(ring)+(cedilla)</td>   
+      <td><i>wrong</i>: NFC but not FCD<br>   
+        needs reordering before data lookup</td>   
+    </tr>   
+  </table>   
+  <p>&nbsp;</p>   
+  <h3>3.1 <a name="FCD_Test"> FCD Test</a></h3>   
+  <p>Strings can be checked for FCD efficiently. The algorithm is best expressed in pseudo-code:</p>   
+  <pre>// get the combining class of the first code point of c's decomposition
+unsigned byte getLeadCC(code_point c) {
+  string d = getCanonicalDecomposition(c);
+  code_point first = d.getFirstCodePoint();
+  return getCombiningClass(first);
+}
+
+// get the combining class of the last code point of c's decomposition
+unsigned byte getTrailCC(code_point c) {
+  string d = getCanonicalDecomposition(c);
+  code_point last = d.getLastCodePoint();
+  return getCombiningClass(last);
+}
+
+// check if a string is in FCD
+boolean checkFCD(string s) {
+  code_point c; // current code point
+  unsigned byte prevCC; // trail cc of the previous code point
+  unsigned byte cc; // lead cc of the current code point
+
+  prevCC = 0; // initialize
+  for(each code point c in s) {
+    cc = getLeadCC(c);
+    if(cc != 0 &amp;&amp; cc &lt; prevCC) {
+      // s is not in FCD:
+      // the concatenation of per-code point decompositions needs reordering
+      return false;
+    }
+    prevCC = getTrailCC(c);
+  }
+  return true; // s is in FCD
+}</pre>   
+  <p>The functions getLeadCC and getTrailCC can be replaced by a single table lookup of the code   
+  point, returning a 16-bit   
+  value that contains both combining classes, which makes checkFCD very fast.</p>   
+  <p>Mark Davis first described FCD in the <a href="http://source.icu-project.org/repos/icu/icuhtml/trunk/design/collation/ICU_collation_design.htm">ICU   
+  Collation Design Document</a> [<a href="tn5.1#Collation">Collation</a>].</p>   
+  <h2>4 <a name="FCC"> FCC Form</a></h2>   
+  <p>As demonstrated above, not all NFC strings are also in FCD. The reason is that the composition   
+  step in the NFC algorithm sometimes combines two characters even if they are separated by one or   
+  more other characters. In the case of A+cedilla+ring the A combines with the ring even though the   
+  cedilla is between them. The NFC result, A-ring+cedilla, is not in FCD.</p>   
+  <p>A modified NFC algorithm will produce unique   
+  strings that are always in FCD. The only modification needed is to remove the discontiguous composition.   
+  This is called here “FCC” for “Fast C   
+  Contiguous”. FCC is almost as compact as NFC, and most legacy codepages also convert 1:1 into FCC   
+  strings. In fact, for most strings the NFC and FCC Forms are identical, which makes the   
+  transformation between them fast (mostly only a test).</p>   
+  <p>Martin Dürst proposed this form in an Internet Draft titled “Normalization of   
+  Internationalized Identifiers” [<a href="tn5.1#altNFC">altNFC</a>] as an alternative for the definition of NFC. The   
+  current NFC algorithm was chosen because it tends to be more compact, and because NFC strings are   
+  more “stable”: appending a combining mark causes a precomposed character to unravel in   
+  fewer cases. (In FCC, appending a cedilla to A-ring results in A+cedilla+ring while in NFC the   
+  A-ring stays intact and the result is A-ring+cedilla.)</p>   
+  <p>Sample code for FCC is a simple modification of the NFC sample code (see [<a href="tn5.1#UAX15">UAX15</a>]). In   
+  the function internalCompose (in Normalizer.java) replace <code>lastClass = chClass;</code> with <code>lastClass   
+  = 256;</code> to prevent a discontiguous combination across the current character, which failed to   
+  combine with the starter. (This makes one of the conditions fail that are tested for the actual   
+  combination: <code>lastClass &lt; chClass</code>)&nbsp;</p>   
+  <h2>5 <a name="Enumerating_Equivalent_Strings"> Enumerating Equivalent Strings</a></h2>   
+  <p>In order to build canonically closed data one needs to enumerate all strings that are   
+  canonically equivalent to an input string and in FCD. Each such string then gets assigned the same   
+  data as for the original string.</p>   
+  <p>Mark Davis developed the following algorithm to enumerate canonically equivalent strings. For   
+  efficiency, supporting data is precomputed, but this is the logical structure.</p>   
+  <ol>   
+    <li>Transform the input string into its NFD form.</li>   
+    <li>Partition the string into segments, with each starter character in the string at the   
+      beginning of a segment.<br>   
+      (A starter in this sense has combining class 0 and does not appear in non-initial position of   
+      any other character's decomposition.)</li>   
+    <li>For each segment enumerate canonically equivalent forms, as follows:   
+      <ol type="a">   
+        <li>Use the set of characters whose decomposition begins with the segment's starter.</li>   
+        <li>For each character in this set:   
+          <ol type="I">   
+            <li>Get the character's decomposition.</li>   
+            <li>If the decomposition contains characters that are not in the segment, then skip this   
+              character.</li>   
+            <li>If the decomposition contains a character that is blocked in the segment (preceded   
+              by a combining mark with the same combining class), then also skip this character.</li>   
+            <li>Otherwise, start building a new string with this character.</li>   
+            <li>Append all characters from the input segment that are not in this character's   
+              decomposition in canonical order.</li>   
+            <li>Add this string to the set of canonical equivalents for the current segment.</li>   
+            <li>Recurse: Treat all but the initial character of this new string as a segment and add   
+              to the set for the current segment all combinations of the initial character and the   
+              equivalent strings of the rest.</li>   
+          </ol>   
+        </li>   
+      </ol>   
+    </li>   
+    <li>Enumerate the combinations of all forms of all segments.</li>   
+  </ol>   
+  <h2>6 <a name="Sample_Implementation"> Sample Implementation</a></h2>   
+  <p>Many of the concepts presented here are implemented in the <a href="http://www.icu-project.org/"> International Components for Unicode</a>   
+  [<a href="tn5.1#ICU">ICU</a>]. The ICU normalization code supports FCD in its quickCheck and   
+  isNormalized functions as well as in the normalization transformation functions. Transforming a   
+  string “into FCD” generally only decomposes and reorders as far as is necessary for the   
+  result to meet the FCD condition.</p>   
+  <p>Incremental and whole-string FCD checks are used in the collation and string search services.</p>   
+  <p>The CanonicalIterator class implements the above algorithm for Enumerating Equivalent Strings.   
+  It is used in the collation code for building collation tailoring tables.</p>   
+  <p>As of ICU 2.2, the CanonicalIterator is an internal API and FCC is not yet implemented in ICU.</p>   
+  <h2>7 <a name="References">References</a></h2>   
+  <table class="noborder" style="border-collapse: collapse" cellpadding="8" cellspacing="0">   
+    <tr>   
+      <td width="1" class="noborder">[<a name="C9">C9</a>]</td>   
+      <td class="noborder">Conformance Requirement C9 of Unicode 3.0<i><br>   
+        </i><a href="http://www.unicode.org/unicode/standard/versions/enumeratedversions.html#Unicode_3_0_0">http://www.unicode.org/unicode/standard/versions/enumeratedversions.html#Unicode_3_0_0</a><br>   
+        <i>Requires that canonically equivalent text be treated equivalently. See also C10 and   
+        several other places in The Unicode Standard.</i></td>   
+    </tr>   
+    <tr>   
+      <td width="1" class="noborder">[<a name="UAX15">UAX15</a>]</td>   
+      <td class="noborder">Unicode Standard Annex #15: Unicode Normalization Forms<br>   
+        <a href="../reports/tr15.1">http://www.unicode.org/reports/tr15/</a><i><br>   
+        Specifies NF*, canonical equivalence, etc., together with passages of The Unicode Standard   
+        as described in UAX #15.</i></td>   
+    </tr>   
+    <tr>   
+      <td width="1" class="noborder">[<a name="UCA">UCA</a>]</td>   
+      <td class="noborder">Unicode Technical Standard #10: Unicode Collation Algorithm<i><br>   
+        <a href="../reports/tr10/index.html">http://www.unicode.org/reports/tr10/</a></i></td>   
+    </tr>   
+    <tr>   
+      <td width="1" class="noborder">[<a name="Collation">Collation</a>]</td>   
+      <td class="noborder">ICU Collation Design Document<br>   
+        <a href="http://source.icu-project.org/repos/icu/icuhtml/trunk/design/collation/ICU_collation_design.htm">
+		http://source.icu-project.org/repos/icu/icuhtml/trunk/design/collation/ICU_collation_design.htm<br>   
+        </a><i>First description of FCD by Mark Davis.</i></td>   
+    </tr>   
+    <tr>   
+      <td width="1" class="noborder">[<a name="OptiNorm">OptiNorm</a>]</td>   
+      <td class="noborder">Optimizing the Usage of Normalization<br>   
+        <a href="http://www.icu-project.org/docs/papers/normalization_iuc21.ppt">http://www.icu-project.org/docs/papers/normalization_iuc21.ppt</a><br>   
+        Also IUC 21 session C14 <a href="http://www.unicode.org/iuc/iuc21/a348.html">http://www.unicode.org/iuc/iuc21/a348.html</a><i><br>   
+        Presentation about FCD and other normalization optimizations.</i></td>   
+    </tr>   
+    <tr>   
+      <td width="1" class="noborder">[<a name="altNFC">altNFC</a>]</td>   
+      <td class="noborder">Martin Dürst proposed what is called FCC here as an alternative to the   
+        current NFC:   
+        <pre>Internet Draft M. Duerst
+&lt;draft-duerst-i18n-norm-00.txt&gt; University of Zurich
+Expires in six months July 1997
+
+
+          Normalization of Internationalized Identifiers
+
+
+2.1 Normalization of Combining Sequences</pre>   
+      </td>   
+    </tr>   
+    <tr>   
+      <td width="1" class="noborder">[<a name="ICU">ICU</a>]</td>   
+      <td class="noborder">   
+      International Components for Unicode<br>   
+      <a href="http://www.icu-project.org">http://www.icu-project.org</a><br>   
+      <i>Open-source C/C++ and Java libraries for Unicode and I18N support.</i>   
+      </td>   
+    </tr>   
+  </table>   
+  <br>   
+  <h2><a name="Modifications">Modifications</a></h2>   
+  <p>The following summarizes modifications from the previous version of this   
+  document.</p>   
+  <table class="noborder" style="border-collapse: collapse" cellpadding="8" cellspacing="0">   
+    <tr>
+      <td width="2" class="noborder">2008.10.01</td>   
+      <td class="noborder">Updated stale links in version 1</td>   
+    	</tr>
+    <tr>   
+      <td width="1" class="noborder"><a name="TrackingNumber1">1</a></td>   
+      <td class="noborder">Initial version</td>   
+    </tr>   
+    </table>   
+  <p class="copyright">Copyright © 2002 Markus W. Scherer. All Rights Reserved. The   
+  Unicode Consortium and Markus W. Scherer make no expressed or implied warranty of any   
+  kind, and assume no liability for errors or omissions. No liability is assumed   
+  for incidental and consequential damages in connection with or arising out of   
+  the use of the information or programs contained or accompanying this   
+  technical note. The Unicode <a href="http://www.unicode.org/copyright.html">
+  Terms of Use</a> apply.</p>   
+  <p class="copyright">Unicode and the Unicode logo are trademarks of Unicode,   
+  Inc., and are registered in some jurisdictions.</p>   
+</div>   
+   
+</body>

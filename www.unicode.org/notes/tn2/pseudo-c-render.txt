@@ -1,0 +1,105 @@
+
+Utility isBaseGlyph(X) returns YES if the character X is a normal spacing mark.
+
+Utility isKnownNSM(X) returns YES if the character X is a simple non-spacing mark such as acute, umlaut, cedilla, dot-below, etc.
+
+Utility isDetachedMark(X) returns YES if the character X is a non-spacing mark that is detached, such as an acute or umlaut. Otherwise, if the mark is attached (e.g., cedilla) it returns NO.
+
+Utility isAboveMark(X) returns YES if the character X is a non-spacing mark that is above the base, such as an umlaut. Otherwise if the mark is a below-mark, it returns NO.
+
+Utility DisplayGlyph(G, x, y) displays the glyph G at point x,y.
+
+Utility widthOfGlyph(G) returns the advance width of the glyph (not the bounding rect).
+
+Utility boundingRectOfGlyph(G) returns the bounding rectangle for a glyph.
+
+Function RenderBaseAndDiacriticalMarks(GlyphStream) {
+    CapHeight = ...; /* Set this to the cap height of the font */
+    Xpos = 0; Ypos = 0; /* Set to the base of the current "line" */
+    DisplayedBaseGlyph = NO;
+    
+    while ( more glyphs are in the stream ) {
+	BaseGlyph = GlyphStream[index].theGlyph;
+	BaseRect = boundingRectOfGlyph(BaseGlyph);
+	if (isBaseGlyph(GlyphStream[index].repChar)) {
+	    DisplayGlyph(BaseGlyph, Xpos, Ypos);
+	    ++index;
+	    DisplayedBaseGlyph = YES;
+	    if ( no more glyphs in the stream ) break;
+	} 
+	if (isKnownNSM(GlyphStream[index].repChar)) {
+	    if (! DisplayedBaseGlyph) {
+		/*
+		 * Special processing for lines beginning with NSMs without bases?
+		 */
+		BaseRect = ...;
+	    }
+	    while (isKnownNSM(GlyphStream[index].repChar)) {
+		CurrentGlyph = GlyphStream[index].theGlyph;
+		MarkRect = boundingRectOfGlyph(CurrentGlyph);
+		TheGap = (isDetachedMark(CurrentGlyph) ? (CapHeight / 8.0) : 0.0);
+		/*
+		* Calculate where to put the mark relative to the base coordinates.
+		*/
+		Xpoint = (BaseRect.x - MarkRect.x) + ((BaseRect.w - MarkRect.w) / 2.0);
+		if (isAboveMark(CurrentGlyph)) {
+		    Ypoint = ((BaseRect.y + BaseRect.h) + TheGap) - MarkRect.y;
+		} else {
+		    Ypoint = BaseRect.y - MarkRect.y - MarkRect.h - TheGap;
+		}
+		/*
+		 * Display the non-spacing glyph relative to the base point.
+		 */
+		rx = RelativeMoveTo(Xpos, Xpoint); ry = RelativeMoveTo(Ypos, Ypoint);
+		DisplayGlyph(CurrentGlyph, rx, ry);
+		/*
+		 * Calculate the new, enclosing bounding rect for the combination,
+		 * and draw a box around the whole thing.
+		 * Xextent, Yextent is the upper right corner of the mark glyph...
+		 */ 
+		Xextent = Xpoint + MarkRect.x + MarkRect.w;
+		Yextent = Ypoint + MarkRect.y + MarkRect.h;
+		NewBaseBRect.x = min(BaseRect.x, Xpoint + MarkRect.x);
+		NewBaseBRect.y = min(BaseRect.y, Ypoint + MarkRect.y);
+		NewBaseBRect.w = max(BaseRect.x + BaseRect.w, Xextent) - BaseRect.x;
+		NewBaseBRect.h = max(BaseRect.y + BaseRect.h, Yextent) - BaseRect.y;
+		/*
+		 * Reset the "bounding rect" to the total enclosing rect calculated above...
+		 */
+		BaseRect = NewBaseBRect;
+    		++index;
+	    }
+	} else if (! isBaseGlyph(GlyphStream[index].theGlyph) {
+	    /*
+	     * if we get here, we have encountered an unknown mark or don't know how to
+	     * render it. Time to punt and do "something reasonable" to display it.
+	     */
+	    ++index;
+	}
+	/*
+	 * Move the display point forward by the character width. The width might be
+	 * modified by the various NSMs, or affected by kerning.
+	 */
+	Xpos += widthOfGlyph(BaseGlyph);
+    }
+}
+
+
+======================================================================================================
+
+FontBBox -168 -218 1000 898
+CapHeight 662
+
+C 69 ; WX 611 ; N E ; B 12 0 597 662 ;
+C 81 ; WX 722 ; N Q ; B 34 -178 701 676 ;
+C 199 ; WX 333 ; N dotaccent ; B 118 523 216 623 ;
+C 200 ; WX 333 ; N dieresis ; B 18 523 315 623 ;
+C 202 ; WX 333 ; N ring ; B 67 512 266 711 ;
+C 203 ; WX 333 ; N cedilla ; B 52 -215 261 0 ;
+
+% Times-Roman bounding rects (x, y, w, h):
+% E rect = (12, 0, 585, 662)
+% Q rect = (34, -178, 667, 854)
+% X rect = (10, 0, 694, 662)
+% Diaeresis rect = (18, 523, 297, 100)
+% Ring rect = (67, 512, 259, 100)

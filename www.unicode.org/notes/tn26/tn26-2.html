@@ -1,0 +1,397 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+
+       "http://www.w3.org/TR/html4/loose.dtd"> 
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta http-equiv="Content-Language" content="en-us">
+<meta name="GENERATOR" content="Microsoft FrontPage 6.0">
+<meta name="ProgId" content="FrontPage.Editor.Document">
+<link rel="stylesheet" href="../../unicode/reports/reports.css" 
+type="text/css">
+<title>UTN #26: On the Encoding of Latin, Greek, Cyrillic, and Han</title>
+</head>
+
+<body bgcolor="#ffffff">
+
+<table class="header">
+  <tr>
+    <td class="icon"><a href="http://www.unicode.org"><img align="middle" 
+    alt="[Unicode]" border="0" 
+    src="../../webscripts/logo60s2.gif" width="34" height="33"></a>&nbsp;&nbsp;
+    <font size="3"><a class="bar" href="../index.html">Technical 
+    Notes</a></font></td>
+  </tr>
+  <tr>
+    <td class="gray">&nbsp;</td>
+  </tr>
+</table>
+<div style="margin: 2em">
+  <h2 align="center">Unicode Technical Note #26</h2>
+  <h1 align="center"><span style="text-transform: none">On the Encoding of<br>
+	Latin, Greek, Cyrillic, and Han</span></h1>
+  <table class="wide">
+    <tr>
+      <td>Version</td>
+      <td><a href="tn26-2.html#Modifications">2</a></td>
+    </tr>
+    <tr>
+      <td>Authors</td>
+      <td>Ken Whistler</td>
+    </tr>
+    <tr>
+      <td>Date</td>
+      <td>October 25, 2010</td>
+    </tr>
+    <tr>
+      <td>This Version</td>
+      <td><a href="tn26-2.html">
+      http://www.unicode.org/notes/tn26/tn26-2.html</a></td>
+    </tr>
+    <tr>
+      <td>Previous Version</td>
+      <td><a href="tn26-1.html">
+      http://www.unicode.org/notes/tn26/tn26-1.html</a></td>
+    </tr>
+    <tr>
+      <td>Latest Version</td>
+      <td><a href="index.html">http://www.unicode.org/notes/tn26/</a></td>
+    </tr>
+  </table>
+  <p>&nbsp;
+  </p>
+  <h3><i>Summary</i></h3>
+  <p><i><em>This document </em>discusses background information and encoding 
+	decisions pertaining to Latin, Greek, Cyrillic and Han characters in Unicode.</i></p>
+  <h3><i>Status</i></h3>
+  <p><i>This document is a <b>Unicode Technical Note</b>. Sole responsibility for 
+  its contents rests with the author(s). Publication does not imply any endorsement by the 
+  Unicode Consortium. This document is not subject to the 
+	<a href="http://www.unicode.org/policies/patent_policy.html">Unicode Patent Policy</a>.</i></p>
+
+<p>For information on Unicode Technical Notes including criteria for acceptance, see
+<a href="../index.html">http://www.unicode.org/notes/</a>.</p>
+  <hr>
+
+
+
+
+<h2>The encoding of the Latin, Greek, and Cyrillic scripts</h2>
+
+<p>There are a number of very good reasons why the Latin, Greek,
+and Cyrillic scripts have been separately encoded, rather than
+being encoded as a single script.</p>
+
+<p>1. Traditional graphology has always treated them as distinct
+scripts, while acknowledging that they are, of course, historically
+related. Mere historic relatedness is insufficient reason to
+unify scripts, however, as Latin, Greek, and Cyrillic can ultimately
+all trace their roots back to Phoenician, and Phoenician itself
+is then related to Aramaic and all its descendants, from Hebrew
+and Arabic to farflung outliers like Sogdian, Uighur, and even
+Mongolian.</p>
+
+<p>2. In the case of Latin and Greek, the distinction has existed
+since classical times. Cyrillic is more closely related to
+Greek, and in medieval manuscripts there is a fair amount
+of overlap in Greek and early Cyrillic writing conventions,
+but by the time of the development of modern typography,
+Greek script and Cyrillic script are clearly distinct, and their
+current manifestations in print usage are very different.</p>
+
+<p>3. Literate users of Latin, Greek, and Cyrillic alphabets do
+not have cultural conventions of treating each other's
+alphabets and letters as part of their own writing systems.
+"It's all Greek to me," is not just a saying, but accurately
+reflects the common perception by users of any one of those
+scripts when presented with textual material in one of the
+other scripts. It's not just that the words are unfamiliar,
+but that the writing itself is considered alien. Most people
+will be able to pick out the letters which share common shapes
+(A, B, etc.), but the high proportion of odd-looking letters
+that carry no significance to users of the other scripts
+results in the text as a whole being treated as simply
+illegible. This, by the way, is one of the operative means
+by which distinctions in script can be identified, although
+it is far from being a simple, objective method that works
+in all instances.</p>
+
+<p>4. Even more significantly, from the point of view of the
+problem of character encoding for digital textual representation
+in information technology, the preexisting identification
+of Latin, Greek, and Cyrillic as distinct scripts was carried
+over into character encoding, from the very earliest instances
+of such encodings. Once ASCII and EBCDIC were expanded to
+start incorporating Greek or Cyrillic letters, all significant
+instances of such encodings included a basic Latin (ASCII or
+otherwise) set <i>and</i> a full set of letters for Greek or a
+full set of letters for Cyrillic. Precedent for the
+purposes of character encoding was clearly established by
+those early 8-bit charsets.</p>
+
+<p>5. Following on from point #4, any universal character encoding
+<i>must</i> distinguish Latin, Greek, and Cyrillic as scripts. If
+it does not do so, it would have insurmountable interoperability
+problems dealing with any of the huge amount of legacy data
+which already distinguished the scripts. Note that multiscript
+(partially) universal character encodings predating the Unicode
+Standard <i>all</i> did this. That includes IBM's registry of
+glyph identifiers, DEC's and Hewlett-Packard's listings of
+characters and glyphs, Xerox's XCCS character standard,
+WordPerfect's proprietary character sets, and
+Microsoft's and Apple's internal system of character identifications.
+The library community maintains the same script distinctions in its own  
+data formats: MARC 21 (published by the Library of Congress) and UNIMARC  
+(published by IFLA).
+Even the East Asian character encodings, as they developed,
+<i>also</i> distinguished Latin, Greek, and Cyrillic. See, for
+instance, JIS X 0208 itself, which separately encodes Greek
+and Cyrillic alphabets from ASCII Latin.</p>
+
+<p>6. The few character encodings that actually attempt to do
+a unification of Latin and Greek or Cyrillic are very special-purpose
+and limited in usage, and cannot interoperate well with the
+vast majority of text processing infrastructure. A good example
+of this is ETSI's GSM 03.38, which attempts to address the
+problem of <i>displaying</i> uppercase Greek on a Latin device with
+a 7-bit character set by unifying all the uppercase Greek letters
+with their Latin lookalikes and by dispensing with any support
+for <i>lowercase</i> Greek. Such schemes to unify Greek (or Cyrillic)
+with Latin have never spread beyond their original, limited-purpose
+contexts, simply because they can't handle the requirements for
+more general-purpose processing.</p>
+
+<p>7. In terms of implementation issues, any attempt at a unification
+of Latin, Greek, and Cyrillic would wreak havoc with certain
+required text processes. In particular, a unified encoding of
+Latin, Greek, and Cyrillic would make casing operations an unholy
+mess, in effect making all casing operations context sensitive in
+a way that is now restricted to a few problematical edge cases
+(Turkish i's, Greek sigmas).</p>
+	<h2>The encoding of the Han script</h2>
+
+<p>Now by way of contrast, consider the issue for the Han script.</p>
+
+<p>
+1. Graphologically, the Han script ("Chinese characters") has
+long been considered a <i>single</i> script, adapted for use by
+neighboring cultures, but not separated into distinct scripts
+by such usage. Historically very early versions of the Chinese
+character usages (e.g., the Great Seal script) probably rightly
+qualify as distinct scripts, but such distinctions are
+irrelevant to the status of Han synchronically.</p>
+
+<p>2. This identity of the Han script has been perpetuated by the
+historically more or less continuous cultural preeminence of
+China in East Asia over the course of millennia, and by the
+political usage which successive Chinese empires have put
+Chinese writing to -- using the <i>single</i> written form of Chinese
+as a way of covering many, many distinct Chinese languages
+in a single Han cultural identity. The imperial spread of Han
+writing through East Asia mirrors, in many ways, the imperial
+spread of Latin script in the Western world, where spread
+of the Latin alphabet from language to language and ethnic
+group to ethnic group, first by the Roman Empire and much later
+by the Western European empires, did not result in fractionating
+the script itself, but rather the widespread usage of the single
+script, and its elaboration by the addition of new ideographs
+(for Han) and new letters (for Latin) as new demands were
+placed upon it. (A similar pattern can be seen in the spread
+of the Arabic script around the world.)</p>
+
+<p>3. The important non-Han peoples who adapted Chinese writing
+in their own culture (most notably Korea, Japan, and Vietnam)
+continued to view the Han characters as <i>Chinese</i> writing,
+as demonstrated even by the name of the script in each of
+these countries, being literally "Chinese character". And
+rather than simply adopting the script at one point and then
+evolving it off in some independent direction, the typical
+pattern for each of these cultures was over the centuries to
+keep adding to the store of Han ideographs they used by
+continued borrowing of large new sets of them directly from
+China.</p>
+
+<p>4. The major exception in this developmental pattern, in Japan,
+actually speaks, to the contrary, to the continued unitary
+nature of the Han script itself. In Japan, a highly cursive
+style of writing Chinese characters for Japanese sounds,
+as opposed to borrowed Chinese vocabulary, a style called
+manyooshuu, was simplified down into a set of conventional
+syllabic symbols for Japanese alone. <i>That</i> clearly was the
+development of a new script, which came to be known as
+Hiragana, from the Han script. But separately and simultaneously,
+in Japan, the Han characters themselves ("kanji" in Japanese)
+continued to be written in the traditional Chinese way.</p>
+
+<p>5. Unlike the case for Latin, Greek, and Cyrillic, there <i>is</i>
+a longstanding cultural tradition in Japan, China, and Vietnam,
+of viewing "Chinese characters" as being of shared identity
+throughout the region. Japanese can't "read" Chinese -- after
+all, it is a completely different and utterly alien language
+to Japanese speakers -- any more than English speakers can
+read Tagalog written in the Latin alphabet. But they <i>do</i>
+recognize that the Chinese characters themselves are shared
+and in fact can recognize much of the shared vocabulary that
+was originally borrowed into Japanese from Chinese, in the
+same way that English speakers recognize much French vocabulary.</p>
+
+<p>6. There is a lot of confusion that results among those not
+intimately familiar with East Asian languages and writing systems
+because of the fact that the <i>writing systems</i> for Japan, Korea,
+China, and Vietnam <i>are</i> completely different, at the same
+time that they all share, as parts of those writing systems,
+a shared <i>single</i> Han script. There is no question that the
+Japanese writing system as a whole is very, very different from
+the Chinese writing system. But Japanese <i>kanji</i> as a portion
+of the Japanese writing system constitute the same <i>script</i>
+as Chinese <i>hanzi</i> as the main part of the Chinese writing system.</p>
+
+<p>7. Another issue that leads to controversy over "Han unification"
+in East Asia tends to result from considerations of font styles
+and character variants. The style issue results from largely from the fact  
+that Japan has traditionally
+been an extremely conservative country, going through a long,
+deliberately isolationist period before the Meiji reformations.
+As a result, Japan tended to preserve, in its Buddhist and other
+literary traditions, forms of Chinese that dated all the way
+back to Tang, Sung, and Ming dynasty material. In the meantime, China
+itself was busy undergoing vast revolutions and upheavals and
+changing rulers from one ethnicity to entirely different ones
+(Mongols ruled China in one dynasty, Manchus in another). During
+this time, Chinese writing kept innovating, while the forms
+carried to Japan tended to stay more conservative.</p>
+
+<p>Notwithstanding the systematic variation sometimes seen between
+more conservative character forms in Japan and typographically
+distinct forms seen in China, the typical range of variation
+among glyphs across all the CJK user communities is well within
+the bounds of typical variation seen within other scripts. This
+fact, which is noted in the JIS X 0208 standard itself, forms
+the basis for the principles upon which characters are identified
+as being the "same character" in Japanese, Chinese, and Korean
+sources.</p>
+
+<p>8. In the 20th century, we encounter the most extreme form of stylistic  
+innovation in China, when as a
+result of educational policy after the Communist revolution in
+the PRC, a deliberate and very widespread process of orthographic
+simplification and reform was imposed all over China. Those
+changes were not adopted outside of China in Japan, nor even
+in Taiwan and Hong Kong. That resulted
+in a sharp split in Han script usage ("simplified" versus
+"traditional"). But even <i>that</i> cannot be considered enough to
+have created a new, distinct Han script. The reason is that
+even in the PRC, the new, simplified forms were always treated
+as alternative forms of the traditional characters, often
+printed alongside them in reference works. There has been a
+continuous adjustment of writing in China, as more characters get simplified,
+but some simplifications are abandoned in favor of more traditional
+forms, and so on. Many Chinese end up, for one reason or
+another, simply having to learn <i>both</i> the traditional and
+the simplified forms of characters, and read them as alternative
+glyphs for the <i>same</i> character -- implicitly within the same
+overall Han script.</p>
+
+<p>9. When it comes to character encoding decisions made in
+East Asia, it is also clear that Han characters have in almost
+all cases been considered to constitute a single script, rather
+than distinct scripts per East Asian country. Japanese standards
+were early on devoted to encoding those Chinese characters needed
+for <i>Japanese</i>. And Chinese standards focussed on that subset
+of Chinese characters needed for <i>Chinese</i>. But later on, the
+standards on both sides expanded as the Japanese standards added
+characters from China and the Chinese standards added characters
+from Japan. In neither case did these additions follow the
+pattern seen when Greek or Cyrillic were added to early
+Latin character encodings. Instead, in both instances, it was
+just a matter of adding X more thousand Han characters into the
+big tables that already consisted of thousands of Han characters.</p>
+
+<p>10. The effort to "unify" the encoding of Han characters in
+10646 and the Unicode Standard has been misunderstood by
+some as an attempt to intermingle an essentially different
+Japanese writing system and a Chinese writing system, as if
+there was some kind of enforced miscegenation underway.
+But the correct way to interpret what went on was rather simply
+the <i>avoidance of duplicate encoding</i> of the same Han characters
+represented in several different East Asian standards. This
+process was well-understood by the actual national standards
+participants from Japan, Korea, China, and other countries,
+who all along have been doing the major work involved in
+minimizing the amount of duplicate encoding of what all the
+committee members fully agree is the <i>same</i> character.</p>
+
+<p>The analogy to bring to bear when considering "Han unification"
+is not a picture of trying to unify a Latin encoding, and
+Greek encoding, and a Cyrillic encoding based on character
+shape alone, but instead, unifying an ASCII (Latin) encoding,
+an EBCDIC (Latin) encoding, the Latin portion of the
+JIS X 0208 Japanese standard, and the Latin portion of the
+GB 2312 Chinese standard. There would be no point in encoding
+the same Latin character 4 times in Unicode <i>simply</i> because
+it appeared in ASCII, EBCDIC Code Page 300, JIS X 0208,
+and GB 2312. The exact same logic was applied to the Han characters
+in the various East Asian standards when encoding decisions
+were taken about encoding the Han script.</p>
+
+<p>11. In terms of implementation issues, an encoding approach towards
+Han characters that did not unify the same characters from
+Japanese, Chinese, Korean (and other) source standards would
+need to carry expensive (both in memory cost and in maintenance
+cost) equivalence tables around merely to make the unification
+happen on the fly, before text searching or nearly any other
+text process of interest could be done.</p>
+	<p>12. For more information about how Han characters from different
+East Asian legacy source standards were identified as being
+the <i>same</i> character for encoding purposes in the Unicode
+Standard, see the detailed discussion in
+	<a href="http://www.unicode.org/versions/Unicode5.2.0/ch12.pdf#G29086">Section 12.1, "Han"</a>.</p>
+	
+	<h2>Ideographic Rapporteur Group</h2>
+
+<p>Information about the Ideographic Rapporteur Group, which has
+primary responsibility for development of the repertoire of
+Han ideographic characters for encoding in 10646 (and Unicode):</p>
+
+<p>The <a href="http://www.cse.cuhk.edu.hk/~irg/">Ideographic Rapporteur Group (IRG)</a> is a group reporting to
+<a href="http://www.iso.org">ISO/IEC</a> 
+<a href="http://std.dkuug.dk/JTC1/SC2/WG2">JTC1/SC2/WG2</a>.  
+It focuses on the development of ideographic characters (Han  
+characters used in China, Japan, Korea and other parts of Asia) in the ISO/IEC  
+10646 standard. Its mission is to submit ideographic characters for  
+inclusion in the ISO/IEC 10646 standard. The IRG has developed the CJK Unified  
+Ideographs Block and CJK Unified Ideographs Extensions A through D.
+IRG members include China, Hong Kong SAR, Macao SAR, Taipei Computer  
+Association, Singapore, Japan, South Korea, North Korea, Vietnam and the USA.  
+Representatives from the <a href="http://www.unicode.org">Unicode Consortium</a> also  
+attend IRG meetings for coordinating the synchronization between the ISO/IEC  
+10646 standard and the Unicode Standard.</p>
+
+  <h2><a name="Modifications">Modifications</a></h2>
+  <p>The following summarizes modifications from the previous version of this 
+  document.</p>
+  <table class="noborder" style="border-collapse: collapse" cellpadding="8" 
+  cellspacing="0">
+    <tr>
+      <td width="1" class="noborder">2</td>
+      <td class="noborder">Updated links and information about the IRG.</td>
+    </tr>
+    <tr>
+      <td width="1" class="noborder">1</td>
+      <td class="noborder">Initial version.</td>
+    </tr>
+  </table>
+  <p class="copyright">Copyright © 2006-2010 Ken Whistler and Unicode, Inc. All Rights Reserved. The 
+  Unicode Consortium and Ken Whistler make no expressed or implied warranty of any 
+  kind, and assume no liability for errors or omissions. No liability is assumed 
+  for incidental and consequential damages in connection with or arising out of 
+  the use of the information or programs contained or accompanying this 
+  technical note. The Unicode <a href="http://www.unicode.org/copyright.html">
+  Terms of Use</a> apply.</p>
+  <p class="copyright">Unicode and the Unicode logo are trademarks of Unicode, 
+  Inc., and are registered in some jurisdictions.</div>
+
+</body>
+
+</html>

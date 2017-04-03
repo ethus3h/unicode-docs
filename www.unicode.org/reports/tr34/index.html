@@ -1,0 +1,613 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+
+<html dir="ltr" lang="en-US">
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta http-equiv="Content-Language" content="en-us">
+<title>UAX #34: Unicode Named Character Sequences</title>
+
+<link rel="stylesheet" type="text/css" href="../reports-v2.css">
+
+
+</head>
+<body>
+<table class="header" cellpadding="0" cellspacing="0" width="100%">
+	<tr>
+		<td class="icon"><a href="http://www.unicode.org">
+		<img align="middle" alt="[Unicode]" border="0" src="../../webscripts/logo60s2.gif" width="34" height="33"></a>&nbsp;
+		<a class="bar" href="../index.html">Technical Reports</a></td>
+	</tr>
+	<tr>
+		<td class="gray">&nbsp;</td>
+	</tr>
+</table>
+<div class="body">
+	<!--
+    <h2 class="uaxtitle"><span class="changedspan">Proposed Update</span></h2>
+	-->
+	<h2 class="uaxtitle">Unicode® Standard Annex #34</h2>
+	<h1>Unicode Named Character Sequences</h1>
+	<table class="simple" width="90%">
+		<tr>
+			<td valign="top" width="20%">Version</td>
+			<td>Unicode 9.0.0</td>
+		</tr>
+		<tr>
+			<td valign="top">Editors</td>
+			<td valign="top">Addison Phillips</td>
+		</tr>
+		<tr>
+			<td valign="top">Date</td>
+			<td valign="top">2016-05-18</td>
+		</tr>
+		<tr>
+			<td valign="top">This Version</td>
+			<td valign="top">
+			<a href="tr34-21.html">http://www.unicode.org/reports/tr34/tr34-21.html</a></td>
+		</tr>
+		<tr>
+			<td valign="top">Previous Version</td>
+			<td valign="top">
+			<a HREF="tr34-20.html">
+			http://www.unicode.org/reports/tr34/tr34-20.html</a></td>
+		</tr>
+		<tr>
+			<td valign="top">Latest Version</td>
+			<td valign="top"><a href="index.html">http://www.unicode.org/reports/tr34/</a>
+			</td>
+		</tr>
+		<tr>
+			<td valign="top">Latest Proposed Update</td>
+			<td valign="top"><a href="proposed.html">http://www.unicode.org/reports/tr34/proposed.html</a></td>
+		</tr>
+		<tr>
+			<td valign="top">Revision</td>
+			<td valign="top"><a href="index.html#Modifications">21</a></td>
+		</tr>
+	</table>
+	<h4>Summary</h4>
+	<p><i>This annex defines the concept of Unicode named character sequences, 
+	specifies a notational convention for them and a set of rules constraining 
+	possible names applied to character sequences.</i></p>
+	<h4>Status</h4>
+	   <!-- NOT YET APPROVED
+	  <p><i class="changed">This is a<b><font color="#ff3333"> draft </font></b>document which 
+      may be updated, replaced, or superseded by other documents at any time. 
+      Publication does not imply endorsement by the Unicode Consortium. This is 
+      not a stable document; it is inappropriate to cite this document as other 
+      than a work in progress.</i></p>
+      END NOT YET APPROVED -->
+	  <!-- APPROVED -->
+      <p><i>This document has been reviewed by Unicode members and other interested 
+	parties, and has been approved for publication by the Unicode Consortium. 
+	This is a stable document and may be used as reference material or cited as 
+	a normative reference by other specifications.</i></p>
+     <!-- END APPROVED -->
+ 	<blockquote>
+		<p><i><b>A Unicode Standard Annex (UAX)</b> forms an integral part of 
+		the Unicode Standard, but is published online as a separate document. 
+		The Unicode Standard may require conformance to normative content in a 
+		Unicode Standard Annex, if so specified in the Conformance chapter of 
+		that version of the Unicode Standard. The version number of a UAX 
+		document corresponds to the version of the Unicode Standard of which it 
+		forms a part.</i></p>
+	</blockquote>
+  <p><i>Please submit corrigenda and other comments with the online reporting 
+	form [<a href="http://www.unicode.org/reporting.html">Feedback</a>]. 
+  Related information that is useful in understanding this annex is found in Unicode Standard Annex #41, 
+  “<a href="../tr41/tr41-19.html">Common References for Unicode Standard Annexes</a>.” 
+	For the latest version of the Unicode Standard, see [<a href="http://www.unicode.org/versions/latest/">Unicode</a>]. 
+	For a list of current Unicode Technical Reports, see [<a href="../index.html">Reports</a>]. 
+	For more information about versions of the Unicode Standard, see [<a href="http://www.unicode.org/versions/">Versions</a>]. 
+  For any errata which may apply to this annex, see [<a href="http://www.unicode.org/errata/">Errata</a>].</i></p>
+	
+        <h4>Contents</h4>
+	<ul class="toc">
+		<li>1 <a href="index.html#Overview">Overview</a>
+		<ul class="toc">
+			<li>1.1 <a href="index.html#NamedSequ">Named Character Sequences</a></li>
+			<li>1.2 <a href="index.html#VarSequ">Relation to Variation Sequences</a></li>
+		</ul></li>
+		<li>2 <a href="index.html#Def_Notation">Definitions and Notation</a>
+		<ul class="toc">
+			<li>2.1 <a href="index.html#Definitions">Definitions</a></li>
+			<li>2.2 <a href="index.html#Notation">Notational Conventions</a></li>
+		</ul></li>
+		<li>3 <a href="index.html#Conformance">Conformance</a>
+		<ul class="toc">
+            <li>3.1 <a href="index.html#ProvProc">Provisional Process for Named Character Sequences</a></li>
+	        <li>3.2 <a href="index.html#Stability">Stability of Approved Named Character Sequences</a></li>
+		</ul></li>
+		<li>4 <a href="index.html#Names">Names</a></li>
+		<li>5 <a href="index.html#DataFile">Data Files</a></li>
+        <li><a href="index.html#Acknowledgments">Acknowledgments</a></li>
+		<li><a href="index.html#References">References</a></li>
+		<li><a href="index.html#Modifications">Modifications</a></li>
+	</ul>
+	<hr>
+	<h2>1 <a name="Overview" href="index.html#Overview">Overview</a> </h2>
+	<p>The Unicode Standard specifies notational conventions for referring to 
+	sequences of characters (or code points) treated as a unit, using angle brackets surrounding a 
+	comma-delimited list of code points, code points plus character names, and 
+	so on. For example, both of the designations in <i>Table 1</i> refer to a combining character sequence consisting of the letter “a” 
+    with a circumflex and an acute accent applied to it.</p>
+		<p class="caption">Table 1. <a name="Combining_Character_Example_Table" href="index.html#Combining_Character_Example_Table">Example of a Combining Character Sequence</a></p>
+	<div align="center">
+		<table class="simple">
+		<tr>
+			<td>&lt;U+0061, U+0302, U+0301&gt;</td>
+		</tr>
+		<tr>
+			<td>&lt;U+0061 LATIN SMALL LETTER A, U+0302 
+	COMBINING CIRCUMFLEX ACCENT, U+0301 
+    COMBINING ACUTE ACCENT&gt;</td>
+		</tr>
+	</table></div>
+
+    <p>See <i>Appendix A,</i> <i>Notational Conventions,</i> in [<a href="../tr41/tr41-19.html#Unicode">Unicode</a>] for the 
+    description of the conventions for expression of code points and for the 
+    representation of sequences of code points.</p>
+    <p>The Unicode conventions for referring to a sequence of characters (or 
+    code points) are a generalization of the formal syntax specified in ISO/IEC 
+    10646:2012 for UCS Sequence Identifiers, or USI. A USI has the form</p>
+    <blockquote>
+    <p>&lt;UID<sub>1</sub>, UID<sub>2</sub>, ... UID<sub>n</sub>&gt;</p>
+    </blockquote>
+    <p></p>
+    <p>where the UID<sub><i>i</i></sub> represent the short identifiers for code points—most commonly “U+0061” or “0061”. A USI must contain at least two code points.</p>
+    <p>Such a generalized notation for sequences of Unicode code points 
+     is often useful in discursive text. 
+     More formally, other standards may need to refer to 
+	entities that are represented in Unicode by sequences of characters. 
+	Mapping tables may map single characters in other standards to sequences of 
+	Unicode characters, and listings of repertoire coverage for fonts or 
+    keyboards may need to reference entities that do not correspond to single 
+    Unicode code points.</p>
+    
+	<h3>1.1 <a name="NamedSequ" href="index.html#NamedSequ">Named Character Sequences</a></h3>
+
+    <p>In some limited circumstances it is necessary to also provide a name for 
+	such sequences. The primary example is the need to have an identifier for a 
+	sequence to correlate with an identifier in another standard, for which a 
+	cross-mapping to Unicode is desired. To address this need, the Unicode 
+	Standard defines a mechanism for naming sequences and provides a short list 
+	of sequences that have been formally named. This list is deliberately 
+	selective: it is neither possible nor desirable to attempt to provide names 
+	for all possible sequences of Unicode characters that could be of&nbsp; 
+	interest. </p>
+    <p>This annex defines the concept of a <i>Unicode named character sequence</i>, 
+    specifies a notational convention for such sequences, and a set of rules constraining 
+    possible names applied to character sequences. <i>Section 5,
+	<a href="index.html#DataFile">Data Files</a></i>, identifies the data file containing the normative list 
+    of Unicode named character sequences. As is the case for character 
+	names, named character sequences are strictly synchronized with ISO/IEC 
+	10646.</p>
+    <p><i>Table 2</i> provides some examples of Unicode named character sequences to 
+    illustrate the kinds of entities that have been formally named. The 
+    “Sequence” column illustrates the entity in question with a representative 
+    rendering above the sequence of encoded Unicode 
+    characters that represent that entity. The “Name” column shows the name 
+    that has been associated with that sequence.</p>
+    
+		<p class="caption">Table 2. <a name="Named_Sequences_Example_Table" href="index.html#Named_Sequences_Example_Table">Examples of Named Character Sequences</a></p>
+	<div align="center">
+		<table class="subtle">
+			<tr>
+				<th>Sequence</th>
+				<th>Name</th>
+				<th>Notes on Usage</th>
+			</tr>
+			<tr>
+				<td style="text-align: center">
+					<img src="images/i-macron-grave.jpg" border="0" alt="012B, 0300"></td>
+				<td style="vertical-align: middle">LATIN SMALL LETTER I WITH MACRON AND GRAVE</td>
+				<td style="vertical-align: middle">Livonian</td>
+			</tr>
+			<tr>
+				<td style="text-align: center">
+					<img src="images/high-low-tone.jpg" border="0" alt="02E5, 02E9"></td>
+				<td style="vertical-align: middle">MODIFIER LETTER EXTRA-HIGH 
+				EXTRA-LOW CONTOUR TONE BAR</td>
+				<td style="vertical-align: middle">Contour tone letter</td>
+			</tr>
+			<tr>
+				<td style="text-align: center">
+					<img src="images/katakana-ainu-p.jpg" border="0" alt="31F7, 309A"></td>
+				<td style="vertical-align: middle">KATAKANA LETTER AINU P</td>
+				<td style="vertical-align: middle">Ainu in kana transcription</td>
+			</tr>
+			<tr>
+				<td style="vertical-align: middle; text-align:center">
+					<img src="images/17BB17C6.jpg" border="0" alt="17BB, 17C6"></td>
+				<td style="vertical-align: middle">KHMER VOWEL SIGN OM</td>
+				<td style="vertical-align: middle">Khmer</td>
+			</tr>
+			<tr>
+				<td style="vertical-align: middle; text-align:center">
+					<img src="images/17B617C6.jpg" border="0" alt="17B6,17C6"></td>
+				<td style="vertical-align: middle">KHMER VOWEL SIGN AAM</td>
+				<td style="vertical-align: middle">Khmer</td>
+			</tr>
+			<tr>
+				<td style="vertical-align: middle; text-align:center">
+					<img src="images/17D21780.jpg" border="0" alt="17D2,1780"></td>
+				<td style="vertical-align: middle">KHMER CONSONANT SIGN COENG KA</td>
+				<td style="vertical-align: middle">Khmer</td>
+			</tr>
+		</table>
+		</div>
+	<p>&nbsp;</p>
+    
+	<h3>1.2 <a name="VarSequ" href="index.html#VarSequ">Relation to Variation Sequences</a></h3>
+
+	<p>Unicode named character sequences differ from Unicode variation 
+    sequences. The latter are documented in <i>Section 23.4</i>, <i>Variation Selectors</i> in [<a href="../tr41/tr41-19.html#Unicode">Unicode</a>] and are listed exhaustively in the data file StandardizedVariants.txt 
+    in the Unicode Character Database [<a href="../tr41/tr41-19.html#UCD">UCD</a>].</p>
+    <p>Variation sequences always consist of a sequence of precisely 
+	defined code points, 
+	the second of which must be a variation selector. There are additional constraints on which types 
+    of characters they can start with. Variation sequences have a restricted 
+	range of 
+    glyphic shapes, but have no associated name.</p>
+    <p>Named character sequences can, in principle, consist of code point 
+    sequences of any length, without constraints on what types of characters are 
+    involved. They do not have a specifically defined glyphic shape, but they <i>
+    do</i> have a formally specified name associated with them.</p>
+
+	<h2>2 <a name="Def_Notation" href="index.html#Def_Notation">Definitions and Notation</a></h2>
+
+	<h3>2.1 <a name="Definitions" href="index.html#Definitions">Definitions</a></h3>
+	<p><i><b><a name="UAX34-D1" href="index.html#UAX34-D1">UAX34-D1</a>.</b> Unicode named character sequence:</i> A specific sequence of two or 
+            more Unicode characters, together with a formal name designating 
+            that sequence.</p>
+
+    <p><i><b><a name="UAX34-D2" href="index.html#UAX34-D2">UAX34-D2</a>.</b> Unicode namespace:</i> A set of strings used to label
+    	entities in some context in the Unicode Standard, together with a rule or list of rules
+    	which specify how the strings are constructed and a uniqueness rule which specifies
+    	how candidate strings are determined to be unique within the set.</p>
+
+    <p>Examples of Unicode namespaces include the namespace for character names
+    	themselves, the namespace for character property aliases, and the namespaces for
+    	enumerated property value aliases.</p>
+
+    <p><i><b><a name="UAX34-D3" href="index.html#UAX34-D3">UAX34-D3</a>.</b> Unicode namespace for character names:</i> The
+    	Unicode namespace consisting of Unicode character names, character name aliases,
+        and the names for Unicode named character sequences.</p>
+
+    <p>The rules which specify how the names in the Unicode namespace for
+    	character names are constructed are spelled out in <i>Section 4.8, Name</i> in 
+    	[<a href="../tr41/tr41-19.html#Unicode">Unicode</a>].
+        Further conventions which apply specifically to the creation of appropriate names
+        for Unicode named character sequences are provided in <a href="index.html#UAX34-R4">UAX34-R4</a> below.</p>
+
+    <p>The uniqueness rule for names in the Unicode namespace is specified
+    	in <a href="index.html#UAX34-R3">UAX34-R3</a> below.</p>
+
+	<h3>2.2 <a name="Notation" href="index.html#Notation">Notational Conventions</a></h3>
+
+    <p>The notation for a Unicode named character sequence consists of the 
+    general conventions for character sequences in <i>Appendix A, Notational 
+	Conventions,</i> of [<a href="../tr41/tr41-19.html#Unicode">Unicode</a>], together with 
+    name conventions as specified in <i>Section 4, <a href="index.html#Names">Names</a></i>. Thus a typical representation of a Unicode named character sequence 
+	would be a USI followed directly by the name of the sequence:</p>
+    <blockquote>
+    <p>&lt;U+012B, U+0300&gt; LATIN SMALL LETTER I WITH MACRON AND GRAVE</p>
+    </blockquote>
+    <p></p>
+    <p>In contexts that supply other clear means for delimitation, such as data 
+	files or tables, the bracketing and comma delimitation conventions for the 
+	sequences may be dropped, as in</p>
+    <blockquote>
+    <p>012B 0300;LATIN SMALL LETTER I WITH MACRON AND GRAVE</p>
+	</blockquote>
+		
+	<h2>3 <a name="Conformance" href="index.html#Conformance">Conformance</a></h2>
+	
+	<p>Conformance to the Unicode Standard <i>requires</i> 
+	conformance to the specification in this annex. The relationship between 
+	conformance to the Unicode Standard and conformance to an individual Unicode 
+	Standard Annex (UAX) is described in more detail 
+	in <i>Section 3.2, Conformance Requirements</i> in [<a href="../tr41/tr41-19.html#Unicode">Unicode</a>]. </p>
+	<i><b><a name="UAX34-C1" href="index.html#UAX34-C1">UAX34-C1</a>.</b> If a process purports to implement Unicode named 
+            character sequences, it shall use only those named character 
+            sequences defined in the file NamedSequences.txt in the Unicode 
+            Character Database.</i><p>Only the named character sequences in NamedSequences.txt are 
+	named in 
+    this standard. No other Unicode character sequences are given names in this 
+	version of the Unicode Standard, although named character 
+	sequences may be added in the future. Only sequences that are in Normalization 
+		Form NFC are given names in the Unicode Standard.</p>
+    <p>Conformance to this clause should not be construed as preventing 
+    implementers from providing informal names of their choice to any entities 
+    or character sequences, as appropriate. However, such informal names are not 
+    specified in any way by this standard for use in interchange.</p>
+	<p>The use of unnamed character sequences is not affected by the specifications in 
+	this annex.</p>
+	
+	<h3>3.1 <a name="ProvProc" href="index.html#ProvProc">Provisional Process for Named Character Sequences</a></h3>
+	
+	<p>When named character sequences are first suggested for inclusion in the 
+	Unicode Standard, they may be accepted provisionally. In such cases, they 
+	are listed in the file NamedSequencesProv.txt. See [<a href="../tr41/tr41-19.html#DataProv">DataProv</a>].
+</p><p>
+Character sequences and proposed names listed in
+NamedSequencesProv.txt are <i>provisional</i> only
+and have no other status. They become part of the
+standard itself only when approved for inclusion in NamedSequences.txt.
+</p><p>
+The use of a provisional list is meant to allow sufficient time
+for review and comment on proposed named character
+sequences before they are finally approved. This also
+enables the normative data file, NamedSequences.txt, to remain stable.</p>
+
+	<h3>3.2 <a name="Stability" href="index.html#Stability">Stability of Approved Named Character Sequences</a></h3>
+	
+	<p>Once a Unicode named character sequence has been approved, it is stable and will not
+	be changed in any way in future versions of the standard. This stability applies both
+	to the name of the named character sequence and to the sequence of code points associated
+	with the name. See [<a href="../tr41/tr41-19.html#Stability">Stability</a>] for more
+	information on the Unicode Consortium Stability Policies.</p>
+
+   	<h2>4 <a name="Names" href="index.html#Names">Names</a></h2>
+   	
+	<p>Names of Unicode named character sequences are unique. 
+	They are part of the Unicode namespace for character names.</p>
+	<p>Names for named character sequences are constructed 
+	according to the following rules:</p>
+	
+	<p><a name="UAX34-R1" href="index.html#UAX34-R1"><i><b>UAX34-R1.</b></i></a> Only Latin capital letters A to Z, 
+	digits 0 to 9 (provided that a digit is not the first character in a word), 
+	SPACE, and HYPHEN-MINUS are used for writing the names.</p>
+
+	<p>This rule is intended to be the same as the rules for Unicode character names,
+	because they share the same namespace. The rules for names are specified in more detail in
+	<i>Section 4.8, Name</i> in [<a href="../tr41/tr41-19.html#Unicode">Unicode</a>].</p>  
+	
+	<p><a name="UAX34-R2" href="index.html#UAX34-R2"><i><b>UAX34-R2.</b></i></a> Only one name is given to each 
+	named character sequence, and each named character sequence must
+	be unique within the Unicode namespace for character names.</p>
+	
+	<p><a name="UAX34-R3" href="index.html#UAX34-R3"><i><b>UAX34-R3.</b></i></a> Names are unique 
+	in the Unicode namespace for character names if they are different even when SPACE and <i>medial</i> 
+	HYPHEN-MINUS characters are ignored, and when the strings “LETTER”, 
+	“CHARACTER”, and “DIGIT” are ignored in comparison of the names.</p>
+
+	<p>There are two grandfathered exceptions to the general statement of
+	this uniqueness rule. These pairs of names are explicitly specified to be distinct, for
+	historical reasons in the development of the standard, and thus must be treated as
+	exceptional cases by any algorithm checking for name uniqueness. One of these
+	exceptions involves two Unicode character names:</p>
+	
+	<blockquote>	
+	<p>116C HANGUL JUNGSEONG OE<br>
+	1180 HANGUL JUNGSEONG O-E</p>
+	</blockquote>
+
+	<p>The other exception involves two character name aliases:</p>
+
+	<blockquote>
+	<p>CANCEL (character name alias for the control code U+0018)<br>
+	CANCEL CHARACTER (character name alias for the control code U+0094)</p>
+    </blockquote>
+
+    <p>The rule UAX34-R3 specifies that only <i>medial</i> HYPHEN-MINUS characters
+    are ignored in comparison. It is possible for a HYPHEN-MINUS character
+    to occur in initial position (following a SPACE) in a word in a Unicode character name.
+    In that position the HYPHEN-MINUS is not ignored for comparison, so the following
+    two existing Unicode character names are unique:</p>
+
+	<blockquote>	
+	<p>0F68 TIBETAN LETTER A<br>
+	0F60 TIBETAN LETTER -A</p>
+	</blockquote>
+
+	<p>The following example shows two hypothetical names that would
+	not be unique by application of UAX34-R3:</p>
+	<blockquote>	
+<p>SARATI LETTER AA<br>
+	SARATI CHARACTER AA</p>
+	</blockquote>
+	<p>These two names would not be unique if the 
+	strings “LETTER” and “CHARACTER” were ignored.</p>
+	
+	<p><a name="UAX34-R4" href="index.html#UAX34-R4"><i><b>UAX34-R4.</b></i></a> Where possible, names 
+	for named character sequences are constructed by 
+    appending the names of the constituent elements together while eliding 
+    duplicate elements, and possibly introducing the words “WITH” 
+    or “AND” 
+    between elements for clarity. Should this process result in a name that 
+    already exists, the name is modified suitably to guarantee uniqueness in the namespace.</p>
+    
+	<p><i>Table 3</i> gives some examples of names for hypothetical sequences 
+	constructed according to UAX34-R4.</p>
+			<p class="caption">Table 3. <a name="Hypothetical_Sequences_Example_Table" href="index.html#Hypothetical_Sequences_Example_Table">Examples of Hypothetical Sequence Names</a></p>
+	<div align="center">
+		<table class="subtle">
+			<tr>
+				<th>USI</th>
+				<th>Alternate Representation of Sequence</th>
+				<th>Name</th>
+			</tr>
+			<tr>
+				<td nowrap>&lt;0041, 0043, 0043&gt;</td>
+				<td>&lt;A, B, C&gt;</td>
+				<td>LATIN CAPITAL LETTER A B C</td>
+			</tr>
+			<tr>
+				<td nowrap>&lt;00CA, 0046&gt;</td>
+				<td>&lt;AE, F&gt;</td>
+				<td>LATIN CAPITAL LETTER AE F</td>
+			</tr>
+			<tr>
+				<td nowrap>&lt;0058, 030A&gt;</td>
+				<td>&lt;X, COMBINING RING ABOVE&gt;</td>
+				<td>LATIN CAPITAL LETTER X WITH RING ABOVE</td>
+			</tr>
+		</table>
+	</div>
+
+<p><a name="UAX34-R5" href="index.html#UAX34-R5"><i><b>UAX34-R5.</b></i></a> Where applicable, the rules 
+	from Annex L, "Character naming guidelines" in ISO/IEC 
+	10646:2012 apply.</p>
+	
+	<blockquote>
+		<p><span class="note">Note:</span> Just 
+		as for character names, the names for sequences may be translated, with the translated 
+	names for each language being unique with respect to each other and the corresponding 
+	set of translated character names. However, translated names are not restricted to the same limited character 
+	set as the English names. Translated names may not be suitable as 
+	identifiers without modification.</p>
+</blockquote>
+
+	<h2>5 <a name="DataFile" href="index.html#DataFile">Data Files</a></h2>
+	
+	<p>A normative data file, NamedSequences.txt, is available consisting of those named 
+	character sequences defined for this version of [<a href="../tr41/tr41-19.html#Unicode">Unicode</a>]. The sequences are listed in the 
+	data file in an abbreviated format. For the location of the data file, see [<a href="../tr41/tr41-19.html#Data34">Data34</a>].</p>
+	<p>In addition, a provisional data file, NamedSequencesProv.txt, is available containing 
+	sequences and names proposed for the standard but not yet approved as part 
+	of the normative list of named character sequences. For the location of the 
+	data file, see [<a href="../tr41/tr41-19.html#DataProv">DataProv</a>].</p>
+	<p>The abbreviated format for named character sequences in the data files uses space
+	delimitation of code points, without the "U+" prefix and without angle brackets. This format for
+	code point sequences is widely shared in data files of the Unicode Character Database. The names
+	for named character sequences are listed in a separate, semicolon-delimited field. Thus a
+	typical entry for the data file is as follows:</p>
+	<pre>
+TAMIL CONSONANT K;  0B95 0BCD</pre>
+        <p>Implementations of Unicode named character sequences may use other formats for this
+        data, as appropriate. The key information is the name itself and its associated code
+        point sequence.</p>
+	
+  <h2 class="nonumber"><a name="Acknowledgments" href="index.html#Acknowledgments">Acknowledgments</a></h2>
+  
+	<p>Ken Whistler authored the initial version and maintained the text prior to Revision 13.</p>
+	<p>Thanks to Asmus Freytag, Mark Davis and Julie Allen for comments on 
+	this annex, including earlier versions.</p>
+  <h2 class="nonumber"><a name="References" href="index.html#References">References</a></h2>
+<p>For references for this annex, see Unicode Standard Annex #41, “<a href="../tr41/tr41-19.html">Common 
+	References for Unicode Standard Annexes</a>.”</p>
+	<h2 class="nonumber"><a name="Modifications" href="index.html#Modifications">Modifications</a></h2>
+	
+        <p>The following summarizes modifications from the previous version of this 
+	annex.</p>
+    
+    <h3>Revision 21 [KW]</h3>
+    <ul>
+        <li><b>Reissued</b> for Unicode 9.0.0</li>
+    </ul>
+
+    <h3>Revision 20 [KW]</h3>
+    <ul>
+        <li><b>Reissued</b> for Unicode 8.0.0</li>
+        <li>Updated table styles.</li>
+        <li>Added bookmark anchors for definitions and for the conformance clause.</li>
+    </ul>
+
+    <h3>Revision 19 [KW]</h3>
+    <ul>
+        <li><b>Reissued</b> for Unicode 7.0.0</li>
+        <li>Added definitions for Unicode namespace and the Unicode namespace for
+        	character names.</li>
+        <li>Major rewrite of <i>Section 4, <a href="index.html#Names">Names</a></i>.</li>
+    </ul>
+
+ 	<p>Revision 18 being a proposed update, only changes between revisions 17 
+	and 19 are noted here.</p>
+
+    <h3>Revision 17</h3>
+    <ul>
+        <li><b>Reissued</b> for Unicode 6.3.0</li>
+    </ul>
+
+ 	<p>Revision 16 being a proposed update, only changes between revisions 15 
+	and 17 are noted here.</p>
+
+      <h3>Revision 15</h3>
+ <ul>
+    <li><b>Reissued</b> for Unicode 6.2.0.</li>
+ </ul>
+
+ 	<p>Revision 14 being a proposed update, only changes between revisions 13 
+	and 15 are noted here.</p>
+
+
+      <h3>Revision 13</h3>
+ <ul>
+    <li><b>Reissued</b> for Unicode 6.1.0.</li>
+ </ul>
+ 	<p>Revision 12 being a proposed update, only changes between revisions 11 
+	and 13 are noted here.</p>
+
+      <h3>Revision 11 [KW]</h3>
+
+  <ul>
+    <li><b>Reissued</b> for Unicode 6.0.0.</li>
+    <li>Reformatted rules and provided anchors for them.</li>
+    <li>Minor edits throughout for consistency.</li>
+    <li>Clarified scope of use for character sequence notation and the
+        format for named character sequences used in the data files.</li>
+    <li>Added explicit statement regarding stability of Unicode named
+        character sequences.</li>
+  </ul>
+	<p>Revision 10 being a proposed update, only changes between revisions 9 
+	and 11 are noted here.</p>
+
+        <p><b>Revision 9</b></p>
+	<ul>
+		<li><b>Reissued</b> for Unicode 5.2.0</li>
+		<li>Added new subhead for Named Character Sequences in Introduction,
+		renumbered <i>Section 1.1</i>, and moved <i>Table 2</i> to better location.</li>
+	</ul>
+	<p>Revision 8 being a proposed update, only changes between revisions 7 
+	and 9 are noted here.</p>
+	<p><b>Revision 7</b></p>
+	<ul>
+		<li><b>Reissued</b> for Unicode 5.1.0.</li>
+		<li>Corrected names for two Khmer examples in <i>Table 2</i>.</li>
+	</ul>
+	<p>Revision 6 being a proposed update, only changes between revisions 5 
+	and 7 are noted here.</p>
+	<p><b>Revision 5</b></p>
+	<ul>
+		<li>Added text to clarify that named character sequences are in NFC and 
+		are synchronized with 10646.</li>
+		<li>Added text to rule R4 to indicate that “WITH” and “AND” may be added 
+        between elements of a name for a named sequence, for clarity in the 
+        resulting name.</li>
+		<li>Added <i>Section 3.1</i> and DataProv reference.</li>
+	</ul>
+	<p>Revision 4 being a proposed update, only changes between revisions 3 
+	and 5 are noted here.</p>
+	<b>Revision 3</b><ul>
+		<li>Finished editing for initial publication as part of Unicode 
+		4.1.0.</li>
+	</ul>
+	<p>
+	<b>Revision 2</b></p>
+    <ul>
+		<li>Internal draft, revised substantially for initial publication as part of Unicode 
+		4.1.0.</li>
+	</ul>
+	<p><b>Revision 1</b></p>
+	<ul>
+		<li>Initial version</li>
+	</ul>
+	<hr>
+	<p class="copyright">© 2016 
+	Unicode, Inc. All Rights Reserved. The Unicode Consortium makes no expressed 
+	or implied warranty of any kind, and assumes no liability for errors or omissions. 
+	No liability is assumed for incidental and consequential damages in connection 
+	with or arising out of the use of the information or programs contained or accompanying 
+	this technical report. The Unicode
+	<a href="http://www.unicode.org/copyright.html">Terms of Use</a> apply.</p>
+	<p class="copyright">Unicode and the Unicode logo are trademarks of Unicode, Inc., 
+	and are registered in some jurisdictions.</p>
+	<p>&nbsp;</p>
+    
+    </div> <!-- body -->
+</body>
+
+</html>

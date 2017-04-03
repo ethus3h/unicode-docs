@@ -1,0 +1,172 @@
+<!doctype HTML 
+PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta http-equiv="Content-Language" content="en-us">
+<link rel="stylesheet" href="../../unicode/reports/reports.css" 
+type="text/css">
+<title>UTN #32: Manuel de Codage / Unicode Egyptian Mapping</title>
+</head>
+
+<body bgcolor="#ffffff">
+<div style="margin: 2em">
+<table class="header">
+  <tr>
+    <td class="icon"><a href="http://www.unicode.org"><img align="middle" 
+    alt="[Unicode]" border="0" 
+    src="../../webscripts/logo60s2.gif" width="34" height="33"></a>&nbsp;&nbsp;
+    <font size="3"><a class="bar" href="../index.html">Technical 
+    Notes</a></font></td>
+  </tr>
+  <tr>
+    <td class="gray">&nbsp;</td>
+  </tr>
+</table>
+  <h2 align="center">Unicode Technical Note #32</h2>
+  <h1 align="center" style="font-size: large">MAPPING BETWEEN MANUEL DE CODAGE<br>AND UNICODE EGYPTIAN HIEROGLYPHS</h1>
+  <table class="wide">
+    <tr>
+      <td>Version</td>
+      <td><a href="index.html#TrackingNumber1">1</a></td>
+    </tr>
+    <tr>
+      <td>Authors</td>
+      <td>Lee Collins</td>
+    </tr>
+    <tr>
+      <td>Date</td>
+      <td>September 25, 2009</td>
+    </tr>
+    <tr>
+      <td>This Version</td>
+      <td><a href="tn32-1.html">
+      http://www.unicode.org/notes/tn32/tn32-1.html</a></td>
+    </tr>
+    <tr>
+      <td>Previous Version</td>
+      <td>n/a</td>
+    </tr>
+    <tr>
+      <td>Latest Version</td>
+      <td><a href="index.html">http://www.unicode.org/notes/tn32/</a></td>
+    </tr>
+  </table>
+  <p><br>
+  </p>
+  <h3><i>Summary</i></h3>
+  <p><i><em>This document describes an associated data file that provides 
+  mappings between Manuel de Codage and Unicode Egyptian codepoints</em>. 
+  Readers are assumed to be conversant with these systems. See The Unicode 
+  Standard Version 5.2 (or later), 
+  Chapter 14.17 Egyptian Hieroglyphs in [<a href="index.html#Unicode5.2">Unicode</a>] for 
+  a discussion of how these relate. See also the code charts for
+  <a href="index.html#Unicode_Egyptian_Hieroglyphs">Unicode Egyptian Hieroglyphs</a>.</i></p>
+  <h3><i>Status</i></h3>
+  <p><i>This document is a <b>Unicode Technical Note</b>. Sole responsibility for 
+  its contents rests with the author(s). Publication does not imply any endorsement by the 
+  Unicode Consortium. This document is not subject to the 
+	<a href="http://www.unicode.org/policies/patent_policy.html">Unicode Patent Policy</a>.</i></p>
+
+<p>For information on Unicode Technical Notes including criteria for acceptance, see
+<a href="../index.html">http://www.unicode.org/notes/</a>.</p>
+
+<hr>
+
+    <p>&nbsp;</p>
+	<p>The file &quot;<a href="Unicode-MdC-Mapping-v1.utf8">Unicode-MdCMapping-v1.utf8</a>&quot; contains information for mapping 
+	between single Egyptian hieroglyphs defined in Unicode 5.2 [<a href="index.html#Unicode5.2">Unicode</a>] and hieroglyphs 
+	encoded using the notation known as &quot;Manuel de Codage.&quot; (MdC). The file is 
+	stored in UTF-8 format with Unix-type &quot;LF&quot; line endings. Each line contains 
+	four tab separated fields, the last being an optional note, as follows:</p>
+	<p style="margin-left: 40px"><span lang="FR"><b>Unicode character</b>&lt;tab&gt;<b>Unicode code point</b>&lt;tab&gt;<b>MdC</b>&lt;tab&gt;<b>note</b></span></p>
+	<p>MdC allows, indeed encourages, 
+	the use of phonetic codes in lieu of the Gardiner identifiers. For example, 
+	𓀎, U+1300e can be represented using the Gardiner identifier A12 or the 
+	phonetic representation &quot;mSa&quot; (i.e. &quot;mšʕ&quot;). Where they exist, both forms are 
+	included in the table in the <b>MdC</b> field, with the phonetic encoding preceding the Gardiner 
+	value, delimited by a space.</p>
+	<p>There is some flexibility in the 
+	representation of the double reed leaf (𓇌 U+131cc). Gardiner did not assign 
+	a single identifier to this combination, presumably since it is simply the 
+	juxtaposition of two individual reed leaves. The Manuel de Codage site at
+	<a href="http://www.catchpenny.org/codage/">http://www.catchpenny.org/codage/</a>, in fact, assigns the phonetic value &quot;y&quot; 
+	to a related form, Z4 (𓏭, U+133ed). However, many implementations in MdC 
+	use &quot;y&quot; to represent the double reed-leaf as a single unit. See, for 
+	example: <a href="http://en.wikipedia.org/wiki/Manuel_de_Codage">http://en.wikipedia.org/wiki/Manuel_de_Codage</a>.&nbsp; To avoid 
+	conflict with the two forms, I have chosen to represent the double reed leaf 
+	by juxtaposing the phonetic codes for the constituent elements: &quot;i-i&quot;. 
+	Particular implementations may wish to use &quot;y&quot;, but should then represent 
+	U+133ed with &quot;Y&quot; or some other notation.</p>
+	<p>Unicode encodes a number of signs that are represented in MdC 
+	using combinations or mark-up to modify direction or rotation. In such case 
+	the mapping reflects this correspondence. For example: 𓐔 (U+13414), which 
+	is 𓐓 (U+13413) reversed, is mapped to J7\. </p>
+	<p>Unicode encodes a 
+	number of signs that are merely contextual variants of other Gardiner signs, 
+	For example, U+133b2 is a lower form of U+133b1 used in building compounds. 
+	Similarly, some signs have been duplicated to distinguish their use as a 
+	determinative from their use a numbers. The mapping table only reflects the 
+	base forms, with a note given about the variants.</p>
+	<p><a href="index.html#Hieroglyphica">Hieroglyphica</a> defines a number of signs used to 
+	represent the Egyptian &quot;<a href="index.html#Nome_Signs">nomes</a>.&quot; These differ from the Unicode signs. Also, 
+	many of the Unicode signs can be built up from components using the MdC 
+	composition marks. The mapping table contains both, and, where relevant a 
+	note &quot;eqv&quot; has been added to reflect that the mappings are equivalent 
+	semantically, but not graphically identical.</p>
+	<p>&nbsp;</p>
+	<h3>Sources Consulted</h3>
+	<p><span lang="FR"><a name="Unicode_Egyptian_Hieroglyphs">Unicode Egyptian Hieroglyphs</a>:
+	<a href="http://www.unicode.org/charts/PDF/U13000.pdf">http://www.unicode.org/charts/PDF/U13000.pdf</a></p>
+	<p><span lang="FR"></p>
+	<p><a name="Manual_de_Codage">Manual de Codage</a>: <a href="http://www.catchpenny.org/codage/">http://www.catchpenny.org/codage/</a> </p>
+	<p><a name="Hieroglyphica">Hieroglyphica</a> (Gardiner identifiers for the extended signs not in 
+	Gardiner proper) <a href="http://www.ccer.nl/">http://www.ccer.nl/</a> and
+	<a href="http://pagesperso-orange.fr/hieroglyphes/CCER-Hieroglyphica.htm">http://pagesperso-orange.fr/hieroglyphes/CCER-Hieroglyphica.htm</a> </p>
+	<p><a name="Nome_Signs">Nome Signs</a>: <a href="http://www.digitalegypt.ucl.ac.uk/geo/index.html">http://www.digitalegypt.ucl.ac.uk/geo/index.html</a> </p>
+	<p><a name="Rainer_Hannig">Rainer Hannig</a>: Großes Handwörterbuch Ägyptisch-Deutsch</p>
+  <p><br>
+  </p>
+  <h2><a name="References">References</a></h2>
+  <table class="noborder" style="border-collapse: collapse" cellpadding="8" 
+  cellspacing="0">
+     <tr>
+      <td class="noborder" valign="top">[<a name="Unicode5.2"><span>Unicode5.2</span></a>]</td>
+      <td class="noborder" valign="top"><span>The Unicode Consortium. The Unicode Standard, Version 5.2.0, defined
+by: <a href="http://www.unicode.org/versions/Unicode5.2.0/">The Unicode Standard, Version 5.2</a> (Mountain View, CA: The Unicode Consortium, 2009. ISBN 0-nnn-nnnnn-n)</span></td>
+    </tr>
+    <tr>
+      <td width="1" class="noborder">[<a name="Versions">Versions</a>]</td>
+      <td class="noborder">Versions of the Unicode Standard<br>
+      <a href="http://www.unicode.org/standard/versions/">
+      http://www.unicode.org/standard/versions/<br>
+      </a><i>For details on the precise contents of each version of the Unicode 
+      Standard, and how to cite them.</i></td>
+    </tr>
+  </table>
+  <p>&nbsp;</p>
+  <h2><a name="Modifications">Modifications</a></h2>
+  <p>The following summarizes modifications from the previous version of this 
+  document.</p>
+  <table class="noborder" style="border-collapse: collapse" cellpadding="8" 
+  cellspacing="0">
+    <tr>
+      <td width="1" class="noborder"><a name="TrackingNumber1">1</a></td>
+      <td class="noborder">Initial version</td>
+    </tr>
+  </table>
+  <p class="copyright">Copyright © 2009 Lee Collins and Unicode, Inc. All Rights Reserved. The 
+  Unicode Consortium and Lee Collins make no expressed or implied warranty of any 
+  kind, and assume no liability for errors or omissions. No liability is assumed 
+  for incidental and consequential damages in connection with or arising out of 
+  the use of the information or programs contained or accompanying this 
+  technical note. The Unicode <a href="http://www.unicode.org/copyright.html">Terms of Use</a> apply.</p>
+  <p class="copyright">Unicode and the Unicode logo are trademarks of Unicode, 
+  Inc., and are registered in some jurisdictions.
+  </p>
+</div>
+
+</body>
+
+</html>

@@ -1,0 +1,599 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+
+       "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta http-equiv="Content-Language" content="en-us">
+<link rel="stylesheet" href="../../unicode/reports/reports.css" type="text/css">
+<title>UTR #49 - Unicode Character Categories</title>
+<style type="text/css">
+span.dimmed { color: #808080; display:none }
+</style>
+</head>
+
+<body>
+
+<table class="header" cellpadding="0" cellspacing="0" width="100%">
+	<tr>
+		<td class="icon"><a href="http://www.unicode.org/">
+		<img align="middle" alt="[Unicode]" border="0" src="../../webscripts/logo60s2.gif" width="34" height="33"></a>
+		<a class="bar" href="../index.html">Technical Reports</a></td>
+	</tr>
+	<tr>
+		<td class="gray">&nbsp;</td>
+	</tr>
+</table>
+<div class="body">
+
+  <h2 align="center"><span class="changedspan">Draft</span></h2>
+
+	<h2 align="center">Unicode Technical Report #49</h2>
+	<h1 align="center">Unicode Character Categories</h1>
+	<table border="1" cellpadding="2" width="95%">
+		<tr>
+			<td height="24" valign="TOP">Editors</td>
+			<td valign="TOP">Ken Whistler</td>
+		</tr>
+		<tr>
+			<td height="24" valign="TOP">Date</td>
+			<td class="changed" valign="TOP">2011-07-12</td>
+		</tr>
+		<tr>
+			<td height="24" valign="TOP">This Version</td>
+			<td class="changed" valign="TOP">
+			<a href="tr49-2.html">
+			http://www.unicode.org/reports/tr49/tr49-2.html</a></td>
+		</tr>
+		<tr>
+			<td height="24" valign="TOP">Previous Version</td>
+			<td class="changed" valign="TOP"><a href="tr49-1.html">
+			http://www.unicode.org/reports/tr49/tr49-1.html</a></td>
+		</tr>
+		<tr>
+			<td height="24" valign="TOP">Latest Version</td>
+			<td valign="TOP"><a href="index.html">http://www.unicode.org/reports/tr49/</a></td>
+		</tr>
+		<tr>
+			<td height="24" valign="TOP">Revision</td>
+			<td class="changed" valign="TOP"><a href="tr49-2.html#Modifications">2</a></td>
+		</tr>
+	</table>
+	<!-- BEGIN OF DOCUMENT FRONT MATTER -->
+	<h4>Summary</h4>
+	<p><i>This document presents an approach to the categorization of Unicode characters,
+        and documents a data file that implementers can use for defining Unicode character categories.</i></p>
+	<h4>Status</h4>
+	<!-- NOT YET APPROVED -->
+	<p><i>This document is a <b><font color="#ff3333">draft</font></b> document 
+	which may be updated, replaced, or superseded by other documents at any time. 
+	Publication does not imply endorsement by the Unicode Consortium. This 
+	is not a stable document; it is inappropriate to cite this document as other 
+	than a work in progress.</i></p>
+        <!-- END NOT YET APPROVED -->
+	<!-- APPROVED
+	<p><i>This document has been reviewed by Unicode members 
+	and other interested
+	parties, and has been approved for publication by the Unicode Consortium.
+	This is a stable document and may be used as reference material or cited as
+	a normative reference by other specifications.</i></p>
+	END APPROVED -->
+	
+	<blockquote>
+				<p><i><b>A Unicode Technical Report (UTR)</b> contains informative 
+				material. Conformance to the Unicode Standard does not imply conformance 
+				to any UTR. Other specifications, however, are free to make normative 
+				references to a UTR.</i></p>
+	</blockquote>
+	<p><i>Please submit corrigenda and other comments with the online reporting 
+	form [<a href="tr49-2.html#Feedback">Feedback</a>]. Related information that is useful 
+	in understanding this document is found in the <a href="tr49-2.html#References">References</a>. 
+	For the latest version of the Unicode Standard see [<a href="tr49-2.html#Unicode">Unicode</a>]. 
+	For a list of current Unicode Technical Reports see [<a href="tr49-2.html#Reports">Reports</a>]. 
+	For more information about versions of the Unicode Standard, see [<a href="tr49-2.html#Versions">Versions</a>].</i></p>
+	<h4><i>Contents</i></h4>
+	<ul class="toc">
+		<li>1 <a href="tr49-2.html#Introduction">Introduction</a></li>
+		<li>2 <a href="tr49-2.html#Character_Categories">Character Categories</a>
+		<ul class="toc">
+			<li>2.1 <a href="tr49-2.html#Hierarchical_Typology">Hierarchical Typology</a></li>
+			<li class="removed">2.2 Implementation by Annotation and Merging</li>
+			<li>2.<span class="changedspan">2</span> <a href="tr49-2.html#Category_Names">Names for Categories</a></li>
+			<li class="changed">2.3 <a href="tr49-2.html#Display_Labels">Display Labels for Categories</a></li>
+			<li>2.4 <a href="tr49-2.html#Informative_Status">Informative Status of the Categories</a></li>
+		</ul>
+		</li>
+		<li>3&nbsp; <a href="tr49-2.html#Data_Files">Data File<span class="changedspan">s</span></a>
+                <ul class="toc">
+                        <li class="changed">3.1 <a href="tr49-2.html#Maintenance">Maintenance of Data Files</a></li>
+                </ul>
+                </li>
+	</ul>
+	<ul class="toc">
+		<li><a href="tr49-2.html#References">References</a> </li>
+		<li><a href="tr49-2.html#Acknowledgements">Acknowledgements</a> </li>
+		<li><a href="tr49-2.html#Modifications">Modifications</a> </li>
+	</ul>
+	<hr>
+	<!-- BEGIN OF DOCUMENT CONTENTS PROPER -->
+	<h2><a name="Introduction">1 Introduction</a></h2>
+	
+<p>One problem that has often been considered is how to extract good "categories" for Unicode
+characters out of the Unicode names list. This goal is occasioned, for example,
+by the need to develop new character picker applications,
+which organize characters into groups that will
+make sense for people searching for characters in graphic panes
+or other UI elements.</p>
+
+<p>The problem is two-fold. First, the existing machine-readable
+data files in the Unicode Character Database [<a href="tr49-2.html#UCD">UCD</a>] 
+do not provide a fine enough categorization to
+meet the requirements of such applications. For example, the General_Category
+property distinguishes letters from combining marks
+and punctuation and symbols, but it doesn't drill down
+to the next level: independent vowel letters versus
+consonants versus matras; or game symbols versus map
+symbols versus zodiacal symbols versus dingbats, and
+so on. Second, people who need that kind of finer
+detail of categorization have generally been attempting to extract
+it by making use of the editorial subheaders used in
+the printing of the Unicode names list, figuring that
+that information is better than nothing and assuming that doing
+the finer-level classification from scratch would be
+prohibitively complex.</p>
+
+<p>However, the subheaders in the Unicode
+names list have always been editorial content aimed primarily at
+structuring the code charts for display, and are not
+particularly well-suited to a systematic categorization
+of Unicode characters in any context more extensive than
+considering characters visually displayed one chart at a time. Efforts to revise the
+subheaders to make them work better for machine-extracted
+categorization of Unicode characters from the Unicode
+names list are counterproductive. The subheaders would not
+work very well if reorganized that way, and the net result would be a
+significant deterioration of the editorial content of
+the code charts.</p>
+
+<p>The existing
+subheaders also often group characters which other applications
+might want to distinguish. For example, the
+header for the range U+2600..U+260D is "Weather and astrological 
+symbols". But we can do much
+better, distinguishing more precisely those which are
+weather symbols, such as U+2602 UMBRELLA, those which
+are astrological symbols, such as U+260A ASCENDING NODE,
+and those which really are not either, such as U+2606 WHITE STAR.</p>
+
+<p>What is needed to address the general problem is an approach that focuses
+on the character category distinctions needed by such applications,
+without being entangled with the editorial requirements for
+the Unicode names list maintenance. This document presents such
+an approach, and documents the resulting data file that implementers
+can use for <span class="removedspan">defining</span>
+<span class="changedspan">further refining of</span> Unicode character categories
+<span class="changedspan">for particular applications</span>.</p>
+
+
+	<h2><a name="Character_Categories">2 Character Categories</a></h2>
+	
+<p>This section describes the approach taken in this report for the
+provision of a set of usable categories for Unicode characters.</p>
+	
+	<h3>2.1 <a name="Hierarchical_Typology">Hierarchical Typology</a></h3>
+
+<p>The current scheme of categorization uses a hierarchical typology.
+Such a scheme assumes that each category provided may itself be further
+subdivided at another level into more subcategories. Each subcategorization
+is, in principle, independent of the subcategorization of other categories.
+Thus, for example, how one might want to subcategorize letters would
+typically be quite distinct from how one might most usefully subcategorize
+punctuation marks. This approach departs from the structure of
+partition properties for Unicode characters, such as the General_Category
+property itself. A partition property assumes a single dimension of
+semantic applicability, and then assigns every character a single value
+within that dimension. Such a character property is easy to implement,
+but as users of the General_Category property well know, the drawback
+of such partitions for categorization is their rigidity and the inability
+to deal with edge cases and nuances.</p>
+
+<p>The approach to categorization taken here makes no assumption that 
+any particular level of <span class="changedspan">the hierarchical</span> subcategorization
+has any fixed significance. A third-level subcategorization of a punctuation
+mark might involve rather different salient distinctions than a third-level
+subcategorization of symbols, for example. The typology basically
+starts with first-level categories roughly based on the General_Category
+property, but then may diverge arbitrarily on a category-by-category basis,
+depending on what is most useful for distinguishing characters.</p>
+
+<p>There is no assumption that all levels have to be specified for all
+characters. Categories defined this way can  
+be extensible based on what level of detail
+people find useful to maintain for various characters. There is also
+no assumption that there is actually a single correct solution for
+categorization. The categorization may be modified and improved over time.
+Furthermore, it should be expected that actual implementations will merely
+start with categories in the data file and run with them, to provide
+whatever additional changes or refinements are needed in their particular
+domain.</p>
+
+<p>These general principles are illustrated in part by the following examples,
+for several different major categories. For example, for letters:</p>
+
+<pre>
+Letter
+
+Letter > Vowel
+
+Letter > Vowel > Dependent  (i.e. Indic matras)
+
+Letter > Consonant > Dependent > Subjoined
+</pre>
+
+<p>For symbols:</p>
+
+<pre>
+Symbol
+
+Symbol > Graphic
+
+Symbol > Technical
+
+Symbol > Technical > Keyboard
+
+Symbol > Arrow
+
+Symbol > Arrow > Harpoon
+
+Symbol > Arrow > Harpoon > Double
+</pre>
+
+<p>For punctuation marks:</p>
+
+<pre>
+Punctuation
+
+Punctuation > Space
+
+Punctuation > Quotation
+
+Punctuation > Bracket
+
+Punctuation > Bracket > CJK
+</pre>
+
+<p>Currently the categorization makes use of four levels of <span class="removedspan">typology</span>
+<span class="changedspan">hierarchy</span>, but
+this approach could easily be extended to five (or more), if finer
+levels of distinction for some groups of characters proves
+to be desirable. For example, arrows could be further subcategorized
+based on their shapes and orientations.</p>
+
+	<h3 class="removed">2.2 <a name="Annotation_Merging">Implementation by Annotation and Merging</a></h3>
+
+	<h3>2.<span class="changedspan">2</span> <a name="Category_Names">Names for Categories</a></h3>
+	
+<p class="reviewnote">Note: The names currently in the data file are provisional. It is
+expected that there will be further changes, corrections, and/or subdivisions
+proposed during the review of the data.</p>
+
+<ul class="removed">
+	<li>Each label should have a name that is meaningful in isolation. E.g.
+   "Western Music", not "Western".</li>
+   	<li>Labels should be the same (or nearly) only when they really mean the
+   same thing.</li>
+   	<li>Labels that mean the same thing (or nearly) should be the same.</li>
+   	<li>Labels should not be "empty"; that is, if a category further down the
+   	hierarchy is given a label, an intermediate level should not be missing a
+   	label. (This will simplify algorithmic processing of the categories
+   	in the data file.)</li>
+</ul>
+
+<p class="changed">Each level of hierachical categorization is given a conventional
+name, such as "Letter" or "Symbol" for the highest level, or "Game", "Technical",
+"Weather", "Astrological", and so for, for various sub-levels. As far as possible,
+such names are drawn from actual practice in the Unicode Standard and in the
+UTC committee practice in referring to various groups of characters.</p>
+
+<p class="changed">There are no "empty" intermediate levels. Thus, for instance, if a name
+is given in the date file for a fourth level subcategorization for a particular
+character, there will also always be explicit names given at the first, second,
+and third level of categories for that character.</p>
+
+	<h3 class="changed">2.3 <a name="Display_Labels">Display Labels for Categories</a></h3>
+        
+<p class="changed">Because of the way the hierarchical categorization works, and
+the way in which names are chosen for the subcategories, it is always possible to
+create unique identifiers for each terminal subcategory in the hierarchy,
+simply by concatenating the level names together. Thus, for example, one could
+have identifiers such as "Letter_Consonant_Dependent_Subjoined" or "Symbol_Technical_Keyboard".
+However, while unique, such identifiers are not particularly felicitous as
+display labels for subcategories.</p>
+
+<p class="changed">Certainly, implementers can apply whatever display labels make
+sense for their particular context. However, to make the starting point somewhat
+easier, suggested display labels are also supplied in a data file. A display label
+is provided for each unique, hierarchical subcategory. The display labels are
+created with the following principles in mind:</p>
+	
+<ul class="changed">
+	<li>Each display label is meaningful in isolation.</li>
+   	<li>Display labels are the same (or nearly) only when they really mean the same thing.</li>
+        <li>As much as possible, display labels follow common English practice
+            in referring to identified groups of characters, to avoid creating
+            new, artificial terminology that would be difficult to translate.</li>
+</ul>
+
+<p class="changed">Although these principles are generally adhered to, 
+some of the categorial distinctions between Unicode characters
+are rather technical in nature. Also, there are many characters in the Unicode
+Standard for writing systems which are mostly unfamiliar to the English-speaking
+world. In such cases, it is occasionally unavoidable that technical terminology ends
+up in the list of suggested display labels.</p>
+ 
+        <h3>2.4 <a name="Informative_Status">Informative Status of the Categories</a></h3>
+        
+<p class="changed">The categories defined in the data file are informative, and
+may be changed or augmented in the future. This distinguishes them from
+the General_Category character property, which is normative and rather
+constrained in how it can be changed.</p>
+
+<p class="removed">The first key here is staying flexible, so that the classification can
+be extended and modified easily in the future, as may
+prove suitable. Using an annotation approach and then programmatic merging with
+UnicodeData.txt makes it very easy to assign new
+subtypes or to change or subdivide ranges already assigned to
+types and subtypes, without having to do extensive modification
+of files that give explicit listings of values for each character.</p>
+
+<p class="removed">The second key is corollary to the first: this <i>must</i> not turn
+into another normative data file and/or normative set of
+property values. That is the trap that has always afflicted
+the General_Category property and which makes it useless for
+this kind of finer-level categorization of Unicode characters.</p>
+	
+	<h2><a name="Data_Files">3 Data File<span class="changedspan">s</span></a></h2>
+
+<p>The <span class="changedspan">basic</span> categories data is available in a data file [<a href="tr49-2.html#Data">Data</a>] called
+Categories.txt. That data file contains a listing of all Unicode characters
+other than CJK unified ideographs and Hangul syllables, giving informative category values
+at up to four levels of hierarchical assignment.</p>
+
+<p>The data is formatted in tab-delimited fields, suitable for spreadsheet import.
+<span class="changedspan">Once in a spreadsheet,
+the data can easily be further manipulated to whatever end
+an implementer needs.</span></p> 
+
+<p> The
+field values, along with a sample of the particular category values are shown below.</p>
+
+<pre>
+<b>Code GC Level1    Level2       Level3      Level4       Name</b>
+
+23CE So Symbol    Technical    Keyboard                 RETURN SYMBOL
+...
+2460 No Symbol    Number       Circled                  CIRCLED DIGIT ONE
+...
+25CB So Symbol    Geometric                             WHITE CIRCLE
+...
+2602 So Symbol    Weather                               UMBRELLA
+...
+260A So Symbol    Astrological                          ASCENDING NODE
+...
+2660 So Symbol    Game         Playing card <span class="removedspan">Suit</span>        BLACK SPADE SUIT
+...
+<span class="changedspan">266D So Symbol    Music        Western      Accidental  MUSIC FLAT SIGN
+...</span>
+2FBD So Ideograph Radical      CJK          Kangxi      KANGXI RADICAL HAIR
+...
+A869 Lo Letter    Consonant                             PHAGS-PA LETTER TTA
+...
+</pre>
+
+<p class="reviewnote">Note: For debugging and review, the current data file
+brackets each label, so that the values, including spaces, are easier to see
+and compare. The brackets are not part of the actual category values.
+So for example, an entry will currently appear as follows:</p>
+
+<pre class="reviewnote">
+2660 So [Symbol]    [Game]         [Playing card] [X]   BLACK SPADE SUIT
+</pre>
+
+<p class="reviewnote">Also for debugging and review purposes, empty values in
+unspecified fields are listed as "[X]", rather than as a blank. These conventions
+are only temporary, to assist review when viewing this data in browsers or
+editors, and are not intended to be used in the actual data file in the future.</p>
+
+<p class="changed">The display label data is is available in a data file [<a href="tr49-2.html#Data">Data</a>] called
+CategoryLabels.txt. This data file contains two tab-delimited fields. The first field contains
+a constructed identifier for each unique subcategory currently defined in Categories.txt.
+The second field contains a suggested display label for that subcategory. For example:</p>
+
+<pre class="changed">
+<b>Subcategory Identifier                 Subcategory Display Label</b>
+
+Letter_Consonant                       Consonant
+...
+Letter_Consonant_Dependent_Subjoined   Subjoined Consonant
+...
+Symbol_Arrow_Harpoon                   Harpoon
+...
+Symbol_Game_Playing_card               Playing Card Symbol
+...
+Symbol_Music_Western                   Western Musical Symbol
+...
+Symbol_Technical_Keyboard              Keyboard Symbol
+</pre>
+
+	<h3 class="changed">3.1 <a name="Maintenance">Maintenance of Data Files</a></h3>
+	
+<p>The approach taken to maintaining this hierarchical typology reuses
+technology which is currently designed for maintenance of the Unicode
+names list. In particular, category assignments are treated as annotations
+over ranges of characters. The annotation file <span class="removedspan">can</span>
+<span class="changedspan">is</span> then <span class="removedspan">be</span> maintained
+completely independently of the detailed, character-by-character listing
+files that are part of the UCD&#x2014;most importantly, UnicodeData.txt. In this
+way, the annotation information (and the associated development and
+refinement of categorial assignments) <span class="removedspan">can be</span>
+<span class="changedspan">is</span> version-agnostic, and
+is not required to be updated in lockstep with each version of the
+Unicode Standard.</p>
+	
+<p>The program that is used to maintain 
+annotations for the Unicode names list has been modified slightly, and 
+is now used for an automated merger of 
+categorial annotations file with particular versions of the UnicodeData.txt file, 
+producing as output a
+structured data file containing categorial information
+about all Unicode characters, with an explicit listing for each
+separate character, including its code point and Unicode character name.</p>
+
+<p><span class="removedspan">Currently,</span> <span class="changedspan">T</span>his merge omits CJK unified ideographs and Hangul syllables.
+Categorial information about CJK unified ideographs is better handled
+by other means, and in particular <span class="changedspan">by</span> the Unihan database. The 11,172 Hangul
+syllables do not have useful categorial distinctions in the sense relevant
+to other Unicode characters, so including all of them explicitly as part
+of a category listing would simply be redundant and verbose.</p>
+
+<p class="removed">The merged data is in a suitable format
+for direct import into a spreadsheet. Once in a spreadsheet,
+the data can easily be further manipulated to whatever end
+an implementer needs <i>Section 3, <a href="tr49-2.html#Data_File">Data File</a></i>, for a specification of
+the format in detail.</p>
+
+	<h2><a name="References">References</a></h2>
+	<table cellspacing="12" cellpadding="0" border="0" class="noborder">
+		<tr>
+			<td class="noborder" valign="top" width="1">[<a name="Charts">Charts</a>]</td>
+			<td class="noborder" valign="top">The online code charts can be found 
+			at <a href="http://www.unicode.org/charts/">http://www.unicode.org/charts/</a><br>
+			An index to characters names with links to the corresponding chart is 
+			found at: <a href="http://www.unicode.org/charts/charindex.html">http://www.unicode.org/charts/charindex.html</a></td>
+		</tr>
+		<tr>
+			<td class="noborder" valign="top" width="1">[<a name="Data">Data</a>]</td>
+			<td class="noborder" valign="top">Unicode character categories, for spreadsheet import:<br>
+			<a href="Categories.txt">http://www.unicode.org/reports/tr49/Categories.txt</a><br>
+                        <span class="changed">Category display labels, for spreadsheet import:</span><br>
+                        <span class="changed"><a href="CategoryLabels.txt">http://www.unicode.org/reports/tr49/CategoryLabels.txt</a></span><br>
+			<i>For earlier versions of the data file see prior versions of this report.</i><br>
+			<span class="reviewnote">Note: Once this report is approved, the
+			data files will move to a versioned directory under http://www.unicode.org/Public/categories/</span></td>
+		</tr>
+		<tr>
+			<td class="noborder" valign="top" width="1" height="42">[<a name="Errata">Errata</a>]</td>
+			<td class="noborder" valign="top" height="42">Updates and errata to the Unicode 
+			Standard, as well as other technical standards developed by the Unicode 
+			Consortium can be found at <a href="http://www.unicode.org/errata/">
+			http://www.unicode.org/errata/</a></td>
+		</tr>
+		<tr>
+			<td class="noborder" valign="top" width="1">[<a name="Feedback">Feedback</a>]</td>
+			<td class="noborder" valign="top">Reporting Errors and Requesting Information 
+			Online<i> </i><a href="http://www.unicode.org/reporting.html">http://www.unicode.org/reporting.html</a></td>
+		</tr>
+		<tr>
+			<td class="noborder" valign="top" width="1">[<a name="FAQ">FAQ</a>]</td>
+			<td class="noborder" valign="top">Unicode Frequently Asked Questions<br>
+			<a href="http://www.unicode.org/faq/">http://www.unicode.org/faq/</a><br>
+			<i>For answers to common questions on technical issues.</i></td>
+		</tr>
+		<tr>
+			<td class="noborder" valign="top" width="1">[<a name="Glossary">Glossary</a>]</td>
+			<td class="noborder" valign="top">Unicode Glossary<br>
+			<a href="http://www.unicode.org/glossary/"> 
+			http://www.unicode.org/glossary/</a><i> <br>
+			For explanations of terminology 
+			used in this and other documents.</i></td>
+		</tr>
+		<tr>
+			<td class="noborder" valign="top" width="1">[<a name="Reports">Reports</a>]</td>
+			<td class="noborder" valign="top">Unicode Technical Reports<br>
+			<a href="../index.html">http://www.unicode.org/reports/</a><br>
+			<i>For information on the status and development process for technical 
+			reports, and for a list of technical reports.</i></td>
+		</tr>
+		<tr>
+			<td class="noborder" valign="top" width="1">[<a name="Stability">Stability</a>]</td>
+			<td class="noborder" valign="top">Unicode Character 
+			Encoding Stability Policy
+			<a href="http://www.unicode.org/policies/stability_policy.html">http://www.unicode.org/policies/stability_policy.html</a></td>
+		</tr>
+		<tr>
+			<td class="noborder" valign="top" width="1">[<a name="UCD">UCD</a>]</td>
+			<td class="noborder" valign="top">Unicode Character Database,
+			<a href="http://www.unicode.org/ucd/">http://www.unicode.org/ucd/
+			</a><i><br>
+			For an overview of the Unicode Character Database and a list of its 
+			associated files</i></td>
+		</tr>
+		<tr>
+			<td class="noborder" valign="top" width="1">[<a name="Unicode">Unicode</a>]</td>
+			<td class="noborder" valign="top">The Unicode Standard<i><br>
+			For the latest version see:</i>
+			<a href="http://www.unicode.org/versions/latest/">http://www.unicode.org/versions/latest/</a></td>
+		</tr>
+		<tr>
+			<td class="noborder" valign="top" width="1">[<a name="UTC">UTC</a>]</td>
+			<td class="noborder" valign="top">The Unicode Technical Committee, see
+			<a href="http://www.unicode.org/consortium/utc.html">http://www.unicode.org/consortium/utc.html</a> 
+			for more information on procedures.</td>
+		</tr>
+		<tr>
+			<td class="noborder" valign="top" width="1">[<a name="UTR23">UTR23</a>]</td>
+			<td class="noborder" valign="top">Unicode Technical Report #23: <i>The 
+			Unicode Character Property Model,</i>
+			<a href="../tr23.1">http://www.unicode.org/reports/tr23/</a></td>
+		</tr>
+		<tr>
+			<td class="noborder" valign="top" width="1">[<a name="Versions">Versions</a>]</td>
+			<td class="noborder" valign="top">Versions of the Unicode Standard,
+			<a href="http://www.unicode.org/standard/versions/">
+			http://www.unicode.org/standard/versions/</a><i><br>
+			For information on version numbering, and citing and referencing the 
+			Unicode Standard, the Unicode Character Database, and Unicode Technical 
+			Reports.</i></td>
+		</tr>
+	</table>
+	
+	<h2><a name="Acknowledgements">Acknowledgements</a></h2>
+	
+	<p>TBD</p>
+	
+	<h2><a name="Modifications">Modifications</a></h2>
+	
+	<p class="changed"><b>Revision 2 [KW]</b></p>
+	<ul class="changed">
+                <li>Restructuring of Section 2, to distinguish names for category levels from
+                    display labels for each subcategory.</li>
+                <li>Introduction of new CategoryLabels.txt data file.</li>
+		<li>Further updates to data file based on feedback.</li>
+		<li>Minor editorial updates.</li>
+		<li>Updated to Draft status.</li>
+	</ul>
+        
+	<p><b>Revision 1 [KW]</b></p>
+	<ul>
+		<li>Data file updated to Unicode 6.0 and tweaked based on feedback.</li>
+		<li>Initial proposed Draft.</li>
+	</ul>
+	
+	<hr align="LEFT">
+	<p><font size="-1">Copyright © 2011 Unicode, Inc. All Rights Reserved. 
+	The Unicode Consortium makes no expressed or implied warranty of any kind, and 
+	assumes no liability for errors or omissions. No liability is assumed for incidental 
+	and consequential damages in connection with or arising out of the use of the 
+	information or programs contained or accompanying this technical report. The 
+	Unicode <a href="http://www.unicode.org/copyright.html">Terms of Use</a> apply.</font>
+</p>
+	<p><font size="-1">Unicode and the Unicode logo are trademarks of Unicode, Inc., 
+	and are registered in some jurisdictions.</font>
+</p>
+	<p>&nbsp;</p>
+</div>
+
+</body>
+
+</html>

@@ -1,0 +1,2793 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+   "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta http-equiv="Content-Language" content="en-us">
+<title>UTS #46: Unicode IDNA Compatibility Processing</title>
+<link rel="stylesheet" type="text/css" href="../reports-v2.css">
+<style type="text/css">
+<!--
+a:visited.plain, a:link.plain {
+	color: black;
+	text-decoration: none
+}
+
+a:hover.plain {
+	color: red;
+	text-decoration: underline;
+}
+
+.alink {
+	text-decoration: underline;
+}
+
+.linkstyle {
+	font-weight: bold;
+	text-decoration: underline;
+	font-size: 90%;
+}
+
+.nolink:link, .nolink:visited {
+	color: black;
+	text-decoration: none;
+}
+
+.nolink:hover {
+	color: red;
+	text-decoration: underline;
+}
+-->
+</style>
+</head>
+<body bgcolor="#ffffff">
+	<table class="header">
+		<tr>
+			<td class="icon"><a href="http://www.unicode.org"> <img
+					align="middle" alt="[Unicode]" border="0"
+					src="../../webscripts/logo60s2.gif" width="34"
+					height="33"></a>&nbsp; <a class="bar"
+				href="../index.html">Technical Reports</a></td>
+		</tr>
+		<tr>
+			<td class="gray">&nbsp;</td>
+		</tr>
+	</table>
+	<div class="body">
+		<h2 style="text-align:center">Unicode® Technical Standard #46</h2>
+		<h1>Unicode IDNA Compatibility Processing</h1>
+		<table class="simple" width="90%">
+			<tr>
+				<td width="20%">Version</td>
+				<td>8.0.0</td>
+			</tr>
+			<tr>
+				<td>Editors</td>
+				<td><a
+					href="https://plus.google.com/114199149796022210033?rel=author">Mark
+						Davis</a> (<a href="mailto:markdavis@google.com">markdavis@google.com</a>),<br>
+					Michel Suignard (<a href="mailto:michel@suignard.com">michel@suignard.com</a>)</td>
+			</tr>
+			<tr>
+				<td>Date</td>
+				<td>2015-06-02</td>
+			</tr>
+			<tr>
+				<td>This Version</td>
+				<td><a href="tr46-15.html">
+						http://www.unicode.org/reports/tr46/tr46-15.html</a></td>
+			</tr>
+			<tr>
+				<td>Previous Version</td>
+				<td><a href="tr46-13.html">
+					http://www.unicode.org/reports/tr46/tr46-13.html</a></td>
+			</tr>
+			<tr>
+				<td>Latest Version</td>
+				<td><a href="index.html">http://www.unicode.org/reports/tr46/</a></td>
+			</tr>
+			<tr>
+				<td valign="top">Latest Proposed Update</td>
+				<td valign="top"><a
+					href="proposed.html">
+						http://www.unicode.org/reports/tr46/proposed.html</a></td>
+			</tr>
+			<tr>
+				<td>Revision</td>
+				<td><a href="tr46-15.html#Modifications">15</a></td>
+			</tr>
+		</table>
+		<h3>
+			<i>Summary</i>
+		</h3>
+		<p>
+			<i>Client software, such as browsers and emailers, faces a
+				difficult transition from the version of international domain names
+				approved in 2003 (IDNA2003), to the revision approved in 2010
+				(IDNA2008). The specification in this document provides a mechanism
+				that minimizes the impact of this transition for client software,
+				allowing client software to access domains that are valid under
+				either system.</i>
+		</p>
+		<p>
+			<i>The specification provides two main features: One is a
+				comprehensive mapping to support current user expectations for
+				casing and other variants of domain names. Such a mapping is allowed
+				by IDNA2008. The second is a compatibility mechanism that supports
+				the existing domain names that were allowed under IDNA2003. This
+				second feature is intended to improve client behavior during the
+				transitional period.</i>
+		</p>
+		<h3>
+			<i>Status</i>
+		</h3>
+
+		<!-- NOT YET APPROVED -->
+		<!-- <p class="changed">
+			<i>This is a<b><font color="#ff3333"> draft </font></b>document
+				which may be updated, replaced, or superseded by other documents at
+				any time. Publication does not imply endorsement by the Unicode
+				Consortium. This is not a stable document; it is inappropriate to
+				cite this document as other than a work in progress.
+			</i>
+		</p> -->
+		<!-- END NOT YET APPROVED -->
+		<!-- APPROVED -->
+      <p><i>This document has been reviewed by Unicode members and other 
+	  interested parties, and has been approved for publication by the Unicode 
+	  Consortium. This is a stable document and may be used as reference 
+	  material or cited as a normative reference by other specifications.</i></p>
+       <!-- END APPROVED -->
+
+		<blockquote>
+			<p>
+				<i><b>A Unicode Technical Standard (UTS)</b> is an independent
+					specification. Conformance to the Unicode Standard does not imply
+					conformance to any UTS.</i>
+			</p>
+		</blockquote>
+  		<p>
+  			<i>Please submit corrigenda and other comments with the online reporting 
+			form [<a href="http://www.unicode.org/reporting.html">Feedback</a>]. 
+			Related information that is useful in understanding this document is found in the
+			<a href="tr46-15.html#References">References</a>. 
+			For the latest version of the Unicode Standard, see [<a href="http://www.unicode.org/versions/latest/">Unicode</a>]. 
+			For a list of current Unicode Technical Reports, see [<a href="../index.html">Reports</a>]. 
+			For more information about versions of the Unicode Standard, see [<a href="http://www.unicode.org/versions/">Versions</a>].</i>
+		</p>
+		<h3>
+			<i><a name="Contents" href="tr46-15.html#Contents">Contents</a></i>
+		</h3>
+		<ul class="toc">
+			<li>1 <a href="tr46-15.html#Introduction">Introduction</a>
+				<ul class="toc">
+					<li>1.1 <a href="tr46-15.html#IDNA2003-Section">IDNA2003</a></li>
+					<li>1.2 <a href="tr46-15.html#IDNA2008-Section">IDNA2008</a></li>
+					<li>1.3 <a href="tr46-15.html#Transition_Considerations">Transition
+							Considerations</a>
+						<ul class="toc">
+							<li>1.3.1 <a href="tr46-15.html#Mapping">Mapping</a></li>
+							<li>1.3.2 <a href="tr46-15.html#Deviations">Deviations</a>
+								<ul class="toc">
+									<li><a href="tr46-15.html#Table_Deviation_Characters">Table
+											1. Deviation Characters</a></li>
+								</ul>
+							</li>
+						</ul>
+					</li>
+				</ul>
+			</li>
+			<li>2 <a href="tr46-15.html#Compatibility_Processing">Unicode IDNA
+					Compatibility Processing</a>
+				<ul class="toc">
+					<li>2.1 <a href="tr46-15.html#Display">Display of Internationalized
+							Domain Names</a></li>
+					<li>2.2 <a href="tr46-15.html#Registries">Registries</a></li>
+					<li>2.3 <a href="tr46-15.html#Notation">Notation</a></li>
+				</ul>
+			</li>
+			<li>3 <a href="tr46-15.html#Conformance">Conformance</a>
+				<ul class="toc">
+					<li>3.1 <a href="tr46-15.html#STD3_Rules">STD3 Rules</a></li>
+				</ul>
+			</li>
+			<li>4 <a href="tr46-15.html#Processing">Processing</a>
+				<ul class="toc">
+					<li>4.1 <a href="tr46-15.html#Validity_Criteria">Validity Criteria</a>
+						<ul class="toc">
+							<li>4.1.1 <a href="tr46-15.html#UseSTD3ASCIIRules">UseSTD3ASCIIRules</a></li>
+							<li>4.1.2 <a href="tr46-15.html#Right_to_Left_Scripts">Right-to-Left
+									Scripts</a></li>
+						</ul>
+					</li>
+					<li>4.2 <a href="tr46-15.html#ToASCII">ToASCII</a></li>
+					<li>4.3 <a href="tr46-15.html#ToUnicode">ToUnicode</a></li>
+					<li>4.4 <a href="tr46-15.html#IDNA2008_Preprocessing">Preprocessing
+							for IDNA2008</a></li>
+					<li>4.5 <a href="tr46-15.html#Implementation_Notes">Implementation
+							Notes</a>
+						<ul class="toc">
+							<li><a href="tr46-15.html#Table_Example_Processing">Table
+									2. Examples of Processing</a></li>
+						</ul>
+					</li>
+				</ul>
+			</li>
+			<li>5 <a href="tr46-15.html#IDNA_Mapping_Table">IDNA Mapping Table</a>
+				<ul class="toc">
+					<li><a href="tr46-15.html#Table_Data_File_Fields">Table
+							2b. Data File Fields</a></li>
+				</ul>
+			</li>
+			<li>6 <a href="tr46-15.html#Mapping_Table_Derivation">Mapping Table
+					Derivation</a>
+				<ul class="toc">
+					<li><a href="tr46-15.html#TableDerivationStep1">Step 1: Define a base
+							mapping</a></li>
+					<li><a href="tr46-15.html#TableDerivationStep2">Step 2: Specify the
+							base valid set</a>
+						<ul class="toc">
+							<li><a href="tr46-15.html#Table_Base_Valid_Set">Table
+									3. Base Valid Set</a></li>
+						</ul></li>
+					<li><a href="tr46-15.html#TableDerivationStep3">Step 3: Specify the
+							base exclusion set</a></li>
+					<li><a href="tr46-15.html#TableDerivationStep4">Step 4: Specify the
+							deviation set</a></li>
+					<li><a href="tr46-15.html#TableDerivationStep5">Step 5: Specify
+							grandfathered changes</a></li>
+					<li><a href="tr46-15.html#TableDerivationStep6">Step 6: Produce the
+							initial status and mapping values</a></li>
+					<li><a href="tr46-15.html#TableDerivationStep7">Step 7: Produce the
+							final status and mapping values</a></li>
+				</ul>
+			</li>
+			<li>7 <a href="tr46-15.html#IDNAComparison">IDNA Comparison</a>
+				<ul class="toc">
+					<li><a href="tr46-15.html#Table_IDNA_Comparisons">Table
+							4. IDNA Comparisons</a></li>
+					<li>7.1 <a href="tr46-15.html#Implications_for_Implementers">Implications
+							for Implementers</a></li>
+				</ul>
+			</li>
+			<li>8 <a href="tr46-15.html#Conformance_Testing">Conformance Testing</a>
+				<ul class="toc">
+					<li>8.1 <a href="tr46-15.html#Format">Format</a></li>
+				</ul>
+			</li>
+			<li><a href="tr46-15.html#Acknowledgements">Acknowledgments</a></li>
+			<li><a href="tr46-15.html#References">References</a></li>
+			<li><a href="tr46-15.html#Modifications">Modifications</a></li>
+		</ul>
+		<br>
+		<hr>
+		<br>
+		<h2>
+			1 <a name="Introduction" href="tr46-15.html#Introduction">Introduction</a>
+		</h2>
+		<p>
+			One of the great strengths of domain names is universality. The URL <span
+				class="linkstyle">http://Apple.com</span> goes to Apple&#39;s
+			website from anywhere in the world, using any browser. The email
+			address <span class="linkstyle"> markdavis@google.com</span> can be
+			used to send email to an editor of this specification from anywhere
+			in the world, using any emailer.
+		</p>
+		<p>
+			Initially, domain names were restricted to ASCII characters. This was
+			a significant burden on people using other characters. Suppose, for
+			example, that the domain name system had been invented by Greeks, and
+			one could only use Greek characters in URLs. Rather than <span
+				class="linkstyle">apple.com</span>, one would have to write
+			something like <span class="linkstyle">αππλε.κομ</span>. An English
+			speaker would not only have to be acquainted with Greek characters,
+			but would also have to pick those Greek letters that would correspond
+			to the desired English letters. One would have to guess at the
+			spelling of particular words, because there are not exact matches
+			between scripts.
+		</p>
+		<p>
+			Most of the world’s population faced this situation until recently,
+			because their languages use non-ASCII characters. A system was
+			introduced in 2003 for internationalized domain names (IDN). This
+			system is called <em>Internationalizing Domain Names for
+				Applications</em>, or IDNA2003 for short. This mechanism supports IDNs by
+			means of a client software transformation into a format known as
+			Punycode. A revision of IDNA was approved in 2010 (IDNA2008). This
+			revision has a number of incompatibilities with IDNA2003.
+		</p>
+		<p>The incompatibilities force implementers of client software,
+			such as browsers and emailers, to face difficult choices during the
+			transition period as registries shift from IDNA2003 to IDNA2008. This
+			document specifies a mechanism that minimizes the impact of this
+			transition for client software, allowing client software to access
+			domains that are valid under either system.</p>
+		<p>The specification provides two main features. The first is a
+			comprehensive mapping to support current user expectations for casing
+			and other variants of domain names. Such a mapping is allowed by
+			IDNA2008. The second feature is a compatibility mechanism that
+			supports the existing domain names that were allowed under IDNA2003.
+			This second feature is intended to improve client behavior during the
+			transitional period. This specification contains both normative and
+			informative material. Only the conformance clauses and the text that
+			they directly or indirectly reference are considered normative.</p>
+		<h3>
+			1.1 <a name="IDNA2003-Section" href="tr46-15.html#IDNA2003-Section">IDNA2003</a>
+		</h3>
+		<p>
+			The series of RFCs collectively known as IDNA2003 [<a
+				href="tr46-15.html#IDNA2003">IDNA2003</a>] allows domain names to contain
+			non-ASCII Unicode characters, which includes not only the characters
+			needed for Latin-script languages other than English (such as Å, Ħ,
+			or Þ), but also different scripts, such as Greek, Cyrillic, Tamil, or
+			Korean. An internationalized domain name such as <span
+				class="linkstyle">Bücher.de</span> can then be used in an
+			&quot;internationalized&quot; URL, called an IRI, such as <span
+				class="linkstyle">http://Bücher.de#titel</span>.
+		</p>
+		<p>The IDNA mechanism for allowing non-ASCII Unicode characters in
+			domain names involves applying the following steps to each label in
+			the domain name that contains Unicode characters:</p>
+		<ol>
+			<li>Transforming (mapping) a Unicode string to remove case and
+				other variant differences.</li>
+			<li>Checking the resulting string for validity, according to
+				certain rules.</li>
+			<li>Transforming the Unicode characters into a DNS-compatible
+				ASCII string using a specialized encoding called <i>Punycode</i> <span
+				class="noborder">[<a href="tr46-15.html#RFC3492">RFC3492</a>]
+			</span>.
+			</li>
+		</ol>
+		<p>
+			For example, typing the IRI <span class="linkstyle">http://Bücher.de</span>
+			into the address bar of any modern browser goes to a corresponding
+			site, even though the &quot;ü&quot; is not an ASCII character. This
+			works because the IDN in that IRI resolves to the Punycode string
+			which is actually stored by the DNS for that site. Similarly, when a
+			browser interprets a web page containing a link such as &lt;a
+			href=&quot;http://Bücher.de&quot;&gt;, the appropriate site is
+			reached. (In this document, phrases such as &quot;a browser
+			interprets&quot; refer to domain names parsed out of IRIs entered in
+			an address bar <em>as well as</em> to those contained in links
+			internal to HTML text.)
+		</p>
+		<p>
+			In the case of IDN <span class="linkstyle">Bücher.de</span>, the
+			Punycode value actually used for the domain names on the wire is <span
+				class="linkstyle">xn--bcher-kva.de</span>. The Punycode version is
+			also typically transformed back into Unicode form for display. The
+			resulting display string will be a string which has already been
+			mapped according to the IDNA2003 rules. This example results in a
+			display string for the IRI that has been casefolded to lowercase:
+		</p>
+		<blockquote>
+			<p>
+				<span class="linkstyle">http://Bücher.de</span><font
+					face="Lucida Sans Unicode"> →</font> <span class="linkstyle">http://xn--bcher-kva.de</span><font
+					face="Lucida Sans Unicode"> →</font> <span class="linkstyle">http://bücher.de</span>
+			</p>
+		</blockquote>
+		<p>
+			A major limitation of IDNA2003 is its restriction to the repertoire
+			of characters in Unicode 3.2, which means that some modern languages
+			are excluded or not fully supported. Furthermore, within the
+			constraints of IDNA2003, there is no simple way to extend the
+			repertoire. IDNA2003 also does not make it clear to users of
+			registries exactly which string they are registering for a domain
+			name (between <span class="linkstyle">Bücher.de</span> and <span
+				class="linkstyle">bücher.de</span>, for example).
+		</p>
+		<h3>
+			1.2 <a name="IDNA2008-Section" href="tr46-15.html#IDNA2008-Section">IDNA2008</a>
+		</h3>
+		<p>
+			In early 2010, a new version of IDNA was approved. Like IDNA2003,
+			this version consists of a collection of RFCs and is called IDNA2008
+			[<a href="tr46-15.html#IDNA2008">IDNA2008</a>]. IDNA2008 is intended to solve the
+			major problems in IDNA2003. It extends the valid repertoire of
+			characters in domain names, and establishes an automatic process for
+			updating to future versions of the Unicode Standard. Furthermore, it
+			defines the concept of a valid domain name clearly, so that
+			registrants understand exactly what domain name string is being
+			registered.
+		</p>
+		<p>
+			Processing in IDNA2008 is identical to IDNA2003 for many common
+			domain names. Both IDNA2003 and IDNA2008 transform a Unicode domain
+			name in an IRI (like <span class="linkstyle"> http://öbb.at</span>)
+			to the Punycode version (like <span class="linkstyle">http://xn--bb-eka.at</span>).
+			However, IDNA2008 does not maintain strict backward compatibility
+			with IDNA2003. The main differences are:
+		</p>
+		<ul>
+			<li><b>Additions.</b> Some IDNs are invalid in IDNA2003, but
+				valid in IDNA2008.</li>
+			<li><b>Subtractions. </b>Some IDNs are valid in IDNA2003, but
+				invalid in IDNA2008.</li>
+			<li><b>Deviations. </b>Some IDNs are valid in both, but resolve
+				to different destinations.</li>
+		</ul>
+		<p>
+			For more details, see <em>Section 7, <a href="tr46-15.html#IDNAComparison">IDNA
+					Comparison</a></em>.
+		</p>
+		<h3>
+			1.3 <a name="Transition_Considerations"
+				href="tr46-15.html#Transition_Considerations">Transition Considerations</a>
+		</h3>
+		<p>
+			The differences between IDNA2008 and IDNA2003 may cause
+			interoperability and security problems. They affect extremely common
+			characters, such as all uppercase characters, all halfwidth or
+			fullwidth characters (commonly used in Japan, China, and Korea), and
+			certain other characters like the German <i> eszett</i> (U+00DF ß
+			LATIN SMALL LETTER SHARP S) and Greek <i>final sigma</i> (U+03C2 ς
+			GREEK SMALL LETTER FINAL SIGMA).
+		</p>
+		<h4>
+			1.3.1 <a name="Mapping" href="tr46-15.html#Mapping">Mapping</a>
+		</h4>
+		<p>
+			IDNA2003 requires a mapping phase, which maps <span class="linkstyle">ÖBB.at</span>
+			to <span class="linkstyle">öbb.at</span>, for example. Mapping
+			typically involves mapping uppercase characters to their lowercase
+			pairs, but it also involves other types of mappings between
+			equivalent characters, such as mapping halfwidth <em>katakana</em>
+			characters to normal <em>katakana</em> characters in Japanese. The
+			mapping phase in IDNA2003 was included to match the insensitivity of
+			ASCII domain names. Users are accustomed to having both <span
+				class="linkstyle">CNN.com</span> and <span class="linkstyle">cnn.com</span>
+			work identically. They expect domain names with accents to have the
+			same casing behavior, so that <span class="linkstyle">ÖBB.at</span>
+			is the same as <span class="linkstyle">öbb.at</span>. There are
+			variations similar to case differences in other scripts. The IDNA2003
+			mapping is based on data specified in the Unicode Standard, Version
+			3.2; this mapping was later formalized as the Unicode property [<a
+				href="tr46-15.html#NFKC_CaseFold">NFKC_Casefold</a>].
+		</p>
+		<p>
+			Note that case-folding generates a stable form of a string that
+			erases functional case-differences. It is <em>not</em> the same as
+			lowercasing. In particular, the lowercase Cherokee characters added
+			in Unicode Version 8.0 are case-folded to their uppercase
+			counterparts.
+		</p>
+		<p>
+			IDNA2008 does not require a mapping phase, but does <i>permit</i> one
+			(called &quot;Local Mapping&quot; or &quot;Custom Mapping&quot;). For
+			more information on the permitted mappings, see the <em>Protocol</em>
+			document of [<a href="tr46-15.html#IDNA2008">IDNA2008</a>], <em>Section 4.2,
+				Permitted Character and Label Validation</em> and <em>Section 5.2,
+				Conversion to Unicode</em>.
+		</p>
+		<p>The UTS #46 specification defines a mapping consistent with the
+			normative requirements of the IDNA2008 protocol, and which is as
+			compatible as possible with IDNA2003. For client software, this
+			provides behavior that is the most consistent with user expectations
+			about the handling of domain names with existing data—namely, that
+			domain names will map consistently both on clients supporting
+			IDNA2003 and on clients supporting IDNA2008 with the UTS #46 mapping.</p>
+		<h4>
+			1.3.2 <a name="Deviations" href="tr46-15.html#Deviations">Deviations</a>
+		</h4>
+		<p>
+			There are a few situations where the use of IDNA2008 without
+			compatibility mapping will result in the resolution of IDNs to
+			different IP addresses from in IDNA2003, unless the registry or
+			registrant takes special action. This affects a very small number of
+			characters, but because these characters are very common in
+			particular languages, a significant number of domain names in those
+			languages are affected. This set of characters is referred to as
+			&quot;Deviations&quot; and is shown in <em>Table 1, <a
+				href="tr46-15.html#Table_Deviation_Characters">Deviation Characters</a></em>,
+			illustrated in the context of IRIs.
+		</p>
+		<p class="caption">Table 1. <a name="Table_Deviation_Characters"
+					href="tr46-15.html#Table_Deviation_Characters">Deviation Characters</a></p>
+		<div align="center">
+		<table class="subtle">
+			<tr>
+				<th>Char</th>
+				<th>Example</th>
+				<th>IDNA2003 Result</th>
+				<th>IDNA2008 Result</th>
+			</tr>
+			<tr>
+				<td style="text-align: center">
+						ß<br>
+						<tt>00DF</tt>
+				</td>
+				<td>href="<span class="linkstyle">http://faß.de"</span></td>
+				<td>
+						<span class="linkstyle">http://fass.de</span> &#x2192;<br> 
+						<span class="linkstyle">http://fass.de</span>
+				</td>
+				<td>
+						<span class="linkstyle">http://faß.de</span> &#x2192;<br> 
+						<span class="linkstyle">http://xn--fa-hia.de</span>
+				</td>
+			</tr>
+			<tr>
+				<td style="text-align: center">
+						ς<br>
+						<tt>03C2</tt>
+				</td>
+				<td>href="<span class="linkstyle">http://βόλος.com</span>"</td>
+				<td>
+						<span class="linkstyle">http://βόλοσ.com</span> &#x2192;<br> 
+						<span class="linkstyle">http://xn--nxasmq6b.com</span>
+				</td>
+				<td>
+						<span class="linkstyle">http://βόλος.com</span> &#x2192;<br>
+						<span class="linkstyle">http://xn--nxasmm1c.com</span>
+				</td>
+			</tr>
+			<tr>
+				<td style="text-align: center">
+						ZWJ<br>
+						<tt>200D</tt>
+				</td>
+				<td>href="<span class="linkstyle">http://&#x0DC1;&#x0DCA;&#x200D;&#x0DBB;&#x0DD3;.com</span>"</td>
+				<td>
+						<span class="linkstyle">http://&#x0DC1;&#x0DCA;&#x0DBB;&#x0DD3;.com</span> &#x2192;<br>
+						<span class="linkstyle">http://xn--10cl1a0b.com</span>
+				</td>
+				<td>
+						<span class="linkstyle">http://&#x0DC1;&#x0DCA;&#x200D;&#x0DBB;&#x0DD3;.com</span> &#x2192;<br>
+						<span class="linkstyle">http://xn--10cl1a0b660p.com</span>
+				</td>
+			</tr>
+			<tr>
+				<td style="text-align: center">
+						ZWNJ<br>
+						<tt>200C</tt>
+				</td>
+				<td>href="<span class="linkstyle">http://&#x0646;&#x0627;&#x0645;&#x0647;&#x200C;&#x0627;&#x06CC;.com</span>"</td>
+				<td>
+						<span class="linkstyle">http://&#x0646;&#x0627;&#x0645;&#x0647;&#x0627;&#x06CC;.com</span> &#x2192;<br>
+						<span class="linkstyle">http://xn--mgba3gch31f.com</span>
+				</td>
+				<td>
+						<span class="linkstyle">http://&#x0646;&#x0627;&#x0645;&#x0647;&#x200C;&#x0627;&#x06CC;.com</span> &#x2192;<br>
+						<span class="linkstyle">http://xn--mgba3gch31f060k.com</span>
+				</td>
+			</tr>
+		</table>
+		</div>
+		<p>
+			For more information on the rationale for the occurrence of these
+			Deviations in IDNA2008, see the [<a href="tr46-15.html#IDN_FAQ">IDN FAQ</a>].
+		</p>
+		<p>
+			The differences in interpretation of Deviation characters result in
+			potential for security exploits. Consider a scenario involving <span
+				class="linkstyle">http://www.sparkasse-gießen.de</span>, a German
+			IRI containing an IDN for &quot;Gießen Savings and Loan&quot;.
+		</p>
+		<ol>
+			<li>Alice&#39;s browser supports IDNA2003. Under those rules, <span
+				class="linkstyle">http://www.sparkasse-gießen.de</span> is mapped to
+				<span class="linkstyle">http://www.sparkasse-giessen.de</span>,
+				which leads to a site with the IP address <strong>01.23.45.67</strong><em>.</em></li>
+			<li>She visits her friend Bob, and checks her bank statement on
+				his browser. His browser supports IDNA2008. Under those rules, <span
+				class="linkstyle">http://www.sparkasse-gießen.de</span> is also
+				valid, but converts to a different Punycode domain name in <span
+				class="linkstyle">http://www.xn--sparkasse-gieen-2ib.de</span>. This
+				can lead to a different site with the IP address <strong>101.123.145.167</strong>,
+				a spoof site.
+			</li>
+		</ol>
+		<blockquote>
+			<p>Alice ends up at the phishing site, supplies her bank
+				password, and her money is stolen. While the .DE registar (DENIC)
+				might have a policy about bundling all of the variants of ß together
+				(so that they all have the same owner) it is not required of
+				registries. It is unlikely that all registries will have and enforce
+				such a bundling policy in all such cases.</p>
+		</blockquote>
+		<p>There are two Deviations of particular concern. IDNA2008 allows
+			the joiner characters (ZWJ and ZWNJ) in labels. By contrast, these
+			are removed by the mapping in IDNA2003. When used in the intended
+			contexts in particular scripts, the joiner characters produce a
+			noticeable change in displayed text. However, when used between any
+			other characters in those scripts, or in any other scripts, they are
+			invisible. For example, when used between the Latin characters
+			&quot;a&quot; and &quot;b&quot; there is no visible different: the
+			sequence &quot;a&lt;ZWJ&gt;b&quot; looks just like &quot;ab&quot;.</p>
+		<p>Because of the visual confusability introduced by the joiner
+			characters, IDNA2008 provides a special category for them called
+			CONTEXTJ, and only permits CONTEXTJ characters in limited contexts:
+			certain sequences of Arabic or Indic characters. However,
+			applications that perform IDNA2008 lookup are not required to check
+			for these contexts, so overall security is dependent on registries
+			having correct implementations. Moreover, the IDNA2008 context
+			restrictions do not catch most cases where distinct domain names have
+			visually confusable appearances because of ZWJ and ZWNJ.</p>
+		<h2>
+			2 <a name="Compatibility_Processing" href="tr46-15.html#Compatibility_Processing">Unicode
+				IDNA Compatibility Processing</a>
+		</h2>
+		<p>To satisfy user expectations for mapping, and provide maximal
+			compatibility with IDNA2003, this document specifies a mapping for
+			use with IDNA2008. In addition, to transition more smoothly to
+			IDNA2008, this document provides a Unicode algorithm for a
+			standardized processing that allows conformant implementations to
+			minimize the security and interoperability problems caused by the
+			differences between IDNA2003 and IDNA2008. This Unicode IDNA
+			Compatibility Processing is structured according to IDNA2003
+			principles, but extends those principles to Unicode 5.2 and later. It
+			also incorporates the repertoire extensions provided by IDNA2008.</p>
+		<p>
+			Where the transition processing is not needed, UTS #46 can be used
+			purely as a preprocessing (local mapping) for IDNA2008 by claiming
+			conformance specifically to <em>Conformance Clause <a href="tr46-15.html#C3">C3</a>.
+			</em>
+		</p>
+		<p>
+			By using this Compatibility Processing, a domain name such as <span
+				class="linkstyle">ÖBB.at</span> will be mapped to the valid domain
+			name <span class="linkstyle">öbb.at</span>, thus matching user
+			expectation for case behavior in domain names. For transitional use,
+			the Compatibility Processing also allows domain names containing
+			symbols and punctuation that were valid in IDNA2003, such as <span
+				class="linkstyle">√.com</span> (which has an associated web page).
+			Such domain names containing symbols will gradually disappear as
+			registries shift to IDNA2008.
+		</p>
+		<p>
+			Implementations may also restrict or flag (in a UI) domain names that
+			include symbols and punctuation. For more information, see <em>Unicode
+				Technical Report # 36, Unicode Security Considerations</em> [<a
+				href="tr46-15.html#UTR36">UTR36</a>].
+		</p>
+		<p>Using the Unicode IDNA Compatibility Processing to transform an
+			IDN into a form suitable for DNS lookup is similar to the tactic of
+			&quot;try IDNA2008 then try IDNA2003&quot;. However, this approach
+			avoids a potentially problematic dual lookup. It allows browsers and
+			other clients, such as search engines, to have a single processing
+			step, without the burden of maintaining two different implementations
+			and multiple tables. It accounts for a number of edge cases that
+			would cause problems, and provides a stable definition with
+			predictable results.</p>
+		<p>The Unicode IDNA Compatibility Processing also provides
+			alternate mappings for the Deviation characters. This facilitates the
+			transition from IDNA2003 to IDNA2008. It is up to the registeries to
+			decide how to handle the transition, for example, by either bundling
+			or blocking the Deviation characters that they support. The course of
+			the transition will also depend on how soon the IDNA2003 client
+			software is retired.</p>
+		<p>
+			The term &quot;registries&quot; includes far more than top-level
+			registries, such as for <strong>.de</strong> or <strong>.com</strong>.
+			For example, <strong>.blogspot.com</strong> has more domain names
+			registered than most top-level registries. There may be different
+			policies in place for a registry and any of its subregistries. Thus
+			millions of registries need to be considered in a transition
+			strategy, not just hundreds.
+		</p>
+		<p>
+			The retirement of IDNA2003 client software may also take considerable
+			time. IE6 was superseded in October 2006, yet as of April 2010, it
+			still has a usage share of over 20%—higher than all other browsers
+			except IE8! In lookup software, transitions may be fine-grained: for
+			example, it may be possible to transition to IDNA2008 rules regarding
+			Deviations for <strong>.blogspot.com</strong> at a given point but
+			not for <strong>.com</strong>, or vice versa. If <strong>.de</strong>
+			bundles or blocks the Deviation characters, then clients could
+			transition Deviations for <strong>.de</strong>, but not for (say) <strong>.blogspot.de</strong>.
+			Moreover, client software with a UI, such as the address bar in a
+			browser, could provide more options for the transition. A full
+			discussion of such transition strategies is outside of the scope of
+			this document.
+		</p>
+		<p>During the interim, authors of documents, such as HTML
+			documents, can unambiguously refer to the IDNA2008 interpretation of
+			characters by explicitly using the Punycode form of the domain name
+			label.</p>
+		<p>
+			There are two slightly different compatibility mechanisms for domain
+			names during a transition and afterward. UTS #46 therefore specifies
+			two specific types of processing: Transitional Processing (<em>Conformance
+				Clause <a href="tr46-15.html#C1">C1</a>
+			</em>) and Nontransitional Processing (<em>Conformance Clause <a
+				href="tr46-15.html#C2">C2</a></em>). The only difference between them is the handling
+			of the four Deviation characters.
+		</p>
+		<p>Summarized briefly, UTS #46 builds upon IDNA2008 in three
+			areas:</p>
+		<ul>
+			<li><strong>Mapping. </strong>The UTS #46 mapping is used to
+				maintain maximal compatibility and meet user expectations. It is
+				conformant to IDNA2008, which allows for mapping input.</li>
+			<li><strong>Symbols and Punctuation. </strong>UTS #46 supports
+				processing of symbols and punctuation during the transitional
+				period. The transition will be smooth: as registries move to
+				IDNA2008 the DNS lookups of IDNs with symbols will simply be
+				refused. At that point, in practice, there is full compatibility
+				with IDNA2008.</li>
+			<li><strong>Deviations. </strong>UTS #46 provides two ways of
+				handling these to support a transition. Transitional Processing
+				should <em>only</em> be used immediately before a DNS lookup in the
+				circumstances where the registry does not guarantee a strategy of
+				bundling or blocking. Nontransitional Processing, which is fully
+				compatible with IDNA2008, should be used in all other cases.</li>
+		</ul>
+		<p>
+			For a demonstration of differences between IDNA2003, IDNA2008, and
+			the Unicode IDNA Compatibility Processing, see the [<a
+				href="tr46-15.html#IDN_Demo">IDN_Demo</a>]. For more detail on the differences,
+			see <em>Section 7, <a href="tr46-15.html#IDNAComparison">IDNA Comparison</a></em>.
+			UTS #46 does not change any of the terms defined in IDNA2008, such as
+			A-Label or U-Label.
+		</p>
+		<p>
+			Neither the Unicode IDNA Compatibility Processing nor IDNA2008
+			address security problems associated with confusables (the so-called
+			&quot;<span class="linkstyle">paypal.com</span>&quot; problem).
+			IDNA2008 disallows certain symbols and punctuation characters that
+			can be used for spoofing, such as spoofs of the slash character
+			(&quot;/&quot;). However, these are an extremely small fraction of
+			the confusable characters used for spoofing. Moreover, confusable
+			characters themselves account for a small proportion of phishing
+			problems: most are cases like &quot;secure-wellsfargo.com&quot;. For
+			more information, see [<a href="tr46-15.html#Bortzmeyer">Bortzmeyer</a>] and the
+			[<a href="tr46-15.html#IDN_FAQ">IDN FAQ</a>]. It is strongly recommended that <em>Unicode
+				Technical Report #36, Unicode Security Considerations</em> [<a
+				href="tr46-15.html#UTR36">UTR36</a>] and <em>Unicode Technical Standard
+				#39, Unicode Security Mechanisms</em> [<a href="tr46-15.html#UTS39">UTS39</a>] be
+			consulted for information on dealing with confusables, both for
+			client software and registries. In particular, [<a href="tr46-15.html#UTS39">UTS39</a>]
+			provides information that can be used to drastically reduce the
+			number of confusables when dealing with international domain names,
+			much beyond what IDNA2008 does. See also the [<a href="tr46-15.html#DemoConf">DemoConf</a>].
+		</p>
+		<h3>
+			2.1 <a name="Display" href="tr46-15.html#Display">Display of
+				Internationalized Domain Names</a>
+		</h3>
+		<p>
+			IDNA2003 applications customarily display the processed string to the
+			user. This improves security by reducing the opportunity for visual
+			confusability. Thus, for example, the URL <span class="linkstyle">http://googIe.com</span>
+			(with a capital I in place of the L) is revealed as <span
+				class="linkstyle">http://googie.com</span>. However, for Deviations
+			the distinction between the original and processed form is especially
+			important for users. Thus the Nontransitional Processing should be
+			used for displaying domain names. This is the same as Transitional
+			Processing, except that it excludes the Deviations: ß and ς and the
+			joiners. It is thus fully compatible with IDNA2008 for these
+			Deviation characters.
+		</p>
+		<p>Except for direct DNS lookup during the transitional period,
+			the Nontransitional Processing should always be used, preserving the
+			Deviation characters in the original string as per IDNA2008. Once the
+			transition for Deviation characters is over, Nontransitional
+			Processing can be used exclusively.</p>
+		<h3>
+			2.2 <a name="Registries" href="tr46-15.html#Registries">Registries </a>
+		</h3>
+		<p>
+			This specification is primarily targeted at applications doing lookup
+			of IDNs. There is, however, one strong recommendation for registries:
+			<em>do not allow the registration of labels that are invalid
+				according to Nontransitional Processing, and for a transitional
+				period, bundle or block labels containing Deviation characters.</em>
+		</p>
+		<p>These tactics can be described as follows:</p>
+		<ul>
+			<li><strong>Bundling</strong>: If the transitional and
+				non-transitional forms differ, and are both registered, the
+				registrant for each must be the same.</li>
+			<li><strong>Blocking</strong>: If transitional and
+				nontransitional forms differ, allow the registration of only one,
+				and block the others. Registries that do not allow any Deviation
+				characters at all count as <strong>blocking</strong>.</li>
+		</ul>
+		<p>
+			The label that is actually registered and inserted into a registry
+			has always been processed. For example, <span class="linkstyle">xn--bcher-kva</span>
+			corresponds to <span class="linkstyle">bücher</span>. However, it may
+			be useful for a registry to also ask for "unprocessed" labels, such
+			as <span class="linkstyle">Bücher</span>, as part of the registration
+			process, so that they are aware of the registrant's intent. However,
+			such unprocessed labels must be handled carefully:
+		</p>
+		<ul>
+			<li>Storing the unprocessed label as the sequence of characters
+				that the registrant really wanted to apply for.</li>
+			<li>Processing the unprocessed label, and displaying the
+				processed label to the registrant for confirmation.</li>
+			<li>Proceeding with the regular registration process using <em>only
+			</em> the processed label.
+			</li>
+		</ul>
+		<h3>
+			2.3 <a name="Notation" href="tr46-15.html#Notation">Notation</a>
+		</h3>
+		<p>
+			Sets of code points are defined using properties and the syntax of <em>Unicode
+				Technical Standard #18, Unicode Regular Expressions</em> [<a
+				href="tr46-15.html#UTS18">UTS18</a>]. For example, the set of combining marks is
+			represented by the syntax
+			<tt>\p{gc=M}</tt>
+			. Additionally, the &quot;+&quot; indicates the addition of elements
+			to a set, for clarity.
+		</p>
+		<p>
+			In this document, a <em>label</em> is a substring of a domain name.
+			That substring is bounded on both sides by either the start or the
+			end of the string, or any of the following characters, called <em>label-separators</em>:
+		</p>
+		<ol>
+			<li>U+002E ( . ) FULL STOP</li>
+			<li>U+FF0E ( ． ) FULLWIDTH FULL STOP</li>
+			<li>U+3002 ( 。 ) IDEOGRAPHIC FULL STOP</li>
+			<li>U+FF61 ( ｡ ) HALFWIDTH IDEOGRAPHIC FULL STOP</li>
+		</ol>
+		<p>
+			Many people use the terms &quot;domain names&quot; and &quot;host
+			names&quot; interchangeably. This document follows [<a
+				href="tr46-15.html#RFC3490">RFC3490</a>] in use of the term &quot;domain
+			name&quot;.<br>
+		</p>
+		<h2>
+			3 <a name="Conformance" href="tr46-15.html#Conformance">Conformance</a>
+		</h2>
+		<p>
+			The requirements for conformance on implementations of the <strong>Unicode
+				IDNA Compatibility Processing</strong> algorithm are stated in the following
+			clauses. An implementation can claim conformance to any or all of
+			these clauses independently.
+		</p>
+		<p><i><b><a class="plain" name="C1" href="tr46-15.html#C1">C1</a></b>. Given a version of Unicode and a <a
+					href="http://www.unicode.org/glossary/#unicode_string">Unicode
+						String</a>, a conformant implementation of <strong>Transitional
+						Processing</strong> shall replicate the results given by applying the
+					Transitional Processing algorithm specified by Section 4,
+						<a href="tr46-15.html#Processing">Processing</a></i>.</p>
+		<p><i><b><a class="plain" name="C2" href="tr46-15.html#C2">C2</a></b>. Given a version of Unicode and a <a
+					href="http://www.unicode.org/glossary/#unicode_string">Unicode
+						String</a>, a conformant implementation of <strong>Nontransitional
+						Processing</strong> shall replicate the results given by applying the
+					Nontransitional Processing algorithm specified by Section 4,
+						<a href="tr46-15.html#Processing">Processing</a></i>.</p>
+		<p><i><b><a class="plain" name="C3" href="tr46-15.html#C3">C3</a></b>. Given a version of Unicode and a <a
+					href="http://www.unicode.org/glossary/#unicode_string">Unicode
+						String</a>, a conformant implementation of <strong>Preprocessing
+						for IDNA2008</strong> shall replicate the results specified by Section 4.4,
+						<a href="tr46-15.html#IDNA2008_Preprocessing">Preprocessing for IDNA2008</a></i>.</p>
+		<p>
+			These specifications are <i>logical</i> ones, designed to be
+			straightforward to describe. An actual implementation is free to use
+			different methods as long the result is the same as that specified by
+			the logical algorithm.
+		</p>
+		<p>
+			Any conformant implementation may also have <em>tighter</em> validity
+			criteria than those imposed by <em>Section 4.1, <a
+				href="tr46-15.html#Validity_Criteria">Validity Criteria</a></em>. For example, an
+			application could disallow or warn of domain name labels with certain
+			characteristics, such as:
+		</p>
+		<ul>
+			<li>labels with certain combinations of scripts (Safari)</li>
+			<li>labels with characters outside of the user's specified
+				languages (IE)</li>
+			<li>labels with certain confusable characters (Firefox)</li>
+			<li>labels that are detected by the Google Safe Browsing API [<a
+				href="tr46-15.html#SafeBrowsing">SafeBrowsing</a>]
+			</li>
+			<li>labels that do not meet the validity requirements of
+				IDNA2008</li>
+			<li>labels produced by toUnicode that would not meet the label
+				validity requirements if toASCII were performed.</li>
+			<li>labels containing characters which are not contained in the
+				<a
+				href="../tr39/index.html#General_Security_Profile">General
+					Security Profile for Identifiers</a> from <em>Unicode Technical
+					Standard #39, Unicode Security Mechanisms</em> [<a href="tr46-15.html#UTS39">UTS39</a>]
+			</li>
+			<li>labels that do not satisfy <em>Restriction Level 4, <a
+					href='../tr39/index.html#moderately_restrictive'>Moderately
+						Restrictive</a></em> from <em>Unicode Technical Standard #39, Unicode
+					Security Mechanisms</em> [<a href="tr46-15.html#UTS39">UTS39</a>]
+			</li>
+		</ul>
+		<p>
+			For more information, see <em>Unicode Technical Report #36,
+				Unicode Security Considerations</em> [<a href="tr46-15.html#UTR36">UTR36</a>] and <em>Unicode
+				Technical Standard #39, Unicode Security Mechanisms</em> [<a
+				href="tr46-15.html#UTS39">UTS39</a>].
+		</p>
+		<h3>
+			3.1 <a name="STD3_Rules" href="tr46-15.html#STD3_Rules">STD3 Rules</a>
+		</h3>
+		<p>
+			IDNA2003 provides for a flag, <strong>UseSTD3ASCIIRules</strong>,
+			that allows for implementations to choose whether or not to abide by
+			the rules in [<a href="tr46-15.html#STD3">STD3</a>]. These rules exclude ASCII
+			characters outside the set consisting of A-Z, a-z, 0-9, and U+002D (
+			- ) HYPHEN-MINUS. For example, some browsers also allow characters
+			such as U+005F ( _ ) LOW LINE <em>(underbar)</em> in domain names,
+			and thus use <strong>UseSTD3ASCIIRules=false</strong>, plus their own
+			validity checks for the other ASCII characters.
+		</p>
+		<p>
+			While <strong>UseSTD3ASCIIRules=true</strong> is strongly
+			recommended, <em>Section 5, <a title="IDNA_Mapping_Table"
+				href="tr46-15.html#IDNA_Mapping_Table">IDNA Mapping Table</a></em> provides data to
+			allow implementations to support <strong>UseSTD3ASCIIRules=false</strong>
+			for compatibility with IDNA2003 implementations where necessary. The
+			mapping table does this: providing the status values and mapping
+			values for both <strong>UseSTD3ASCIIRules=true </strong>and<strong>
+				UseSTD3ASCIIRules=false</strong>. Implementations that use <strong>UseSTD3ASCIIRules=false</strong>
+			will need to apply their own validation to the mapped values as
+			indicated in <em>Section 4.1, <a href="tr46-15.html#Validity_Criteria">Validity
+					Criteria</a></em>.
+		</p>
+		<h2>
+			4 <a name="Processing" href="tr46-15.html#Processing">Processing</a>
+		</h2>
+		<p>
+			The input to Unicode IDNA Compatibility Processing is a prospective <i>domain_name</i>
+			string expressed in Unicode, and a choice of Transitional or
+			Nontransitional Processing. The domain name consists of a sequence of
+			labels with dot separators, such as &quot;Bücher.de&quot;. <span
+				class="nb">For more information about the composition of a
+				URL, see Section 3.5 of [<a href="tr46-15.html#STD13">STD13</a>]
+			</span>.
+		</p>
+		<p>
+			<strong>Main Processing Steps</strong>
+		</p>
+		<p>
+			The following steps, performed in order, successively alter the input
+			<i>domain_name</i> string and then output it as a converted Unicode
+			string, plus a flag to indicate whether there was an error. Even if
+			an error occurs, the conversion of the string is performed as much as
+			is possible.
+		</p>
+		<p>
+			<strong>Input</strong>
+		</p>
+		<ul>
+			<li>A prospective <em>domain_name</em> expressed as a sequence
+				of Unicode code points
+			</li>
+			<li>A boolean flag: <em>UseSTD3ASCIIRules</em></li>
+			<li>A <em>processing_option</em> with one of two values:
+				<ul>
+					<li><em>Transitional_Processing</em> for transitional handling
+						of Deviation characters, or</li>
+					<li><em>Nontransitional_Processing</em> otherwise</li>
+				</ul>
+			</li>
+		</ul>
+		<strong>Processing</strong>
+		<ol>
+			<li><a class="plain" name="ProcessingStepMap"
+				href="tr46-15.html#ProcessingStepMap"><strong>Map</strong></a> For each code
+				point in the <i>domain_name</i> string, look up the status value in
+				<em>Section 5, <a title="IDNA_Mapping_Table"
+					href="tr46-15.html#IDNA_Mapping_Table">IDNA Mapping Table</a></em>, and take the
+				following actions:
+				<ul>
+					<li><strong>disallowed:</strong> Leave the code point
+						unchanged in the string, and record that there was an error.</li>
+					<li><strong>ignored</strong>: Remove the code point from the
+						string. This is equivalent to mapping the code point to an empty
+						string.</li>
+					<li><strong>mapped</strong>: Replace the code point in the
+						string by the value for the mapping in <em>Section 5, <a
+							title="IDNA_Mapping_Table" href="tr46-15.html#IDNA_Mapping_Table">IDNA
+								Mapping Table</a></em>.</li>
+					<li><strong>deviation</strong>:
+						<ul>
+							<li>For <em>Transitional_Processing</em>, replace the code
+								point in the string by the value for the mapping in<em>
+									Section 5, <a title="IDNA_Mapping_Table"
+									href="tr46-15.html#IDNA_Mapping_Table">IDNA Mapping Table</a>
+							</em>.
+							</li>
+							<li>For <em>Nontransitional_Processing</em>, leave the code
+								point unchanged in the string.
+							</li>
+						</ul></li>
+					<li><strong>valid</strong>: Leave the code point unchanged in
+						the string.</li>
+				</ul></li>
+			<li><a class="plain" name="ProcessingStepNormalize"
+				href="tr46-15.html#ProcessingStepNormalize"><strong>Normalize.</strong></a>
+				Normalize the <i>domain_name</i> string to Unicode Normalization
+				Form C.</li>
+			<li><a class="plain" name="ProcessingStepBreak"
+				href="tr46-15.html#ProcessingStepBreak"><strong>Break.</strong></a> Break the
+				string into labels at U+002E ( . ) FULL STOP.</li>
+			<li><strong><a class="plain"
+					name="ProcessingStepConvertValidate"
+					href="tr46-15.html#ProcessingStepConvertValidate">Convert/Validate.</a></strong> For
+				each label in the <i>domain_name</i> string:
+
+				<ul>
+					<li><a class="plain" name="ProcessingStepPunycode"
+						href="tr46-15.html#ProcessingStepPunycode">If the label starts with “xn--”</a>:
+						<ol>
+							<li>Attempt to convert the rest of the label to Unicode
+								according to <em>Punycode</em> <span class="noborder">[<a
+									href="tr46-15.html#RFC3492">RFC3492</a>]
+							</span>. If that conversion fails, record that there was an error, and
+								continue with the next label. Otherwise replace the original
+								label in the string by the results of the conversion.
+							</li>
+							<li>Verify that the label meets the validity criteria in <em>Section
+									4.1, <a href="tr46-15.html#Validity_Criteria">Validity Criteria</a>
+							</em> for Nontransitional Processing. If any of the validity criteria
+								are not satisfied, record that there was an error.
+							</li>
+						</ol></li>
+					<li><a class="plain" name="ProcessingStepNonPunycode"
+						href="tr46-15.html#ProcessingStepNonPunycode">If the label does not start
+							with “xn--”</a>:
+						<ul>
+							<li>Verify that the label meets the validity criteria in <em>Section
+									4.1, <a href="tr46-15.html#Validity_Criteria">Validity Criteria</a>
+							</em> for the input Processing choice (Transitional or
+								Nontransitional). If any of the validity criteria are not
+								satisfied, record that there was an error.
+							</li>
+						</ul></li>
+				</ul></li>
+		</ol>
+		<p>
+			Any input <i>domain_name</i> string that does not record an error has
+			been successfully processed according to this specification.
+			Conversely, if an input <i>domain_name</i> string causes an error,
+			then the processing of the input <i>domain_name</i> string fails.
+			Determining what to do with error input is up to the caller, and not
+			in the scope of this document. The processing is
+			idempotent—reapplying the processing to the output will make no
+			further changes. For examples, see <em>Table 2, <a
+				href="tr46-15.html#Table_Example_Processing">Examples of Transitional
+					Processing</a></em>.
+		</p>
+		<p>Implementations may make further modifications to the resulting
+			Unicode string when showing it to the user. For example, it is
+			recommended that disallowed characters be replaced by a U+FFFD to
+			make them visible to the user. Similarly, labels that fail processing
+			during steps 4 or 5 may be marked by the insertion of a U+FFFD or
+			other visual device.</p>
+		<p>
+			With either <span class="noborder">Transitional or</span>
+			Nontransitional Processing, sources already in Punycode are validated
+			without mapping. In particular, Punycode containing Deviation
+			characters, such as href=&quot;<span class="linkstyle">xn--fu-hia.de</span>&quot;
+			(for fuß.de) is not remapped. This provides a mechanism allowing
+			explicit use of Deviation characters even during a transition period.
+		</p>
+		<h3>
+			4.1 <a name="Validity_Criteria" href="tr46-15.html#Validity_Criteria">Validity
+				Criteria</a>
+		</h3>
+		<p>Each of the following criteria must be satisfied for a label:</p>
+		<ol>
+			<li>The label must be in Unicode Normalization Form NFC.</li>
+			<li>The label must not contain a U+002D HYPHEN-MINUS character
+				in both the third and fourth positions.
+			</li>
+			<li>The label must neither begin nor end with a U+002D
+				HYPHEN-MINUS character.</li>
+			<li>The label must not contain a U+002E ( . ) FULL STOP.</li>
+			<li>The label must not begin with a combining mark, that is:
+				General_Category=Mark.</li>
+			<li>Each code point in the label must only have certain status
+				values according to <em>Section 5, <a
+					title="IDNA_Mapping_Table" href="tr46-15.html#IDNA_Mapping_Table">IDNA
+						Mapping Table</a></em>:
+				<ol>
+					<li>For Transitional Processing, each value must be <strong>valid</strong>.
+					</li>
+					<li>For Nontransitional Processing, each value must be either
+						<strong>valid</strong> or <strong>deviation</strong>.
+					</li>
+				</ol>
+			</li>
+		</ol>
+		<p>
+			Any particular application <em>may</em> have tighter validity
+			criteria, as discussed in <em>Section 3, <a href="tr46-15.html#Conformance">Conformance</a>.
+			</em>
+		</p>
+		<h4>
+			4.1.1 <a name="UseSTD3ASCIIRules" href="tr46-15.html#UseSTD3ASCIIRules">UseSTD3ASCIIRules</a>
+		</h4>
+		<p>
+			If <strong>UseSTD3ASCIIRules=false</strong>, then the validity tests
+			for ASCII characters are not provided by the table status values, but
+			are implementation-dependent. For example, if an implementation
+			allows the characters
+			<code>
+				[\u002Da-zA-Z0-9]
+			</code>
+			and also the underbar ( _ ), then it needs to use the table values for
+			<strong>UseSTD3ASCIIRules=false</strong>, and test for any other
+			ASCII characters as part of its validity criteria. These ASCII
+			characters may have resulted from a mapping: for example, a
+			U+005F ( _ ) LOW LINE <em>(underbar)</em> may have originally been a
+			U+FF3F ( ＿ ) FULLWIDTH LOW LINE.
+		</p>
+		<p>
+			There are a very small number of non-ASCII characters with the data
+			file status <strong>disallowed_STD3_valid</strong>:
+		</p>
+		<p>
+			U+2260 ( ≠ ) NOT EQUAL TO<br> U+226E ( ≮ ) NOT LESS-THAN<br>
+			U+226F ( ≯ ) NOT GREATER-THAN
+		</p>
+		<p>
+			Those characters are disallowed with <strong>UseSTD3ASCIIRules=true</strong>
+			because the set of characters in their canonical decompositions are
+			not entirely in the valid set (<a href="tr46-15.html#TableDerivationStep7">Step
+				7</a> of the Table Derivation). However, they are allowed with <strong>UseSTD3ASCIIRules=false</strong>,
+			because the base characters of their canonical decompositions, U+003D
+			( = ) EQUALS SIGN, U+003C ( &lt; ) LESS-THAN SIGN, and U+003E ( &gt;
+			) GREATER-THAN SIGN, are each valid under that option. If an
+			implementation uses <strong>UseSTD3ASCIIRules=false</strong> but
+			disallows any of these three ASCII characters, then it must also
+			disallow the corresponding precomposed character for its negation.
+		</p>
+		<h4>
+			4.1.2 <a name="Right_to_Left_Scripts" href="tr46-15.html#Right_to_Left_Scripts">Right-to-Left Scripts</a>
+		</h4>
+		<p>
+			In addition, the label should meet the requirements for right-to-left
+			characters specified in the Right-to-Left Scripts document of [<a
+				href="tr46-15.html#IDNA2008">IDNA2008</a>], and for the CONTEXTJ requirements in
+			the Protocol document of [<a href="tr46-15.html#IDNA2008">IDNA2008</a>]. It is
+			strongly recommended that <em>Unicode Technical Report #36,
+				Unicode Security Considerations</em> [<a href="tr46-15.html#UTR36">UTR36</a>] and <em>Unicode
+				Technical Standard #39, Unicode Security Mechanisms</em><em> </em>[<a
+				href="tr46-15.html#UTS39">UTS39</a>] be consulted for information on dealing
+			with confusables, and for characters that should be excluded from
+			identifiers. Note that the recommended exclusions are a superset of
+			those in [<a href="tr46-15.html#IDNA2008">IDNA2008</a>].
+		</p>
+		<h3>
+			4.2 <a name="ToASCII" href="tr46-15.html#ToASCII">ToASCII</a>
+		</h3>
+		<p>
+			The operation corresponding to ToASCII of [<a href="tr46-15.html#RFC3490">RFC3490</a>]
+			is defined by the following steps:
+		</p>
+		<p>
+			<strong>Input</strong>
+		</p>
+		<ul>
+			<li>A prospective <em>domain_name</em> expressed as a sequence
+				of Unicode code points
+			</li>
+			<li>A boolean flag: <em>UseSTD3ASCIIRules</em></li>
+			<li>A <em>processing_option</em> with one of two values:
+				<ul>
+					<li><em>Transitional_Processing</em> for transitional handling
+						of Deviation characters, or</li>
+					<li><em>Nontransitional_Processing</em> otherwise</li>
+				</ul>
+			</li>
+			<li>A boolean flag: <em>VerifyDnsLength</em></li>
+		</ul>
+		<p>
+			<strong>Processing</strong>
+		</p>
+		<ol>
+			<li>To the input <em>domain_name</em>, apply the <strong>Processing
+					Steps</strong> in <em>Section 4 <a href="tr46-15.html#Processing">Processing</a></em>,
+				using the input <em>processing_option</em> and the <em>UseSTD3ASCIIRules</em>
+				flag. This may record an error.
+			</li>
+			<li>Break the result into labels at U+002E FULL STOP.</li>
+			<li>Convert each label with non-ASCII characters into Punycode [<a
+				href="tr46-15.html#RFC3492">RFC3492</a>]. This may record an error.
+			</li>
+			<li>If <em>VerifyDnsLength</em> flag is true, then verify DNS
+				length restrictions. This may record an error. For more information,
+				see [<a href="tr46-15.html#STD13">STD13</a>] and<em> </em>[<a href="tr46-15.html#STD3">STD3</a>].
+				<ol>
+					<li>The length of the domain name, excluding the root label
+						and its dot, is from 1 to 253.</li>
+					<li>The length of each label is from 1 to 63.</li>
+				</ol>
+			</li>
+			<li>If an error was recorded in steps 1-4, then the operation
+				has failed and a failure value is returned. No DNS lookup should be
+				done.</li>
+			<li>Otherwise join the labels using U+002E FULL STOP as a
+				separator, and return the result.</li>
+		</ol>
+		<p>
+			Implementations are advised to apply additional tests to these
+			labels, such as those described in <em>Unicode Technical Report
+				#36, Unicode Security Considerations</em> [<a href="tr46-15.html#UTR36">UTR36</a>]
+			and <em>Unicode Technical Standard #39, Unicode Security
+				Mechanisms</em> [<a href="tr46-15.html#UTS39">UTS39</a>], and take appropriate
+			actions. For example, a label with mixed scripts or confusables may
+			be called out in the UI. Note that the use of Punycode to signal
+			problems may be counter-productive, as described in [<a href="tr46-15.html#UTR36">UTR36</a>].
+		</p>
+		<h3>
+			<strong>4.3 <a name="ToUnicode" href="tr46-15.html#ToUnicode">ToUnicode</a></strong>
+		</h3>
+		<p>
+			The operation corresponding to ToUnicode of [<a href="tr46-15.html#RFC3490">RFC3490</a>]
+			is defined by the following steps:
+		</p>
+		<p>
+			<strong>Input</strong>
+		</p>
+		<ul>
+			<li>A prospective <em>domain_name</em> expressed as a sequence
+				of Unicode code points
+			</li>
+			<li>A boolean flag: <em>UseSTD3ASCIIRules</em></li>
+		</ul>
+		<p>
+			<strong>Processing</strong>
+		</p>
+		<ol>
+			<li>To the input <em>domain_name</em>, apply the <strong>Processing
+					Steps</strong> in <em>Section 4 <a href="tr46-15.html#Processing">Processing</a></em>,
+				using <em>Nontransitional_Processing</em> and the <em>UseSTD3ASCIIRules</em>
+				flag. This may record an error.
+			</li>
+			<li>Like [<a href="tr46-15.html#RFC3490">RFC3490</a>], this will always
+				produce a converted Unicode string. Unlike ToASCII of [<a
+				href="tr46-15.html#RFC3490">RFC3490</a>], this always signals whether or not
+				there was an error.
+			</li>
+		</ol>
+		<p>
+			Implementations are advised to apply additional tests to these
+			labels, such as those described in <em>Unicode Technical Report
+				#36, Unicode Security Considerations</em> [<a href="tr46-15.html#UTR36">UTR36</a>]
+			and <em>Unicode Technical Standard #39, Unicode Security
+				Mechanisms</em><em> </em>[<a href="tr46-15.html#UTS39">UTS39</a>], and take
+			appropriate actions. For example, a label with mixed scripts or
+			confusables may be called out in the UI. Note that the use of
+			Punycode to signal problems may be counter-productive, as described
+			in [<a href="tr46-15.html#UTR36">UTR36</a>].
+		</p>
+		<h3>
+			4.4 <a name="IDNA2008_Preprocessing" href="tr46-15.html#IDNA2008_Preprocessing">Preprocessing
+				for IDNA2008</a>
+		</h3>
+		<p>
+			The table specified in <em>Section 5, <a
+				title="IDNA_Mapping_Table" href="tr46-15.html#IDNA_Mapping_Table">IDNA
+					Mapping Table</a></em> may also be used for a pure preprocessing step for
+			IDNA2008, mapping a Unicode string for input directly to the
+			algorithm specified in IDNA2008.
+		</p>
+		<p>Preprocessing for IDNA2008 is specified as follows:</p>
+		<blockquote>
+			<p>
+				Apply the <em>Section 4.3, <a href="tr46-15.html#ToUnicode">ToUnicode</a></em>
+				processing to the Unicode string.
+			</p>
+		</blockquote>
+		<p>Note that this preprocessing allows some characters that are
+			invalid according to IDNA2008. However, the IDNA2008 processing will
+			catch those characters. For example, a Unicode string containing a
+			character listed as DISALLOWED in IDNA2008, such as U+2665 (♥) BLACK
+			HEART SUIT, will pass the preprocessing step without an error, but
+			subsequent application of the IDNA2008 processing will fail with an
+			error, indicating that the string is not a valid IDN according to
+			IDNA2008.</p>
+		<h3>
+			4.5 <a name="Implementation_Notes" href="tr46-15.html#Implementation_Notes">Implementation
+				Notes</a>
+		</h3>
+		<p>A number of optimizations can be applied to the Unicode IDNA
+			Compatibility Processing. These optimizations can improve
+			performance, reduce table size, make use of existing NFKC transform
+			mechanisms, and so on. For example:</p>
+		<ul>
+			<li>There is an NFC check in <em>Section 4.1, <a
+					href="tr46-15.html#Validity_Criteria">Validity Criteria</a></em>. However, it only
+				needs to be applied to labels that were converted from Punycode into
+				Unicode in <a href="tr46-15.html#TableDerivationStep3">Step 3</a>.
+			</li>
+			<li>A simple way to do much of the validity checking in <em>Section
+					4.1, <a href="tr46-15.html#Validity_Criteria">Validity Criteria</a>
+			</em> is to reapply Steps 1 and 2, and verify that the result does not
+				change.
+			</li>
+			<li>Because the four label separators are all mapped to U+002E (
+				. ) FULL STOP by <a href="tr46-15.html#TableDerivationStep1">Step 1</a>, the
+				parsing of labels in Steps 3 and 4 only need to detect U+002E ( . )
+				FULL STOP, and not the other label separators defined in IDNA [<a
+				href="tr46-15.html#RFC3490">RFC3490</a>].
+			</li>
+		</ul>
+		<p>
+			Note that the input <i>domain_name</i> string for the Unicode IDNA
+			Compatibility Processing must have had all escaped Unicode code
+			points converted to Unicode code points. For example,
+			<code>U+5341</code>
+			( 十 ) CJK UNIFIED IDEOGRAPH-5341 could have been escaped as any of
+			the following:
+		</p>
+		<ul>
+			<li><u>&amp;#x5341;</u>&nbsp;an HTML numeric character reference
+				(NCR)</li>
+			<li><u>\u5341</u> a Javascript escapes</li>
+			<li><u>%E5%8D%81</u> a URI/IRI %-escape</li>
+		</ul>
+		<p>
+			Examples are shown in <em>Table 2, <a
+				href="tr46-15.html#Table_Example_Processing">Examples of Processing</a>:
+			</em>
+		</p>
+		<p class="caption">Table 2. <a name="Table_Example_Processing"
+					href="tr46-15.html#Table_Example_Processing">Examples of Processing</a></p>
+		<div align="center">
+		<table class="subtle">
+			<tr>
+				<th>Input</th>
+				<th><a href="tr46-15.html#ProcessingStepMap">Map</a></th>
+				<th><a href="tr46-15.html#ProcessingStepNormalize">Normalize</a></th>
+				<th><a href="tr46-15.html#ProcessingStepConvertValidate">Convert</a></th>
+				<th>Validate</th>
+				<th>Comment</th>
+			</tr>
+			<tr>
+				<td rowspan="2">Bloß.de</td>
+				<td>bloss.de</td>
+				<td>=</td>
+				<td><em>n/a</em></td>
+				<td><strong><em>ok</em></strong></td>
+				<td><strong>Transitional: </strong>maps uppercase and eszett</td>
+			</tr>
+			<tr>
+				<td>bloß.de</td>
+				<td>=</td>
+				<td><em>n/a</em></td>
+				<td><strong><em>ok</em></strong></td>
+				<td><strong>Nontransitional:</strong> maps uppercase</td>
+			</tr>
+			<tr>
+				<td nowrap>xn--blo-7ka.de</td>
+				<td>=</td>
+				<td>=</td>
+				<td>bloß.com</td>
+				<td><strong><em>ok</em></strong></td>
+				<td>Punycode is not mapped, so ß never changes (whether transitional or not).</td>
+			</tr>
+			<tr>
+				<td>u¨.com</td>
+				<td>=</td>
+				<td>ü.com</td>
+				<td><em>n/a</em></td>
+				<td><strong><em>ok</em></strong></td>
+				<td><a href="tr46-15.html#ProcessingStepNormalize">Normalize</a> changes <em>u
+							+ umlaut</em> to <em>ü</em></td>
+			</tr>
+			<tr>
+				<td>xn--tda.com</td>
+				<td>=</td>
+				<td>=</td>
+				<td>ü.com</td>
+				<td><strong><em>ok</em></strong></td>
+				<td>Punycode <strong>xn--tda</strong> changes to <em>ü</em></td>
+			</tr>
+			<tr>
+				<td nowrap>xn--u-ccb.com</td>
+				<td>=</td>
+				<td>=</td>
+				<td>u¨.com</td>
+				<td><strong><em>error</em></strong></td>
+				<td>Punycode is not mapped, but <em>is</em> validated. Because
+					<em>u + umlaut</em> is not NFC, it fails.</td>
+			</tr>
+			<tr>
+				<td>a⒈com</td>
+				<td><strong><em>error</em></strong></td>
+				<td><strong><em>error</em></strong></td>
+				<td><strong><em>error</em></strong></td>
+				<td><strong><em>error</em></strong></td>
+				<td>The character &quot;⒈&quot; is <strong>disallowed</strong>,
+						because it would produce a dot when mapped.</td>
+			</tr>
+			<tr>
+				<td nowrap>xn--a-ecp.ru</td>
+				<td nowrap>xn--a-ecp.ru</td>
+				<td>=</td>
+				<td>a⒈.ru</td>
+				<td><strong><em>error</em></strong></td>
+				<td>Punycode <strong>xn--a-ecp</strong> = a⒈, which fails validation.</td>
+			</tr>
+			<tr>
+				<td>xn--0.pt</td>
+				<td>xn--0.pt</td>
+				<td>=</td>
+				<td><strong><em>error</em></strong></td>
+				<td><strong><em>error</em></strong></td>
+				<td>Punycode <strong>xn--0</strong> is invalid.</td>
+			</tr>
+			<tr>
+				<td>日本語。ＪＰ</td>
+				<td>日本語.jp</td>
+				<td>=</td>
+				<td><em>n/a</em></td>
+				<td><strong><em>ok</em></strong></td>
+				<td>Fullwidth characters are remapped, including 。</td>
+			</tr>
+			<tr>
+				<td>☕.us</td>
+				<td>=</td>
+				<td>=</td>
+				<td><em>n/a</em></td>
+				<td><strong><em>ok</em></strong></td>
+				<td>Post-Unicode 3.2 characters are allowed.</td>
+			</tr>
+		</table>
+		</div>
+		<br>
+		<h2>
+			5 <a name="IDNA_Mapping_Table" href="tr46-15.html#IDNA_Mapping_Table">IDNA
+				Mapping Table</a>
+		</h2>
+		<p>For each code point in Unicode, the IDNA Mapping Table provides
+			one of the following status values:</p>
+		<ul>
+			<li><strong>valid</strong>: the code point is valid, and not
+				modified.</li>
+			<li><strong>ignored</strong>: the code point is removed: this is
+				equivalent to mapping the code point to an empty string.</li>
+			<li><strong>mapped</strong>: the code point is replaced in the
+				string by the value for the mapping.</li>
+			<li><strong>deviation</strong>: the code point is either mapped
+				or valid, depending on whether the processing is transitional or
+				not.</li>
+			<li><strong>disallowed:</strong> the code point is not allowed.
+				<ul>
+					<li><strong>disallowed_STD3_valid</strong>: the status is <strong>disallowed</strong>
+						if <strong>UseSTD3ASCIIRules=true</strong> (the normal case);
+						implementations that allow<strong>
+							UseSTD3ASCIIRules=false</strong> would treat the code point as <strong>valid</strong>.</li>
+					<li><strong>disallowed_STD3_mapped</strong>: the status is <strong>disallowed</strong>
+						if <strong>UseSTD3ASCIIRules=true</strong> (the normal case);
+						implementations that allow<strong>
+							UseSTD3ASCIIRules=false</strong> would treat the code point as <strong>mapped</strong>.</li>
+				</ul></li>
+		</ul>
+		<p>
+			If this status value is <strong>mapped,
+				disallowed_STD3_mapped</strong> or <strong>deviation</strong>, the table also
+			supplies a mapping value for that code point.
+		</p>
+		<p>
+			A table is provided for each version of Unicode starting with Unicode
+			5.1, in versioned directories under [<a href="tr46-15.html#IDNATable">IDNA-Table</a>].
+			Each table for a version of the Unicode Standard will always be
+			backward compatible with previous versions of the table: only
+			characters with the status value <strong>disallowed</strong> may
+			change in status or mapping value. Unlike the IDNA2008 table, this
+			table is designed to be applied to the entire domain name, not just
+			to individual labels. That design provides for the IDNA2003 handling
+			of label separators. In particular, the table is constructed to
+			forbid problematic characters such as U+2488 ( ⒈ ) DIGIT ONE FULL
+			STOP, whose decompositions contain a "dot".
+		</p>
+		<p>
+			The Unicode IDNA Compatibility Processing is based on the Unicode
+			character mapping property [<a href="tr46-15.html#NFKC_CaseFold">NFKC_Casefold</a>].
+			<em>Section 6, <a href="tr46-15.html#Mapping_Table_Derivation">Mapping
+					Table Derivation</a></em> describes the derivation of these tables. Like
+			derived properties in the Unicode Character Database, the description
+			of the derivation is informative. Only the data in IDNA Mapping Table
+			is normative for the application of this specification.
+		</p>
+		<p>
+			The files use a semicolon-delimited format similar to those in the
+			Unicode Character Database [<a href="tr46-15.html#UAX44">UAX44</a>]. The field
+			values are listed in <em>Table 2b, <a
+				href="tr46-15.html#Table_Data_File_Fields">Data File Fields</a></em>:
+		</p>
+		<p class="caption">Table 2b. <a name="Table_Data_File_Fields"
+					href="tr46-15.html#Table_Data_File_Fields">Data File Fields</a></p>
+		<div align="center">
+		<table class="subtle">
+			<tr>
+				<th>Num</th>
+				<th>Field</th>
+				<th>Description</th>
+			</tr>
+			<tr>
+				<td>0</td>
+				<td nowrap>Code point(s)</td>
+				<td>Hex value or range of values.</td>
+			</tr>
+			<tr>
+				<td>1</td>
+				<td>Status</td>
+				<td><strong>valid</strong>,<strong>
+						ignored</strong>, <strong>mapped</strong>, <strong>deviation</strong>, <strong>disallowed</strong>,
+					<strong>disallowed_STD3_valid</strong>, or <strong>disallowed_STD3_mapped</strong></td>
+			</tr>
+			<tr>
+				<td>2</td>
+				<td>Mapping</td>
+				<td>Hex value(s). Only present if the
+					status is <strong>ignored</strong>, <strong>mapped</strong>,
+					deviation, or <strong>disallowed_STD3_mapped</strong>.</td>
+			</tr>
+			<tr>
+				<td>3</td>
+				<td nowrap>IDNA2008 Status</td>
+				<td>There are two values: <b>NV8</b>
+						and <b>XV8</b>. <strong>NV8</strong> is only present if the status is <strong>valid</strong>
+					but the character is excluded by IDNA2008 from all domain names for
+					all versions of Unicode. <b>XV8</b> is present when the character is
+					excluded by IDNA2008 for the <strong><em>current</em></strong>
+					version of Unicode. These are not normative values.</td>
+			</tr>
+		</table>
+		</div>
+
+		<p>
+			<em>Example:</em>
+		</p>
+		<pre>0000..002C    ; disallowed                    #  NULL..COMMA<br>002D          ; valid                         #  HYPHEN-MINUS<br>...<br>0041          ; mapped       ; 0061           #  LATIN CAPITAL LETTER A
+...
+00A1..00A7    ; valid        ;      ; NV8     #  INVERTED EXCLAMATION MARK..SECTION SIGN<br>00AD          ; ignored                       #  SOFT HYPHEN
+...
+00DF          ; deviation    ; 0073 0073      #  LATIN SMALL LETTER SHARP S<br>...<br>19DA          ; valid        ;      ; XV8     # 5.2  NEW TAI LUE THAM DIGIT ONE<br>...
+</pre>
+		<h2>
+			6 <a name="Mapping_Table_Derivation" href="tr46-15.html#Mapping_Table_Derivation">Mapping
+				Table Derivation</a>
+		</h2>
+		<p>
+			The following describes the derivation of the mapping table. This
+			description has nothing to do with the actual mapping of labels in <em>Section
+				4, <a title="Processing" href="tr46-15.html#Processing">Processing</a>
+			</em>. Instead, this section describes the derivation of the table in
+			Section 5, <a title="IDNA_Mapping_Table" href="tr46-15.html#IDNA_Mapping_Table">IDNA
+				Mapping Table</a>. That table is then normatively used for mapping in <em>Section
+				4, <a title="Processing" href="tr46-15.html#Processing">Processing</a>
+			</em>.
+		</p>
+		<p>
+			The derivation is described as a series of steps. <a
+				href="tr46-15.html#TableDerivationStep1">Step 1</a> defines a base mapping;
+			Steps <a href="tr46-15.html#TableDerivationStep2">2</a>, <a
+				href="tr46-15.html#TableDerivationStep3">3</a>, and <a
+				href="tr46-15.html#TableDerivationStep4">4</a> define three sets of characters.
+			<a href="tr46-15.html#TableDerivationStep5">Step 5</a> will modify the base
+			mapping or the sets of characters as needed to maintain backward
+			compatiblity. The mapping and sets are all used in <a
+				href="tr46-15.html#TableDerivationStep6">Step 6</a> to produce the mapping and
+			status values for the table. <a href="tr46-15.html#TableDerivationStep7">Step
+				7</a> removes characters whose NFD form would be invalid. Each numbered
+			step may have substeps: for example, <a href="tr46-15.html#TableDerivationStep1">Step
+				1</a> consists of Steps 1.1 through 1.2.
+		</p>
+		<p>
+			The computation is done twice, once with <strong>UseSTD3ASCIIRules=true</strong>,
+			and once with <strong>UseSTD3ASCIIRules=false</strong>. Code points
+			that are <strong>disallowed</strong> with <strong>UseSTD3ASCIIRules=true</strong>,
+			but <strong>valid</strong> or <strong>mapped</strong> with <strong>UseSTD3ASCIIRules=false</strong>,
+			are given the special values <strong>disallowed_STD3_valid</strong>
+			and <strong>disallowed_STD3_mapped.</strong>
+		</p>
+		<p>
+			If a Unicode property changes in a future version in a way that would
+			affect backward compatibility, a grandfathering clause will be added
+			to <a href="tr46-15.html#TableDerivationStep5">Step 5</a> to maintain
+			compatibility. For more information on compatibility, see <em>Section
+				5, <a title="IDNA_Mapping_Table" href="tr46-15.html#IDNA_Mapping_Table">IDNA
+					Mapping Table</a>
+			</em>.
+		</p>
+		<h3>
+			<strong><a name="TableDerivationStep1"
+				href="tr46-15.html#TableDerivationStep1">Step 1: Define a base mapping</a></strong>
+		</h3>
+		<p>
+			This step specifies a <em>base mapping</em>, which is a mapping from
+			each Unicode code point to sequences of zero or more code points. The
+			value resulting from mapping a particular code point C is called the
+			<em>base mapping value o</em>f C. The base mapping value for C may be
+			identical to C.
+		</p>
+		<ol>
+			<li>Map the following exceptional characters:
+				<ol type="a">
+					<li>Map label separator characters to U+002E ( . ) FULL STOP:
+						<ul>
+							<li>U+FF0E ( ． ) FULLWIDTH FULL STOP</li>
+							<li>U+3002 ( 。 ) IDEOGRAPHIC FULL STOP</li>
+							<li>U+FF61 ( ｡ ) HALFWIDTH IDEOGRAPHIC FULL STOP</li>
+						</ul>
+					</li>
+					<li>Map all Bidi_Control characters to themselves</li>
+				</ol>
+			</li>
+			<li>Map each <em>other</em> character to its NFKC_Casefold value
+				[<a href="tr46-15.html#NFKC_CaseFold">NFKC_Casefold</a>].
+			</li>
+		</ol>
+		<p>Unicode 6.3 adds Bidi_Control characters that were not present
+			in Unicode 3.2. To preserve the intent of IDNA2003 in disallowing
+			Bidi_Control characters rather than just ignoring them, Step 1.1.b
+			was added. This step causes Step 6.3 to disallow all Bidi_Control
+			characters.</p>
+		<p>Step 1.1.b only affects 5 new characters added in Unicode 6.3.
+			It would also impact any new Bidi_Control characters in future
+			versions of the standard.</p>
+		<h3>
+			<strong><a name="TableDerivationStep2"
+				href="tr46-15.html#TableDerivationStep2">Step 2: Specify the base valid set</a></strong>
+		</h3>
+		<p>
+			The base valid set is defined by the sequential list of additions and
+			subtractions in <em>Table 3, <a href="tr46-15.html#Table_Base_Valid_Set">Base
+					Valid Set</a></em>. This definition is based on the principles of IDNA2003.
+			When applied to the repertoire of Unicode 3.2 characters, this
+			produces a set which is closely aligned with IDNA2003.
+		</p>
+		<p class="caption">Table 3. <a name="Table_Base_Valid_Set" href="tr46-15.html#Table_Base_Valid_Set">Base
+					Valid Set</a></p>
+		<table class="subtle">
+			<tr>
+				<th>Formal Set Notation</th>
+				<th>Description</th>
+			</tr>
+			<tr>
+				<td><code>\P{Changes_When_NFKC_Casefolded}</code></td>
+				<td>Start with characters that are equal to their [<a
+					href="tr46-15.html#NFKC_CaseFold">NFKC_Casefold</a>] value. This criterion
+					excludes uppercase letters, for example, as well as characters that
+					are unstable under NFKC normalization, and default ignorable code
+					points.
+					<p>
+						Note that according to Perl/Java syntax, \P means the inverse of
+						\p, so these are the characters that <em>do not</em> change when
+						individually mapped according to [<a href="tr46-15.html#NFKC_CaseFold">NFKC_Casefold</a>].
+					</p></td>
+			</tr>
+			<tr>
+				<td><code>- \p{c} - \p{z}</code></td>
+				<td>Remove Unassigned, Controls, Private Use, Format,
+					Surrogate, and Whitespace.</td>
+			</tr>
+			<tr>
+				<td nowrap><code>- \p{Block=Ideographic_Description_Characters}</code></td>
+				<td>Remove ideographic description characters.</td>
+			</tr>
+			<tr>
+				<td><code>- \p{ascii} + [\u002Da-zA-Z0-9]</code></td>
+				<td>If <b>UseSTD3ASCIIRules</b> = True: Remove disallowed ASCII; '-' is valid.</td>
+			</tr>
+			<tr>
+				<td><code>+ \p{ascii} - [\u002E]</code></td>
+				<td>If <b>UseSTD3ASCIIRules</b> = False: Add all ASCII except for &quot;.&quot;</td>
+			</tr>
+		</table>
+
+		<h3>
+			<strong><a name="TableDerivationStep3"
+				href="tr46-15.html#TableDerivationStep3">Step 3: Specify the base exclusion
+					set</a></strong>
+		</h3>
+		<p>Form the base exclusion set in the following way:</p>
+		<ol>
+			<li>Start with the empty set.</li>
+			<li>Add each code point C such that:
+				<ol type="a">
+					<li>According to IDNA2003, C is neither prohibited nor
+						unassigned nor a label separator (that is, it is either valid or
+						mapped), <em><strong>and</strong></em>
+					</li>
+					<li>According to IDNA2003, C has a different mapping than C's
+						base mapping value specified in Step 1.</li>
+				</ol>
+			</li>
+			<li>Add each code point C such that:
+				<ol type="a">
+					<li>According to IDNA2003, C is prohibited, <strong><em>and</em></strong></li>
+					<li>either C is in the base valid set, or every code point in
+						C's base mapping value is in the base valid set.</li>
+				</ol>
+			</li>
+		</ol>
+		<p>For example, for Unicode 5.2 and 6.0, the base exclusion set
+			consists of the list that follows. The subheads (like &quot;Case
+			Changes&quot;) are informational, and do not represent the principle
+			for excluding the characters listed under them.</p>
+		<p>
+			<em><strong>Characters that have a different mapping in
+					IDNA2003 (Step 3.2 above)</strong></em>
+		</p>
+		<ul>
+			<li>Case Changes
+				<ul>
+					<li>U+04C0 ( Ӏ ) CYRILLIC LETTER PALOCHKA</li>
+					<li>U+10A0 ( Ⴀ ) GEORGIAN CAPITAL LETTER AN…U+10C5 ( Ⴥ )
+						GEORGIAN CAPITAL LETTER HOE</li>
+					<li>U+2132 ( Ⅎ ) TURNED CAPITAL F</li>
+					<li>U+2183 ( Ↄ ) ROMAN NUMERAL REVERSED ONE HUNDRED</li>
+				</ul>
+			</li>
+			<li>Normalization Changes (CJK Compatibility Characters)
+				<ul>
+					<li>U+2F868, U+2F874, U+2F91F, U+2F95F, U+2F9BF</li>
+				</ul>
+			</li>
+			<li>Default Ignorable Changes
+				<ul>
+					<li>U+3164 HANGUL FILLER</li>
+					<li>U+FFA0 HALFWIDTH HANGUL FILLER</li>
+					<li>U+115F HANGUL CHOSEONG FILLER</li>
+					<li>U+1160 HANGUL JUNGSEONG FILLER</li>
+					<li>U+17B4 KHMER VOWEL INHERENT AQ</li>
+					<li>U+17B5 KHMER VOWEL INHERENT AA</li>
+					<li>U+1806 ( ᠆ ) MONGOLIAN TODO SOFT HYPHEN</li>
+				</ul>
+			</li>
+		</ul>
+		<p>
+			<em><strong>Characters that are disallowed in IDNA2003
+					(Step 3.3 above)</strong></em>
+		</p>
+		<ul>
+			<li>Bidi_Control characters
+				<ul>
+					<li>U+200E LEFT-TO-RIGHT MARK..U+200F RIGHT-TO-LEFT MARK</li>
+					<li>U+202A LEFT-TO-RIGHT EMBEDDING..U+202E RIGHT-TO-LEFT
+						OVERRIDE</li>
+				</ul>
+			</li>
+			<li>Invisible operators
+				<ul>
+					<li>U+2061 FUNCTION APPLICATION..U+2063 INVISIBLE SEPARATOR</li>
+				</ul>
+			</li>
+			<li>Replacement characters
+				<ul>
+					<li>U+FFFC OBJECT REPLACEMENT CHARACTER</li>
+					<li>U+FFFD ( � ) REPLACEMENT CHARACTER</li>
+				</ul>
+			</li>
+			<li>Musical symbols
+				<ul>
+					<li>U+1D173 MUSICAL SYMBOL BEGIN BEAM..U+1D17A MUSICAL SYMBOL
+						END PHRASE</li>
+				</ul>
+			</li>
+			<li>Format characters<strong> (deprecated)</strong>
+				<ul>
+					<li>U+206A INHIBIT SYMMETRIC SWAPPING..U+206F NOMINAL DIGIT
+						SHAPES</li>
+				</ul>
+			</li>
+			<li>Tags<strong> (deprecated)</strong>
+				<ul>
+					<li>U+E0001 LANGUAGE TAG</li>
+					<li>U+E007F CANCEL TAG</li>
+				</ul></li>
+			<li>Other tags
+				<ul>
+					<li>U+E0020 TAG SPACE..U+E007E TAG TILDE</li>
+				</ul></li>
+		</ul>
+		<h3>
+			<strong><a name="TableDerivationStep4"
+				href="tr46-15.html#TableDerivationStep4">Step 4: Specify the deviation set</a></strong>
+		</h3>
+		<p>This is the set of characters that deviate between IDNA2003 and
+			IDNA2008.</p>
+		<ul>
+			<li>U+200C ZERO WIDTH NON-JOINER</li>
+			<li>U+200D ZERO WIDTH JOINER</li>
+			<li>U+00DF ( ß ) LATIN SMALL LETTER SHARP S</li>
+			<li>U+03C2 ( ς ) GREEK SMALL LETTER FINAL SIGMA</li>
+		</ul>
+		<h3>
+			<strong><a name="TableDerivationStep5"
+				href="tr46-15.html#TableDerivationStep5">Step 5: Specify grandfathered
+					changes</a></strong>
+		</h3>
+		<p>
+			This set is currently empty. Adjustments to the above sets
+				or base mapping will be made in this section if the steps would
+				cause an already existing character to change status or mapping
+				under a future version of Unicode, so that backward compatibility is
+				maintained.
+		</p>
+		<h3>
+			<strong><a name="TableDerivationStep6"
+				href="tr46-15.html#TableDerivationStep6">Step 6: Produce the initial status
+					and mapping values</a></strong>
+		</h3>
+		<p>For each code point:</p>
+		<ol>
+			<li>If the code point is in the <strong>deviation</strong> set
+				<ul>
+					<li>the status is <strong>deviation</strong> and the mapping
+						value is the base mapping value for that code point.
+					</li>
+				</ul>
+			</li>
+			<li>Otherwise, if the code point is in the base exclusion set or
+				is unassigned
+				<ul>
+					<li>the status is <strong>disallowed</strong> and there is no
+						mapping value in the table.
+					</li>
+				</ul>
+			</li>
+			<li>Otherwise, if the code point is not a label separator <em>and</em>
+				some code point in its base mapping value is not in the base valid
+				set
+				<ul>
+					<li>the status is <strong>disallowed</strong> and there is no
+						mapping value in the table.
+					</li>
+				</ul>
+			</li>
+			<li>Otherwise, if the base mapping value is an empty string
+				<ul>
+					<li>the status is <strong>ignored</strong> and there is no
+						mapping value in the table.
+					</li>
+				</ul>
+			</li>
+
+			<li>Otherwise, if the base mapping value is the same as the code
+				point
+				<ul>
+					<li>the status is <strong>valid</strong> and there is no
+						mapping value in the table.
+					</li>
+				</ul>
+			</li>
+			<li>Otherwise,
+
+				<ul>
+					<li>the status is <strong>mapped</strong> and the mapping
+						value is the base mapping value for that code point.
+					</li>
+				</ul>
+			</li>
+		</ol>
+		<h3>
+			<strong><a name="TableDerivationStep7"
+				href="tr46-15.html#TableDerivationStep7">Step 7: Produce the final status
+					and mapping values</a></strong>
+		</h3>
+		<p>After processing all code points in previous steps:</p>
+		<ol>
+			<li>Iterate through the set of characters with a status of <strong>valid</strong>.
+				Any whose canonical decompositions (NFD) are not wholly in the <strong>valid</strong>
+				set, make <strong>disallowed</strong>.
+			</li>
+			<li>Iterate through the set of characters with a status of <strong>mapped</strong>.
+				Any with mapping values whose canonical decompositions (NFD) are not
+				wholly in the <strong>valid</strong> set, make <strong>disallowed</strong>.
+			</li>
+			<li>Recursively apply these actions until there are no more
+				status changes.</li>
+		</ol>
+		<p>
+			For example, for Unicode 5.2 and 6.0, the set of characters set to
+			disallowed in <a href="tr46-15.html#TableDerivationStep7">Step 7</a> consists of
+			the following:
+		</p>
+		<ul>
+			<li>U+2260 ( ≠ ) NOT EQUAL TO</li>
+			<li>U+226E ( ≮ ) NOT LESS-THAN</li>
+			<li>U+226F ( ≯ ) NOT GREATER-THAN</li>
+			<li>U+FE12 ( ︒ ) PRESENTATION FORM FOR VERTICAL IDEOGRAPHIC FULL
+				STOP</li>
+		</ul>
+		<p>
+			Note that characters such as U+2488 ( ⒈ ) DIGIT ONE FULL STOP are
+			disallowed by Step 6.3.<br>
+		</p>
+		<h2>
+			7 <a name="IDNAComparison" href="tr46-15.html#IDNAComparison">IDNA Comparison</a>
+		</h2>
+		<p>
+			<em>Table 4, <a href="tr46-15.html#Table_IDNA_Comparisons">IDNA
+					Comparisons</a></em> illustrates the differences between the three
+			specifications in terms of valid character repertoire. It omits the
+			ASCII-repertoire code points, all code points unassigned in the
+			latest version of Unicode, as well as control characters, private-use
+			characters, and surrogate code points. It also includes labels
+			separators that are valid or mapped. The table separates the Unicode
+			3.2 characters from those encoded later, because they have a special
+			status in IDNA2003. It also separates buckets where UTS #46 and
+			IDNA2008 behave the same from those where they behave differently.
+		</p>
+		<p>
+			<strong>Caution: </strong>The IDNA2008 values listed here and in the
+			data tables are preliminary. They are computed according to the rules
+			in [<a href="tr46-15.html#IDNA2008">IDNA2008</a>], but the IETF may change the
+			values for any particular version of Unicode, and even do so
+			retroactively. For example, even as of the release date for Unicode
+			8.0, it is as yet unclear what the IETF position is on which
+			characters should be valid for IDNA2008 for Unicode 7.0. 
+			(Only a very small number of characters added in Unicode 7.0
+			have raised concerns within IETF.) The IDNA2008
+			values for any version of Unicode are also not guaranteed to be
+			backward-compatible with those for previous versions of Unicode.
+		</p>
+		<p>Each row in the table defines a bucket of code points that
+			share a pattern of behavior across the three specifications. The
+			columns provide the following information:</p>
+		<ul>
+			<li>The column titled <strong>Count</strong> shows the number of
+				characters in each bucket.
+			</li>
+			<li>The columns titled <strong>IDNA2003</strong>, <strong>UTS46</strong>,
+				and <strong>IDNA2008</strong> show the status of the characters in
+				each bucket for the respective specifications.
+				<ul>
+					<li>Deviations are modified in Transitional Processing, but
+						not modified in Nontransitional Processing; see <em>Section
+							4, <a title="Processing" href="tr46-15.html#Processing">Processing</a>
+					</em>.
+					</li>
+					<li>IDNA2003 allows unassigned code points in lookup but not
+						registration. These are in the section of the table under
+						&quot;Unicode 4.0 to Latest&quot;, and marked as <strong>LookupValid</strong>.
+					</li>
+					<li>IDNA2008 uses several subcategories that are grouped
+						together here for comparison. Characters marked as <strong>Valid</strong>
+						are those that are CONTEXTJ, CONTEXTO, and PVALID in IDNA2008*.
+						Other characters are marked as <strong>Disallowed</strong>.
+						<blockquote>
+							* <em> <em>This list of <strong>Valid</strong>
+									characters for Unicode 4.0 and beyond is calculated as the
+									union of characters with values CONTEXTJ, CONTEXTO, and PVALID
+									under<strong> any version of Unicode from Version 5.2
+										or later</strong>.
+							</em> The union of valid characters over versions of Unicode is used
+								for comparison because IDNA2008 does not guarantee backward
+								compatibility over different versions of Unicode.
+							</em>
+						</blockquote>
+					</li>
+				</ul>
+			</li>
+			<li>The column titled <strong>Comment and Examples</strong>
+				describes the correlation between the specifications and provides
+				illustrative characters.
+			</li>
+		</ul>
+		<p class="caption">Table 4. <a name="Table_IDNA_Comparisons"
+					href="tr46-15.html#Table_IDNA_Comparisons">IDNA Comparisons</a></p>
+		<div align="center">
+		<table class="subtle">
+			<tr>
+				<th>&nbsp;</th>
+				<th>Count</th>
+				<th>IDNA2003</th>
+				<th>UTS46</th>
+				<th>IDNA2008</th>
+				<th>Comment and Examples</th>
+			</tr>
+			<tr>
+				<td colspan="6" class="lightgray">Unicode 3.2
+					(IDNA2003 = UTS46 = IDNA2008)</td>
+			</tr>
+			<tr>
+				<td style="text-align: center"><a name="Table_IDNA_a"></a>a</td>
+				<td style="text-align: right">86,676</td>
+				<td>Valid</td>
+				<td>Valid</td>
+				<td>Valid</td>
+				<td>Valid in all three<br> 
+					U+00E0 ( à ) LATIN SMALL LETTER A WITH GRAVE</td>
+			</tr>
+			<tr>
+				<td style="text-align: center"><a name="Table_IDNA_b"></a>b</td>
+				<td style="text-align: right">431</td>
+				<td><strong>Disallowed</strong></td>
+				<td><strong>Disallowed</strong></td>
+				<td><strong>Disallowed</strong></td>
+				<td>Disallowed in all three<br> 
+					U+FF01 (！ ) FULLWIDTH EXCLAMATION MARK</td>
+			</tr>
+			<tr>
+				<td colspan="6" class="lightgray">Unicode 3.2
+					(IDNA2003 ≠ UTS46 = IDNA2008)</td>
+			</tr>
+			<tr>
+				<td style="text-align: center"><a name="Table_IDNA_c"></a>c</td>
+				<td style="text-align: right">48</td>
+				<td>Valid</td>
+				<td><strong>Disallowed</strong></td>
+				<td><strong>Disallowed</strong></td>
+				<td>Mappings changed after Unicode 3.2<br>
+				U+2132 ( Ⅎ ) TURNED CAPITAL F</td>
+			</tr>
+			<tr>
+				<td style="text-align: center"><a name="Table_IDNA_d"></a>d</td>
+				<td style="text-align: right">8</td>
+				<td>Mapped</td>
+				<td><strong>Disallowed</strong></td>
+				<td><strong>Disallowed</strong></td>
+				<td>Mappings changed after Unicode 3.2<br>
+				U+2F868 ( 㛼 ) CJK Compatibility Ideographs</td>
+			</tr>
+			<tr>
+				<td colspan="6" class="lightgray">Unicode 3.2
+					(IDNA2003 = UTS46 ≠ IDNA2008)</td>
+			</tr>
+			<tr>
+				<td style="text-align: center"><a name="Table_IDNA_e"></a>e</td>
+				<td style="text-align: right">4,640</td>
+				<td>Mapped / Ignored</td>
+				<td>Mapped / Ignored</td>
+				<td><strong>Disallowed</strong></td>
+				<td>Case and compatibility variants, default ignorables<br>
+				U+00C0 ( À ) LATIN CAPITAL LETTER A WITH GRAVE</td>
+			</tr>
+			<tr>
+				<td style="text-align: center"><a name="Table_IDNA_f"></a>f</td>
+				<td style="text-align: right">3,254</td>
+				<td>Valid</td>
+				<td>Valid</td>
+				<td><strong>Disallowed</strong></td>
+				<td>Punctuation, symbols, ...<br>
+				U+2665 ( ♥ ) BLACK HEART SUIT</td>
+			</tr>
+			<tr>
+				<td style="text-align: center"><a name="Table_IDNA_g"></a>g</td>
+				<td style="text-align: right">4</td>
+				<td>Mapped / Ignored</td>
+				<td>Display: Valid<br>Lookup: Mapped / Ignored</td>
+				<td>Valid</td>
+				<td>Deviations<br>
+					U+200C ZERO WIDTH NON-JOINER<br>
+					U+200D ZERO WIDTH JOINER<br>
+					U+00DF ( ß ) LATIN SMALL LETTER SHARP S<br>
+					U+03C2 ( ς ) GREEK SMALL LETTER FINAL SIGMA</td>
+			</tr>
+			<tr>
+				<td colspan="6" class="lightgray">Unicode 4.0 to
+					Latest (UTS46 = IDNA2008)</td>
+			</tr>
+			<tr>
+				<td style="text-align: center"><a name="Table_IDNA_h"></a>h</td>
+				<td style="text-align: right">20,131</td>
+				<td>LookupValid</td>
+				<td>Valid</td>
+				<td>Valid</td>
+				<td>U+0221 ( ȡ ) LATIN SMALL LETTER D WITH CURL</td>
+			</tr>
+			<tr>
+				<td style="text-align: center"><a name="Table_IDNA_i"></a>i</td>
+				<td style="text-align: right">60</td>
+				<td>LookupValid</td>
+				<td><strong>Disallowed</strong></td>
+				<td><strong>Disallowed</strong></td>
+				<td>U+0602 ( ؂ ) ARABIC FOOTNOTE MARKER</td>
+			</tr>
+			<tr>
+				<td colspan="6" class="lightgray">Unicode 4.0 to
+					Latest (UTS46 ≠ IDNA2008)</td>
+			</tr>
+			<tr>
+				<td style="text-align: center"><a name="Table_IDNA_j"></a>j</td>
+				<td style="text-align: right">4,217</td>
+				<td>LookupValid</td>
+				<td>Valid</td>
+				<td><strong>Disallowed</strong></td>
+				<td>U+2615 ( ☕ ) HOT BEVERAGE</td>
+			</tr>
+			<tr>
+				<td style="text-align: center"><a name="Table_IDNA_k"></a>k</td>
+				<td style="text-align: right">1,109</td>
+				<td>LookupValid</td>
+				<td>Mapped / Ignored</td>
+				<td><strong>Disallowed</strong></td>
+				<td>U+023A ( Ⱥ ) LATIN CAPITAL LETTER A WITH STROKE</td>
+			</tr>
+		</table>
+		</div>
+		<p>
+			A more detailed online listing of differences is found at [<a
+				href="tr46-15.html#DemoIDNChars">DemoIDNChars</a>] and [<a href="tr46-15.html#DemoIDN">DemoIDN</a>].
+			The implications for confusability can be seen at [<a
+				href="tr46-15.html#DemoConf">DemoConf</a>].
+		</p>
+		<h3>
+			7.1 <a name="Implications_for_Implementers"
+				href="tr46-15.html#Implications_for_Implementers">Implications for
+				Implementers</a>
+		</h3>
+		<p>
+			<em>Table 4, <a href="tr46-15.html#Table_IDNA_Comparisons">IDNA
+					Comparisons</a></em> can also be used to categorize implications for
+			implementers.
+		</p>
+		<p>With the exception of Row (g), if any characters are
+			Mapped/Ignored in any specification—Rows (d), (e), (k)—then in the
+			other specifications they are either Mapped/Ignored in precisely the
+			same way, or they are Disallowed. This prevents domain names from
+			being mapped differently on different browsers: either the characters
+			map to the same result, or they do not work. Row (k) is unproblematic
+			in this regard, assuming that registries follow one of the
+			specifications, because characters like U+023A ( Ⱥ ) will not be
+			valid in registered labels.</p>
+		<p>The only exceptions are the four problematic Deviations in Row
+			(g), which require more complex handling because of their treatment
+			in IDNA2008, as discussed earlier. Transitions for Deviation
+			characters will depend upon how registries handle IDNA2008 going
+			forward, and how soon IDNA2003 clients are retired. Outside of the
+			transition from IDNA2003 to IDNA2008, the UTS #46 Nontransitional
+			Processing should be used, thus preserving Deviation characters.</p>
+		<p>
+			This presumes that IDNA2008 implementations do not use custom,
+			incompatible mappings: that is, that they do not take advantage of
+			the fact that arbitrary mappings are allowed in IDNA2008, and choose
+			a mapping that is incompatible with IDNA2003 or UTS #46. This
+			pertains to any of Rows (e), (f), (j), (k). If custom mappings were
+			used by any signficant client base, it would result in serious
+			problems for security and interoperability. For more information, see
+			the [<a href="tr46-15.html#IDN_FAQ">IDN_FAQ</a>].
+		</p>
+		<p>With the exception of the above issues, implementation is
+			straightforward:</p>
+		<ul>
+			<li>Rows (a) and (b) are unproblematic. All three specifications
+				behave identically.</li>
+			<li>Rows (c) and (d) are unproblematic. They contain characters
+				that are allowed under IDNA2003, but are disallowed in UTS #46
+				because their mappings would be different after Unicode 3.2, based
+				on the Unicode Standard mappings. This treatment also matches
+				IDNA2008. Those mappings were stabilized some time ago, so mappings
+				will not change in the future; see [<a href="tr46-15.html#Stability">Stability</a>].
+				Fortunately, in-depth analysis of Web content indicates these
+				characters are quite rare: their presence in domain names in web
+				pages cannot be distinguished from noise (unlike the Deviation
+				characters in Row (g)).
+			</li>
+			<li>Rows (e) and (k) are unproblematic. Ideally, implementations
+				will map these characters in IDNA2008, producing precisely the same
+				results as in UTS #46, and the same results for Unicode 3.2
+				characters as IDNA2003.</li>
+			<li>Rows (f) and (j) are symbols and punctuation that are
+				disallowed in IDNA2008, but allowed transitionally in UTS #46. Row
+				(j) contains post-Unicode 3.2 characters that are handled in UTS #46
+				according to IDNA2003 principles. These symbols and punctuation will
+				transition smoothly as registries discontinue support for them.</li>
+			<li>Rows (h) and (i) are unproblematic. The characters have the
+				same status in IDNA2008 and UTS #46.</li>
+		</ul>
+		<h2>
+			8 <a name="Conformance_Testing" href="tr46-15.html#Conformance_Testing">Conformance
+				Testing</a>
+		</h2>
+		<p>
+			A conformance testing file (IdnaTest.txt) is provided for each
+			version of Unicode starting with Unicode 6.0, in versioned
+			directories under [<a href="tr46-15.html#IDNATable">IDNA-Table</a>]. It only
+			provides test cases for <strong>UseSTD3ASCIIRules=true</strong>.
+		</p>
+		<p>To test for conformance to UTS46, on each line, perform the
+			toASCII and to Unicode operations on the source string, with the
+			indicated type. The results must match what is given in the toUnicode
+			and toASCII columns, except for errors. In the case of errors, an
+			implementation only needs to record that there is an error; it need
+			not reproduce the results in [...], which are only informative.</p>
+		<h3>
+			8.1 <a name="Format" href="tr46-15.html#Format">Format</a>
+		</h3>
+		<p>
+			The file is UTF8, with certain characters escaped using the \x{XXXX} convention for readability. Columns
+			(c1, c2,...) are separated by semicolons. Leading and trailing spaces
+			and tabs in each column are ignored. Comments are indicated with hash
+			marks. The columns contain the following information:
+		</p>
+		<ol>
+			<li><strong>type</strong> - T for transitional, N for
+				nontransitional, B for both</li>
+			<li><strong>source</strong> - the source string to be tested</li>
+			<li><strong>toUnicode</strong> - the result of applying
+				toUnicode to the source, using the specified type from Column 1; or
+				an error list</li>
+			<li><strong>toASCII</strong> - the result of applying toASCII to
+				the source, using <em>nontransitional</em>; or an error list</li>
+			<li><strong>NV8/XV8</strong> - an informative field:
+				<ol>
+					<li><strong>NV8</strong> is present if some character in the
+						toUnicode value, after mapping, could not be in a valid domain
+						name under <strong><em>any</em></strong> version of IDNA2008.</li>
+					<li><strong>XV8</strong> is present when the character could
+						not be in a valid domain name under the <strong><em>current</em></strong>
+						version of Unicode.</li>
+				</ol></li>
+		</ol>
+		<p>
+			Because the [<a href="tr46-15.html#IDNA2008">IDNA2008</a>] values for any
+			particular version of Unicode may change at any point in time—due to
+			the factors mentioned in the <strong>Caution</strong> statement of <em>Section
+				7 <a href="tr46-15.html#IDNAComparison">IDNA Comparison</a>
+			</em>—the NV8 and XV8 values may deviate from the future [<a
+				href="tr46-15.html#IDNA2008">IDNA2008</a>] values for Unicode 8.0.
+		</p>
+		<p>For readability, if the value of toUnicode or toASCII is the
+			same as source, the column will be blank.</p>
+		<p>An error in toUnicode or toASCII is indicated by an error list
+			of the form [...]. In such a case, the contents of that list are
+			error codes based on the step numbers in UTS46 and IDNA2008:</p>
+		<blockquote>
+			<p>
+				<strong>Pn</strong> for Section 4 <a title="Processing"
+					href="tr46-15.html#Processing">Processing</a>, step n<br> <strong>Vn</strong>
+				for Section 4.1 <a href="tr46-15.html#Validity_Criteria">Validity Criteria</a>,
+				step n<br> <strong>An</strong> for Section 4.2 <a
+					href="tr46-15.html#ToASCII">ToASCII</a>, step n<br> <strong>Bn</strong>
+				for Bidi Rule #n from <em>Section 2. The Bidi Rule</em>, in <em>Right-to-Left
+					Scripts for Internationalized Domain Names for Applications (IDNA)</em>
+				[<a href="tr46-15.html#IDNA2008">IDNA2008</a>]<br> <strong>Cn</strong> for
+				ContextJ tests in, <em>Appendix A.n</em> in The Unicode Code Points
+				and Internationalized Domain Names for Applications (IDNA) [<a
+					href="tr46-15.html#IDNA2008">IDNA2008</a>]. Thus C1 = Appendix A.1. ZERO WIDTH
+				NON-JOINER, and C2 = Appendix A.2. ZERO WIDTH JOINER. The CONTEXTO
+				tests are optional for client software, and not tested here.
+			</p>
+		</blockquote>
+		<p>However, these particular error codes are only informative; the
+			important feature is whether or not there is an error.</p>
+		<h2>
+			<a name="Acknowledgements" href="tr46-15.html#Acknowledgements">Acknowledgments</a>
+		</h2>
+		<p>
+			Mark Davis and Michel Suignard authored the bulk of the text of this
+			document, under direction from the Unicode Technical Committee. For
+			their contributions of ideas or text to this specification, the
+			editors thank Julie Allen, Matitiahu Allouche, Peter Constable, Craig
+			Cummings, Martin Dürst, Peter Edberg, Deborah Goldsmith, Laurentiu
+			Iancu, Gervase Markham, Simon Montagu, Lisa Moore, Eric Muller,
+			Murray Sargent, Markus Scherer, Jungshik Shin, Shawn Steele, Erik van
+			der Poel, Chris Weber, and Ken Whistler. The specification builds
+			upon [<a href="tr46-15.html#IDNA2008">IDNA2008</a>], developed in the IETF
+			Idna-update working group, especially contributions from Matitiahu
+			Allouche, Harald Alvestrand, Vint Cerf, Martin J. Dürst, Lisa
+			Dusseault, Patrik Fältström, Paul Hoffman, Cary Karp, John Klensin,
+			and Peter Resnick, and also upon [<a href="tr46-15.html#IDNA2003">IDNA2003</a>],
+			authored by Marc Blanchet, Adam Costello, Patrik Fältström, and Paul
+			Hoffman.
+		</p>
+		<h2>
+			<a name="References" href="tr46-15.html#References">References</a>
+		</h2>
+		<table cellspacing="0" cellpadding="4" border="0" class="noborder"
+			style="border-collapse: collapse">
+			<tr>
+				<td class="noborder" valign="top">[<a class="nolink"
+					name="Bortzmeyer" href="tr46-15.html#Bortzmeyer">Bortzmeyer</a>]
+				</td>
+				<td class="noborder" valign="top"><a
+					href="http://www.bortzmeyer.org/idn-et-phishing.html">http://www.bortzmeyer.org/idn-et-phishing.html</a>
+					<br> <br>The most interesting studies cited there
+					(originally from Mike Beltzner of <strong>Mozilla</strong>) are:<br>
+					<ul>
+						<li><em><a
+								href="http://cups.cs.cmu.edu/soups/2006/proceedings/p79_downs.pdf"
+								hreflang="en">Decision Strategies and Susceptibility to
+									Phishing</a></em> by Downs, Holbrook &amp; Cranor</li>
+						<li><em> <a hreflang="en"
+								href="http://dl.acm.org/citation.cfm?id=1124772.1124861">Why
+									Phishing Works</a></em> by Dhamija, Tygar &amp; Hearst</li>
+						<li><em><a
+								href="http://www.simson.net/ref/2006/CHI-security-toolbar-final.pdf"
+								hreflang="en">Do Security Toolbars Actually Prevent Phishing
+									Attacks</a></em> by Wu, Miller &amp; Garfinkel</li>
+						<li><em><a
+								href="http://www.cs.auckland.ac.nz/~pgut001/pubs/phishing.pdf"
+								hreflang="en">Phishing Tips and Techniques</a></em> by Gutmann.</li>
+					</ul></td>
+			</tr>
+			<tr>
+				<td class="noborder" valign="top">[<a class="nolink"
+					name="DemoConf" href="tr46-15.html#DemoConf">DemoConf</a>]
+				</td>
+				<td class="noborder" valign="top"><a
+					href="http://unicode.org/cldr/utility/confusables.jsp">http://unicode.org/cldr/utility/confusables.jsp</a></td>
+			</tr>
+			<tr>
+				<td class="noborder" valign="top">[<a class="nolink"
+					name="DemoIDN" href="tr46-15.html#DemoIDN">DemoIDN</a>]
+				</td>
+				<td class="noborder" valign="top"><a
+					href="http://unicode.org/cldr/utility/idna.jsp" target="_blank">http://unicode.org/cldr/utility/idna.jsp</a></td>
+			</tr>
+			<tr>
+				<td class="noborder" valign="top">[<a class="nolink"
+					name="DemoIDNChars" href="tr46-15.html#DemoIDNChars">DemoIDNChars</a>]
+				</td>
+				<td class="noborder" valign="top"><a
+					href="http://unicode.org/cldr/utility/list-unicodeset.jsp?a=\p{age%3D3.2}-\p{cn}-\p{cs}-\p{co}&amp;abb=on&amp;g=uts46+idna+idna2008">http://unicode.org/cldr/utility/list-unicodeset.jsp?a=\p{age%3D3.2}-\p{cn}-\p{cs}-\p{co}&amp;abb=on&amp;g=uts46+idna+idna2008</a></td>
+			</tr>
+			<tr>
+				<td class="noborder">[<a class="nolink" name="IDNA2003"
+					href="tr46-15.html#IDNA2003">IDNA2003</a>]
+				</td>
+				<td class="noborder">The IDNA2003 specification is defined by a
+					cluster of IETF RFCs:
+					<ul>
+						<li>IDNA [<a href="tr46-15.html#RFC3490">RFC3490</a>]
+						</li>
+						<li>Nameprep [<a href="tr46-15.html#RFC3491">RFC3491</a>]
+						</li>
+						<li>Punycode [<a href="tr46-15.html#RFC3492">RFC3492</a>]
+						</li>
+						<li>Stringprep [<a href="tr46-15.html#RFC3454">RFC3454</a>].
+						</li>
+					</ul>
+				</td>
+			</tr>
+			<tr>
+				<td class="noborder">[<a class="nolink" name="IDNA2008"
+					href="tr46-15.html#IDNA2008">IDNA2008</a>]
+				</td>
+				<td class="noborder">The IDNA2008 specification is defined by a
+					cluster of IETF RFCs:
+					<ul>
+						<li>Internationalized Domain Names for Applications (IDNA):
+							Definitions and Document Framework<br> <a
+							href="http://tools.ietf.org/html/rfc5890">http://tools.ietf.org/html/rfc5890</a>
+						</li>
+						<li>Internationalized Domain Names in Applications (IDNA)
+							Protocol<br> <a href="http://tools.ietf.org/html/rfc5891">http://tools.ietf.org/html/rfc5891</a>
+						</li>
+						<li>The Unicode Code Points and Internationalized Domain
+							Names for Applications (IDNA)<br> <a
+							href="http://tools.ietf.org/html/rfc5892">http://tools.ietf.org/html/rfc5892</a>
+						</li>
+						<li>Right-to-Left Scripts for Internationalized Domain Names
+							for Applications (IDNA)<br> <a
+							href="http://tools.ietf.org/html/rfc5893">http://tools.ietf.org/html/rfc5893</a>
+						</li>
+					</ul> There is also an informative document:<br>
+					<ul>
+						<li>Internationalized Domain Names for Applications (IDNA):
+							Background, Explanation, and Rationale<br> <a
+							href="http://tools.ietf.org/html/rfc5894">http://tools.ietf.org/html/rfc5894</a>
+						</li>
+					</ul>
+				</td>
+			</tr>
+			<tr>
+				<td class="noborder">[<a class="nolink" name="IDNATable"
+					href="tr46-15.html#IDNATable">IDNA-Table</a>]
+				</td>
+				<td class="noborder"><a
+					href="http://www.unicode.org/Public/idna">http://www.unicode.org/Public/idna</a></td>
+			</tr>
+			<tr>
+				<td class="noborder">[<a class="nolink" name="IDN_Demo"
+					href="tr46-15.html#IDN_Demo">IDN-Demo</a>]
+				</td>
+				<td class="noborder"><a
+					href="http://unicode.org/cldr/utility/idna.jsp">http://unicode.org/cldr/utility/idna.jsp</a></td>
+			</tr>
+			<tr>
+				<td class="noborder">[<a class="nolink" name="IDN_FAQ"
+					href="tr46-15.html#IDN_FAQ">IDN-FAQ</a>]
+				</td>
+				<td class="noborder"><a
+					href="http://www.unicode.org/faq/idn.html">http://www.unicode.org/faq/idn.html</a></td>
+			</tr>
+			<tr>
+				<td class="noborder">[<a class="nolink" name="NFKC_CaseFold"
+					href="tr46-15.html#NFKC_CaseFold">NFKC_Casefold</a>]
+				</td>
+				<td class="noborder">The Unicode property specified in [<a
+					href="tr46-15.html#UAX44">UAX44</a>], and defined by the data in <a
+					href="http://www.unicode.org/Public/UNIDATA/DerivedNormalizationProps.txt">DerivedNormalizationProps.txt</a>
+					(search for &quot;NFKC_Casefold&quot;).<br> <br> The
+					Unicode character mapping property defined by the data in <a
+					href="http://www.unicode.org/Public/UNIDATA/DerivedNormalizationProps.txt">DerivedNormalizationProps.txt</a>.
+					(Search for "NFKC_Casefold".) See also the <a
+					href="../tr44/index.html#NFKC_Casefold">documentation
+						for NFKC_Casefold</a> in [<a href="tr46-15.html#UAX44">UAX44</a>].
+				</td>
+			</tr>
+			<tr>
+				<td class="noborder" valign="top" nowrap>[<a class="nolink"
+					name="RFC3454" href="tr46-15.html#RFC3454">RFC3454</a>]
+				</td>
+				<td class="noborder" valign="top">P. Hoffman, M. Blanchet.
+					&quot;Preparation of Internationalized Strings
+					(&quot;stringprep&quot;)&quot;, RFC 3454, December 2002.<br> <a
+					href="http://ietf.org/rfc/rfc3454.txt">http://ietf.org/rfc/rfc3454.txt</a>
+				</td>
+			</tr>
+			<tr>
+				<td class="noborder" valign="top" nowrap>[<a class="nolink"
+					name="RFC3490" href="tr46-15.html#RFC3490">RFC3490</a>]
+				</td>
+				<td class="noborder" valign="top">Faltstrom, P., Hoffman, P.
+					and A. Costello, &quot;Internationalizing Domain Names in
+					Applications (IDNA)&quot;, RFC 3490, March 2003.<br> <a
+					href="http://ietf.org/rfc/rfc3490.txt">http://ietf.org/rfc/rfc3490.txt</a>
+				</td>
+			</tr>
+			<tr>
+				<td class="noborder" valign="top" nowrap>[<a class="nolink"
+					name="RFC3491" href="tr46-15.html#RFC3491">RFC3491</a>]
+				</td>
+				<td class="noborder" valign="top">Hoffman, P. and M. Blanchet,
+					&quot;Nameprep: A Stringprep Profile for Internationalized Domain
+					Names (IDN)&quot;, RFC 3491, March 2003.<br> <a
+					href="http://ietf.org/rfc/rfc3491.txt">http://ietf.org/rfc/rfc3491.txt</a>
+				</td>
+			</tr>
+			<tr>
+				<td class="noborder" valign="top" nowrap>[<a class="nolink"
+					name="RFC3492" href="tr46-15.html#RFC3492">RFC3492</a>]
+				</td>
+				<td class="noborder" valign="top">Costello, A., &quot;Punycode:
+					A Bootstring encoding of Unicode for Internationalized Domain Names
+					in Applications (IDNA)&quot;, RFC 3492, March 2003.<br> <a
+					href="http://ietf.org/rfc/rfc3492.txt">http://ietf.org/rfc/rfc3492.txt</a>
+				</td>
+			</tr>
+			<tbody>
+				<tr>
+					<td class="noborder" valign="top">[<a class="nolink"
+						name="SafeBrowsing" href="tr46-15.html#SafeBrowsing">SafeBrowsing</a>]
+					</td>
+					<td class="noborder" valign="top"><a
+						href="http://code.google.com/apis/safebrowsing/">http://code.google.com/apis/safebrowsing/</a></td>
+				</tr>
+				<tr>
+					<td class="noborder" valign="top">[<a class="nolink"
+						name="Stability" href="tr46-15.html#Stability">Stability</a>]
+					</td>
+					<td class="noborder" valign="top">Unicode Consortium Stability
+						Policies<i><br> </i> <a
+						href="http://www.unicode.org/policies/stability_policy.html">
+							http://www.unicode.org/policies/stability_policy.html</a>&nbsp;
+					</td>
+				</tr>
+				<tr>
+					<td class="noborder" valign="top">[<a class="nolink"
+						name="STD3" href="tr46-15.html#STD3">STD3</a>]
+					</td>
+					<td class="noborder" valign="top">Braden, R.,
+						&quot;Requirements for Internet Hosts -- Communication
+						Layers&quot;, STD 3, RFC 1122, and &quot;Requirements for Internet
+						Hosts -- Application and Support&quot;, STD 3, RFC 1123, October
+						1989.<br> <a href="http://www.rfc-editor.org/std/std3.txt">http://www.rfc-editor.org/std/std3.txt</a><br>
+					</td>
+				</tr>
+				<tr>
+					<td class="noborder" valign="top">[<a class="nolink"
+						name="STD13" href="tr46-15.html#STD13">STD13</a>]
+					</td>
+					<td class="noborder" valign="top">Mockapetris, P.,
+						&quot;Domain names - concepts and facilities&quot;, STD 13, RFC
+						1034 and &quot;Domain names - implementation and
+						specification&quot;, STD 13, RFC 1035, November 1987.<br> <a
+						href="http://www.rfc-editor.org/std/std13.txt">http://www.rfc-editor.org/std/std13.txt</a>
+					</td>
+				</tr>
+				<tr>
+					<td class="noborder" valign="top">[<a class="nolink"
+						name="Boundaries" href="tr46-15.html#Boundaries"></a><a class="nolink"
+						name="UAX29" href="tr46-15.html#UAX29">UAX29</a>]
+					</td>
+					<td class="noborder" valign="top">UAX #29: <i>Unicode Text
+							Segmentation</i><br> <a
+						href="../tr29.1">http://www.unicode.org/reports/tr29/</a></td>
+				</tr>
+				<tr>
+					<td class="noborder" valign="top">[<a class="nolink"
+						name="UAX31" href="tr46-15.html#UAX31">UAX31</a>]
+					</td>
+					<td class="noborder" valign="top">UAX #31: <i>Unicode
+							Identifier and Pattern Syntax</i><br> <a
+						href="../tr31/index.html">http://www.unicode.org/reports/tr31/</a></td>
+				</tr>
+				<tr>
+					<td class="noborder" valign="top">[<a class="nolink"
+						name="UAX44" href="tr46-15.html#UAX44">UAX44</a>]
+					</td>
+					<td class="noborder" valign="top">UAX #44:<i>Unicode
+							Character Database</i><br> <a
+						href="../tr44/index.html">http://www.unicode.org/reports/tr44/</a></td>
+				</tr>
+				<tr>
+					<td class="noborder" valign="top">[<a class="nolink"
+						name="Unicode" href="tr46-15.html#Unicode">Unicode</a>]
+					</td>
+					<td class="noborder" valign="top">The Unicode Standard<br>
+						<em>For the latest version, see:</em><br> <a
+						href="http://www.unicode.org/versions/latest/">http://www.unicode.org/versions/latest/</a></td>
+				</tr>
+				<tr>
+					<td class="noborder" valign="top" nowrap>[<a class="nolink"
+						name="Security" href="tr46-15.html#Security"></a><a class="nolink"
+						name="UTR36" href="tr46-15.html#UTR36">UTR36</a>]
+					</td>
+					<td class="noborder" valign="top">UTR #36: <i>Unicode
+							Security Considerations</i><br> <a
+						href="../tr36/index.html">http://www.unicode.org/reports/tr36/</a></td>
+				</tr>
+				<tr>
+					<td class="noborder" valign="top" nowrap>[<a class="nolink"
+						name="RegEx" href="tr46-15.html#RegEx"></a><a class="nolink" name="UTS18"
+						href="tr46-15.html#UTS18">UTS18</a>]
+					</td>
+					<td class="noborder" valign="top">UTS #18: <i>Unicode
+							Regular Expressions<br>
+					</i> <a href="../tr18.1">
+							http://www.unicode.org/reports/tr18/</a></td>
+				</tr>
+				<tr>
+					<td class="noborder" valign="top" nowrap>[<a class="nolink"
+						name="UTS39" href="tr46-15.html#UTS39">UTS39</a>]
+					</td>
+					<td class="noborder" valign="top">UTS #39: <i>Unicode
+							Security Mechanisms</i><br> <a
+						href="../tr39/index.html">
+							http://www.unicode.org/reports/tr39/</a></td>
+				</tr>
+			</tbody>
+		</table>
+
+
+
+
+		<h2>
+			<a name="Modifications" href="tr46-15.html#Modifications">Modifications</a>
+		</h2>
+		<p>The following summarizes modifications from the previous
+			revisions of this document.</p>
+
+		<p>
+			<strong>Revision 15</strong>
+		</p>
+		<ul>
+			<li>Reissued to synchronize with Unicode 8.0.</li>
+			<li>Updates to table styles. Cleaned up references. [KW]</li>
+			<li>Added tables to Table of Contents.</li>
+			<li>Fixed typo reported by Diego Perini.</li>
+			<li>Section 1.3.1 <a href="tr46-15.html#Mapping">Mapping</a>
+				<ul>
+					<li>Added note to point out that in Unicode 8.0, the new
+						lowercase Cherokee characters are case-folded to their uppercase
+						counterparts.</li>
+				</ul>
+			</li>
+			<li>Section 7 <a href="tr46-15.html#IDNAComparison">IDNA Comparison</a>
+				<ul>
+					<li>Added cautionary note about the IDNA2008 values.</li>
+					<li>Updated values h, i, j, k in <em>Table 4, 
+						<a href="tr46-15.html#Table_IDNA_Comparisons">IDNA Comparisons</a></em> for Unicode 8.0.
+					</li>
+				</ul>
+			</li>
+			<li>Section 8 <a href="tr46-15.html#Conformance_Testing">Conformance
+						Testing</a>
+				<ul>
+					<li>Changed the convention for representing code points in the
+						test file to use \x{X…} instead of \uXXXX, to avoid using
+						surrogate code units.</li>
+				</ul></li>
+			<li>Section 8.1 <a href="tr46-15.html#Format">Format</a>
+				<ul>
+					<li>Added cautionary note about the use of the NV8 and XV8
+						values.</li>
+				</ul>
+			</li>
+		</ul>
+
+		<p>Revision 14 being a proposed update, only changes between
+			revisions 15 and 13 are noted here.</p>
+
+		<p>
+			<strong>Revision 13</strong>
+		</p>
+		<ul>
+			<li>Reissued to synchronize with Unicode 7.0.</li>
+			<li>General
+				<ul>
+					<li>Fixed some outdated references to<em> </em>[<a
+						href="tr46-15.html#UTR36">UTR36</a>] and [<a href="tr46-15.html#UTS39">UTS39</a>].
+					</li>
+					<li>Miscellaneous editing.</li>
+				</ul>
+			</li>
+			<li>Section 3 <a href="tr46-15.html#Conformance">Conformance</a>
+				<ul>
+					<li>Updated examples.</li>
+				</ul>
+			</li>
+			<li>Section 4 <a href="tr46-15.html#Processing">Processing</a>
+				<ul>
+					<li>Clarified the Input and Results for:
+						<ul>
+							<li>The main processing step</li>
+							<li>ToASCII</li>
+							<li>ToUnicode</li>
+						</ul>
+					</li>
+				</ul>
+			</li>
+			<li>Section 5 <a href="tr46-15.html#IDNA_Mapping_Table">IDNA Mapping
+					Table</a>
+				<ul>
+					<li>Fixed typo in <em>Table 2b, <a
+							href="tr46-15.html#Table_Data_File_Fields">Data File Fields</a></em>.</li>
+					<li>Added a new value for field 3, XV8, with example.</li>
+				</ul>
+			</li>
+			<li>Section 7 <a href="tr46-15.html#IDNAComparison">IDNA Comparison</a>
+				<ul>
+					<li>Updated numbers for 7.0.0 in <em>Table 4, <a
+							href="tr46-15.html#Table_IDNA_Comparisons">IDNA Comparisons</a></em>.</li>
+				</ul>
+			</li>
+			<li>Section 8.1 <a href="tr46-15.html#Format">Format</a>
+				<ul>
+					<li>Made the definition of NV8 consistent with Section 5 <a
+						href="tr46-15.html#IDNA_Mapping_Table">IDNA Mapping Table</a>.</li>
+				</ul>
+			</li>
+		</ul>
+
+		<p>Revision 12 being a proposed update, only changes between
+			revisions 13 and 11 are noted here.</p>
+
+		<p>
+			<strong>Revision 11</strong>
+		</p>
+		<ul>
+			<li>Reissued to synchronize with Unicode 6.3.</li>
+			<li>Section 6 <a href="tr46-15.html#Mapping_Table_Derivation">Mapping
+						Table Derivation</a>
+				<ul>
+					<li>Added text to make Bidi_Control characters prohibited.</li>
+				</ul></li>
+			<li>Section 7 <a href="tr46-15.html#IDNAComparison">IDNA
+						Comparison</a>
+				<ul>
+					<li>Updated <em>Table 4, <a
+							href="tr46-15.html#Table_IDNA_Comparisons">IDNA Comparisons</a></em> for the 5 new
+						characters (all become <a href="tr46-15.html#Table_IDNA_i">i
+						Disallowed/Disallowed</a>).
+					</li>
+				</ul></li>
+			<li>Added more internal links, and fixed the Table of Contents.</li>
+			<li>Removed references to old versions of the Unicode Standard.</li>
+		</ul>
+
+		<p>Revision 10 being a proposed update, only changes between
+			revisions 11 and 9 are noted here.</p>
+
+		<p>
+			<strong>Revision 9</strong>
+		</p>
+		<ul>
+			<li>Reissued to synchronize with Unicode 6.2.</li>
+		</ul>
+
+		<p>Revision 8 being a proposed update, only changes between
+			revisions 9 and 7 are noted here.</p>
+
+
+		<p>
+			<strong>Revision 7</strong>
+		</p>
+		<ul>
+			<li>Reissued to synchronize with Unicode 6.1.</li>
+			<li>Changed text to be more version-independent.</li>
+			<li>Updated figures in <a href="tr46-15.html#Table_IDNA_Comparisons">Table
+					4</a>.
+			</li>
+			<li>Added NV8 values to <em>Table 2b, <a
+					href="tr46-15.html#Table_Data_File_Fields">Data File Fields</a></em> and to Section
+					8, <a href="tr46-15.html#Conformance_Testing">Conformance Testing</a>.
+			</li>
+		</ul>
+
+		<p>Revision 6 being a proposed update, only changes between
+			revisions 7 and 5 are noted here.</p>
+
+		<p>
+			<strong>Revision 5</strong>
+		</p>
+		<ul>
+			<li>Reissued to synchronize with Unicode 6.0.</li>
+			<li>Provided extra status values for implementations that need to
+				turn the STD3 rules off.</li>
+			<li>Provided a testing file and a description of its format.</li>
+			<li>Added note on the special case of testing validity of three
+				characters containing =.</li>
+		</ul>
+
+		<p>Revision 4 being a proposed update, only changes between
+			revisions 5 and 3 are noted here.</p>
+
+		<p>
+			<strong>Revision 3</strong>
+		</p>
+		<ul>
+			<li>Publication of first approved version.</li>
+		</ul>
+		<p>
+			<strong>Revision 2</strong>
+		</p>
+		<ul>
+			<li>Draft UTS posted for public review.</li>
+			<li>Clarified how to use as preprocessing for IDNA2008.</li>
+			<li>Made normativity clearer, and clarified IRI vs domain name.</li>
+			<li>Clarified relation between the table derivation and the
+				processing</li>
+			<li>Formalized Step 3 of the table derivation to make it clear
+				that the listed characters were derived—not cherry-picked.</li>
+			<li>Many editorial changes according to the results of review by
+				editorial committee, mostly to clarify the relationship between
+				IDNA2003 and IDNA2008.</li>
+			<li>Changed the names of Lookup/Display processing for clarity.</li>
+			<li>Made it clear that Subtraction and Deviation support is
+				transitional.</li>
+			<li>Made other rewording after the approval of IDNA2008.</li>
+			<li>Added explanation of correspondances to ToASCII and
+				ToUnicode.</li>
+			<li>Modified the error handling to make it more flexible, and
+				always produce a (determinant) converted string.</li>
+			<li>Changed title.</li>
+			<li>Major restructuring as result of UTC discussion.</li>
+			<li>Added notation section, draft data file.</li>
+			<li>Made it clear that applications can choose to have tighter
+				validity criteria.</li>
+			<li>Renumbered sections and fixed references.</li>
+			<li>Added comparison table of IDNA2003, UTS #46, and IDNA2008 in
+				Section 7.</li>
+		</ul>
+		<p>
+			<strong>Revision 1</strong>
+		</p>
+		<ul>
+			<li>Proposed Draft UTS posted for public review.</li>
+			<li>Fixed a number of typos and problems pointed out by Marcos
+				(mostly not noted in the text).</li>
+			<li>Added draft security and FAQ sections.</li>
+			<li>Replaced the introduction, and shortened the document
+				overall; with the NFKC_CaseFolded property, the mapping is
+				considerably simpler.</li>
+			<li>Added specifications for the Hybrid and Compatibility
+				implementations, including the two Modes, based on the additional
+				material from the UTC in early 2008.</li>
+			<li>Removed the Hybrid variant, and added a discussion of
+				tactics for Deviations.</li>
+		</ul>
+		<hr width="50%">
+		<p class="copyright">
+			Copyright © 2008&ndash;2015 Unicode, Inc. All
+				Rights Reserved. The Unicode Consortium makes no expressed or
+				implied warranty of any kind, and assumes no liability for errors or
+				omissions. No liability is assumed for incidental and consequential
+				damages in connection with or arising out of the use of the
+				information or programs contained or accompanying this technical
+				report. The Unicode <a href="http://www.unicode.org/copyright.html">Terms
+					of Use</a> apply.
+		</p>
+		<p class="copyright">
+			Unicode and the Unicode logo are trademarks of
+				Unicode, Inc., and are registered in some jurisdictions.
+		</p>
+	</div>
+</body>
+</html>

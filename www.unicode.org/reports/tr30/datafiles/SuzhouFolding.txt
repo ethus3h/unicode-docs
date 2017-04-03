@@ -1,0 +1,43 @@
+# 	SuzhouFolding.txt
+#	DRAFT 1 - 2004-07-14 Richard Cook
+#	Subject to change
+#
+#	Base version of Unicode: 4.0.0
+#
+#	Datafile for Unicode Techical Report #30
+#	Copyright (c) 1991-2004 Unicode, Inc.
+#	For terms of use, and documentation see
+#	http://www.unicode.org/reports/tr30/
+
+#	=================================
+
+#
+#	Maps each Suzhou numeral to its corresponding 
+#	CJK Unified Ideograph.
+
+#
+#	Format
+#		Field 0 - character code (source)
+#		Field 1 - character code or sequence (target)
+#		Comment - utf8 of source -> utf8 of target, followed by
+#				  characer name of source -> character name of target
+#
+#   Notes:
+
+#	Stability
+#		Revisions of this file are expected.
+#
+###########################################################################
+3021;	4E00	# 〡 → 一	HANGZHOU NUMERAL ONE → CJK UNIFIED IDEOGRAPH-4E00
+3022;	4E8C	# 〢 → 二	HANGZHOU NUMERAL TWO → CJK UNIFIED IDEOGRAPH-4E8C
+3023;	4E09	# 〣 → 三	HANGZHOU NUMERAL THREE → CJK UNIFIED IDEOGRAPH-4E09
+3024;	56DB	# 〤 → 四	HANGZHOU NUMERAL FOUR → CJK UNIFIED IDEOGRAPH-56DB
+3025;	4E94	# 〥 → 五	HANGZHOU NUMERAL FIVE → CJK UNIFIED IDEOGRAPH-4E94
+3026;	516D	# 〦 → 六	HANGZHOU NUMERAL SIX → CJK UNIFIED IDEOGRAPH-516D
+3027;	4E03	# 〧 → 七	HANGZHOU NUMERAL SEVEN → CJK UNIFIED IDEOGRAPH-4E03
+3028;	516B	# 〨 → 八	HANGZHOU NUMERAL EIGHT → CJK UNIFIED IDEOGRAPH-516B
+3029;	4E5D	# 〩 → 九	HANGZHOU NUMERAL NINE → CJK UNIFIED IDEOGRAPH-4E5D
+3038;	5341	# 〸 → 十	HANGZHOU NUMERAL TEN → CJK UNIFIED IDEOGRAPH-5341
+3039;	4E8C 5341	# 〹 → 二十	HANGZHOU NUMERAL TWENTY → CJK UNIFIED IDEOGRAPH-4E8C, CJK UNIFIED IDEOGRAPH-5341
+303A;	4E09 5341	# 〺 → 三十	HANGZHOU NUMERAL THIRTY → CJK UNIFIED IDEOGRAPH-4E09, CJK UNIFIED IDEOGRAPH-5341
+

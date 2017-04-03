@@ -1,0 +1,347 @@
+<!doctype HTML 
+PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta http-equiv="Content-Language" content="en-us">
+<meta name="GENERATOR" content="Microsoft FrontPage 6.0">
+<meta name="ProgId" content="FrontPage.Editor.Document">
+<link rel="stylesheet" href="../../unicode/reports/reports.css" 
+type="text/css">
+<title>UTN #19: Recommendations for Creating New Orthographies</title>
+</head>
+
+<body bgcolor="#ffffff">
+
+<table class="header">
+  <tr>
+    <td class="icon"><a href="http://www.unicode.org"><img align="middle" 
+    alt="[Unicode]" border="0" 
+    src="../../webscripts/logo60s2.gif" width="34" height="33"></a>&nbsp;&nbsp;
+    <font size="3"><a class="bar" href="../index.html">Technical 
+	Notes</a></font></td>
+  </tr>
+  <tr>
+    <td class="gray">&nbsp;</td>
+  </tr>
+</table>
+<div style="margin: 2em">
+  <h2 align="center">Unicode Technical Note #19</h2>
+  <h1 align="center">Recommendations for Creating New Orthographies</h1>
+  <table class="wide">
+    <tr>
+      <td>Version</td>
+      <td><a href="index.html#TrackingNumber1">1</a></td>
+    </tr>
+    <tr>
+      <td>Authors</td>
+      <td>Deborah Anderson, with Rick McGowan and Ken Whistler (and 
+		incorporating comments by Lorna Priest)</td>
+    </tr>
+    <tr>
+      <td>Date</td>
+      <td>January 5, 2005</td>
+    </tr>
+    <tr>
+      <td>This Version</td>
+      <td><a href="tn19-1.html">
+		http://www.unicode.org/notes/tn19/tn19-1.html</a></td>
+    </tr>
+    <tr>
+      <td>Previous Version</td>
+      <td>n/a</td>
+    </tr>
+    <tr>
+      <td>Latest Version</td>
+      <td><a href="index.html">
+		http://www.unicode.org/notes/tn19/</a></td>
+    </tr>
+  </table>
+  <p><br>
+  </p>
+  <h3><i>Summary</i></h3>
+  <p><i><em>This document </em>provides a set of recommendations to linguists 
+	who are developing new orthographies.</i></p>
+  <h3><i>Status</i></h3>
+  <p><i>This document is a <b>Unicode Technical Note</b>. It is supplied purely 
+	for informational purposes and publication does not imply any endorsement by 
+	the Unicode Consortium. For general information on Unicode Technical Notes, 
+	see <a href="../index.html">http://www.unicode.org/notes/</a>.</i></p>
+  <h3>Introduction</h3>
+	<p>When linguists and user communities are devising a new orthography for a 
+	language—or even trying to come up with a single new character for a 
+	phoneme—it is particularly helpful to select new symbols (or letters) that 
+	can be used easily on the computer. In this way, written materials can be 
+	made available quickly to others in electronic format, such as on web pages 
+	or in word processing documents, without the users needing to download 
+	special fonts, or have any specialized software. It should be considered a 
+	long-term disservice to users to saddle users with an orthography that does 
+	not work on today’s computers.</p>
+<p>The following suggestions are intended to provide advice on which characters 
+will be easier—or more difficult—to implement on computer systems that support 
+Unicode, the widely supported international character encoding standard (<a href="http://www.unicode.org/">www.unicode.org</a>). </p>
+<p>To get the easiest and quickest access to characters on computers, it is best 
+to select from one of the over 96,000 characters already in the Unicode 
+Standard. By using the Unicode characters as they were intended, chances are 
+good that the devised orthography will be supported in a wide variety of 
+off-the-shelf software and displayable with widely available fonts. (However, 
+those creating orthographies need to test them out on their computer platforms 
+and software before making such decisions; orthographies based on Latin will be 
+more generally supported than those that rely on obscure historical scripts.)</p>
+<p>By creating an orthography with a completely new character—not in Unicode—the 
+chances that the full orthography will be supported in readily available 
+software is effectively zero. New characters need to go through a years-long 
+process to be standardized, involving meetings with standards committees, 
+followed by delays while the characters are incorporated into software and 
+fonts. Devising a new orthography means you will not be able to use modern 
+technology for it, and you will need to rely on non-standard fonts and software 
+while waiting for the international character encoding bureaucrats to get the 
+new characters into the international standard. There is also a chance that a 
+de-novo character will not be approved for standardization. Hence it is 
+advisable—whenever possible—to use a character already encoded, but care must be 
+taken in selecting one that is appropriate. </p>
+<h3>Recommendations for creating an orthography</h3>
+<p>Begin by looking through the code charts in the latest version of the Unicode 
+Standard, or in the PDF version on the Unicode Consortium website. Characters in 
+Unicode are arranged in blocks of similar characters (code blocks) and are 
+listed by block on the Unicode Consortium website (http://www.unicode.org/charts/). 
+Be sure to also read the documentation on the particular characters you choose, 
+so that they have appropriate semantics. Merely having the correct shape is 
+insufficient for making a decision.</p>
+<p><font face="Times New Roman">• </font>If you are using the Latin alphabet, 
+rely on characters from Latin blocks (Basic Latin, Latin-1 Supplement, Latin 
+Extended-A, Latin Extended-B, and Latin Extended Additional). IPA symbols can 
+also be used (IPA Extensions, the &quot;Phonetic Extensions&quot; block, and Spacing 
+Modifier Letters), although these do not necessarily have upper case 
+equivalents.</p>
+<p><font face="Times New Roman">• </font>If ASCII characters are used (those 
+accessible on most keyboards, including A-Z, a-z, and 0-9 with some common 
+punctuation) abide by the character properties assigned to those characters. For 
+example, &quot;$&quot; has currency value and using it as a letter will cause problems, 
+such as failure in word-selection, parsing difficulties for automated 
+processing, inappropriate font-changes, and so forth if it is used as a letter. 
+Similarly, selecting a number to be used as a letter will also cause problems.</p>
+<p></p>
+<p><font face="Times New Roman">• </font>Characters based on combinations of a 
+base character and combining marks (listed in the Combining Diacritical Marks 
+block, <a href="http://www.unicode.org/charts/PDF/U0300.pdf">
+http://www.unicode.org/charts/PDF/U0300.pdf</a>) are possible to use, but it is 
+best to try to select a combination from commonly available characters. Hundreds 
+of pre-composed combinations are available for the Latin script. You can also 
+test these, or other, combinations on widely available fonts first (such as 
+Doulos SIL, Gentium or Lucida Grande, Arial Unicode MS, and Code2000) and 
+transport your experimental texts to different platforms. Note that correct 
+placement of a given combining mark may be limited by a given font or 
+text-rendering technology.</p>
+<p></p>
+<p><font face="Times New Roman">• </font>Always select a Unicode character with 
+the appropriate character properties and semantics, not just the right shape. 
+Character properties identify characteristics, such as whether a particular 
+character is a letter or a number. The right semantics assure that your 
+character will be treated appropriately as an orthographic character, not as a 
+punctuation mark or non-letter symbol.</p>
+<p></p>
+<p>To determine a character&#39;s properties, one of several methods can be used. 
+You can check the on-line database (<a href="http://www.unicode.org/Public/UNIDATA/UnicodeData.txt">http://www.unicode.org/Public/UNIDATA/UnicodeData.txt</a>) 
+or use a utility program to look up the data for characters of interest, such as 
+the free UniBook Character Browser (<a href="http://www.unicode.org/unibook/index.html">http://www.unicode.org/unibook/index.html</a>). 
+UniBook has a facility for viewing character properties and displaying charts 
+color-coded by categories such as alphabetic, upper-case, etc. Another tool is 
+the Unicode Character Properties Excel Workbook by Peter Constable, which is 
+available for download at: 
+<a href="http://scripts.sil.org/ExcelUnicodeData">
+http://scripts.sil.org/ExcelUnicodeData</a>.
+</p>
+<p>A description of how to read the list of properties is contained in
+<a href="http://www.unicode.org/Public/UNIDATA/UCD.html">Unicode Character 
+Database</a>, under the &quot;Property Values&quot; section. For example: Lowercase 
+letters are “Ll,” uppercase letters are “Lu.” For further information, please 
+consult <a href="http://www.unicode.org/versions/Unicode4.0.0/ch04.pdf">Chapter 
+4 of The Unicode Standard 4.0</a>.</p>
+<p>Suggestion: Find another character in Unicode that is used in a similar way 
+to the one you are working with and look at the encoded character’s properties. 
+When in doubt, you can always ask someone, for example by joining the Unicode 
+mail list.</p>
+<p><font face="Times New Roman">• </font>If the script you are working with is 
+left-to-right, be sure to select a character that is similarly left-to-right or, 
+if a letter, neutral. Likewise, an orthography would be very awkward, perhaps 
+even impossible to use, if it included letters with different basic 
+directionality, such as a mixture of Hebrew and Cyrillic letters.
+</p>
+<p><font face="Times New Roman">• </font>Strongly avoid the use of characters 
+identified as a &quot;presentation form&quot; (i.e., from the Alphabetic Presentation 
+Forms and the Arabic Presentation Forms blocks) or &quot;letterlike symbol,&quot; Roman 
+numerals (from the &quot;number forms&quot; block), or mathematical operators, or other 
+characters that are discouraged or deprecated.
+</p>
+<p><font face="Times New Roman">• </font>For a punctuation mark, select a 
+character from the punctuation block. Using CJK punctuation with a Latin script 
+is possible, but the CJK fonts may make them appear extra-wide or extra-narrow.
+</p>
+<p><font face="Times New Roman">• </font>Avoid selecting a symbol for use as an 
+orthographic letter that is part of a pair (such as an opening bracket or 
+closing bracket).
+</p>
+<p><font face="Times New Roman">• </font>For orthographies based on the Latin 
+script, before selecting a character from a script other than Latin, carefully 
+read:
+</p>
+<p>(a) the description for the script contained in The Unicode Standard 4.0 or 
+later (available online in PDF format from
+<a href="http://www.unicode.org/versions/">http://www.unicode.org/versions/</a>). 
+The Unicode Standard provides script descriptions by groups: chapter 7 discusses 
+the European alphabetic scripts (including the Latin script and its extension, 
+the IPA, as well as the Greek, Cyrillic, Armenian and Georgian scripts), Middle 
+Eastern scripts are covered in chapter 8, etc. The text will describe any 
+special issues that may influence the selection of a given script.
+</p>
+<p>(b) any annotation to the particular character given in the names list (i.e., 
+the notes contained below the name of a character and preceded by a bullet in 
+the code charts). Particularly avoid a character whose use is discouraged. The 
+annotation describing the use of a character does not limit it from being 
+employed in other ways: for example, U+0195 LATIN SMALL LETTER HV appears in 
+Gothic transliteration, but it could be adopted in a Native American language 
+orthography.</p>
+<p><font face="Times New Roman">• </font>Note that if an unattested character is 
+employed only occasionally, users may want to consider changing to a symbol 
+already in Unicode rather than having to wait for 2-5 years for a character to 
+be approved (if it is approved at all). For example, if a special character 
+occasionally is written to represent a glottal stop, other alternative 
+characters already in the Unicode Standard could be used. While this may take 
+some time of adjustment, the user community will be able to access such an 
+alternative immediately.
+</p>
+<p><font face="Times New Roman">• </font>Avoid the Private Use Area, absolutely. 
+This is an area set aside for the private testing of characters, and is never to 
+be used for any data that is to be interchanged widely or stored permanently in 
+an archive.
+</p>
+<p><font face="Times New Roman">• </font>Selecting characters from the Basic 
+Multilingual Plane (i.e., those in any block whose characters are numbered below 
+U+10000) will be easier to use on most currently available computer platforms 
+and software. Those scripts listed above &quot;Linear B Syllabary&quot; on the code chart 
+page (<a href="http://www.unicode.org/charts/">http://www.unicode.org/charts/</a>) 
+are in the BMP. (A list of the scripts contained in the BMP is available at:
+<a href="http://www.unicode.org/roadmaps/bmp/">
+http://www.unicode.org/roadmaps/bmp/</a>.)
+</p>
+<p><font face="Times New Roman">• </font>Suggestion: Select a character that is 
+already widely incorporated in available fonts. If you select characters from a 
+wide variety of scripts, it may be more difficult to find a readily available 
+font with all the needed glyphs for a given character. A listing of fonts by 
+Unicode character range is found on Alan Wood’s website (<a href="http://www.alanwood.net/unicode/fontsbyrange.html#u1e00">http://www.alanwood.net/unicode/fontsbyrange.html#u1e00</a>)
+</p>
+<p><font face="Times New Roman">• </font>Avoid using all upper-case in a 
+Latin-based orthography. All lowercase would be better (because it&#39;s more 
+readable and typeable on standard machines and keyboards).
+</p>
+<p><font face="Times New Roman">• </font>If you devise an orthography based on 
+the Arabic script, it is best to use existing characters whenever possible. 
+Because the Arabic script model in Unicode contains pre-composed characters with 
+various dotting patterns, the invention of a new letter with a unique dotting 
+pattern will not be usable with existing software until or unless a new 
+character is standardized. Consider choosing a letter that is a fair match for 
+the rest of the orthography, and is already encoded, even if that usage is for 
+another language or phonetic value.
+</p>
+<h3>Examples of Good and Bad Practice </h3>
+<p>Example 1: Language X has 7 vowels. The creators of the new orthography want 
+to stay away from diacritical marks as much as possible, so they use A, E, I, O, 
+U, but need two more &quot;vowels&quot;. &quot;Bad practice” would be picking the numerals &quot;6&quot; 
+and &quot;7&quot; as the other two vowels, giving: A, E, I, O, U, 6, 7 as &quot;letters&quot; in the 
+orthography. Better practice would be to just use an epsilon, open o, rounded 
+letters or other base vowels from the extended Latin sets.</p>
+<p>Example 2: You have a language with a glottal stop, and you&#39;re using a 
+Latin-based orthography. Choosing Arabic &quot;ain&quot; as the character for glottal stop 
+would not be advisable. Instead, use one of the various half-rings or other 
+letters for glottal stop.</p>
+<h3>If no character in Unicode is found</h3>
+<p>If a user community is convinced that a particular character is needed and 
+missing, or if a particular character has been used widely in print and has been 
+clearly typographically differentiated through time, a character proposal may be 
+appropriate. A proposal can be written and put forward to the two standards 
+committees. To pursue this strategy, first float the proposal on a forum such as 
+the Unicode mail list, and then consult the
+<a href="http://www.unicode.org/pending/proposals.html">Submitting New 
+Characters</a> web page for detailed information on process and current 
+proposals.
+</p>
+<h3>For questions</h3>
+<p>For questions on the appropriateness of a character or to determine whether a 
+script proposal should be written (or has already been proposed), send a query 
+to the <a href="http://www.unicode.org/reporting.html">Feedback Form</a> 
+(http://www.unicode.org/reporting.html) on the Unicode website, or write to the 
+Script Encoding Initiative (<a href="http://www.linguistics.berkeley.edu/sei">http://www.linguistics.berkeley.edu/sei</a>), 
+a project at UC Berkeley that aims to assist user communities in getting their 
+scripts/characters proposed. Another useful resource to consult is the 
+“Orthography Development in Relation to Unicode” web page at
+<a href="http://scripts.sil.org/OrthographyDev">
+http://scripts.sil.org/OrthographyDev</a>.</p>
+<p>For further information on available Unicode fonts and software For 
+information on Unicode-compliant fonts and software, consult
+<a href="http://www.alanwood.net/unicode/">Alan Wood&#39;s website</a> and the 
+listing on the Unicode-enabled products on the Unicode Consortium web page
+<a href="http://www.unicode.org/onlinedat/products.html">
+http://www.unicode.org/onlinedat/products.html</a>. Also check the SIL web 
+pages.for additional information on Unicode, encoding, and writing systems (<a href="http://scripts.sil.org/">http://scripts.sil.org/</a>).
+</p>
+
+ <h2>3 <a name="References">References</a></h2>
+  <table class="noborder" style="border-collapse: collapse" cellpadding="8" 
+  cellspacing="0">
+    <tr>
+      <td width="1" class="noborder">[<a name="FAQ">FAQ</a>]</td>
+      <td class="noborder">Unicode Frequently Asked Questions<br>
+      <a href="http://www.unicode.org/faq/">http://www.unicode.org/faq/<br>
+      </a><i>For answers to common questions on technical issues.</i></td>
+    </tr>
+    <tr>
+      <td width="1" class="noborder">[<a name="Glossary">Glossary</a>]</td>
+      <td class="noborder">Unicode Glossary<a 
+      href="http://www.unicode.org/glossary/"><br>
+      http://www.unicode.org/glossary/<br>
+      </a><i>For explanations of terminology used in this and other documents.</i></td>
+    </tr>
+    <tr>
+      <td width="1" class="noborder">[<a name="Reports">Reports</a>]</td>
+      <td class="noborder">Unicode Technical Reports<br>
+      <a href="../../reports/index.html">http://www.unicode.org/reports/<br>
+      </a><i>For information on the status and development process for technical 
+		reports, and for a list of technical reports.</i></td>
+    </tr>
+    <tr>
+      <td width="1" class="noborder">[<a name="Versions">Versions</a>]</td>
+      <td class="noborder">Versions of the Unicode Standard<br>
+      <a href="http://www.unicode.org/standard/versions/">
+      http://www.unicode.org/standard/versions/<br>
+      </a><i>For details on the precise contents of each version of the Unicode 
+		Standard, and how to cite them.</i></td>
+    </tr>
+  </table>
+  <p><br>
+  </p>
+  <h2><a name="Modifications">Modifications</a></h2>
+  <p>The following summarizes modifications from the previous version of this 
+	document.</p>
+  <table class="noborder" style="border-collapse: collapse" cellpadding="8" 
+  cellspacing="0">
+    <tr>
+      <td width="1" class="noborder"><a name="TrackingNumber1">1</a></td>
+      <td class="noborder">Initial version</td>
+    </tr>
+  </table>
+  <p class="copyright">Copyright © 2005 Deborah Anderson and Unicode, Inc. All 
+	Rights Reserved. The Unicode Consortium and Deborah Anderson make no 
+	expressed or implied warranty of any kind, and assume no liability for 
+	errors or omissions. No liability is assumed for incidental and 
+	consequential damages in connection with or arising out of the use of the 
+	information or programs contained or accompanying this technical note. The 
+	Unicode <a href="http://www.unicode.org/copyright.html">
+  Terms of Use</a> apply.</p>
+  <p class="copyright">Unicode and the Unicode logo are trademarks of Unicode, 
+	Inc., and are registered in some jurisdictions.</div>
+
+</body>
+
+</html>

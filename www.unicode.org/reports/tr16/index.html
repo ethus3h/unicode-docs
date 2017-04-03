@@ -1,0 +1,2210 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="ProgId" content="FrontPage.Editor.Document">
+<meta name="Author" content="Labuser">
+<meta name="GENERATOR" content="Microsoft FrontPage 5.0">
+<title>UTR #16: UTF-EBCDIC</title>
+<link rel="stylesheet" href="../../unicode/reports/reports.css"
+type="text/css">
+</head>
+
+<body bgcolor="#FFFFFF">
+
+<table class="header" cellspacing="0" cellpadding="0" width="100%">
+  <tr>
+    <td class="icon"><a href="http://www.unicode.org"><img align="middle"
+      alt="[Unicode]" border="0"
+      src="../../webscripts/logo60s2.gif" width="34"
+      height="33"></a>&nbsp;&nbsp;<a class="bar"
+      href="http://www.unicode.org/unicode/reports">Technical Reports</a></td>
+  </tr>
+  <tr>
+    <td class="gray">&nbsp;</td>
+  </tr>
+</table>
+<div class="body">
+
+<h2 align="center">Unicode Technical Report #16</h2>
+<h1 align="center">UTF-EBCDIC</h1>
+
+<table border="1" cellspacing="2" cellpadding="2" width="100%">
+<tr><td width="20%">Version<td>8</tr>
+<tr><td>Authors<td>V.S. Umamaheswaran (<a href="mailto:umavs@ca.ibm.com">umavs@ca.ibm.com</a>)</tr>
+<tr><td>Date<td>2002-04-16</tr>
+<tr><td>This Version<td>
+<a href="http://www.unicode.org/unicode/reports/tr16/tr16-8.html">
+http://www.unicode.org/unicode/reports/tr16/tr16-8</a>
+</tr>
+<tr><td>Previous Version<td>
+<a href="http://www.unicode.org/unicode/reports/tr16/tr16-7.2.html">http://www.unicode.org/unicode/reports/tr16/tr16-7.2</a>
+</tr>
+<tr><td>Latest Version<td>
+<a href="http://www.unicode.org/unicode/reports/tr16">http://www.unicode.org/unicode/reports/tr16</a>
+</tr></table>
+
+<h3><i>Summary</i></h3>
+<i>This document presents the specifications of UTF-EBCDIC - EBCDIC Friendly
+Unicode (or UCS) Transformation Format.</i>
+<h3><i>Status</i></h3>
+<p><i>This document has been reviewed by Unicode members and other interested
+parties, and has been approved by the Unicode Technical Committee as a <b>Unicode
+Technical Report</b>. It is a stable document and may be used as reference
+material or cited as a normative reference from another document.</i>
+<blockquote>
+<p><i>A <b>Unicode Technical Report</b> (UTR) may contain either informative
+material or normative specifications, or both. Each UTR may specify a base
+version of the Unicode Standard. In that case, conformance to the UTR requires
+conformance to that version or higher.</i>
+</blockquote>
+<p><i>A list of current Unicode Technical Reports is found on <a
+href="http://www.unicode.org/unicode/reports/">http://www.unicode.org/unicode/reports/</a>.
+For more information about versions of the Unicode Standard, see <a
+href="http://www.unicode.org/unicode/standard/versions/">http://www.unicode.org/unicode/standard/versions/</a>
+.<br>
+Please mail corrigenda and other comments to the author(s).</i>
+<h3><b><i>Contents</i></b></h3>
+<ul>
+<li><a href="index.html#Scope">1 Scope</a>
+<li><a href="index.html#Description">2 Description</a>
+<li><a href="index.html#Definitions">3 Definitions</a>
+<ul>
+<li><a href="index.html#Step 1">3.1 Step 1: UTF-8-Mod</a>
+<li><a href="index.html#Characteristics">3.2 Characteristics of the I8-sequence</a>
+<li><a href="index.html#Step 2">3.3 Step 2: Byte Conversion</a>
+<li><a href="index.html#Shadow Flags">3.4 Shadow Flags</a>
+<li><a href="index.html#Signature">3.5 Signature</a>
+<li><a href="index.html#Where to Use">3.6 Where to Use UTF-EBCDIC?</a>
+</ul>
+<li><a href="index.html#Bibliography">4 Bibliography</a>
+<li><a href="index.html#Annex A">5 Annex A: Intellectual Property Related</a>
+<li><a href="index.html#Annex B">6 Annex B: Additional Information</a>
+<ul>
+<li><a href="index.html#Positions">6.1 Controls, Variants, and Invariants in EBCDIC</a>
+<li><a href="index.html#Comparison">6.2 A Comparison of UTF-EBCDIC and UTF-8</a>
+<li><a href="index.html#Scalar Values">6.3 FEFF, FFFE, and FFFF in UTF-EBCDIC</a>
+<li><a href="index.html#Normalization">6.4 Normalization to Fixed Width</a>
+<li><a href="index.html#I8-EB Map">6.5 Mapping of Bytes in Step 2</a>
+<li><a href="index.html#Ordering">6.6 Ordering of UTF-EBCDIC Sequences</a>
+</ul>
+<li><a href="index.html#Acknowledgments">7 Acknowledgments</a>
+<li><a href="index.html#Revisions">8 Revisions</a>
+</ul>
+<hr align="LEFT">
+<h2>1&nbsp;<a name="Scope"></a>Scope</h2>
+The term UTF-EBCDIC stands for EBCDIC-friendly Unicode (or UCS) Transformation
+Format. EBCDIC, IBM's Extended Binary Coded Decimal Interchange Code, is one of
+the widely used 8-bit industry encodings. Detailed information on EBCDIC can be
+found in the IBM publication <i>IBM Character Data Representation Architecture,
+Reference and Registry, SC09-2190-00, December 1996.</i>
+<p>To address the use of Unicode character data in byte-oriented ASCII-based
+systems, the Unicode Standard (see <i>section A.2 of the Unicode Standard</i>)
+(also <i>ISO/IEC 10646 -1, Amendment no. 2</i>) has defined UTF-8. Use of UTF-8
+permits existing ASCII-based systems that have hard-coded dependency on the
+encoding of the ASCII repertoire of characters to safely process the
+corresponding Unicode characters. There is a similar requirement to transform
+Unicode characters to a form that is safe for EBCDIC systems for the control
+characters and invariant characters.
+<p>This Technical Report defines the UTF-EBCDIC.
+<p>Neither UTF-EBCDIC nor its intermediate form called UTF-8-Mod in this
+technical report, are intended to be used in open interchange environments. It
+is useful in homogeneous EBCDIC systems and networks.
+<h2>2&nbsp;<a name="Description"></a>Description</h2>
+The UTF-EBCDIC encoding is derived from the Unicode scalar values following a
+two step process:
+<ul>
+<li>Conversion of the Unicode scalar values to a variable length byte sequence
+called <i>I8-sequence</i> (intermediate 8-bit sequence) by applying a
+modified UTF-8 transformation (UTF-8-Mod), enabling the preservation of 65
+control characters as single bytes.
+<p><br>
+Valid pairs of surrogates (see <i>Section 3.7, Surrogates</i>, in the Unicode
+Standard 2.0) must be converted first to their corresponding Unicode scalar
+values by applying the UTF-16 transformation. Unicode scalar values in the
+range X'10000' to X'10FFFF' obtained from I8-sequences, are transformed into
+the corresponding surrogate pairs using the UTF-16 transformation.<br>
+&nbsp;
+<li>The bytes in the I8-sequence are then converted to the UTF-EBCDIC byte
+sequence by using a single-byte to single-byte reversible conversion.
+</ul>
+These two steps are defined below.
+<p><i>Note:</i> The following notation is used in this Technical Report: X'nn ..
+mm' represent hexadecimal values; &lt;bb...bb&gt; represent values in bit
+notation; U+abcd represents a Unicode character.
+<h2>3&nbsp;<a name="Definition"></a>Definition</h2>
+<h3><a name="Step 1"></a>3.1 Step 1: UTF-8-Mod</h3>
+The UTF-8-Mod transformation definition is modeled after the UTF-8 definition in
+the Unicode standard. UTF-8-Mod transforms the Unicode scalar values into
+I8-sequences. The Unicode characters U+0000 to U+001F (corresponding to the C0
+control characters X'00' to X'1F' of ASCII), U+0020 to U+007E (the ASCII
+repertoire), and U+007F (the ASCII 'DEL' control character) are represented as
+single bytes in the I8-sequence, similar to UTF-8. In addition, U+0080 to U+009F
+(corresponding to the so-called C1 set of controls in ISO/IEC 6429) are also
+represented as single bytes (X'80' to X'9F'). Thus the 65 Unicode characters
+corresponding to the 65 ISO/IEC 6429 control characters and the 95 characters
+corresponding to the 95 ASCII graphic characters (the G0 set) are represented in
+the I8-sequence as single bytes.
+<p>When these I8-sequence bytes are converted to the UTF-EBCDIC form, the
+corresponding 65 EBCDIC control characters and 95 EBCDIC graphic characters are
+preserved as single bytes in the UTF-EBCDIC byte sequence. The 95 EBCDIC graphic
+characters include 82 invariant (occupy the same code position) characters
+(including SPACE) across most EBCDIC single-byte code pages and 13 variant ASCII
+graphic characters (occupy varying code positions). Positions assigned to EBCDIC
+controls, the invariant graphic characters and the variant graphics are shown in
+<a href="index.html#Table B.1">Table B.1</a>.
+<p>Furthermore, the values X'00'...X'9F' do not appear in any byte of an
+I8-sequence except as the direct representation of U+0000 to U+009F. Each
+Unicode scalar value that is not a part of a <i>valid</i> surrogate pair is
+represented in an I8-sequence by 1, 2, 3 or 4 bytes, depending on the value. A
+valid surrogate pair is first converted to its corresponding Unicode scalar
+value, which then maps into either 4 bytes or 5 bytes, depending on the value.
+<p>The UTF-8-Mod transformation is intended to be used only as an intermediate
+step in arriving at UTF-EBCDIC. It is not intended to be used elsewhere.
+<p>The I8-sequence is a variable length encoding of Unicode characters as 8-bit
+byte sequences, where the high bits of each byte indicate which part of the
+sequence a byte belongs to. <a href="index.html#Table 1">Table 1</a> shows how the bits in
+a Unicode scalar value (or a valid surrogate pair) are distributed among the
+bytes in the I8-sequence. I8-sequence corresponding to a valid surrogate pair is
+also shown, including the UTF-16 transformation to convert the valid pair to the
+corresponding Unicode scalar value.<br>
+&nbsp;
+<center>
+<table border="1" width="90%" bgcolor="#D9FFF4">
+<caption><a name="Table 1"></a><font size="+1"><b>Table 1:</b>&nbsp;<b>
+I8-Sequence Bit Distribution</b></font></caption>
+<tr align="CENTER">
+<th width="25%">Unicode Scalar Value (hex)</th>
+<th width="25%">Bit pattern of Unicode Scalar Value</th>
+<th width="10%">1st Byte</th>
+<th width="10%">2nd Byte</th>
+<th width="10%">3rd Byte</th>
+<th width="10%">4th Byte</th>
+<th width="10%">5th Byte</th>
+</tr>
+<tr>
+<td bgcolor="#FFFFCC"><tt>0 to 7F</tt>
+<td bgcolor="#FFFFFF"><tt>000000000xxxxxxx</tt>
+<td bgcolor="#FFCCFF"><center><tt>0xxxxxxx</tt></center>
+<td>&nbsp;
+<td>&nbsp;
+<td>&nbsp;
+<td>&nbsp;
+</tr>
+<tr>
+<td bgcolor="#FFFFCC"><tt>80 to 9F</tt>
+<td bgcolor="#FFFFFF"><tt>00000000100xxxxx</tt>
+<td bgcolor="#FFCCFF"><center><tt>100xxxxx</tt></center>
+<td>&nbsp;
+<td>&nbsp;
+<td>&nbsp;
+<td>&nbsp;
+</tr>
+<tr>
+<td bgcolor="#FFFFCC"><tt>A0 to 3FF</tt>
+<td bgcolor="#FFFFFF"><tt>000000yyyyyxxxxx</tt>
+<td bgcolor="#FFCCFF"><center><tt>110yyyyy</tt></center>
+<td bgcolor="#FFCCFF"><center><tt>101xxxxx</tt></center>
+<td>&nbsp;
+<td>&nbsp;
+<td>&nbsp;
+</tr>
+<tr>
+<td bgcolor="#FFFFCC"><tt>400 to 3FFF</tt>
+<td bgcolor="#FFFFFF"><tt>00zzzzyyyyyxxxxx</tt>
+<td bgcolor="#FFCCFF"><center><tt>1110zzzz</tt></center>
+<td bgcolor="#FFCCFF"><center><tt>101yyyyy</tt></center>
+<td bgcolor="#FFCCFF"><center><tt>101xxxxx</tt></center>
+<td>&nbsp;
+<td>&nbsp;
+</tr>
+<tr>
+<td bgcolor="#FFFFCC"><tt>4000 to 3FFFF</tt>
+<td bgcolor="#FFFFFF"><tt>0wwwzzzzzyyyyyxxxxx</tt>
+<td bgcolor="#FFCCFF"><center><tt>11110www</tt></center>
+<td bgcolor="#FFCCFF"><center><tt>101zzzzz</tt></center>
+<td bgcolor="#FFCCFF"><center><tt>101yyyyy</tt></center>
+<td bgcolor="#FFCCFF"><center><tt>101xxxxx</tt></center>
+<td>&nbsp;
+</tr>
+<tr>
+<td bgcolor="#FFFFCC"><tt>40000 to 10FFFF</tt>
+<td bgcolor="#FFFFFF"><tt>rwwwwwzzzzzyyyyyxxxxx</tt>
+<td bgcolor="#FFCCFF"><center><tt>1111100r</tt></center>
+<td bgcolor="#FFCCFF"><center><tt>101wwwww</tt></center>
+<td bgcolor="#FFCCFF"><center><tt>101zzzzz</tt></center>
+<td bgcolor="#FFCCFF"><center><tt>101yyyyy</tt></center>
+<td bgcolor="#FFCCFF"><center><tt>101xxxxx</tt></center>
+</tr>
+<tr>
+<td colspan="7"><font size="-1"><i>Note:</i> The UTF-8-Mod transformation is
+valid for UCS-4 values X'0' to X'7FFFFFFF' (the full extent of ISO/IEC
+10646 coding space). Only the Unicode scalar values corresponding to the
+end of plane 16 -- the reach of the UTF-16 transformation -- are shown in
+the above table.</font>
+</tr>
+</table>
+</center>
+<p>A valid surrogate pair -- a high surrogate from the range X'D800' to X'DBFF'
+followed by a low surrogate from the range X'DC00' to X'DFFF' -- must be
+converted to its corresponding Unicode scalar value in the range X'10000' to
+X'10FFFF', using the UTF-16 transformation. The following table shows the
+correspondence between the bit patterns of the surrogate pairs and the
+corresponding I8-sequence bytes.
+<br>
+&nbsp;
+<center>
+<table border="1" width="90%" bgcolor="#D9FFF4">
+<tr align="CENTER">
+<th width="25%">Unicode Scalar Value (hex)</th>
+<th width="25%">Bit pattern of valid Surrogate Pairs</th>
+<th width="10%">1st Byte</th>
+<th width="10%">2nd Byte</th>
+<th width="10%">3rd Byte</th>
+<th width="10%">4th Byte</th>
+<th width="10%">5th Byte</th>
+</tr>
+<tr>
+<td bgcolor="#FFFFCC"><tt>10000 to 3FFFF</tt>
+<td bgcolor="#FFFFFF"><tt>110110uuuuwzzzzz</tt><br>
+<tt>+ 110111yyyyyxxxxx</tt>
+<td bgcolor="#FFCCFF"><tt>11110ppw<sup>a</sup></tt>
+<td bgcolor="#FFCCFF"><center><tt>101zzzzz</tt></center>
+<td bgcolor="#FFCCFF"><center><tt>101yyyyy</tt></center>
+<td bgcolor="#FFCCFF"><center><tt>101xxxxx</tt></center>
+<td>&nbsp;
+</tr>
+<tr>
+<td bgcolor="#FFFFCC"><tt>40000 to 10FFFF</tt>
+<td bgcolor="#FFFFFF"><tt>110110uuuuwzzzzz</tt><br>
+<tt>+ 110111yyyyyxxxxx</tt>
+<td bgcolor="#FFCCFF"><center><tt>1111100q<sup>b</sup></tt></center>
+<td bgcolor="#FFCCFF"><center><tt>101ppppw<sup>b</sup></tt></center>
+<td bgcolor="#FFCCFF"><center><tt>101zzzzz</tt></center>
+<td bgcolor="#FFCCFF"><center><tt>101yyyyy</tt></center>
+<td bgcolor="#FFCCFF"><center><tt>101xxxxx</tt></center>
+</tr>
+</table>
+</center>
+<blockquote>
+<b><tt>where <sup>a </sup>uuuu = 000pp -1, or <sup>b </sup>uuuu = qpppp -1</tt></b><br>
+(to account for addition of 10000<sub>16</sub> as in <i>Section 3.7,
+Surrogates</i>, in the Unicode Standard 2.0)
+</blockquote>
+When converting Unicode values to I8-sequences, <i>always use the shortest
+number of bytes</i> that can represent these values. This preserves uniqueness
+of encoding. For example the Unicode value &lt;0000000000000001&gt; is encoded
+as &lt;00000001&gt;, not as &lt;11000000&gt; &lt;10100001&gt;. The latter is an
+example of an unused I8-sequence. <i>Do not make use of these unused byte
+sequences for encoding any other information.</i>
+<p>When converting from I8-sequences to Unicode scalar values, however,
+implementations do not need to check that the shortest number of bytes is being
+used, which simplifies the conversion algorithm.
+<h3><a name="Characteristics"></a>3.2 Characteristics of the I8-sequence</h3>
+<p>Some of the important characteristics of I8-sequence are:
+<ul>
+<li>Unicode characters from U+0000 to U+009F (ASCII repertoire, C0 and C1
+controls) map to single-byte I8-sequence values X'00' to X'9F' (ASCII values
+X'00' to X'7F' and ISO/IEC 4873 values X'80' to X'9F'). ASCII values or ISO/IEC
+4873 control values do <i>not</i> otherwise occur in an I8-sequence. This
+paves the way for transforming these into corresponding single-byte EBCDIC
+controls and graphics in the second step of UTF-EBCDIC transform.
+<li>The I8-sequence is reasonably compact in terms of number of bytes used for
+encoding. It is very simple and efficient to convert to and from Unicode
+text.
+<li>The first byte indicates the number of bytes to follow in a multi-byte
+sequence. This allows for efficient forward parsing. It is also efficient to
+find the start of a character string from an arbitrary location in a byte
+stream. You need to search at most five bytes (seven bytes, if the full
+range of 31 bits of ISO/IEC 10646 is considered) backwards, and it is simple
+to recognize an initial byte. For example, after converting a UTF-EBCDIC
+byte back into I8-sequence, in C
+<center>
+<table border="1" width="80%" bgcolor="#D9FFF4">
+<tr align="CENTER">
+<td>isInitialByte = ( (byte &amp; 0xE0) != 0xA0);
+</tr>
+</table>
+</center>
+<p>The search for initial or trailing bytes can also be done directly on UTF-EBCDIC
+byte by utilizing a shadow vector (see <a href="index.html#Table 4">Table 4</a>
+described later).
+</ul>
+<h3>3.3&nbsp;<a name="Step 2"></a>Step 2: Byte Conversion</h3>
+Characteristics of the I8- sequence The second step of UTF-EBCDIC transforms the
+I8-sequences, using a reversible one-to-one mapping, into the byte sequences of
+UTF-EBCDIC.
+<p>The 64 control characters (U+0000 to U+001F, U+0080 to U+009F), the ASCII
+DELETE character (U+007F), the 95 ASCII graphic characters (including the SPACE
+character) (U+0020 to U+007E) are mapped respecting EBCDIC conventions, as
+defined in <i>IBM Character Data Representation Architecture, CDRA,</i> with one
+exception -- the pairing of EBCDIC Line Feed and New Line control characters are
+<i>swapped</i> from their CDRA <i>default</i> pairings to ISO/IEC 6429 Line Feed
+(U+000A) and Next Line (U+0085) control characters (to be in line with IBM
+OS/390 UNIX Services, or Open MVS practice and preference, stemming from the
+hard-coding of X'0A' as the New Line in most ASCII-C compilers.).
+<p>The map preserves the invariance for a set of 82 graphic characters
+(including SPACE) (known as the IBM Syntactic Graphic Character set), and
+maintains consistency with the IBM MVS Open Systems Code page (CPGID 1047) for
+the variant characters from within the ASCII repertoire.
+<p>The remaining 96 bytes of EBCDIC 8-bit structure are allocated to X'A0' to
+X'FF' -- the trailing bytes and leading bytes of the I8-sequence.(from <a
+href="index.html#Table 1">Table 1</a>). The minimum criterion for allocation of these
+bytes is that it provides for a reversible map.
+<p>The trailing and leading bytes (X'A0' to X'FF' of the I8-sequence) are paired
+with the unassigned UTF-EBCDIC bytes in increasing order. <a href="index.html#Table 2">Table
+2</a> and <a href="index.html#Table 3">Table 3</a> show the byte maps between the
+I8-sequence bytes and UTF-EBCDIC bytes in the forward and reverse directions
+respectively. The resulting UTF-EBCDIC multi-byte sequences will be in the same
+lexical (numerical) order as their corresponding Unicode scalar values (when the
+sequences are zero-filled to equal number of bytes and compared with each
+other). Please note that the UTF-EBCDIC single-byte values, however, will <i>not</i>
+be in the same order as their corresponding Unicode scalar values.
+<p>The resulting UTF-EBCDIC byte sequence can be transparently processed in most
+EBCDIC systems. It also retains all the characteristics (see the section <a
+href="index.html#Characteristics">3.2 Characteristics of the I8-sequence</a> above) of
+I8-sequence mentioned earlier. Since EBCDIC code page definitions have 13
+variants (and only 82 invariants) the choice of the above byte map for the
+graphic characters has been made to accommodate the MVS Open Systems environment
+for standardization purposes.<br>
+&nbsp;
+<center>
+<table border="1" width="90%" bgcolor="#D9FFF4">
+<caption><a name="Table 2"></a><b><font size="+1">
+Table 2: Byte map from I8-sequence to UTF-EBCDIC byte sequence</font></b></caption>
+<tr align="left">
+<td colspan="17" bgcolor="#FFFFCC"><font face="Symbol"><b>&nbsp;ß</b></font><b> High nibble (hex)
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Low nibble (hex) </b><font face="Symbol"><b>Þ</b></font><b> (all entries are in hex)</b>
+</tr>
+<tr align="CENTER" bgcolor="#FFCCFF">
+<td>&nbsp;
+<td>-0
+<td>-1
+<td>-2
+<td>-3
+<td>-4
+<td>-5
+<td>-6
+<td>-7
+<td>-8
+<td>-9
+<td>-A
+<td>-B
+<td>-C
+<td>-D
+<td>-E
+<td>-F
+</tr>
+<tr align="CENTER">
+<td bgcolor="#FFCCFF">0-
+<td><b>00</b>
+<td><b>01</b>
+<td><b>02</b>
+<td><b>03</b>
+<td><b>37</b>
+<td><b>2D</b>
+<td><b>2E</b>
+<td><b>2F</b>
+<td><b>16</b>
+<td><b>05</b>
+<td><b>15</b>
+<td><b>0B</b>
+<td><b>0C</b>
+<td><b>0D</b>
+<td><b>0E</b>
+<td><b>0F</b>
+</tr>
+<tr align="CENTER">
+<td bgcolor="#FFCCFF">1-
+<td><b>10</b>
+<td><b>11</b>
+<td><b>12</b>
+<td><b>13</b>
+<td><b>3C</b>
+<td><b>3D</b>
+<td><b>32</b>
+<td><b>26</b>
+<td><b>18</b>
+<td><b>19</b>
+<td><b>3F</b>
+<td><b>27</b>
+<td><b>1C</b>
+<td><b>1D</b>
+<td><b>1E</b>
+<td><b>1F</b>
+</tr>
+<tr align="CENTER">
+<td bgcolor="#FFCCFF">2-
+<td><b>40</b>
+<td><b>5A</b>
+<td><b>7F</b>
+<td><b>7B</b>
+<td><b>5B</b>
+<td><b>6C</b>
+<td><b>50</b>
+<td><b>7D</b>
+<td><b>4D</b>
+<td><b>5D</b>
+<td><b>5C</b>
+<td><b>4E</b>
+<td><b>6B</b>
+<td><b>60</b>
+<td><b>4B</b>
+<td><b>61</b>
+</tr>
+<tr align="CENTER">
+<td bgcolor="#FFCCFF">3-
+<td><b>F0</b>
+<td><b>F1</b>
+<td><b>F2</b>
+<td><b>F3</b>
+<td><b>F4</b>
+<td><b>F5</b>
+<td><b>F6</b>
+<td><b>F7</b>
+<td><b>F8</b>
+<td><b>F9</b>
+<td><b>7A</b>
+<td><b>5E</b>
+<td><b>4C</b>
+<td><b>7E</b>
+<td><b>6E</b>
+<td><b>6F</b>
+</tr>
+<tr align="CENTER">
+<td bgcolor="#FFCCFF">4-
+<td><b>7C</b>
+<td><b>C1</b>
+<td><b>C2</b>
+<td><b>C3</b>
+<td><b>C4</b>
+<td><b>C5</b>
+<td><b>C6</b>
+<td><b>C7</b>
+<td><b>C8</b>
+<td><b>C9</b>
+<td><b>D1</b>
+<td><b>D2</b>
+<td><b>D3</b>
+<td><b>D4</b>
+<td><b>D5</b>
+<td><b>D6</b>
+</tr>
+<tr align="CENTER">
+<td bgcolor="#FFCCFF">5-
+<td><b>D7</b>
+<td><b>D8</b>
+<td><b>D9</b>
+<td><b>E2</b>
+<td><b>E3</b>
+<td><b>E4</b>
+<td><b>E5</b>
+<td><b>E6</b>
+<td><b>E7</b>
+<td><b>E8</b>
+<td><b>E9</b>
+<td><b>AD</b>
+<td><b>E0</b>
+<td><b>BD</b>
+<td><b>5F</b>
+<td><b>6D</b>
+</tr>
+<tr align="CENTER">
+<td bgcolor="#FFCCFF">6-
+<td><b>79</b>
+<td><b>81</b>
+<td><b>82</b>
+<td><b>83</b>
+<td><b>84</b>
+<td><b>85</b>
+<td><b>86</b>
+<td><b>87</b>
+<td><b>88</b>
+<td><b>89</b>
+<td><b>91</b>
+<td><b>92</b>
+<td><b>93</b>
+<td><b>94</b>
+<td><b>95</b>
+<td><b>96</b>
+</tr>
+<tr align="CENTER">
+<td bgcolor="#FFCCFF">7-
+<td><b>97</b>
+<td><b>98</b>
+<td><b>99</b>
+<td><b>A2</b>
+<td><b>A3</b>
+<td><b>A4</b>
+<td><b>A5</b>
+<td><b>A6</b>
+<td><b>A7</b>
+<td><b>A8</b>
+<td><b>A9</b>
+<td><b>C0</b>
+<td><b>4F</b>
+<td><b>D0</b>
+<td><b>A1</b>
+<td><b>07</b>
+</tr>
+<tr align="CENTER">
+<td bgcolor="#FFCCFF">8-
+<td><b>20</b>
+<td><b>21</b>
+<td><b>22</b>
+<td><b>23</b>
+<td><b>24</b>
+<td><b>25</b>
+<td><b>06</b>
+<td><b>17</b>
+<td><b>28</b>
+<td><b>29</b>
+<td><b>2A</b>
+<td><b>2B</b>
+<td><b>2C</b>
+<td><b>09</b>
+<td><b>0A</b>
+<td><b>1B</b>
+</tr>
+<tr align="CENTER">
+<td bgcolor="#FFCCFF">9-
+<td><b>30</b>
+<td><b>31</b>
+<td><b>1A</b>
+<td><b>33</b>
+<td><b>34</b>
+<td><b>35</b>
+<td><b>36</b>
+<td><b>08</b>
+<td><b>38</b>
+<td><b>39</b>
+<td><b>3A</b>
+<td><b>3B</b>
+<td><b>04</b>
+<td><b>14</b>
+<td><b>3E</b>
+<td><b>FF</b>
+</tr>
+<tr align="CENTER">
+<td bgcolor="#FFCCFF">A-
+<td><b>41</b>
+<td><b>42</b>
+<td><b>43</b>
+<td><b>44</b>
+<td><b>45</b>
+<td><b>46</b>
+<td><b>47</b>
+<td><b>48</b>
+<td><b>49</b>
+<td><b>4A</b>
+<td><b>51</b>
+<td><b>52</b>
+<td><b>53</b>
+<td><b>54</b>
+<td><b>55</b>
+<td><b>56</b>
+</tr>
+<tr align="CENTER">
+<td bgcolor="#FFCCFF">B-
+<td><b>57</b>
+<td><b>58</b>
+<td><b>59</b>
+<td><b>62</b>
+<td><b>63</b>
+<td><b>64</b>
+<td><b>65</b>
+<td><b>66</b>
+<td><b>67</b>
+<td><b>68</b>
+<td><b>69</b>
+<td><b>6A</b>
+<td><b>70</b>
+<td><b>71</b>
+<td><b>72</b>
+<td><b>73</b>
+</tr>
+<tr align="CENTER">
+<td bgcolor="#FFCCFF">C-
+<td><i>74</i>
+<td><i>75</i>
+<td><i>76</i>
+<td><i>77</i>
+<td><i>78</i>
+<td><b>80</b>
+<td><b>8A</b>
+<td><b>8B</b>
+<td><b>8C</b>
+<td><b>8D</b>
+<td><b>8E</b>
+<td><b>8F</b>
+<td><b>90</b>
+<td><b>9A</b>
+<td><b>9B</b>
+<td><b>9C</b>
+</tr>
+<tr align="CENTER">
+<td bgcolor="#FFCCFF">D-
+<td><b>9D</b>
+<td><b>9E</b>
+<td><b>9F</b>
+<td><b>A0</b>
+<td><b>AA</b>
+<td><b>AB</b>
+<td><b>AC</b>
+<td><b>AE</b>
+<td><b>AF</b>
+<td><b>B0</b>
+<td><b>B1</b>
+<td><b>B2</b>
+<td><b>B3</b>
+<td><b>B4</b>
+<td><b>B5</b>
+<td><b>B6</b>
+</tr>
+<tr align="CENTER">
+<td bgcolor="#FFCCFF">E-
+<td><i>B7</i>
+<td><b>B8</b>
+<td><b>B9</b>
+<td><b>BA</b>
+<td><b>BB</b>
+<td><b>BC</b>
+<td><b>BE</b>
+<td><b>BF</b>
+<td><b>CA</b>
+<td><b>CB</b>
+<td><b>CC</b>
+<td><b>CD</b>
+<td><b>CE</b>
+<td><b>CF</b>
+<td><b>DA</b>
+<td><b>DB</b>
+</tr>
+<tr align="CENTER">
+<td bgcolor="#FFCCFF">F-
+<td><b>DC</b>
+<td><b>DD</b>
+<td><b>DE</b>
+<td><b>DF</b>
+<td><b>E1</b>
+<td><b>EA</b>
+<td><b>EB</b>
+<td><b>EC</b>
+<td><b>ED</b>
+<td><b>EE</b>
+<td><b>EF</b>
+<td><b>FA</b>
+<td><b>FB</b>
+<td><b>FC</b>
+<td><b>FD</b>
+<td><b>FE</b>
+</tr>
+<tr>
+<td colspan="17"><font size="-1"><b><i>Note:</i></b> I8-sequence bytes <i>C0
+... C4</i>, and <i>E0</i>, and the corresponding UTF-EBCDIC bytes <i>74 ...
+78, </i>and <i>B7</i>, will not be used with the shortest number of bytes in
+the transformed byte sequences. The corresponding entries are shown
+italicized in the above table.</font>
+</tr>
+</table>
+</center>
+<br>
+&nbsp;
+<center>
+<table border="1" width="90%" bgcolor="#D9FFF4">
+<caption><a name="Table 3"></a><b><font size="+1">
+Table 3: Byte map from UTF-EBCDIC byte-sequence to I8-sequence</font></b></caption>
+<tr align="left">
+<td colspan="17" bgcolor="#FFFFCC"><font face="Symbol"><b>&nbsp;ß</b></font><b> High nibble (hex)
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Low nibble (hex) </b><font face="Symbol"><b>Þ</b></font><b> (all entries are in hex)</b>
+</tr>
+<tr align="CENTER" bgcolor="#FFCCFF">
+<td>&nbsp;
+<td>-0
+<td>-1
+<td>-2
+<td>-3
+<td>-4
+<td>-5
+<td>-6
+<td>-7
+<td>-8
+<td>-9
+<td>-A
+<td>-B
+<td>-C
+<td>-D
+<td>-E
+<td>-F
+</tr>
+<tr align="CENTER">
+<td bgcolor="#FFCCFF">0-
+<td><b>00</b>
+<td><b>01</b>
+<td><b>02</b>
+<td><b>03</b>
+<td><b>9C</b>
+<td><b>09</b>
+<td><b>86</b>
+<td><b>7F</b>
+<td><b>97</b>
+<td><b>8D</b>
+<td><b>8E</b>
+<td><b>0B</b>
+<td><b>0C</b>
+<td><b>0D</b>
+<td><b>0E</b>
+<td><b>0F</b>
+</tr>
+<tr align="CENTER">
+<td bgcolor="#FFCCFF">1-
+<td><b>10</b>
+<td><b>11</b>
+<td><b>12</b>
+<td><b>13</b>
+<td><b>9D</b>
+<td><b>0A</b>
+<td><b>08</b>
+<td><b>87</b>
+<td><b>18</b>
+<td><b>19</b>
+<td><b>92</b>
+<td><b>8F</b>
+<td><b>1C</b>
+<td><b>1D</b>
+<td><b>1E</b>
+<td><b>1F</b>
+</tr>
+<tr align="CENTER">
+<td bgcolor="#FFCCFF">2-
+<td><b>80</b>
+<td><b>81</b>
+<td><b>82</b>
+<td><b>83</b>
+<td><b>84</b>
+<td><b>85</b>
+<td><b>17</b>
+<td><b>1B</b>
+<td><b>88</b>
+<td><b>89</b>
+<td><b>8A</b>
+<td><b>8B</b>
+<td><b>8C</b>
+<td><b>05</b>
+<td><b>06</b>
+<td><b>07</b>
+</tr>
+<tr align="CENTER">
+<td bgcolor="#FFCCFF">3-
+<td><b>90</b>
+<td><b>91</b>
+<td><b>16</b>
+<td><b>93</b>
+<td><b>94</b>
+<td><b>95</b>
+<td><b>96</b>
+<td><b>04</b>
+<td><b>98</b>
+<td><b>99</b>
+<td><b>9A</b>
+<td><b>9B</b>
+<td><b>14</b>
+<td><b>15</b>
+<td><b>9E</b>
+<td><b>1A</b>
+</tr>
+<tr align="CENTER">
+<td bgcolor="#FFCCFF">4-
+<td><b>20</b>
+<td><b>A0</b>
+<td><b>A1</b>
+<td><b>A2</b>
+<td><b>A3</b>
+<td><b>A4</b>
+<td><b>A5</b>
+<td><b>A6</b>
+<td><b>A7</b>
+<td><b>A8</b>
+<td><b>A9</b>
+<td><b>2E</b>
+<td><b>3C</b>
+<td><b>28</b>
+<td><b>2B</b>
+<td><b>7C</b>
+</tr>
+<tr align="CENTER">
+<td bgcolor="#FFCCFF">5-
+<td><b>26</b>
+<td><b>AA</b>
+<td><b>AB</b>
+<td><b>AC</b>
+<td><b>AD</b>
+<td><b>AE</b>
+<td><b>AF</b>
+<td><b>B0</b>
+<td><b>B1</b>
+<td><b>B2</b>
+<td><b>21</b>
+<td><b>24</b>
+<td><b>2A</b>
+<td><b>29</b>
+<td><b>3B</b>
+<td><b>5E</b>
+</tr>
+<tr align="CENTER">
+<td bgcolor="#FFCCFF">6-
+<td><b>2D</b>
+<td><b>2F</b>
+<td><b>B3</b>
+<td><b>B4</b>
+<td><b>B5</b>
+<td><b>B6</b>
+<td><b>B7</b>
+<td><b>B8</b>
+<td><b>B9</b>
+<td><b>BA</b>
+<td><b>BB</b>
+<td><b>2C</b>
+<td><b>25</b>
+<td><b>5F</b>
+<td><b>3E</b>
+<td><b>3F</b>
+</tr>
+<tr align="CENTER">
+<td bgcolor="#FFCCFF">7-
+<td><b>BC</b>
+<td><b>BD</b>
+<td><b>BE</b>
+<td><b>BF</b>
+<td><i>C0</i>
+<td><i>C1</i>
+<td><i>C2</i>
+<td><i>C3</i>
+<td><i>C4</i>
+<td><b>60</b>
+<td><b>3A</b>
+<td><b>23</b>
+<td><b>40</b>
+<td><b>27</b>
+<td><b>3D</b>
+<td><b>22</b>
+</tr>
+<tr align="CENTER">
+<td bgcolor="#FFCCFF">8-
+<td><b>C5</b>
+<td><b>61</b>
+<td><b>62</b>
+<td><b>63</b>
+<td><b>64</b>
+<td><b>65</b>
+<td><b>66</b>
+<td><b>67</b>
+<td><b>68</b>
+<td><b>69</b>
+<td><b>C6</b>
+<td><b>C7</b>
+<td><b>C8</b>
+<td><b>C9</b>
+<td><b>CA</b>
+<td><b>CB</b>
+</tr>
+<tr align="CENTER">
+<td bgcolor="#FFCCFF">9-
+<td><b>CC</b>
+<td><b>6A</b>
+<td><b>6B</b>
+<td><b>6C</b>
+<td><b>6D</b>
+<td><b>6E</b>
+<td><b>6F</b>
+<td><b>70</b>
+<td><b>71</b>
+<td><b>72</b>
+<td><b>CD</b>
+<td><b>CE</b>
+<td><b>CF</b>
+<td><b>D0</b>
+<td><b>D1</b>
+<td><b>D2</b>
+</tr>
+<tr align="CENTER">
+<td bgcolor="#FFCCFF">A-
+<td><b>D3</b>
+<td><b>7E</b>
+<td><b>73</b>
+<td><b>74</b>
+<td><b>75</b>
+<td><b>76</b>
+<td><b>77</b>
+<td><b>78</b>
+<td><b>79</b>
+<td><b>7A</b>
+<td><b>D4</b>
+<td><b>D5</b>
+<td><b>D6</b>
+<td><b>5B</b>
+<td><b>D7</b>
+<td><b>D8</b>
+</tr>
+<tr align="CENTER">
+<td bgcolor="#FFCCFF">B-
+<td><b>D9</b>
+<td><b>DA</b>
+<td><b>DB</b>
+<td><b>DC</b>
+<td><b>DD</b>
+<td><b>DE</b>
+<td><b>DF</b>
+<td><i>E0</i>
+<td><b>E1</b>
+<td><b>E2</b>
+<td><b>E3</b>
+<td><b>E4</b>
+<td><b>E5</b>
+<td><b>5D</b>
+<td><b>E6</b>
+<td><b>E7</b>
+</tr>
+<tr align="CENTER">
+<td bgcolor="#FFCCFF">C-
+<td><b>7B</b>
+<td><b>41</b>
+<td><b>42</b>
+<td><b>43</b>
+<td><b>44</b>
+<td><b>45</b>
+<td><b>46</b>
+<td><b>47</b>
+<td><b>48</b>
+<td><b>49</b>
+<td><b>E8</b>
+<td><b>E9</b>
+<td><b>EA</b>
+<td><b>EB</b>
+<td><b>EC</b>
+<td><b>ED</b>
+</tr>
+<tr align="CENTER">
+<td bgcolor="#FFCCFF">D-
+<td><b>7D</b>
+<td><b>4A</b>
+<td><b>4B</b>
+<td><b>4C</b>
+<td><b>4D</b>
+<td><b>4E</b>
+<td><b>4F</b>
+<td><b>50</b>
+<td><b>51</b>
+<td><b>52</b>
+<td><b>EE</b>
+<td><b>EF</b>
+<td><b>F0</b>
+<td><b>F1</b>
+<td><b>F2</b>
+<td><b>F3</b>
+</tr>
+<tr align="CENTER">
+<td bgcolor="#FFCCFF">E-
+<td><b>5C</b>
+<td><b>F4</b>
+<td><b>53</b>
+<td><b>54</b>
+<td><b>55</b>
+<td><b>56</b>
+<td><b>57</b>
+<td><b>58</b>
+<td><b>59</b>
+<td><b>5A</b>
+<td><b>F5</b>
+<td><b>F6</b>
+<td><b>F7</b>
+<td><b>F8</b>
+<td><b>F9</b>
+<td><b>FA</b>
+</tr>
+<tr align="CENTER">
+<td bgcolor="#FFCCFF">F-
+<td><b>30</b>
+<td><b>31</b>
+<td><b>32</b>
+<td><b>33</b>
+<td><b>34</b>
+<td><b>35</b>
+<td><b>36</b>
+<td><b>37</b>
+<td><b>38</b>
+<td><b>39</b>
+<td><b>FB</b>
+<td><b>FC</b>
+<td><b>FD</b>
+<td><b>FE</b>
+<td><b>FF</b>
+<td><b>9F</b>
+</tr>
+<tr>
+<td colspan="17"><font size="-1"><b><i>Note:</i></b> I8-sequence bytes <i>C0
+... C4</i>, and <i>E0</i>, and the corresponding UTF-EBCDIC bytes <i>74 ...
+78, </i>and <i>B7</i>, will not be used with the shortest number of bytes in
+the transformed byte sequences. The corresponding entries are shown
+italicized in the above table.</font>
+</tr>
+</table>
+</center>
+<h3>3.4&nbsp;<a name="Shadow Flags"></a>Shadow Flags</h3>
+In order to assist in finding out if a byte in a UTF-EBCDIC sequence is a
+leading byte or a trailing byte, and how many bytes in the sequence
+corresponding to a Unicode character, rather than looking at the byte's bit
+combination (after converting into its corresponding I8-sequence), or checking
+the I8-sequence bytes to the known ranges of leading or trailing bytes, a shadow
+flags table - shown in <a href="index.html#Table 4">Table 4</a> - containing the category
+of the byte can be utilized. The bytes having a value of '0' in the category
+table are control characters, '1' are single bytes, '9' are trailing bytes and
+'2'... '7' indicate the number of bytes in the sequence. Even though <a
+href="index.html#Table 1">Table 1</a> shows I8-sequences of only up to 5 bytes (to
+transform up to plane 16), the I8-sequence can contain up to 7 bytes to address
+all of the UCS-4 space (31-bits) in ISO/IEC 10646 standard (see <a
+href="index.html#Table B.2">Table B.2</a> in Annex B).<br>
+&nbsp;<center>
+<table border="1" width="90%" bgcolor="#D9FFF4">
+<caption><a name="Table 4"></a><b><font size="+1">Table 4: Shadow flags
+associated with UTF-EBCDIC bytes</font></b></caption>
+<tr align="CENTER">
+<td align="LEFT" colspan="17"><b><i>LEGEND</i> :</b>
+</tr>
+<tr align="CENTER">
+<td align="LEFT" colspan="17"><b>0 = Single-octet control characters&nbsp;</b><br>
+<b>1 = Single-octet invariant and variant graphic characters from ASCII</b><br>
+<b>2 = Lead octet of a 2-octet string&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+3 = Lead octet of a 3-octet string</b><br>
+<b>4 = Lead octet of a 4-octet string&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+5 = Lead octet of a 5-octet string</b><br>
+<b>6 = Lead octet of a 6-octet string&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+7 = Lead octet of a 7-octet string</b><br>
+<b>9 = A trailing octet of a multi-octet string</b><br>
+
+</tr>
+<tr align="left">
+<td colspan="17" bgcolor="#FFFFCC"><font face="Symbol"><b>&nbsp;ß</b></font><b> High nibble (hex)
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Low nibble (hex) </b><font face="Symbol"><b>Þ</b></font><b> (all entries are in hex)</b>
+</tr>
+<tr align="CENTER" bgcolor="#FFCCFF">
+<td>&nbsp;
+<td>-0
+<td>-1
+<td>-2
+<td>-3
+<td>-4
+<td>-5
+<td>-6
+<td>-7
+<td>-8
+<td>-9
+<td>-A
+<td>-B
+<td>-C
+<td>-D
+<td>-E
+<td>-F
+</tr>
+<tr align="CENTER">
+<td bgcolor="#FFCCFF">0-
+<td><b>0</b>
+<td><b>0</b>
+<td><b>0</b>
+<td><b>0</b>
+<td><b>0</b>
+<td><b>0</b>
+<td><b>0</b>
+<td><b>0</b>
+<td><b>0</b>
+<td><b>0</b>
+<td><b>0</b>
+<td><b>0</b>
+<td><b>0</b>
+<td><b>0</b>
+<td><b>0</b>
+<td><b>0</b>
+</tr>
+<tr align="CENTER">
+<td bgcolor="#FFCCFF">1-
+<td><b>0</b>
+<td><b>0</b>
+<td><b>0</b>
+<td><b>0</b>
+<td><b>0</b>
+<td><b>0</b>
+<td><b>0</b>
+<td><b>0</b>
+<td><b>0</b>
+<td><b>0</b>
+<td><b>0</b>
+<td><b>0</b>
+<td><b>0</b>
+<td><b>0</b>
+<td><b>0</b>
+<td><b>0</b>
+</tr>
+<tr align="CENTER">
+<td bgcolor="#FFCCFF">2-
+<td><b>0</b>
+<td><b>0</b>
+<td><b>0</b>
+<td><b>0</b>
+<td><b>0</b>
+<td><b>0</b>
+<td><b>0</b>
+<td><b>0</b>
+<td><b>0</b>
+<td><b>0</b>
+<td><b>0</b>
+<td><b>0</b>
+<td><b>0</b>
+<td><b>0</b>
+<td><b>0</b>
+<td><b>0</b>
+</tr>
+<tr align="CENTER">
+<td bgcolor="#FFCCFF">3-
+<td><b>0</b>
+<td><b>0</b>
+<td><b>0</b>
+<td><b>0</b>
+<td><b>0</b>
+<td><b>0</b>
+<td><b>0</b>
+<td><b>0</b>
+<td><b>0</b>
+<td><b>0</b>
+<td><b>0</b>
+<td><b>0</b>
+<td><b>0</b>
+<td><b>0</b>
+<td><b>0</b>
+<td><b>0</b>
+</tr>
+<tr align="CENTER">
+<td bgcolor="#FFCCFF">4-
+<td><b>1</b>
+<td><b>9</b>
+<td><b>9</b>
+<td><b>9</b>
+<td><b>9</b>
+<td><b>9</b>
+<td><b>9</b>
+<td><b>9</b>
+<td><b>9</b>
+<td><b>9</b>
+<td><b>9</b>
+<td><b>1</b>
+<td><b>1</b>
+<td><b>1</b>
+<td><b>1</b>
+<td><b>1</b>
+</tr>
+<tr align="CENTER">
+<td bgcolor="#FFCCFF">5-
+<td><b>1</b>
+<td><b>9</b>
+<td><b>9</b>
+<td><b>9</b>
+<td><b>9</b>
+<td><b>9</b>
+<td><b>9</b>
+<td><b>9</b>
+<td><b>9</b>
+<td><b>9</b>
+<td><b>1</b>
+<td><b>1</b>
+<td><b>1</b>
+<td><b>1</b>
+<td><b>1</b>
+<td><b>1</b>
+</tr>
+<tr align="CENTER">
+<td bgcolor="#FFCCFF">6-
+<td><b>1</b>
+<td><b>1</b>
+<td><b>9</b>
+<td><b>9</b>
+<td><b>9</b>
+<td><b>9</b>
+<td><b>9</b>
+<td><b>9</b>
+<td><b>9</b>
+<td><b>9</b>
+<td><b>9</b>
+<td><b>1</b>
+<td><b>1</b>
+<td><b>1</b>
+<td><b>1</b>
+<td><b>1</b>
+</tr>
+<tr align="CENTER">
+<td bgcolor="#FFCCFF">7-
+<td><b>9</b>
+<td><b>9</b>
+<td><b>9</b>
+<td><b>9</b>
+<td><i>2</i>
+<td><i>2</i>
+<td><i>2</i>
+<td><i>2</i>
+<td><i>2</i>
+<td><b>1</b>
+<td><b>1</b>
+<td><b>1</b>
+<td><b>1</b>
+<td><b>1</b>
+<td><b>1</b>
+<td><b>1</b>
+</tr>
+<tr align="CENTER">
+<td bgcolor="#FFCCFF">8-
+<td><b>2</b>
+<td><b>1</b>
+<td><b>1</b>
+<td><b>1</b>
+<td><b>1</b>
+<td><b>1</b>
+<td><b>1</b>
+<td><b>1</b>
+<td><b>1</b>
+<td><b>1</b>
+<td><b>2</b>
+<td><b>2</b>
+<td><b>2</b>
+<td><b>2</b>
+<td><b>2</b>
+<td><b>2</b>
+</tr>
+<tr align="CENTER">
+<td bgcolor="#FFCCFF">9-
+<td><b>2</b>
+<td><b>1</b>
+<td><b>1</b>
+<td><b>1</b>
+<td><b>1</b>
+<td><b>1</b>
+<td><b>1</b>
+<td><b>1</b>
+<td><b>1</b>
+<td><b>1</b>
+<td><b>2</b>
+<td><b>2</b>
+<td><b>2</b>
+<td><b>2</b>
+<td><b>2</b>
+<td><b>2</b>
+</tr>
+<tr align="CENTER">
+<td bgcolor="#FFCCFF">A-
+<td><b>2</b>
+<td><b>1</b>
+<td><b>1</b>
+<td><b>1</b>
+<td><b>1</b>
+<td><b>1</b>
+<td><b>1</b>
+<td><b>1</b>
+<td><b>1</b>
+<td><b>1</b>
+<td><b>2</b>
+<td><b>2</b>
+<td><b>2</b>
+<td><b>1</b>
+<td><b>2</b>
+<td><b>2</b>
+</tr>
+<tr align="CENTER">
+<td bgcolor="#FFCCFF">B-
+<td><b>2</b>
+<td><b>2</b>
+<td><b>2</b>
+<td><b>2</b>
+<td><b>2</b>
+<td><b>2</b>
+<td><b>2</b>
+<td><i>3</i>
+<td><b>3</b>
+<td><b>3</b>
+<td><b>3</b>
+<td><b>3</b>
+<td><b>3</b>
+<td><b>1</b>
+<td><b>3</b>
+<td><b>3</b>
+</tr>
+<tr align="CENTER">
+<td bgcolor="#FFCCFF">C-
+<td><b>1</b>
+<td><b>1</b>
+<td><b>1</b>
+<td><b>1</b>
+<td><b>1</b>
+<td><b>1</b>
+<td><b>1</b>
+<td><b>1</b>
+<td><b>1</b>
+<td><b>1</b>
+<td><b>3</b>
+<td><b>3</b>
+<td><b>3</b>
+<td><b>3</b>
+<td><b>3</b>
+<td><b>3</b>
+</tr>
+<tr align="CENTER">
+<td bgcolor="#FFCCFF">D-
+<td><b>1</b>
+<td><b>1</b>
+<td><b>1</b>
+<td><b>1</b>
+<td><b>1</b>
+<td><b>1</b>
+<td><b>1</b>
+<td><b>1</b>
+<td><b>1</b>
+<td><b>1</b>
+<td><b>3</b>
+<td><b>3</b>
+<td><b>4</b>
+<td><b>4</b>
+<td><b>4</b>
+<td><b>4</b>
+</tr>
+<tr align="CENTER">
+<td bgcolor="#FFCCFF">E-
+<td><b>1</b>
+<td><b>4</b>
+<td><b>1</b>
+<td><b>1</b>
+<td><b>1</b>
+<td><b>1</b>
+<td><b>1</b>
+<td><b>1</b>
+<td><b>1</b>
+<td><b>1</b>
+<td><b>4</b>
+<td><b>4</b>
+<td><b>4</b>
+<td><b>5</b>
+<td><b>5</b>
+<td><b>5</b>
+</tr>
+<tr align="CENTER">
+<td bgcolor="#FFCCFF">F-
+<td><b>1</b>
+<td><b>1</b>
+<td><b>1</b>
+<td><b>1</b>
+<td><b>1</b>
+<td><b>1</b>
+<td><b>1</b>
+<td><b>1</b>
+<td><b>1</b>
+<td><b>1</b>
+<td><b>5</b>
+<td><b>6</b>
+<td><b>6</b>
+<td><b>7</b>
+<td><b>7</b>
+<td><b>0</b>
+</tr>
+<tr>
+<td colspan="17"><font size="-1"><b><i>Note:</i></b> I8-sequence bytes <i>C0
+... C4</i>, and <i>E0</i>, and the corresponding UTF-EBCDIC bytes <i>74
+... 78, </i>and <i>B7</i>, will not be used with the shortest number of
+bytes in the transformed byte sequences. The corresponding shadow flag
+values are shown italicized in the above table.</font>
+</tr>
+</table>
+</center>
+<h3>3.5&nbsp;<a name="Signature"></a>Signature</h3>
+The signature character U+FEFF (<i>zero width no-break space</i>) of Unicode
+transforms into the I8-byte sequence X'F1 BF B7 BF' which maps to X'DD 73 66 73'
+in UTF-EBCDIC. When this sequence is displayed (erroneously) using different
+single-byte EBCDIC code pages, it can be visualized as different character
+strings. In Latin-1 EBCDIC code page 1047 (and coincidentally also in Latin-1
+code pages 500 and 37), this byte sequence appears as &quot;<b>ùËÃË</b>&quot;(<i>small letter u with grave, capital letter E with diaeresis,
+capital letter A with tilde, capital letter E with diaeresis</i>).
+It can appear differently with other
+single-byte EBCDIC code pages. As with UTF-8, the byte-swapped (&quot;little-endian&quot;)
+serialized Unicode byte strings must be converted to their &quot;big-endian&quot;
+equivalents before applying the UTF-EBCDIC transformation.
+<h3>3.6&nbsp;<a name="Where to Use"></a>Where to Use UTF-EBCDIC?</h3>
+UTF-EBCDIC is intended to be used inside EBCDIC systems or in closed networks
+where there is a dependency on EBCDIC hard-coding assumptions. It is not meant
+to be used for open interchange among heterogeneous platforms using different
+data encodings. Due to specific requirements for ASCII encoding for line endings
+in some Internet protocols, UTF-EBCDIC is unsuitable for use over the Internet
+using such protocols. UTF-8 or UTF-16 forms should be used in open interchange.
+<h2>4&nbsp;<a name="Bibliography"></a>Bibliography</h2>
+<ul>
+<li>The Unicode Standard Version 2.0: The Unicode Consortium ISBN
+0-201-48345-9, Addison Wesley Developers Press, July 1996.
+<li>CDRA: IBM - Character Data Representation Architecture - Reference and
+Registry, SC09-2190-00, December 1996.
+<li>ISO/IEC 10646-1: 1993(E): Information Processing - Universal Coded
+Character Set (UCS):Part 1, Basic Multilingual Plane
+<li>Amendment 1 to ISO/IEC 10646-1: Transformation Format for 16 Planes of
+Group 00 (UTF-16); 1996
+<li>Amendment 2 to ISO/IEC 10646-1: Transformation Format 8 (UTF-8)
+<li>ISO/IEC 646: Information Processing - 7-Bit Coded Character Set for
+Information Interchange
+<li>ASCII - ANSI Standard X3.4; also the International Reference Version of
+ISO/IEC 646 - 1993
+<li>ISO/IEC 4873: Information Processing - 8-Bit Code for Information
+Interchange - Structure and Rules for implementation
+<li>ISO/IEC 6429: Information Processing - 7-Bit and 8-Bit Coded Character
+Sets - Control Functions for Coded Character Sets
+<li>ISO/IEC 8859-xx: Information Processing - 8-Bit Single-Byte Coded Graphic
+Character Sets (several parts)
+<li>SHARE Report SSD No. 366: ASCII and EBCDIC Character Set and Code Issues
+in Systems Application Architecture, The ASCII/EBCDIC Character Set Task
+Force. Edited by Edwin Hart, The Johns Hopkins University, Applied Physics
+Laboratory, Laurel, Maryland, USA; published by Share Inc., 111 East Wacker
+Drive, Chicago, Illinois, USA 60601; June 1989
+</ul>
+<h2>5&nbsp;<a name="Annex A"></a>Annex A: Intellectual Property Related</h2>
+<center>
+<p><br>
+Transcript of Letter<br>
+regarding Disclosure of IBM Technology - EF-UTF<br>
+(Hard copy is on file with the Chair of UTC and the Chair of NCITS/L2)<br>
+Transcribed on 1998-07-11</center>
+<hr width="100%">
+<p>IBM LOGO
+<p>International Business Machines Corporation Route 100
+<p>Somers, NY 10589<br>
+&nbsp;
+<p>June 2, 1998<br>
+&nbsp;<br>
+&nbsp;<br>
+&nbsp;
+<p>The Chair, Unicode Technical Committee<br>
+&nbsp;
+<p>Subject: Disclosure of IBM Technology - EBCDIC-Friendly UCS Transformation
+Format (EF-UTF)<br>
+&nbsp;
+<p>The attached document entitled &quot;EBCDIC-Friendly UCS Transformation
+Format (EF-UTF)&quot; contains IBM technology that has been filed for
+application for Canadian Patent. However, IBM believes that the technology could
+be beneficial to the EBCDIC community at large; allowing the community to derive
+the enormous benefits provided by UCS (ISO/IEC 10646 and Unicode).<br>
+&nbsp;
+<p>This letter is to inform you that IBM is pleased to make the attached
+documentation, and the associated technology that has been filed for patent,
+freely available to anyone concerned towards making the transformation format as
+part of the UCS standards.<br>
+&nbsp;<br>
+&nbsp;<br>
+&nbsp;
+<p>Sincerely<br>
+&nbsp;
+<p>SIGNED<br>
+&nbsp;
+<p>Elizabeth G. Nichols<br>
+Director of National Language Support<br>
+and Information Development<br>
+&nbsp;
+<p>EGN:ghs
+<p>Attachment<br>
+&nbsp;<br>
+&nbsp;
+<p>(Note: The term EF-UTF has been changed to UTF-EBCDIC at the suggestion of
+UTC meting 78 -- V.S. Umamaheswaran)
+<h2>6&nbsp;<a name="Annex B"></a>Annex B: Additional Information</h2>
+<h3>6.1&nbsp;<a name="Positions"></a>Controls, Variants, and Invariants in
+EBCDIC</h3>
+The positions assigned to the 65 control characters, the 82 invariant graphic
+characters (including SPACE) and 13 variant graphic characters among the various
+EBCDIC code pages in use is shown in the following table.<br>
+&nbsp;
+<center>
+<table border="1" width="90%" bgcolor="#D9FFF4">
+<caption>
+<a name="Table B.1"></a><b><font size="+1">
+Table B.1: Positions of controls, variants and invariants in EBCDIC
+</font></b>
+</caption>
+<tr align="left">
+<td colspan="17" bgcolor="#FFFFCC"><font face="Symbol"><b>&nbsp;ß</b></font><b> High nibble (hex)
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Low nibble (hex) </b><font face="Symbol"><b>Þ</b></font><b> (all entries are in hex)</b>
+</tr>
+<tr align="CENTER" bgcolor="#FFCCFF">
+<td>&nbsp;
+<td>-0
+<td>-1
+<td>-2
+<td>-3
+<td>-4
+<td>-5
+<td>-6
+<td>-7
+<td>-8
+<td>-9
+<td>-A
+<td>-B
+<td>-C
+<td>-D
+<td>-E
+<td>-F
+</tr>
+<tr align="CENTER">
+<td bgcolor="#FFCCFF">0-
+<td><b>cc</b>
+<td><b>cc</b>
+<td><b>cc</b>
+<td><b>cc</b>
+<td><b>cc</b>
+<td><b>cc</b>
+<td><b>cc</b>
+<td><b>cc</b>
+<td><b>cc</b>
+<td><b>cc</b>
+<td><b>cc</b>
+<td><b>cc</b>
+<td><b>cc</b>
+<td><b>cc</b>
+<td><b>cc</b>
+<td><b>cc</b>
+</tr>
+<tr align="CENTER">
+<td bgcolor="#FFCCFF">1-
+<td><b>cc</b>
+<td><b>cc</b>
+<td><b>cc</b>
+<td><b>cc</b>
+<td><b>cc</b>
+<td><b>cc</b>
+<td><b>cc</b>
+<td><b>cc</b>
+<td><b>cc</b>
+<td><b>cc</b>
+<td><b>cc</b>
+<td><b>cc</b>
+<td><b>cc</b>
+<td><b>cc</b>
+<td><b>cc</b>
+<td><b>cc</b>
+</tr>
+<tr align="CENTER">
+<td bgcolor="#FFCCFF">2-
+<td><b>cc</b>
+<td><b>cc</b>
+<td><b>cc</b>
+<td><b>cc</b>
+<td><b>cc</b>
+<td><b>cc</b>
+<td><b>cc</b>
+<td><b>cc</b>
+<td><b>cc</b>
+<td><b>cc</b>
+<td><b>cc</b>
+<td><b>cc</b>
+<td><b>cc</b>
+<td><b>cc</b>
+<td><b>cc</b>
+<td><b>cc</b>
+</tr>
+<tr align="CENTER">
+<td bgcolor="#FFCCFF">3-
+<td><b>cc</b>
+<td><b>cc</b>
+<td><b>cc</b>
+<td><b>cc</b>
+<td><b>cc</b>
+<td><b>cc</b>
+<td><b>cc</b>
+<td><b>cc</b>
+<td><b>cc</b>
+<td><b>cc</b>
+<td><b>cc</b>
+<td><b>cc</b>
+<td><b>cc</b>
+<td><b>cc</b>
+<td><b>cc</b>
+<td><b>cc</b>
+</tr>
+<tr align="CENTER">
+<td bgcolor="#FFCCFF">4-
+<td><b>ii</b>
+<td>&nbsp;
+<td>&nbsp;
+<td>&nbsp;
+<td>&nbsp;
+<td>&nbsp;
+<td>&nbsp;
+<td>&nbsp;
+<td>&nbsp;
+<td>&nbsp;
+<td>&nbsp;
+<td><b>ii</b>
+<td><b>ii</b>
+<td><b>ii</b>
+<td><b>ii</b>
+<td><b>vv</b>
+</tr>
+<tr align="CENTER">
+<td bgcolor="#FFCCFF">5-
+<td><b>ii</b>
+<td>&nbsp;
+<td>&nbsp;
+<td>&nbsp;
+<td>&nbsp;
+<td>&nbsp;
+<td>&nbsp;
+<td>&nbsp;
+<td>&nbsp;
+<td>&nbsp;
+<td><b>vv</b>
+<td><b>vv</b>
+<td><b>ii</b>
+<td><b>ii</b>
+<td><b>ii</b>
+<td><b>vv</b>
+</tr>
+<tr align="CENTER">
+<td bgcolor="#FFCCFF">6-
+<td><b>ii</b>
+<td><b>ii</b>
+<td>&nbsp;
+<td>&nbsp;
+<td>&nbsp;
+<td>&nbsp;
+<td>&nbsp;
+<td>&nbsp;
+<td>&nbsp;
+<td>&nbsp;
+<td>&nbsp;
+<td><b>ii</b>
+<td><b>ii</b>
+<td><b>ii</b>
+<td><b>ii</b>
+<td><b>ii</b>
+</tr>
+<tr align="CENTER">
+<td bgcolor="#FFCCFF">7-
+<td>&nbsp;
+<td>&nbsp;
+<td>&nbsp;
+<td>&nbsp;
+<td>&nbsp;
+<td>&nbsp;
+<td>&nbsp;
+<td>&nbsp;
+<td>&nbsp;
+<td><b>vv</b>
+<td><b>ii</b>
+<td><b>vv</b>
+<td><b>vv</b>
+<td><b>ii</b>
+<td><b>ii</b>
+<td><b><font color="#ff8080">vv(**)</font></b>
+</tr>
+<tr align="CENTER">
+<td bgcolor="#FFCCFF">8-
+<td>&nbsp;
+<td><b>ii</b>
+<td><b>ii</b>
+<td><b>ii</b>
+<td><b>ii</b>
+<td><b>ii</b>
+<td><b>ii</b>
+<td><b>ii</b>
+<td><b>ii</b>
+<td><b>ii</b>
+<td>&nbsp;
+<td>&nbsp;
+<td>&nbsp;
+<td>&nbsp;
+<td>&nbsp;
+<td>&nbsp;
+</tr>
+<tr align="CENTER">
+<td bgcolor="#FFCCFF">9-
+<td>&nbsp;
+<td><b>ii</b>
+<td><b>ii</b>
+<td><b>ii</b>
+<td><b>ii</b>
+<td><b>ii</b>
+<td><b>ii</b>
+<td><b>ii</b>
+<td><b>ii</b>
+<td><b>ii</b>
+<td>&nbsp;
+<td>&nbsp;
+<td>&nbsp;
+<td>&nbsp;
+<td>&nbsp;
+<td>&nbsp;
+</tr>
+<tr align="CENTER">
+<td bgcolor="#FFCCFF">A-
+<td>&nbsp;
+<td><b>vv</b>
+<td><b>ii</b>
+<td><b>ii</b>
+<td><b>ii</b>
+<td><b>ii</b>
+<td><b>ii</b>
+<td><b>ii</b>
+<td><b>ii</b>
+<td><b>ii</b>
+<td>&nbsp;
+<td>&nbsp;
+<td>&nbsp;
+<td><b>vv</b>
+<td>&nbsp;
+<td>&nbsp;
+</tr>
+<tr align="CENTER">
+<td bgcolor="#FFCCFF">B-
+<td>&nbsp;
+<td>&nbsp;
+<td>&nbsp;
+<td>&nbsp;
+<td>&nbsp;
+<td>&nbsp;
+<td>&nbsp;
+<td>&nbsp;
+<td>&nbsp;
+<td>&nbsp;
+<td>&nbsp;
+<td>&nbsp;
+<td>&nbsp;
+<td><b>vv</b>
+<td>&nbsp;
+<td>&nbsp;
+</tr>
+<tr align="CENTER">
+<td bgcolor="#FFCCFF">C-
+<td><b>vv</b>
+<td><b>ii</b>
+<td><b>ii</b>
+<td><b>ii</b>
+<td><b>ii</b>
+<td><b>ii</b>
+<td><b>ii</b>
+<td><b>ii</b>
+<td><b>ii</b>
+<td><b>ii</b>
+<td>&nbsp;
+<td>&nbsp;
+<td>&nbsp;
+<td>&nbsp;
+<td>&nbsp;
+<td>&nbsp;
+</tr>
+<tr align="CENTER">
+<td bgcolor="#FFCCFF">D-
+<td><b>vv</b>
+<td><b>ii</b>
+<td><b>ii</b>
+<td><b>ii</b>
+<td><b>ii</b>
+<td><b>ii</b>
+<td><b>ii</b>
+<td><b>ii</b>
+<td><b>ii</b>
+<td><b>ii</b>
+<td>&nbsp;
+<td>&nbsp;
+<td>&nbsp;
+<td>&nbsp;
+<td>&nbsp;
+<td>&nbsp;
+</tr>
+<tr align="CENTER">
+<td bgcolor="#FFCCFF">E-
+<td><b>vv</b>
+<td>&nbsp;
+<td><b>ii</b>
+<td><b>ii</b>
+<td><b>ii</b>
+<td><b>ii</b>
+<td><b>ii</b>
+<td><b>ii</b>
+<td><b>ii</b>
+<td><b>ii</b>
+<td>&nbsp;
+<td>&nbsp;
+<td>&nbsp;
+<td>&nbsp;
+<td>&nbsp;
+<td>&nbsp;
+</tr>
+<tr align="CENTER">
+<td bgcolor="#FFCCFF">F-
+<td><b>ii</b>
+<td><b>ii</b>
+<td><b>ii</b>
+<td><b>ii</b>
+<td><b>ii</b>
+<td><b>ii</b>
+<td><b>ii</b>
+<td><b>ii</b>
+<td><b>ii</b>
+<td><b>ii</b>
+<td>&nbsp;
+<td>&nbsp;
+<td>&nbsp;
+<td>&nbsp;
+<td>&nbsp;
+<td><b>cc</b>
+</tr>
+<tr>
+<td colspan="17"><font size="-1">cc = EBCDIC control character positions; ii = EBCDIC
+invariants from ASCII repertoire; vv = EBCDIC variants from ASCII repertoire.
+<br>
+<font color="#ff8080">** Note: x'7F' is marked as a variant in the above table; however, it is assigned the DOUBLE QUOTE character
+in MOST primary EBCDIC single byte code pages.</font>
+</font>
+</tr>
+</table>
+</center>
+<h3>6.2&nbsp;<a name="Comparison"></a>A comparison of UTF-EBCDIC and UTF-8</h3>
+UTF-EBCDIC is a byte-mapped version of I8-sequence. The bit patterns of UTF-EBCDIC
+bytes and UTF-8 therefore are different. A comparison of the bit patterns of UTF-EBCDIC
+is not so meaningful. However, the I8-sequence and UTF-8 sequence can be
+compared to understand the salient differences between the two. UTF-8-Mod being
+derived from UTF-8 retains all of its salient features. A comparative summary of
+the basic characteristics of I8-sequence and UTF-8 sequence is shown in <a
+href="index.html#Table B.2">Table B.2</a> below. Note that this table shows the entire
+31-bit UCS-4 range in the transformation, whereas <a href="index.html#Table 1">Table 1</a>
+includes only the BMP and up to plane 16 using surrogate pairs.<br>
+&nbsp;
+<table border="1" width="90%" bgcolor="#D9FFF4" align="center">
+<caption><a name="Table B.2"></a>
+<b><font size="+1">Table B.2: Comparison of
+I8-Sequence with UTF-8 Generated Byte Sequence</font></b>
+</caption>
+<tr bgcolor="#FFCCFF">
+<th width="25%">&nbsp;</th>
+<th width="20%">I8-sequence</th>
+<th width="20%">UTF-8-sequence</th>
+<th width="35%">Remarks</th>
+</tr>
+<tr><td colspan=4>&nbsp;</tr>
+<tr >
+<td align="left"  bgcolor="#FFFFCC"><b>No. of bytes in transformed sequence</b>
+<td  align="center"><b>Scalar Values</b><br><b>(hex)</b>
+<td  align="center"><b>Scalar Values</b><br>
+<b>(hex)</b>
+<td >&nbsp;
+</tr>
+<tr>
+<td align="center">1
+<td align="center">00 to 9F
+<td align="center">00 to 7F
+<td align="left">C0, G0 and C1 in I8-sequence<br>
+C0 and G0 in UTF-8
+</tr>
+<tr>
+<td align="center">2
+<td align="center">A0 to 3FF
+<td align="center">80 to 7FF
+<td align="center">&nbsp;
+</tr>
+<tr>
+<td align="center">3
+<td align="center">400 to 3FFF
+<td align="center">800 to FFFF
+<td align="left">To end of first quarter of BMP in I8-sequence;<br>
+To end of BMP in UTF-8
+</tr>
+<tr>
+<td align="center">4
+<td align="center">4000 to 3 FFFF
+<td align="center">1 0000 to 1F FFFF
+<td align="left">To end of plane 3 in I8-sequence;<br>
+To end of plane 31 in UTF-8
+</tr>
+<tr>
+<td align="center">5
+<td align="center">4 0000 to 3F FFFF
+<td align="center">20 0000 to 3FF FFFF
+<td align="left">To end of plane 63 in I8-sequence
+</tr>
+<tr>
+<td align="center">6
+<td align="center">40 0000 to 3FF FFFF
+<td align="center">400 0000 to 7FFF FFFF
+<td align="left">To end of UCS in UTF-8
+</tr>
+<tr>
+<td align="center">7
+<td align="center">400 0000 to 7FFF FFFF
+<td align="center">Not used
+<td align="left">To end of UCS in I8-sequence
+</tr>
+<tr><td colspan=4>&nbsp;</tr>
+<tr>
+<td align="left" bgcolor="#FFFFCC"><b>Trailing Bytes</b>
+<td align="center">32 values - X'A0' -- X'BF'<br>
+B'101vvvvv'<br>
+5 v-bits per byte
+<td align="center">64 values - X'80' -- X'BF'<br>
+B'10vvvvvv'<br>
+6 v-bits per byte
+<td align="left">I8-sequence trailing byte has only five
+information bits per trailing byte, compared to 6 in UTF-8
+</tr>
+<tr><td colspan=4>&nbsp;</tr>
+<tr>
+<td bgcolor="#FFFFCC"><b>Lead Bytes&nbsp;</b>
+<td align="center"><b>Hex</b>
+<td align="center"><b>Hex</b>
+<td >&nbsp;
+</tr>
+<tr>
+<td align="center">2-Byte sequence
+<td align="center">C0 -- DF
+<td align="center">C0 -- DF
+<td align="center">Same in both
+</tr>
+<tr>
+<td align="center">3-Byte sequence
+<td align="center">E0 -- EF
+<td align="center">E0 -- EF
+<td align="center">Same in both
+</tr>
+<tr>
+<td align="center">4-Byte sequence
+<td align="center">F0 -- F7
+<td align="center">F0 -- F7
+<td align="center">Same in both
+</tr>
+<tr>
+<td align="center">5-Byte sequence
+<td align="center">F8 -- FB
+<td align="center">F8 -- FB
+<td align="center">Same in both
+</tr>
+<tr>
+<td align="center">6-Byte sequence
+<td align="center">FC and FD
+<td align="center">FC and FD
+<td align="center">Same in both
+</tr>
+<tr>
+<td align="center">7-Byte sequence
+<td align="center">FE and FF
+<td align="center">Not used
+<td align="center">Only used in UTF-8-Mod
+</tr>
+</table>
+<h3>6.3&nbsp;<a name="Scalar Values"></a>FEFF, FFFE, and FFFF in UTF-EBCDIC</h3>
+U+FFFE and U+FFFF are not used for character allocation in any plane of Unicode.
+U+FEFF (<i>zero width no-break space</i>) is used as a signature for Unicode,
+for both UCS-2 and UTF-16 forms. U+FFFE may strongly suggest a byte-reversed
+Unicode string. U+FFFF is used to represent a numeric value that is guaranteed
+not to be a character, for uses such as the final value at the end of an index.
+UTF-8 also avoids the use of X'FF' and X'FE' as octets in its sequences. In
+I8-sequence, however, X'FE' and X'FF' may appear. The following paragraphs
+expand on which combinations of X'FF' and X'FE' may occur in an I8-sequence or
+UTF-EBCDIC sequence.
+<ul>
+<li><b><i>X'FE' X'FF', X'FF' X'FE' and X'FF' X'FF' in the I8-sequence</i></b>
+</ul>
+The X'FE' and X'FF' are lead octets of seven-byte I8-sequence (assuming values
+from all the planes of UCS-4). They will be surrounded (in a properly formed
+I8-sequence) by a value less than X'C0'. None of the sequences X'FF' X'FF', X'FE'
+X'FF', and X'FF' X'FE' can appear in a well-formed I8-sequence.
+<ul>
+<li><b><i>X'FE' X'FF', X'FF'X'FE' and X'FF' X'FF' in the UTF-EBCDIC sequence</i></b>
+</ul>
+<blockquote>
+The I8-sequence to UTF-EBCDIC byte mappings are: X'FE' to X'FD', and X'FF' to
+X'FE' (see <a href="index.html#Table 2">Table 2</a>). The values X'FE' and X'FF' can be
+generated in a UTF-EBCDIC byte sequence from I8-sequence values by mapping
+X'FF' to X'FE' and X'9F' to X'FF' from Table 2).
+</blockquote>
+X'FF' is the lead byte of a seven-byte I8 sequence and must be followed by six
+trailing bytes in the range X'A0' to X'BF', which does not include X'9F'. So the
+X'FE' X'FF' sequence cannot appear in UTF-EBCDIC.
+<p>The X'9F' is assigned to the control character -- Application Program Command
+(APC) -- in ISO-8 C1. According to ISO/IEC 6429, the APC is followed by a
+parameter string using bit combinations from 0/8 to 0/13 (X'08' to X'0D') and
+2/0 to 7/14 (X'20' to X'7E') and terminated by the control function String
+Terminator (ST) (coded at X'9C' in C1). Therefore, the sequence X'FF' X'FF', the
+equivalent of two APC controls without intervening parameters or ST-s, also
+should not appear in UTF-EBCDIC sequence. None of the valid parameter bit
+combinations can generate a 7-byte I8 sequence that starts with X'FF'. So the
+sequence X'FF' X'FE' also cannot appear in a UTF-EBCDIC sequence.
+<h3>6.4&nbsp;<a name="Normalization"></a>Normalization to Fixed Width</h3>
+Dealing with a variable number of bytes may not be possible or desirable in some
+processing situations (even though proper handling of Unicode text strings will
+require the ability to correctly deal with combining sequences). Normalization
+into a form with a fixed number of bits is needed for such cases. It would
+always be desirable to revert to the original 16-bit form or the corresponding
+32-bit form as a normalization to fixed-width data.
+<p>However, this would be possible only if processing is tolerant to native
+Unicode encoding. If transparency to EBCDIC invariance and controls is needed
+also in the normalized form, then Unicode cannot be directly used for
+normalization. It can be seen from <a href="index.html#Table 1">Table 1</a> that the last
+code position in the BMP (U+FFFF) requires four bytes in the I8-sequence and in
+the corresponding UTF-EBCDIC sequence. A 32-bit integer can be used for
+normalization of up to four-byte UTF-EBCDIC sequences.
+<p>The maximum Unicode scalar value that a four-byte I8-sequence or UTF-EBCDIC
+sequence can represent is:<br>
+&nbsp;<center>
+<table border="1" width="80%" bgcolor="#D9FFF4">
+<tr align="CENTER">
+<td>&lt;11110111 10111111 10111111 10111111&gt; (X'3FFFF')
+</tr>
+</table>
+</center>
+<p>corresponding to the end of plane 3 in group 0. Using UTF-16 to represent
+planes 1 to 16, the surrogate characters in the BMP can be used. By treating the
+surrogate characters as any other BMP characters, up to plane 16 can be encoded
+using the 16-bit form, and hence can be contained within the 32-bit normalized
+form of UTF-EBCDIC. Care has to be taken to correctly process the corresponding
+UTF-EBCDIC sequence corresponding to the surrogate pairs, similar to dealing
+with combination sequences. When it is desirable to convert valid surrogate
+pairs into corresponding Unicode scalar value and then apply UTF-EBCDIC, only up
+to plane 3 can be contained within the 32-bit normalized value. For all values
+beyond group 0, plane 3 of UCS, the UTF-EBCDIC will contain more than four
+octets. The normalization for these cases will need 64 bits (assuming nothing
+between 32 and 64 bits is practical).
+<h3>6.5&nbsp;<a name="I8-EB Map"></a>Mapping of Bytes in Step 2</h3>
+The control code position mapping used in default Unicode to EBCDIC code page
+mappings, follow the pairings between ISO/IEC 6429 C0, DEL and C1 sets and
+EBCDIC controls as defined in IBM Character Data Representation Architecture <i>as
+default, </i>and customizing to the practice of OS/390 Unix services (MVS Open).
+These pairings may not suit all EBCDIC environments. A well-known problem is
+that of mapping EBCDIC New Line to Next Line in C1 of ISO/IEC 6429 versus Line
+Feed in C0 was mentioned earlier. Similarly it is known that the 13 variant
+characters are different among the various single byte EBCDIC code pages. The
+well known impact of this is exemplified by the different code positions of the
+Square Bracket characters. Even the lowercase a to z is variant in the EBCDIC
+Katakana code page. A judicious one to one byte reversible map to convert only
+those code points with category marked as '0'or a '1' may be employed as a step
+3. Such a step 3 is not considered to be part of the UTF-EBCDIC transformation
+defined in this technical report, and is considered as customization to suit
+individual environments.
+<p>Similarly the pairing of I8-sequence bytes and UTF-EBCDIC sequence bytes
+could be done in multiple ways. The simplest requirement on this byte-pairing is
+that it should be unique and reversible. The pairing adopted in this version of
+the UTR is based on the request from Oracle Corporation's representative Mr.
+Jianping Yang -- to be able to maintain the order of the UTF-EBCDIC multi-byte
+sequences the same as the order of the corresponding Unicode scalar values.
+<h3>6.6<a name="Ordering"></a> Ordering of UTF-EBCDIC Sequences</h3>
+The mapping of the I8-bytes to UTF-EBCDIC bytes allows the multi-byte UTF-EBCDIC
+sequences (corresponding to a Unicode character each) to be in the same order as
+their corresponding Unicode scalar values. The ordering of the trailing bytes
+and the leading bytes in the UTF-EBCDIC sequence (from <a href="index.html#Table 4">Table
+4</a>) is:<br>
+&nbsp;<center>
+<table border="1" width="80%" bgcolor="#D9FFF4">
+<tr align="CENTER">
+<td><tt>trailing bytes &lt;&lt; Lead bytes of 2-byte-sequence &lt;&lt; .. ..
+..&nbsp;</tt><br>
+<tt>.. .. .. &lt;&lt; Lead bytes of 7-byte sequences</tt>
+</tr>
+</table>
+</center>
+<p>The byte values within each set are ordered in increasing order. Note that
+the UTF-EBCDIC single-bytes do not have this property - either among themselves
+or between themselves and the bytes of the multi-byte UTF-EBCDIC sequences. The
+single-bytes are ordered according to their CP1047 order. So doing a
+&quot;binary comparison&quot; of the text would look like:<br>
+&nbsp;<center>
+<table border="1" width="80%" bgcolor="#D9FFF4">
+<tr align="LEFT">
+<td><tt>for (i = 0; i &lt; n; ++i) {</tt><br>
+<tt>&nbsp;&nbsp; byte1 = source1[i];</tt><br>
+<tt>&nbsp;&nbsp; byte2 = source2[i];</tt><br>
+<tt>&nbsp;&nbsp; if (byte1 == byte2) continue; // fast path</tt><br>
+<tt>&nbsp;&nbsp; // check for the single bytes vs multibytes</tt><br>
+<tt>&nbsp;&nbsp; if (shadow[byte1] &lt; 2) {</tt><br>
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; if (shadow[byte2] &gt; 2) return
+- 1; // single bytes less than multi</tt><br>
+<tt>&nbsp;&nbsp; } else {</tt><br>
+<tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; if (shadow[byte2] &lt; 2) return
+1; // multibyte greater than single</tt><br>
+<tt>&nbsp;&nbsp; }</tt><br>
+<tt>&nbsp;&nbsp; // now the shadows are of the same type, so just compare
+the bytes</tt><br>
+<tt>&nbsp;&nbsp; if (byte1 &lt; byte 2) return - 1;</tt><br>
+<tt>&nbsp;&nbsp; return 1;</tt><br>
+<tt>}</tt><br>
+<tt>return 0;</tt>
+</tr>
+</table>
+</center>
+<p>The resulting order is a mix of EBCDIC CP1047 order for the single bytes and
+Unicode order for the multi-byte UTF-EBCDIC characters.
+<p>However, if the desired order is to be the same order as Unicode scalar
+values for all the characters, both the single-byte and the multi-byte
+characters, the intermediate I8-sequence bytes should be compared. This approach
+also makes the comparison immune to any local customization of the mapping (see <a
+href="index.html#I8-EB Map">Mapping of Bytes in Step 2</a>) and provides a consistent
+Unicode value order. The following is a sample for the comparison code.<br>
+&nbsp;<center>
+<table border="1" width="80%" bgcolor="#D9FFF4">
+<tr align="LEFT">
+<td><tt>for (i = 0; i &lt; n; ++i) {</tt><br>
+<tt>&nbsp;&nbsp; byte1 = source1[i];</tt><br>
+<tt>&nbsp;&nbsp; byte2 = source2[i];</tt><br>
+<tt>&nbsp;&nbsp; if (byte1 == byte2) continue; // fast path</tt><br>
+<tt>&nbsp;&nbsp; // compare the I8-sequence counterparts</tt><br>
+<tt>&nbsp;&nbsp; // take advantage of the ability of I8-sequence bytes
+being similar</tt><br>
+<tt>&nbsp;&nbsp; // to UTF-8 byte to preserve the same order as Unicode
+scalar values</tt><br>
+<tt>&nbsp;&nbsp; // ebtoi8 is the reverse mapping vector from UTF-EBCDIC
+to I8 bytes</tt><br>
+<tt>&nbsp;&nbsp; if (ebtoi8[byte1] &lt; ebtoi8[byte2]) return - 1;</tt><br>
+<tt>&nbsp;; return 1;</tt><br>
+<tt>}</tt><br>
+<tt>return 0;</tt>
+</tr>
+</table>
+</center>
+<p>If the desire is to preserve the EBCDIC order for the single-bytes (the ASCII
+repertoire) or the traditional order of the multi-byte sequences (such as for
+EBCDIC-Japanese, EBCDIC-Cyrillic, EBCDIC-Arabic etc.) localization resources
+such as a weight look up table in locales should be employed.
+<h2><a name="Acknowledgements"></a>6 Acknowledgments</h2>
+The UTF-EBCDIC transformation was originally created and developed in the
+National Language Technical Centre in IBM Toronto Laboratory by Messrs. Baldev
+Soor, Alexis Cheng, Rick Pond, Ibrahim Meru and V.S. (Uma) Umamaheswaran. The
+original version has been modified based on review feedback on the previous
+versions of this Unicode Technical Report.
+<h2>7&nbsp;<a name="Revisions"></a>Revisions</h2>
+Version 8: 
+<ul><li>In Table B.1, position x'7F' is marked as a variant (vv) and a note
+has been added in Table B.1 regarding invariance of position x'7F'. This is in response
+to a request for clarification regarding the invariance of this position
+from Dr. Alan Watson &lt;a.watson@astrosmo.unam.mx&gt;, Instituto de Astronom<font face="Lucida Sans Unicode">ía</font>, UNAM. In particular
+the EBCDIC Turkish primary code pages have a Upper case U-diaeresis assigned to x'7F'.
+<li>An HTML source error causing printing problems (reported by Doug Ewell &lt;dewell@adelphia.net&gt;) 
+has been fixed.
+<li>Validated &amp; fixed minor HTML problems.</ul>
+<hr>
+<p>Copyright © 1999-2002 Unicode, Inc. All Rights Reserved. The Unicode
+Consortium makes no expressed or implied warranty of any kind, and assumes no
+liability for errors or omissions. No liability is assumed for incidental and
+consequential damages in connection with or arising out of the use of the
+information or programs contained or accompanying this technical report.
+</p>
+<p><font size="-1">Unicode and the Unicode logo are trademarks of Unicode, Inc.,             
+and are registered in some jurisdictions.</font></p>            
+
+</div>
+</body>
+</html>

@@ -1,0 +1,51 @@
+# 	LetterFormFolding.txt
+#	DRAFT 1 - 2004-07-14 Asmus Freytag
+#	Subject to change
+#
+#	Base version of Unicode: 4.0.0
+#
+#	Datafile for Unicode Techical Report #30
+#	Copyright (c) 1991-2004 Unicode, Inc.
+#	For terms of use, and documentation see
+#	http://www.unicode.org/reports/tr30/
+
+#	=================================
+
+#
+#	Map all alternate forms of letters to their archetype.
+#
+#	Format
+#		Field 0 - character code (source)
+#		Field 1 - character code (target)
+#		Comment - utf8 of source -> utf8 of target, followed by
+#				  characer name of source -> character name of target
+#
+#   Notes:
+#		1) this version of the folding includes an initial set
+#		culled from decompositions with <compat> tag
+#
+#		2) this folding is complemented by the Hebrew Alternates
+#		Folding.
+#
+#	Stability
+#		The folding methodology has not	been reviewed (see notes).
+#
+###########################################################################
+017F;	0073 	# ſ → s	LATIN SMALL LETTER LONG S → LATIN SMALL LETTER S
+03D0;	03B2 	# ϐ → β	GREEK BETA SYMBOL → GREEK SMALL LETTER BETA
+03D1;	03B8 	# ϑ → θ	GREEK THETA SYMBOL → GREEK SMALL LETTER THETA
+03D2;	03A5 	# ϒ → Υ	GREEK UPSILON WITH HOOK SYMBOL → GREEK CAPITAL LETTER UPSILON
+03D5;	03C6 	# ϕ → φ	GREEK PHI SYMBOL → GREEK SMALL LETTER PHI
+03D6;	03C0 	# ϖ → π	GREEK PI SYMBOL → GREEK SMALL LETTER PI
+03F0;	03BA 	# ϰ → κ	GREEK KAPPA SYMBOL → GREEK SMALL LETTER KAPPA
+03F1;	03C1 	# ϱ → ρ	GREEK RHO SYMBOL → GREEK SMALL LETTER RHO
+03F2;	03C2 	# ϲ → ς	GREEK LUNATE SIGMA SYMBOL → GREEK SMALL LETTER FINAL SIGMA
+03F4;	0398 	# ϴ → Θ	GREEK CAPITAL THETA SYMBOL → GREEK CAPITAL LETTER THETA
+03F5;	03B5 	# ϵ → ε	GREEK LUNATE EPSILON SYMBOL → GREEK SMALL LETTER EPSILON
+03F9;	03A3 	# Ϲ → Σ	GREEK CAPITAL LUNATE SIGMA SYMBOL → GREEK CAPITAL LETTER SIGMA
+2107;	0190 	# ℇ → Ɛ	EULER CONSTANT → LATIN CAPITAL LETTER OPEN E
+2135;	05D0 	# ℵ → א	ALEF SYMBOL → HEBREW LETTER ALEF
+2136;	05D1 	# ℶ → ב	BET SYMBOL → HEBREW LETTER BET
+2137;	05D2 	# ℷ → ג	GIMEL SYMBOL → HEBREW LETTER GIMEL
+2138;	05D3 	# ℸ → ד	DALET SYMBOL → HEBREW LETTER DALET
+

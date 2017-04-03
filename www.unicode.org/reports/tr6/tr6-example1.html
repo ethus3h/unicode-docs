@@ -1,0 +1,32 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<html>
+
+<head>
+<title>UTR #6 -- Japanese Example</title>
+<meta name="GENERATOR" content="Microsoft FrontPage 3.0">
+</head>
+
+<body bgcolor="#FFFFFF" link="#FF0000" vlink="#C0C0C0" alink="#FF00FF">
+
+<p><a href="index.html#Japanese"><strong>Unicode Technical Report #6:</strong></a></p>
+
+<h1>Example text in Japanese</h1>
+
+<p><img src="tr6-example1.gif" alt="Example text goes here" align="bottom" width="725"
+height="461"></p>
+
+<p>The example above consists of a short piece of text found in a recent Japanese news
+story. Each character is color coded to indicate which characters can be encoded using the
+same window. The table lists the number of occurrences of characters for a given window
+divided by the number of runs, yielding the average run length. </p>
+
+<p>The reference encoder will encode the 120 characters of this example into 182 bytes.
+This is approximately 3/4 of the size required to store the text in Unicode, or any of the
+double byte character sets. A single window implementation, like the original Reuters'
+RCSU version of the Compression scheme would have required about a dozen window resets,
+plus would have had to resort to quoting Unicode a few more times. A complex example like
+this demonstrates the advantage of the multiple window implementation quite nicely.</p>
+
+<p><a href="index.html#Japanese">[back]</a></p>
+</body>
+</html>

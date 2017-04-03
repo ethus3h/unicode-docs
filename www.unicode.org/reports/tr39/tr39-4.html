@@ -1,0 +1,957 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta http-equiv="Content-Language" content="en-us">
+<link rel="stylesheet" href="../../unicode/reports/reports.css" type="text/css">
+<meta name="GENERATOR" content="Microsoft FrontPage 12.0">
+<meta name="ProgId" content="FrontPage.Editor.Document">
+<title>UTR# 39: Unicode Security Mechanisms</title>
+<style type="text/css">
+<!--
+span.special { text-decoration: underline; font-weight: bold; color: #FF0000;font-family: monospace; font-size: 12px }
+.idn-head { font-size: 12px; background-color: #C0C0C0 }
+span.mono    { font-family: monospace; font-size: 12px }
+.idn-example {font-size:12px; font-family:Arial Unicode MS, san-serif}
+span.border {background-color: white; color: red; border-left: 1px solid  blue; border-right: 1px solid blue}
+.button {background-color: #CCCCCC; text-align: center; border-style: outset; border-width: 2px}
+.noborder {border-width: 0; border-collapse: collapse; }
+.alert {border-style:outset; border-width:3px; background-color:#DDDDFF; border-collapse: collapse; width:80% }
+.alertcell {border-width: 0; padding: 1em}
+.rule_head { font-style: italic; border-width: 0 }
+.rule_head   { font-weight: bold }
+.rule_body { font-style: italic; border-width: 0 }
+.noborder1 {border-width: 0; border-collapse: collapse; }
+-->
+</style>
+</head>
+
+<body>
+
+  <table class="header" cellspacing="0" cellpadding="0" width="100%">
+    <tr>
+      <td class="icon"><a href="http://www.unicode.org">
+      <img align="middle" alt="[Unicode]" border="0" src="../../webscripts/logo60s2.gif" width="34" height="33"></a>&nbsp;&nbsp;<a class="bar" href="http://www.unicode.org/reports">Technical 
+      Reports</a></td>
+    </tr>
+    <tr>
+      <td class="gray">&nbsp;</td>
+    </tr>
+  </table>
+  <div class="body">
+    <h2 align="center">Unicode Technical Standard #39</h2>
+    <h1>Unicode Security Mechanisms</h1>
+    <table border="1" cellpadding="2" class="wide" cellspacing="0">
+      <tr >
+        <td valign="top" width="20%" nowrap>Version</td>
+        <td valign="top" nowrap>2</td>
+      </tr>
+      <tr>
+        <td valign="top" nowrap>Editors</td>
+        <td valign="top" nowrap>Mark Davis (<a href="mailto:markdavis@google.com">markdavis@google.com</a>),<br>
+        Michel Suignard (<a href="mailto:michel@suignard.com">michel@suignard.com</a>)</td>
+      </tr>
+      <tr>
+        <td valign="top" nowrap>Date</td>
+        <td valign="top" nowrap>2010-08-05</td>
+      </tr>
+      <tr>
+        <td valign="top">This Version</td>
+        <td valign="top">
+		<a href="tr39-4.html">http://www.unicode.org/reports/tr39/tr39-4.html</a> </td>
+      </tr>
+      <tr>
+        <td valign="top">Previous Version</td>
+        <td valign="top"><a href="tr39-2.html" >http://www.unicode.org/reports/tr39/tr39-2.html</a></td>
+      </tr>
+      <tr>
+        <td valign="top">Latest Version</td>
+        <td valign="top"><a href="index.html">
+        http://www.unicode.org/reports/tr39/</a></td>
+      </tr>
+      <tr >
+        <td valign="top">Latest Proposed Update</td>
+        <td valign="top"><a href="proposed.html">http://www.unicode.org/reports/tr39/proposed.html</a></td>
+      </tr>
+      <tr>
+        <td valign="top">Revision</td>
+        <td valign="top"><a href="tr39-4.html#Modifications" >4</a></td>
+      </tr>
+    </table>
+    <h3><br>
+    <i>Summary</i></h3>
+    <p><i>Because Unicode contains such a large number of characters and incorporates the 
+    varied writing systems of the world, incorrect usage can expose programs or systems to possible 
+    security attacks. This document specifies mechanisms that can be used 
+    to detect possible security problems.</i></p>
+<h3><i>Status</i></h3>
+      <p><i>This document has been reviewed by Unicode members and other 
+	  interested parties, and has been approved for publication by the Unicode 
+	  Consortium. This is a stable document and may be used as reference 
+	  material or cited as a normative reference by other specifications.</i></p>
+    <blockquote>
+      <p><i><b>A Unicode Technical Standard (UTS)</b> is an independent 
+      specification. Conformance to the Unicode Standard does not imply conformance to any UTS.</i></p>
+    </blockquote>
+    <p><i>Please submit corrigenda and other comments with the online reporting form [<a href="tr39-4.html#Feedback">Feedback</a>]. 
+    Related information that is useful in understanding this document is found in
+    <a href="tr39-4.html#References">References</a>. For the latest version of the Unicode Standard see [<a href="tr39-4.html#Unicode">Unicode</a>]. 
+    For a list of current Unicode Technical Reports see [<a href="tr39-4.html#Reports">Reports</a>]. For more 
+    information about versions of the Unicode Standard, see [<a href="tr39-4.html#Versions">Versions</a>].</i>    </p>
+    <h3><i>Contents</i></h3>
+    <ul class="toc">
+      <li>1 <a href="tr39-4.html#Introduction">Introduction</a></li>
+      <li>2 <a href="tr39-4.html#Conformance">Conformance</a></li>
+      <li><span>3 <a href="tr39-4.html#Identifier_Characters">Identifier Characters</a></span>
+        <ul class="toc">
+        <li>3.1 <a href="tr39-4.html#General_Security_Profile">General Security Profile for Identifiers</a></li>
+        <li>3.2 <a href="tr39-4.html#IDN_Security_Profiles">IDN Security Profiles for Identifiers</a></li>
+      </ul>
+      </li>
+      <li>4 <a href="tr39-4.html#Confusable_Detection">Confusable Detection</a>
+        <ul class="toc">
+        <li>4.1 <a href="tr39-4.html#Whole_Script_Confusables">Whole-Script Confusables</a></li>
+        <li>4.2 <a href="tr39-4.html#Mixed_Script_Confusables">Mixed-Script Confusables</a></li>
+      </ul>
+      </li>
+      <li>5 <a href="tr39-4.html#Mixed_Script_Detection">Mixed-Script Detection</a></li>
+		<li>6 <a href="tr39-4.html#Development_Process">Development Process</a>
+		  <ul class="toc">
+		    <li>6.1 <a href="tr39-4.html#Data_Collection">Data Collection</a></li>
+	      </ul>
+		</li>
+		<li>7 <a href="tr39-4.html#Data_Files">Data Files</a></li>
+      <li><a href="tr39-4.html#Acknowledgements">Acknowledgements</a></li>
+      <li><a href="tr39-4.html#References">References</a></li>
+      <li><a href="tr39-4.html#Modifications">Modifications</a></li>
+    </ul>
+    <br>
+    <hr>
+    <br>
+	<h2 align="left"><a name="Introduction"></a>1 Introduction</h2>
+    <p>Unicode Technical Report #36, &quot;Unicode Security Considerations&quot; [<a href="tr39-4.html#UTR36">UTR36</a>] provides guidelines for detecting and avoiding security problems 
+    connected with the use of Unicode. This document specifies mechanisms that are used in that 
+    document, and can be used elsewhere. Readers should be familiar with [<a href="tr39-4.html#UTR36">UTR36</a>] 
+    before continuing. <span >See 
+    also the Unicode FAQ on <i>Security Issues</i> [<a href="tr39-4.html#FAQSec">FAQSec</a>].</span></p>
+    <h2>2 <a name="Conformance">Conformance</a></h2>
+    <p>An implementation claiming conformance to this specification must 
+    do so in conformance to the following clauses:</p>
+    <table class="noborder" cellspacing="0" cellpadding="8">
+      <tr>
+        <td class="rule_head"><a name="C0">C1</a>.</td>
+        <td class="rule_body">An implementation claiming to implement the 
+        General Profile for Identifiers shall do so in accordance with the specifications in Section 
+        3.1, <a href="tr39-4.html#General_Security_Profile">General Security Profile for Identifiers</a>.<p>Alternatively, it shall declare that it uses a modification, and 
+		provide a precise list of characters that are added to or 
+		removed from the profile.</td>
+      </tr>
+      <tr>
+        <td class="rule_head"><a name="C2">C2</a>.</td>
+        <td class="rule_body">An implementation claiming to implement any 
+        of the following confusable-detection functions must do so in accordance with the 
+        specifications in Section 4, <a href="tr39-4.html#Confusable_Detection">Confusable Detection</a>.
+        <ol>
+          <li>X and Y are <i>single-script confusables</i></li>
+          <li>X and Y are <i>mixed-script confusables</i></li>
+          <li>X and Y are <i>whole-script confusables</i></li>
+          <li>X has any simple single-script confusables</li>
+          <li>X has any mixed-script confusable</li>
+          <li>X has any whole-script confusable</li>
+        </ol>
+        <p>Alternatively, it shall declare that it uses a modification, and 
+		provide a precise list of character mappings that are added to or 
+		removed from the provided ones.</p></td>
+      </tr>
+      <tr>
+        <td class="rule_head"><a name="C3">C3</a>.</td>
+        <td class="rule_body">An implementation claiming to detect mixed 
+        scripts must do so in accordance with the specifications in Section 5, 
+        <a href="tr39-4.html#Mixed_Script_Detection">Mixed-Script Detection</a>.
+        <p>
+		Alternatively, it shall declare that it uses a modification, and provide 
+		a precise specification of the differences in behavior.</p></td>
+      </tr>
+    </table>
+    <h2><span>3 <a name="Identifier_Characters">Identifier Characters</a></span></h2>
+    <p>Identifiers are special-purpose strings used for identification—strings that are deliberately limited to particular repertoires for that purpose. Exclusion of 
+    characters from identifiers does not  affect the general use of those characters, such as 
+    within documents. <span>Unicode Standard Annex #31, &quot;Identifier and Pattern Syntax&quot; [<a href="tr39-4.html#UAX31">UAX31</a>] 
+    provides a recommended method of determining which strings should qualify as identifiers. The 
+    UAX #31 specification extends the common practice of defining identifiers in terms of letters 
+    and numbers to the Unicode repertoire. </span></p>
+    <p>That specification also permits other protocols to use that method as a base, and to define a <i>
+    profile</i> that adds or removes characters. For example, identifiers for specific programming 
+    languages typically add some characters like &quot;$&quot;, and remove others like &quot;-&quot; (because of the use 
+    as <i>minus</i>), while IDNA removes &quot;_&quot; (among others)—see <span>Unicode Technical Standard #46,</span>
+    <span>&quot;Unicode IDNA <span >Compatibility Processing&quot;</span></span> [<a href="tr39-4.html#UTS46">UTS46</a>], as well as [<a href="tr39-4.html#IDNA2003">IDNA2003</a>], and [<a href="tr39-4.html#IDNA2008">IDNA2008</a>].</p>
+    <p>This document provides for additional identifier profiles for 
+	environments where security is an issue. These are profiles of the 
+    extended identifiers based on properties and specifications of the Unicode 
+	Standard [<a href="tr39-4.html#Unicode">Unicode</a>], including:</p>
+	<ul>
+		<li>The XID_Start and XID_Continue 
+		properties defined in the 
+    Unicode Character Database (see [<a href="tr39-4.html#DCore">DCore</a>]) </li>
+		<li>The <span >toCasefold(X)</span> operation defined in <i>Chapter 3, Conformance</i> of [<a href="tr39-4.html#Unicode">Unicode</a>]</li>
+		<li>The NFKC and NFK<span >D</span> normalizations defined in <span ><i>Chapter 3, Conformance</i> of [<a href="tr39-4.html#Unicode">Unicode</a>]</span></li>
+	</ul>
+    <p>The data files used in defining these profiles follow the UCD File Format, which has a 
+    semicolon-delimited list of data fields associated with given characters, 
+	with each field referenced by number. For more details, see 
+    [<a href="tr39-4.html#UCDFormat">UCDFormat</a>].    </p>
+    <h3>3.1 <a name="General_Security_Profile">General Security Profile for Identifiers</a></h3>
+    <p>The file [<a href="tr39-4.html#idmod">idmod</a>] provides data for a profile of identifiers in 
+    environments where security is at issue. The file contains a set of 
+	characters recommended to be restricted from use. It also contains a small set of characters that are 
+    recommended as additions to the list of characters defined by the XID_Start and XID_Continue 
+	properties, because they may be used in identifiers in a broader context 
+	than programming identifiers.</p>
+    <p>The restricted characters are characters not in common use, and are removed to further reduce 
+    the possibilities for visual confusion. They include the following:</p>
+    <ul>
+      <li>characters 
+        not in modern use</li>
+      <li>characters only used in specialized fields, such as liturgical characters, 
+        phonetic letters, and mathematical letter-like symbols</li>
+      <li>characters in limited use by very small communities</li>
+    </ul>
+<p>The principle has been to be more conservative initially, allowing for 
+	the set to be modified in the future as requirements for characters are 
+	refined. For information on handling modifications over time, see <span> <i>Section 2.9.1, </i></span><i>        Backward Compatibility</i> in Unicode Technical Report #36, &quot;Unicode Security Considerations&quot; [<a href="tr39-4.html#UTR36">UTR36</a>].</p>
+    <p>In the file [<a href="tr39-4.html#idmod">idmod</a>], Field 1 is the character in 
+	question, Field 2 is a <strong>Status</strong> (either <i>restricted</i> or
+    <i >allowed</i>), and Field 3 is a <strong>Type</strong>. The Types are<span > listed in <em>Table 1, <a href="tr39-4.html#Identifier_Modification_Key">Identifier Modification Key</a></em></span>:</p>
+    <table align="center" style="BORDER-COLLAPSE: collapse" cellSpacing="0" cellPadding="2" border="1">
+      <caption>
+      <span >        Table 1. <a name="Identifier_Modification_Key"></a>Identifier Modification Key
+      </span>
+      </caption>
+      <tr>
+        <th vAlign="top" >Status</th>
+        <th vAlign="top" >Type
+        </th><th vAlign="top" >Description</th>
+      </tr>
+      <tr>
+        <td vAlign="top" ><em>restricted</em></td>
+        <td vAlign="top" nowrap >default-ignorable</td>
+        <td vAlign="top" >Characters with the Unicode property <em>Default_Ignorable_Code_Point=True</em></td>
+      </tr>
+      <tr>
+        <td vAlign="top" ><em>restricted</em></td>
+        <td vAlign="top" nowrap >historic <br>
+        </td>
+        <td vAlign="top" ><p>Characters not in customary modern use; includes <em>Table 4, Candidate Characters for Exclusion from Identifiers</em> from  [<a href="tr39-4.html#UAX31">UAX31</a>] </p></td>
+      </tr>
+      <tr>
+        <td vAlign="top" ><em>restricted</em></td>
+        <td vAlign="top" nowrap >limited-use </td>
+        <td vAlign="top" >Characters whose status is uncertain, or that are used in limited environments,<br>
+        or those in <em>Table 5, Recommended Scripts: Limited Usage</em> in [<a href="tr39-4.html#UAX31">UAX31</a>] </td>
+      </tr>
+      <tr>
+        <td vAlign="top" ><em>restricted</em></td>
+        <td vAlign="top" nowrap >not-chars</td>
+        <td vAlign="top" >Unassigned characters, private use characters, surrogates, most control characters</td>
+      </tr>
+      <tr>
+        <td vAlign="top" ><em>restricted</em></td>
+        <td vAlign="top" nowrap >not-NFKC</td>
+        <td vAlign="top" >Characters that cannot occur in strings normalized to NFKC.</td>
+      </tr>
+      <tr >
+        <td vAlign="top" ><em>restricted</em></td>
+        <td vAlign="top" nowrap >not-xid</td>
+        <td vAlign="top"><p >Other characters that do not qualify as default Unicode identifiers; that is, they do not have the Unicode property <em>XID_Continue=True</em>.</p></td>
+      </tr>
+      <tr>
+        <td vAlign="top" ><em>restricted</em></td>
+        <td vAlign="top" nowrap >obsolete</td>
+        <td vAlign="top" >Technical characters that are no longer in use; characters with the Unicode property <em>Deprecated=True</em></td>
+      </tr>
+      <tr>
+        <td vAlign="top" ><em>restricted</em></td>
+        <td vAlign="top" nowrap >technical</td>
+        <td vAlign="top" >Technical characters</td>
+      </tr>
+      <tr>
+        <td vAlign="top" ><em>allowed</em></td>
+        <td vAlign="top" nowrap ><strong>inclusion</strong></td>
+        <td vAlign="top" ><em>Table 3, Candidate Characters for Inclusion</em> in Identifiers in [<a href="tr39-4.html#UAX31">UAX31</a>]. See also the notes on MidLetter in [<a href="tr39-4.html#UAX29">UAX29</a>].</td>
+      </tr>
+      <tr>
+        <td vAlign="top" ><em>allowed</em></td>
+        <td vAlign="top" nowrap ><strong>recommended</strong></td>
+        <td vAlign="top" ><em>Table 5, Recommended Scripts</em> in [<a href="tr39-4.html#UAX31">UAX31</a>] (excluding <em>restricted</em>)</td>
+      </tr>
+    </table>
+    <p >Restricted characters should be treated with caution in registration, and disallowed unless there is good reason to allow them in the enviroment in question. In user interfaces for lookup of identifiers, warnings of some kind may be appropriate. For more information, see  
+    [<a href="tr39-4.html#UTR36">UTR36</a>].</p>
+    <p >When the sets of <em>restricted</em> and <em>allowed</em> characters are applied to a particular identifier syntax, modifications need to be made. For example, a particular syntax might extend the default Unicode identifier syntax by adding  characters with the Unicode property <em>XID_Continue=False</em>, such as &quot;$&quot;, &quot;-&quot;, and &quot;.&quot;. Those characters are specific to  that identifier syntax, and would need to be retained even though they are not in the allowed set.</p>
+<p >The distinctions among the Types is not strict; if there are multiple Types for restricting a character only one is given. The important characteristic  is the Status: whether or not the character is restricted. <em>As more information is gathered about characters, this data may change in successive versions.</em> That can cause either the Status or Type to change for a particular character. Thus users of this data should be prepared for changes in successive versions, such as by having a grandfathering policy in place for registrations.    </p>
+    <p>This list is also used in deriving the IDN Identifiers list given below. It is, however, 
+    designed to be applied to general environments.</p>
+    <h3>3.2 <a name="IDN_Security_Profiles">IDN Security Profiles for Identifiers</a></h3>
+    <p >Version 1 of this document defined operations and data that apply to  [<a href="tr39-4.html#IDNA2003">IDNA2003</a>], which has been superseded by [<a href="tr39-4.html#IDNA2008">IDNA2008</a>] and <span>Unicode Technical Standard #46,</span> <span>&quot;Unicode IDNA <span >Compatibility Processing&quot;</span></span> [<a href="tr39-4.html#UTS46">UTS46</a>]. The identifer modification data can be applied to whichever specification of IDNA is being used. For more information, see the [<a href="tr39-4.html#IDN_FAQ">IDN FAQ</a>].</p>
+    <h3>    4<b> <a name="Confusable_Detection">Confusable Detection</a></b></h3>
+<p>The tables in the data file [<a href="tr39-4.html#confusables">confusables</a>] provide a mechanism for 
+    determining when two strings are visually confusable. The data in these 
+	files may be refined and extended over time. For information on handling modifications over time, see <span> <i>Section 2.9.1, </i></span><i> Backward Compatibility</i> in Unicode Technical Report #36, &quot;Unicode Security Considerations&quot; [<a href="tr39-4.html#UTR36">UTR36</a>].</p>
+<p>The data is organized into 
+  four different tables, depending on the desired parameters. Each table provides a mapping from 
+  source characters to target strings. On the basis of this data, there are three main classes of confusable strings:</p>
+    <blockquote>
+      <p>X and Y are <i>single-script confusables</i> if they are confusable according to the 
+      Single-Script table, and each of them is a single script string according to <i>Section 5,
+      <a href="tr39-4.html#Mixed_Script_Detection">Mixed-Script Detection</a>. Examples: </i>&quot;so̷s&quot; and &quot;søs&quot; 
+      in Latin, where the first word has the character &quot;o&quot; followed by the character <a target="c" href="http://unicode.org/cldr/utility/character.jsp?a=0337">U+0337</a> ( ̷ ) COMBINING SHORT SOLIDUS OVERLAY.</p>
+      <p>X and Y are <i>mixed-script confusables</i> if they are confusable according to the 
+      Mixed-Script table, and they are not single-script confusables. Examples: &quot;paypal&quot; and &quot;paypal&quot;, where the second word has the character <a target="c" href="http://unicode.org/cldr/utility/character.jsp?a=0430">U+0430</a> ( а ) CYRILLIC SMALL LETTER A.      </p>
+      <p>X and Y are <i>whole-script confusables</i> if they are <i>mixed-script confusables, </i>
+      and each of them is a single script string<i>.</i> Example: &quot;scope&quot; in Latin and &quot;scope&quot; in 
+      Cyrillic.</p>
+    </blockquote>
+    <p>To see whether two strings X and Y are confusable according to a given table<span > (abbreviated as X ≅ Y)</span>, an 
+    implementation uses a transform of X called a <i>skeleton(X)</i> defined by:</p>
+	<ol>
+    <li>Converting X to <span >NFD</span> format, as described in [<a href="tr39-4.html#UAX15">UAX15</a>].</li>
+		<li>Successively mapping each source character in X to the 
+    target string according to the specified data table.</li>
+		<li>Reapplying <span >NFD</span>.</li>
+	</ol>
+	<p>The resulting strings <i>skeleton</i>(X) and <i>skeleton</i>(Y) are then compared. If they are identical (codepoint-for-codepoint), 
+    then <span >X ≅ Y</span> according to the table.</p>
+    <blockquote>
+      <p><b>Note:</b> The strings <i>skeleton</i>(X) and <i>skeleton</i>(Y) are <b><i>not</i></b> 
+		intended for display, storage or transmission. They should be thought of 
+		 as an intermediate processing form, similar to a hashcode. The characters in
+		<i>skeleton</i>(X) and 
+      <i>skeleton</i>(Y) are <b><i>not</i></b> guaranteed to be identifier characters.</p>
+    </blockquote>
+    <p>Implementations do not have to recursively apply the mappings, because the transforms are 
+    idempotent. That is, </p>
+    <p align="center"><i>skeleton(skeleton(X)) = skeleton(X)</i></p>
+    <p>This mechanism  imposes transitivity on the data, so if X ≅ Y and Y ≅ 
+	Z, then X ≅ Z. It is possible to provide a more sophisticated confusable detection, by 
+    providing a metric between given characters, indicating their &quot;closeness.&quot; However, that is 
+    computationally much more expensive, and requires more sophisticated data, so at this point in 
+    time the simpler mechanism has been chosen. That means that in some cases the test may be overly 
+	<span >inclusive</span>. However the frequency of such cases in real data should be small.</p>
+    <p>Each line in the data file has the following format: Field 1 is the source, Field 2 is the target, and Field 3 is a type identifying the table. For example,<br>
+    </p>
+<p >309C ;	030A ;	SL	#* ( ゜ → ̊ ) KATAKANA-HIRAGANA SEMI-VOICED SOUND MARK → COMBINING RING ABOVE	# →ﾟ→→゚→</p>
+    <p >The types are explained in <em>Table 2, <a href="tr39-4.html#ConfusableDataTableTypes">Confusable Data Table Types</a></em>. The comments provide the character names. If the data was derived via transitivity,  there is an extra comment at the end. For instance, in the above example the derivation was:</p>
+    <ul>
+      <li >U+309A ( ゚ ) COMBINING KATAKANA-HIRAGANA SEMI-VOICED SOUND MARK →</li>
+      <li >U+FF9F ( ﾟ ) HALFWIDTH KATAKANA SEMI-VOICED SOUND MARK →</li>
+      <li >U+309C ( ゜ ) KATAKANA-HIRAGANA SEMI-VOICED SOUND MARK →</li>
+      <li >U+030A ( ̊ ) COMBINING RING ABOVE    </li>
+    </ul>
+    <p>To reduce security risks, it is advised that identifiers use casefolded 
+      forms, thus eliminating uppercase variants where possible. Characters with 
+      the script values COMMON or INHERITED are ignored when testing for 
+      differences in script.</p>
+    <table align="center" style="BORDER-COLLAPSE: collapse" cellSpacing="0" cellPadding="2" border="1">
+      <caption>
+      Table <span >2</span>.<a name="ConfusableDataTableTypes"></a> Confusable Data Table Types
+      </caption>
+      <tr>
+        <th vAlign="top">Type</th>
+        <th vAlign="top">Name</th>
+        <th vAlign="top">Description</th>
+      </tr>
+      <tr>
+        <td vAlign="top">SL</td>
+        <td vAlign="top">Single-Script, Lowercase</td>
+        <td vAlign="top">This table is used to test cases of single-script 
+		confusables, where both the source character and the target string are 
+		case folded. For example:<blockquote>
+          <p><font size="2"># ( ø → o̷&nbsp; ) LATIN SMALL LETTER O WITH STROKE → LATIN SMALL LETTER 
+          O, COMBINING SHORT SOLIDUS OVERLAY</font></p>
+        </blockquote>
+        </td>
+      </tr>
+      <tr>
+        <td vAlign="top">SA</td>
+        <td vAlign="top">Single-Script, Any-Case</td>
+        <td vAlign="top">This table is used to test cases of single-script confusables, where the 
+        output allows for mixed case (which may be later folded away). For example, this table 
+        contains the following entry not found in SL:<blockquote>
+          <p><font size="2"># ( O → 0 ) LATIN CAPITAL LETTER O → DIGIT ZERO</font></p>
+        </blockquote>
+        </td>
+      </tr>
+      <tr>
+        <td vAlign="top">ML</td>
+        <td vAlign="top">Mixed-Script, Lowercase</td>
+        <td vAlign="top">This table is used to test cases of mixed-script and 
+		whole-script confusables, where both the source character and the target 
+		string are case folded. For example, this table contains the 
+        following entry not found in SL or SA:<blockquote>
+          <p><font size="2"># ( ν → v ) GREEK SMALL LETTER NU → LATIN SMALL LETTER V </font></p>
+        </blockquote>
+        </td>
+      </tr>
+      <tr>
+        <td vAlign="top">MA</td>
+        <td vAlign="top">Mixed-Script, Any-Case</td>
+        <td vAlign="top">This table is used to test cases of mixed-script and whole-script 
+        confusables, where the output allows for mixed case (which may be later folded away). For 
+        example, this table contains the following entry not found in SL, SA, or ML:<blockquote>
+          <p><font size="2"># ( Ι → l ) GREEK CAPITAL LETTER IOTA → LATIN SMALL LETTER L</font></p>
+        </blockquote>
+        </td>
+      </tr>
+    </table>
+    <br>
+    <h3>4.1 <a name="Whole_Script_Confusables">Whole-Script Confusables</a></h3>
+    <p>Data is also provided for testing a string to see if a string X has 
+    any whole-script confusable, using the file [<a href="tr39-4.html#confusablesWS">confusablesWS</a>]. 
+    This file consists of a list of lines of the form:</p>
+    <pre>&lt;range&gt;; &lt;sourceScript&gt;; &lt;targetScript&gt;; &lt;type&gt; #comment</pre>
+    <p>The types are either L for lowercase-only, or A for any-case, where the any-case ranges are 
+    broader (including uppercase and lowercase characters). If the string is only lowercase, use the 
+    lowercase-only table. Otherwise, first test according to the any-case table, then 
+	casefold the 
+    string and test according to the lowercase-only table.</p>
+    <p>In using the data, all  lines with the same <i>sourceScript</i> and <i>targetScript</i> 
+    are collected together to form a set of Unicode characters, after filtering to the <strong>allowed</strong> characters from <em>Section 3.1, <a href="tr39-4.html#General_Security_Profile">General Security Profile for Identifiers</a></em>. Logically, the file is  a set of 
+    tuples of the form &lt;<i>sourceScript, unicodeSet, targetScript</i>&gt;. For example, the following 
+    lines are present for Latin to Cyrillic:</p>
+<pre>0061       ; Latn; Cyrl; L #     (a)    LATIN SMALL LETTER A
+0063..0065 ; Latn; Cyrl; L # [3] (c..e) LATIN SMALL LETTER C..LATIN SMALL LETTER E
+...
+0292       ; Latn; Cyrl; L #     (ʒ)    LATIN SMALL LETTER EZH</pre>
+    <p>They logically form a tuple &lt;<i>Latin, [a c-e ... \u0292], Cyrillic</i>&gt;, which indicates 
+    that a Latin string containing characters only from that Unicode set can have a whole-script 
+    confusable in Cyrillic (lowercase-only). Note that if the implementation needs a set of <strong>allowed</strong> characters that is different from those in <em>Section 3.1, <a href="tr39-4.html#General_Security_Profile">General Security Profile for Identifiers</a></em>, this process needs to be used to generate a different set of data.</p>
+    <p>To test whether a single-script string <i>givenString</i> has a whole-script confusable in
+    <i>targetScript</i>, the following process is used:</p>
+    <ol>
+      <li>Convert the givenString to <span >NFD</span> format, as specified in [<a href="tr39-4.html#UAX15">UAX15</a>]</li>
+      <li>Let <i>givenSet</i> be the set of all characters in givenString</li>
+      <li>Remove all [:script=common:] and [:script=inherited:] characters from <i>givenSet</i> </li>
+      <li>Let <i>givenScript</i> be the script of the characters in <i>givenSet</i><ul>
+        <li>(if there is more than one script, fail with error).</li>
+      </ul>
+      </li>
+      <li>See if there is a tuple &lt;<i>sourceScript, unicodeSet, targetScript</i>&gt; where<ul>
+        <li><i>sourceScript</i> =<i> givenScript</i></li>
+        <li><i>unicodeSet</i> <font face="Lucida Sans Unicode">⊇ <i>givenSet</i></font></li>
+      </ul>
+      </li>
+      <li><font face="Lucida Sans Unicode">If so, then there is a whole-script confusable in <i>
+      targetScript</i></font></li>
+    </ol>
+    <p>The test is actually slightly broader than a whole-script confusable test. It tests
+    whether the given string has a whole-script confusable string in another script, possibly with 
+    the addition or removal of common/inherited characters such as numbers and combining marks 
+    characters to both strings. In practice, however, this broadening has no significant impact.</p>
+    <p>Implementations would normally read the data into appropriate data structures in memory for 
+    processing. A quick additional optimization is to keep, for each script, a <i>fastReject</i> 
+    set, containing characters in the script contained in none of the <i>unicodeSet</i> values. </p>
+    <p>The  following Java sample shows how this can be done (using the Java version of [<a href="tr39-4.html#ICU">ICU</a>]):</p>
+    <pre>/*
+ * For this routine, we do not care what the target scripts are,
+ * just whether there is at least one whole-script confusable.
+ */ 
+boolean hasWholeScriptConfusable(String s) {
+	int givenScript = getSingleScript(s);
+	if (givenScript == UScript.INVALID_CODE) {
+		throw new IllegalArgumentException(&quot;Not single script string&quot;);
+	}
+	UnicodeSet givenSet = new UnicodeSet()
+		.addAll(s)
+		.removeAll(commonAndInherited);
+	if (fastReject[givenScript].containsSome(givenSet)) return false;
+	UnicodeSet[] possibles = scriptToUnicodeSets[givenScript];
+	for (int i = 0; i &lt; possibles.length; ++i) {
+		if (possibles[i].containsAll(givenSet)) return true;
+	}
+	return false;
+}</pre>
+    <p>The data in [<a href="tr39-4.html#confusablesWS">confusablesWS</a>] is built using the data in [<a href="tr39-4.html#confusables">confusables</a>], 
+    and subject to the same caveat:<i> </i>The data in these files may be 
+	refined and extended over time. For information on handling that, see <i> <span>Section 2.9.1, </span>        Backward Compatibility</i> of [<a href="tr39-4.html#UTR36">UTR36</a>].</p>
+    <h3>4.2 <a name="Mixed_Script_Confusables">Mixed-Script Confusables</a></h3>
+    <p>To test for mixed-script confusables, use the following process:</p>
+    <ol>
+		<li>Convert the given string to <span >NFD</span> format, as specified in [<a href="tr39-4.html#UAX15">UAX15</a>].</li>
+		<li>For 
+    each script found in the given string, see if all the characters in the string outside of that 
+    script have whole-script confusables for that script (according to <i>Section 4.1,     	<a href="tr39-4.html#Whole_Script_Confusables">Whole-Script Confusables</a>)</i>.</li>
+	</ol>
+    <p >Example 1: &quot;pаypаl&quot;, with Cyrillic &quot;а&quot;s.</p>
+    <blockquote>
+      <p >There are two scripts, Latin and Cyrillic. The set of Cyrillic characters {a}&nbsp; has a 
+      whole-script confusable in Latin. Thus the string is a mixed-script confusable. </p>
+    </blockquote>
+    <p >Example 2: &quot;toys-<font SIZE="3">я</font>-us&quot;, with one Cyrillic 
+    character &quot;<font SIZE="3">я&quot;</font>.</p>
+    <blockquote>
+      <p >The set of Cyrillic characters {<font SIZE="3">я}</font> does not have a whole-script 
+      confusable in Latin (there is no Latin character that looks like &quot;<font SIZE="3">я&quot;</font>, 
+      nor does the set of Latin characters {o s t u y} have a whole-script confusable in Cyrillic 
+      (there is no Cyrillic character that looks like &quot;t&quot; or &quot;u&quot;). Thus this string is not a 
+      mixed-script confusable.</p>
+    </blockquote>
+    <p >Example 3: &quot;1iνе&quot;, with a Greek &quot;ν&quot; and Cyrillic &quot;е&quot;.</p>
+    <blockquote>
+      <p >There are three scripts, Latin, Greek, and Cyrillic. The set of Cyrillic characters {е} and 
+      the set of Greek characters {ν} each have a whole-script confusable in Latin. Thus the string 
+      is a mixed-script confusable. </p>
+    </blockquote>
+    <h2><span>5 <a name="Mixed_Script_Detection">Mixed-Script Detection</a></span></h2>
+    <p>The Unicode Standard supplies information that can be used for determining the script of 
+    characters and detecting mixed-script text. The determination of script is according to 
+    the Unicode Standard Annex #24, &quot;Unicode Script Property&quot; <em>[<a href="tr39-4.html#UAX24">UAX24</a>]</em>, using data from the Unicode Character 
+    Database [<a href="tr39-4.html#UCD">UCD</a>]. <span >For a given input string, the process is:</span></p>
+    <ol>
+      <li >Find the set of the scripts of the characters in the string, according to the Unicode Script property.</li>
+      <li >Remove Common and Inherited from that set.</li>
+      <li >If the set has more than one script remaining, the string has mixed scripts.</li>
+    </ol>
+<p><i>Common</i> and <i>Inherited</i> script 
+	characters are ignored<span >, because they are characters that are used with more than one script</span>. For example, &quot;abc-def&quot; counts as a single 
+	script: the script of &quot;-&quot; is ignored.</p>
+<p>The  following Java sample shows how this can be done (using the Java version of [<a href="tr39-4.html#ICU">ICU</a>]):</p>
+	<pre>
+/**
+ * Returns the script of the input text. Script values of COMMON and INHERITED are ignored.
+ * @param source Input text.
+ * @return Script value found in the text.
+ * If more than one script value is found (ignoring COMMON and INHERITED), then UScript.INVALID_CODE is returned.
+ * If no script value is found (other than COMMON or INHERITED), then UScript.COMMON is returned.
+ */
+public static int getSingleScript(String source) {
+  if (source.length() == 0) return UScript.COMMON;
+  int lastScript = UScript.COMMON; // temporary value
+  int cp;
+  for (int i = 0; i < source.length(); i += UTF16.getCharCount(cp)) {
+    cp = UTF16.charAt(source, i);
+    int script = UScript.getScript(cp);
+    if (script == UScript.COMMON || script == UScript.INHERITED) {
+      continue;
+    }
+    if (lastScript == UScript.COMMON) {
+      lastScript = script;
+    } else if (script != lastScript) {
+      return UScript.INVALID_CODE;
+    }
+  }
+  return lastScript;
+}</pre>
+    <p >This formulation ignores Common and Inherited scripts, and returns an error when a string contains mixed scripts. This basic approach needs to be enhanced for more effective spoofing detection with the following additions:</p>
+    <ol>
+      <li >Allow combinations of scripts that are expected to occur together. For example, Japanese text commonly includes Latin, Han, Katakana, and Hirgana. The recommended combinations are listed in <em>Section 2.9, Restriction Levels and Alerts</em> of [<a href="tr39-4.html#UTR36">UTR36</a>].</li>
+      <li >Count Common or Inherited characters that are only used with a limited number scripts as being in either script instead of ignoring completely. For example, U+0640 ARABIC TATWEEL  is used with the scripts Arabic and Syriac, but not Latin or Hangul.</li>
+      <li >Check for mixing numbers from different systems, such as <a target="c" href="http://unicode.org/cldr/utility/character.jsp?a=0660">U+0660</a> ( ٠ ) ARABIC-INDIC DIGIT ZERO with <a target="c" href="http://unicode.org/cldr/utility/character.jsp?a=06F0">U+06F0</a> ( ۰ ) EXTENDED ARABIC-INDIC DIGIT ZERO, or <a target="c" href="http://unicode.org/cldr/utility/character.jsp?a=09EA">U+09EA</a> ( ৪ ) BENGALI DIGIT FOUR with <a target="c" href="http://unicode.org/cldr/utility/character.jsp?a=0038">U+0038</a> ( 8 ) DIGIT EIGHT.</li>
+    </ol>
+    <p >There are additional enhancements that may be useful in spoof detection. This includes such mechanisms as <span >marking strings as</span> &quot;mixed script&quot; where they 
+    contain both simplified-only and traditional-only Chinese characters, using the Unihan data in the Unicode Character Database [<a href="tr39-4.html#UCD">UCD</a>], or detecting sequences of the same nonspacing mark.</p>
+    <p >Other enhancements useful in spoof detection include the following:</p>
+    <ul>
+      <li> mark strings as "mixed script," where they contain both simplified-only and traditional-only Chinese characters, using the Unihan data in the Unicode Character Database [<a href="tr39-4.html#UCD">UCD</a>]</li>
+      <li>forbid sequences of the same nonspacing mark</li>
+      <li>check to see that all the characters are in the sets of exemplar characters for at least one language in the Unicode Common Locale Data Repository [<a href="tr39-4.html#CLDR">CLDR</a>].</li>
+    </ul>
+<h2>6 <a name="Development_Process">Development 
+	Process</a></h2>
+	<p>As discussed in <span class="noborder1">Unicode Technical Report #36, &quot;Unicode Security Considerations&quot;</span> [<a href="tr39-4.html#UTR36">UTR36</a>], 
+	confusability among characters cannot be an exact science. There are many 
+	factors that make confusability  a matter of degree:</p>
+	<ul>
+		<li>Shapes of characters vary greatly among 
+		fonts used to represent them. The Unicode Standard uses representative glyphs in the code charts, but font designers are free to create their own glyphs. Because fonts can easily be created 
+		using an arbitrary glyph to represent any Unicode code point, 
+		character confusability with arbitrary fonts can never be avoided. For example, one could 
+		design a font where the ‘a’ looks like a ‘b’ , ‘c’ like a ‘d’, and so 
+		on.</li>
+		<li>Writing systems using contextual shaping 
+		(such as Arabic, and many South Asian systems) introduce even more variation 
+		in text rendering. Characters do not really have an abstract shape in 
+		isolation and are only rendered as part of cluster of characters making 
+		words, expressions, and sentences. It is  a fairly common 
+		occurrence to find the same visual text representation corresponding to 
+		very different logical words that can only be recognized by context, if 
+		at all.</li>
+		<li>Font style variants such as italics may introduce a 
+		confusability which does not exist in another style. For example, in the Cyrillic script, the <a target="c" href="http://unicode.org/cldr/utility/character.jsp?a=0442">U+0442</a> ( т ) CYRILLIC SMALL LETTER TE looks like a small caps Latin ‘T’ in normal style, while it 
+		looks like a small Latin ‘m’ in italic style.</li>
+	</ul>
+	<p>In-script confusability is extremely 
+	user-dependent. For example, in the Latin script, characters with accents or 
+	appendices may look similar to the unadorned characters for some users, 
+	especially if they are not familiar with their meaning in a particular 
+	language. However, most users will have at 
+	least a minimum understanding of the range of characters in their own 
+	script, and there are separate mechanisms available to deal with other 
+	scripts, as discussed in [<a href="tr39-4.html#UTR36">UTR36</a>].</p>
+	<p>As described elsewhere, there are cases where 
+	the data may be different than expected. Sometimes this is because two 
+	characters or two strings may only be confusable in some fonts. In other 
+	cases, it is because of transitivity. For example, the dotless and dotted I 
+	are considered equivalent (ı ↔ i), because they look the same when accents 
+	such as an <i>acute</i> are applied to each. However, for practical 
+	implementation usage, transitivity is sufficiently important that some 
+	oddities are accepted.</p>
+	<h3>6.1 <a name="Data_Collection"></a>Data Collection</h3>
+	<p>The confusability tables were created by 
+	  collecting a number of prospective confusables, examining those confusables 
+	  according to a set of common fonts, and processing the result for transitive 
+	  closure.</p>
+    <p>The prospective confusables were gathered from 
+      a number of sources. Erik van der Poel  contributed a 
+      list derived from running a program over a large number of  fonts to 
+      catch characters that shared identical glyphs within a font, and Mark Davis did the same more recently for fonts on Windows and the Macintosh. Volunteers from Google, IBM, Microsoft and other companies gathered other lists of characters. These included native 
+      speakers for languages with different writing systems. The Unicode compatibility mappings were also used as a source. The process of 
+      gathering visual confusables is ongoing: the Unicode Consortium welcomes 
+      submission of additional mappings. The 
+      complex scripts of South and Southeast Asia  need special attention. The focus is on characters that can be in the recommended profile 
+      for identifiers, because they are of most concern.</p>
+    <p>The fonts used to assess the confusables 
+      included those used by the major operating systems in user interfaces. In 
+      addition, the representative glyphs used in the Unicode Standard were also 
+      considered. Fonts used for the user interface in operating systems are an 
+      important source, because they are the ones that will usually be seen by 
+      users in circumstances where confusability is important, such such as when 
+      using IRIS (Internationalized Resource Identifiers) and their sub-elements 
+      (such as domain names). These fonts have a number of other relevant 
+      characteristics:</p>
+    <ul>
+      <li>They rarely changed in updates to operating systems and applications; changes brought 
+        by system upgrades tend to be gradual to avoid usability disruption. </li>
+      <li>Because 
+        user interface elements need to be legible at low screen resolution 
+        (implying a low number of pixels per EM), fonts used in these 
+        contexts tend to be designed in sans-serif style, which has the tendency to 
+        increase the possibility of confusables. There are, however, some languages such as Chinese where a serif style is in common use.</li>
+      <li>Strict bounding box requirements create even more constraints 
+        for scripts which use relatively large ascenders and descenders. This also 
+        limits space allocated for accent or tone marks, and can also create more 
+        opportunities for confusability.</li>
+    </ul>
+<p>Pairs of prospective confusables were removed 
+	if they were always visually distinct at common sizes, both within and 
+	across fonts. The data was then closed under transitivity, 
+	so that if X≅Y and Y≅Z, then X≅Z. In addition, the data was closed under 
+	substring operations, so that if X≅Y then AXB≅AYB. It was then processed to 
+	produce the in-script and cross-script tables, so that a single 
+	table can be used to map an input string to a resulting <i>skeleton</i>. </p>
+<p>A skeleton is intended <i>only</i> for 
+	internal use for testing confusability of strings; the resulting text is not 
+	 suitable for display to users, because it will 
+	appear to be a hodgepodge of different scripts. In particular, the result of 
+	mapping an identifier will not necessary be an identifier. Thus the confusability mappings can be used to test whether two 
+	identifiers are confusable (if their skeletons are the same), but should 
+	definitely not be used as a &quot;normalization&quot; of identifiers.	</p>
+<p>T<span>he data may be enhanced in future 
+	versions of this specification. For information on handling changes in data over time, see <i>Section 2.9.1, </i></span><i>        Backward Compatibility</i> of [<a href="tr39-4.html#UTR36">UTR36</a>].</p>
+<h2><a name="Data_Files">7 Data Files</a></h2>
+	<p>The following files provide data used to 
+        implement the recommendations in this document. The data may be 
+	refined in future versions of this specification<span>. For 
+	more information, see <i>Section 2.9.1, </i></span><i>        Backward Compatibility</i> of [<a href="tr39-4.html#UTR36">UTR36</a>]. The Unicode Consortium welcomes feedback on additional confusables or identifier restrictions: see <i> [<a href="tr39-4.html#Feedback">Feedback</a>]</i>.</p>
+	<p >The files are in <a href="http://www.unicode.org/Public/security/">http://www.unicode.org/Public/security/</a>. 
+	The directories there contain data files associated with a given version. 
+	The diretory for <i>this</i> version is:</p>
+	<blockquote>
+	  <p ><a href="http://www.unicode.org/Public/security/revision-04">
+	  http://www.unicode.org/Public/security/revision-04</a></p>
+    </blockquote>
+	<p >The data files for the latest approved version are also in the directory:</p>
+	<blockquote>
+	  <p ><a href="http://www.unicode.org/Public/security/latest ">http://www.unicode.org/Public/security/latest </a></p>
+	</blockquote>
+    <table cellspacing="0" cellpadding="4" border="0" class="noborder" style="border-collapse: collapse">
+      <tr>
+        <td class="noborder" valign="top" nowrap>[<a name="data4.0">data4.0</a>]</td>
+        <td  valign="top" class="noborder">
+		<a href="http://www.unicode.org/Public/security/revision-04/uts39-data-4.0.zip">uts39-data-4.0.zip</a></td>
+        <td class="noborder" valign="top"><b>A zipped version of all the data files.</b></td>
+      </tr>
+      <tr>
+        <td class="noborder" valign="top">[<a name="idmod">idmod</a>]</td>
+        <td  valign="top" class="noborder"><a href="http://www.unicode.org/Public/security/revision-04/xidmodifications.txt">xidmodifications.txt</a></td>
+        <td class="noborder" valign="top"><b>Identifier Modifications: </b>Provides the list of 
+        additions and restrictions recommended for building a profile of identifiers for 
+        environments where security is at issue.</td>
+      </tr>
+      <tr>
+        <td class="noborder" valign="top">[<a name="confusables">confusables</a>]</td>
+        <td  valign="top" class="noborder"><span><a href="http://www.unicode.org/Public/security/revision-04/confusables.txt">confusables.txt</a></span></td>
+        <td class="noborder" valign="top"><b>Visually Confusable Characters:</b> Provides a mapping 
+          for visual confusables for use in  detecting possible security problems. <span>The 
+            usage of the file is described in <span ><i></i></span><i>Section 4, </i></span><i> <a href="tr39-4.html#Confusable_Detection">Confusable Detection</a>.</i></td>
+      </tr>
+      <tr>
+        <td class="noborder" valign="top">[<a name="confusablesSummary">confusablesSummary</a>]</td>
+        <td  valign="top" class="noborder">
+		<a href="http://www.unicode.org/Public/security/revision-04/confusablesSummary.txt">confusablesSummary.txt</a></td>
+        <td class="noborder" valign="top">
+		<b>A summary view of the confusables:</b> Groups each set of confusables together, listing them first on a line starting with #, then individually with names and code points. See <i>Section 4, <a href="tr39-4.html#Confusable_Detection">Confusable Detection</a></i></td>
+      </tr>
+      <tr>
+        <td class="noborder" valign="top">[<a name="confusablesWS">confusablesWS</a>]</td>
+        <td  valign="top" class="noborder"><a href="http://www.unicode.org/Public/security/revision-04/confusablesWholeScript.txt">
+        confusablesWholeScript.txt</a></td>
+        <td class="noborder" valign="top"><b>Whole Script Confusables: </b>Data for testing for the 
+        possible existence of whole-script and mixed-script confusables. See <i>Section 4, <a href="tr39-4.html#Confusable_Detection">Confusable Detection</a></i></td>
+      </tr>
+      <tr>
+        <td class="noborder" valign="top">[<a name="intentional">intentional</a>]</td>
+        <td  valign="top" class="noborder">
+		<a href="http://www.unicode.org/Public/security/revision-04/intentional.txt">intentional.txt</a></td>
+        <td class="noborder" valign="top"><b>
+		Intentional Confusable Mappings:</b> The class of characters whose glyphs in any particular typeface would probably be designed to be identical in shape when using a harmonized typeface design.</td>
+      </tr>
+    </table>
+    <h2><a name="Acknowledgements">Acknowledgements</a></h2>
+    <p><span >Mark Davis and Michel Suignard authored the bulk of the text, under direction from the Unicode Technical Committee. </span>Steven Loomis and other people on the ICU team were very helpful in developing the original 
+      proposal for this technical report. Thanks also to the following people for their feedback or 
+      contributions to this document or earlier versions of it: Julie Allen, Douglas Davidson, Martin 
+      Dürst, Asmus Freytag, Deborah Goldsmith, Paul Hoffman, Peter Karlsson, 
+      Gervase Markham, Eric Muller, Erik van der Poel, Michael van Riper, Marcos Sanz, 
+      Alexander Savenkov, Dominikus Scherkl, and Kenneth Whistler. <span >Thanks to Peter Peng for his assistance with font confusables.</span></p>
+    <h2><a name="References">References</a>    </h2>
+    <table cellspacing="0" cellpadding="4" border="0" class="noborder" style="border-collapse: collapse">
+      <tr>
+        <td class="noborder" valign="top" nowrap>[<a name="CLDR">CLDR</a>]</td>
+        <td class="noborder" valign="top">Unicode Locales Project (Unicode Common Locale Data Repository)<br>
+        <a href="http://www.unicode.org/cldr/">http://www.unicode.org/cldr/</a></td>
+      </tr>
+      <tr>
+        <td class="noborder" valign="top" nowrap>[<a name="DCore">DCore</a>]</td>
+        <td class="noborder" valign="top">Derived Core Properties<br>
+        <a href="http://www.unicode.org/Public/UNIDATA/DerivedCoreProperties.txt">
+        http://www.unicode.org/Public/UNIDATA/DerivedCoreProperties.txt</a></td>
+      </tr>
+      <tr >
+        <td class="noborder" valign="top">[<a name="DemoConf">DemoConf</a>]</td>
+        <td class="noborder" valign="top"><a href="http://unicode.org/cldr/utility/confusables.jsp">http://unicode.org/cldr/utility/confusables.jsp</a></td>
+      </tr>
+      <tr>
+        <td class="noborder" valign="top"><span >[<a name="DemoIDN">DemoIDN</a>]</span></td>
+        <td class="noborder" valign="top"><span ><a href="http://unicode.org/cldr/utility/idna.jsp" target="_blank">http://unicode.org/cldr/utility/idna.jsp</a></span></td>
+      </tr>
+      <tr>
+        <td class="noborder" valign="top"><span >[<a name="DemoIDNChars">DemoIDNChars</a>]</span></td>
+        <td class="noborder" valign="top"><span ><a href="http://unicode.org/cldr/utility/list-unicodeset.jsp?a=\p{age%3D3.2}-\p{cn}-\p{cs}-\p{co}&amp;abb=on&amp;g=uts46+idna+idna2008">http://unicode.org/cldr/utility/list-unicodeset.jsp?a=\p{age%3D3.2}-\p{cn}-\p{cs}-\p{co}&abb=on&g=uts46+idna+idna2008</a></span></td>
+      </tr>
+      <tr>
+        <td class="noborder" valign="top" nowrap>[<a name="FAQSec">FAQSec</a>]</td>
+        <td class="noborder" valign="top">Unicode FAQ on Security Issues<br>        <a href="http://www.unicode.org/faq/security.html">http://www.unicode.org/faq/security.html</a></td>
+      </tr>
+      <tr>
+        <td class="noborder" valign="top" nowrap>[<a name="ICU">ICU</a>]</td>
+        <td class="noborder" valign="top">International Components for Unicode<br>
+        <a href="http://site.icu-project.org/" >http://site.icu-project.org/</a><br></td>
+      </tr>
+      <tr >
+        <td class="noborder"><span >[<a name="IDNA2003">IDNA2003</a>]</span></td>
+        <td class="noborder"><span >The IDNA2003 specification is defined by a cluster of 
+          IETF RFCs: </span>
+          <ul>
+            <li><span >IDNA [<a href="tr39-4.html#RFC3490">RFC3490</a>]</span></li>
+            <li><span >Nameprep [<a href="tr39-4.html#RFC3491">RFC3491</a>]</span></li>
+            <li><span >Punycode [<a href="tr39-4.html#RFC3492">RFC3492</a>]</span></li>
+            <li><span >Stringprep [<a href="tr39-4.html#RFC3454">RFC3454</a>].</span></li>
+          </ul></td>
+      </tr>
+    <tr >
+     <td class="noborder">[<a name="IDNA2008">IDNA2008</a>]</td>
+     <td class="noborder">The draft IDNA2008 specification is defined by a cluster of IETF RFCs:
+       <ul>
+         <li>Internationalized Domain Names for Applications (IDNA): Definitions and Document Framework<br>
+<a href="http://tools.ietf.org/html/rfc5890">http://tools.ietf.org/html/rfc5890</a></li>
+         <li>Internationalized Domain Names in Applications (IDNA) Protocol<br>
+<a href="http://tools.ietf.org/html/rfc5891">http://tools.ietf.org/html/rfc5891</a></li>
+         <li>The Unicode Code Points and Internationalized Domain Names for Applications (IDNA)<br>
+<a href="http://tools.ietf.org/html/rfc5892">http://tools.ietf.org/html/rfc5892</a></li>
+         <li>Right-to-Left Scripts for Internationalized Domain Names for Applications (IDNA)<br>
+<a href="http://tools.ietf.org/html/rfc5893">http://tools.ietf.org/html/rfc5893</a></li>
+        </ul>
+       There is also an informative document:<br>
+       <ul>
+         <li>Internationalized Domain Names for Applications (IDNA): Background, Explanation, and Rationale<br>
+<a href="http://tools.ietf.org/html/rfc5894">http://tools.ietf.org/html/rfc5894</a></li>
+       </ul>
+     </td>
+    </tr>
+      <tr >
+        <td class="noborder">[<a name="IDN_FAQ"></a>IDN-FAQ]</td>
+        <td class="noborder"><a href="http://www.unicode.org/faq/idn.html">http://www.unicode.org/faq/idn.html</a></td>
+      </tr>
+      <tr>
+        <td class="noborder" valign="top" nowrap>[<a name="Feedback">Feedback</a>]</td>
+        <td class="noborder" valign="top"><em>For suggested confusables or identifier restrictions, please see:</em><br>
+          <a href="http://unicode.org/draft/reports/tr39/suggestions.html" target="_blank">http://unicode.org/draft/reports/tr39/suggestions.html</a>
+          <br><br><em>For issues in the text, please see:</em><br>
+            Reporting Errors and Requesting Information Online<i><br>
+        </i><a href="http://www.unicode.org/reporting.html">http://www.unicode.org/reporting.html</a></td>
+      </tr>
+      <tr>
+        <td class="noborder" valign="top" nowrap>[<a name="Reports">Reports</a>]</td>
+        <td class="noborder" valign="top">Unicode Technical Reports<br>
+        <a href="../index.html">http://www.unicode.org/reports/<br>
+        </a><i>For information on the status and development process for technical reports, and for 
+        a list of technical reports.</i></td>
+      </tr>
+    <tr>
+      <td class="noborder" valign="top" nowrap>[<a name="RFC3454">RFC3454</a>]</td>
+      <td class="noborder" valign="top">P. Hoffman, M. Blanchet. &quot;Preparation of Internationalized 
+        Strings (&quot;stringprep&quot;)&quot;, RFC 3454, December 2002.<br>
+        <a href="http://ietf.org/rfc/rfc3454.txt">http://ietf.org/rfc/rfc3454.txt</a></td>
+    </tr>
+    <tr>
+      <td class="noborder" valign="top" nowrap>[<a name="RFC3490">RFC3490</a>]</td>
+      <td class="noborder" valign="top">Faltstrom, P., Hoffman, P. and A. Costello, &quot;Internationalizing 
+        Domain Names in Applications (IDNA)&quot;, RFC 3490, March 2003.<br>
+        <a href="http://ietf.org/rfc/rfc3490.txt">http://ietf.org/rfc/rfc3490.txt</a></td>
+    </tr>
+    <tr>
+      <td class="noborder" valign="top" nowrap>[<a name="RFC3491">RFC3491</a>]</td>
+      <td class="noborder" valign="top">Hoffman, P. and M. Blanchet, &quot;Nameprep: A Stringprep 
+        Profile for Internationalized Domain Names (IDN)&quot;, RFC 3491, March 2003.<br>
+        <a href="http://ietf.org/rfc/rfc3491.txt">http://ietf.org/rfc/rfc3491.txt</a></td>
+    </tr>
+    <tr>
+      <td class="noborder" valign="top" nowrap>[<a name="RFC3492">RFC3492</a>]</td>
+      <td class="noborder" valign="top">Costello, A., &quot;Punycode: A Bootstring encoding of 
+        Unicode for Internationalized Domain Names in Applications (IDNA)&quot;, RFC 3492, March 
+        2003.<br>
+        <a href="http://ietf.org/rfc/rfc3492.txt">http://ietf.org/rfc/rfc3492.txt</a></td>
+    </tr>
+      <tr >
+        <td class="noborder" valign="top" nowrap>[<a name="Security-FAQ">Security-FAQ</a>]</td>
+        <td class="noborder" valign="top"><a href="http://www.unicode.org/faq/security.html">http://www.unicode.org/faq/security.html</a></td>
+      </tr>
+      <tr>
+        <td class="noborder" valign="top" nowrap>[<a name="UCD">UCD</a>]</td>
+        <td class="noborder" valign="top">Unicode Character Database.<br>
+        <a href="http://www.unicode.org/ucd/">http://www.unicode.org/ucd/</a><br>
+        <i>For an overview of the Unicode Character Database and a list of its associated files.</i></td>
+      </tr>
+      <tr>
+        <td class="noborder" valign="top" nowrap>[<a name="UCDFormat">UCDFormat</a>]</td>
+        <td class="noborder" valign="top">UCD File Format<br>
+          <a href="../tr44/index.html#Format_Conventions" >http://www.unicode.org/reports/tr44/#Format_Conventions</a><br></td>
+      </tr>
+	<tr>
+      <td class="noborder" valign="top">[<a name="UAX15">UAX15</a>]</td>
+      <td class="noborder" valign="top">UAX #15: <i>Unicode Normalization Forms</i><br>
+      <a href="../tr15.1">http://www.unicode.org/reports/tr15/</a></td>
+    </tr>
+      <tr>
+        <td class="noborder" valign="top" nowrap><span >[<a name="UAX24">UAX24</a>]</span></td>
+        <td class="noborder" valign="top"><span >UAX #24: Unicode Script Property<br>
+          <a href="../tr24/index.html">http://www.unicode.org/reports/tr24/</a></span></td>
+      </tr>
+	<tr>
+      <td class="noborder" valign="top">[<a name="Boundaries"></a><a name="UAX29">UAX29</a>]</td>
+      <td class="noborder" valign="top">UAX #29: <i>Unicode Text Segmentation</i><br>
+      <a href="../tr29.1">http://www.unicode.org/reports/tr29/</a></td>
+    </tr>
+		<tr>
+      <td class="noborder" valign="top">[<a name="UAX31">UAX31</a>]</td>
+      <td class="noborder" valign="top">UAX #31: <i>Unicode Identifier and Pattern Syntax</i><br>
+      <a href="../tr31/index.html">http://www.unicode.org/reports/tr31/</a></td>
+    </tr>
+      <tr>
+        <td class="noborder" valign="top" nowrap>[<a name="Unicode">Unicode</a>]</td>
+        <td  valign="top" class="noborder" >The Unicode Standard<br>
+          <em>For the latest version, see:</em><br>
+          <a href="http://www.unicode.org/versions/latest/">http://www.unicode.org/versions/latest/</a><br>
+          <em>For the 5.2.0 version, see:</em><br>
+        <a href="http://www.unicode.org/versions/Unicode5.2.0/">http://www.unicode.org/versions/Unicode5.2.0/</a></td>
+      </tr>
+      <tr>
+        <td class="noborder" valign="top" nowrap>[<a name="Security"></a><a name="UTR36">UTR36</a>]</td>
+        <td class="noborder" valign="top">UTR #36: <i>Unicode Security Considerations</i><br>
+          <a href="../tr36/index.html">http://www.unicode.org/reports/tr36/</a></td>
+      </tr>
+      <tr>
+        <td class="noborder" valign="top" nowrap>[<a name="RegEx"></a><a name="UTS18">UTS18</a>]</td>
+        <td class="noborder" valign="top">UTS #18: <i>Unicode Regular Expressions<br>
+        </i> <a href="../tr18.1"> http://www.unicode.org/reports/tr18/</a></td>
+      </tr>
+      <tr>
+        <td class="noborder" valign="top" nowrap><span >[<a name="UTS39">UTS39</a>]</span></td>
+        <td class="noborder" valign="top"><span >UTS #39: Unicode Security Mechanisms<br>
+          <a href="index.html">http://www.unicode.org/reports/tr39/</a></span></td>
+      </tr>
+      <tr >
+        <td class="noborder" valign="top" nowrap>[<a name="UTS46"></a>UTS46]</td>
+        <td class="noborder" valign="top">Unicode IDNA Compatibility Processing<br>
+          <a href="../tr46/index.html">http://www.unicode.org/reports/tr46/ </a></td>
+      </tr>
+      <tr>
+        <td class="noborder" valign="top" nowrap>[<a name="Versions">Versions</a>]</td>
+        <td class="noborder" valign="top">Versions of the Unicode Standard<br>
+        <a href="http://www.unicode.org/standard/versions/">
+        http://www.unicode.org/standard/versions/</a><br>
+        <i>For information on version numbering, and citing and referencing the Unicode Standard, 
+        the Unicode Character Database, and Unicode Technical Reports.</i></td>
+      </tr>
+    </table>
+    <h2><br>
+	<a name="Modifications">Modifications</a></h2>
+    <p>The following summarizes modifications from the previous revision of this document.</p>
+    <p ><strong>Revision 4:</strong></p>
+<ul>
+      <li >Removed the idnchars.txt data file, Section 3.2, <a href="tr39-4.html#IDN_Security_Profiles">IDN Security Profiles for Identifiers</a>, the old conformance clause C1; and renumbered previous C0 as C1.</li>
+      <li >Moved the subsection Data Files to be  Section 7.</li>
+      <li >Added <a href="tr39-4.html#Identifier_Modification_Key">Table 1, Identifier_Modification_Key</a> and text following, explaining the identifer restrictions. Especially see the caveat about use of the data.</li>
+      <li >Added link to form for for submitting suggested data.</li>
+      <li >Changed to NFD instead of NFKD, with relevant mappings moved into the data file.</li>
+      <li >Revised the confusable data to add data extracted from a comparison of font data from windows and mac. 
+        <ul>
+          <li>Data was generated for characters sharing the same outline in some font on that system.</li>
+          <li>Those were then reviewed to remove errors due to bad font mappings.</li>
+          <li>Additional mappings were also added, such as &quot;rn&quot;≅&quot;m&quot;.</li>
+        </ul>
+</li>
+      <li><span >The recommended characters in identifiers were updated based on UAX 31, with the following labels: 
+        
+        </span>
+        <ul>
+          <li >UAX #31 Table 4, Candidate Exclusions</li>
+          <li >UAX #31 Table 5, Limited Use</li>
+        </ul>
+      </li>
+      <li >The IICore information was removed, because it is not a good guide to usage.</li>
+    </ul>
+	<p>Revision 3 being a proposed update, only changes between revisions 2 and 4 are noted here.</p>
+    <h3>Revision 2:</h3>
+    <ul>
+		<li>Removed the &quot;input&quot; and &quot;lenient&quot; tables</li>
+		<li>Minor editing and clarifications</li>
+    </ul>
+    <h3>Revision 1:</h3>
+    <ul>
+      <li>Created from Appendix A, B, and D from [<a href="tr39-4.html#UTR36">UTR36</a>].</li>
+		<li>Created <i>Section 6,
+		<a href="tr39-4.html#Development_Process">Development Process</a> </i>based on 
+		document L2/06-055.</li>
+		<li>Removed DITTO Mark, added intentional 
+		mappings</li>
+		<li>Added 5.0 scripts to <i>removals</i>: 
+		Balinese, Cuneiform, Phoenician, Phags_Pa</li>
+		<li>Revised table formats</li>
+		<li>Added the intentional mappings, plus a pointer to source data</li>
+    </ul>
+    <hr>
+    <p class="copyright">Copyright © 2004-2010 Unicode, Inc. All Rights Reserved. The Unicode 
+    Consortium makes no expressed or implied warranty of any kind, and assumes no liability for 
+    errors or omissions. No liability is assumed for incidental and consequential damages in 
+    connection with or arising out of the use of the information or programs contained or 
+    accompanying this technical report. The Unicode <a href="http://www.unicode.org/copyright.html">
+    Terms of Use</a> apply.</p>
+    <p class="copyright">Unicode and the Unicode logo are trademarks of Unicode, Inc., and are 
+    registered in some jurisdictions.</div>
+
+</body>
+
+</html>

@@ -1,0 +1,1585 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
+       "http://www.w3.org/TR/REC-html40/loose.dtd"> <html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="Author" content="Markus Scherer">
+<meta name="GENERATOR" content="Microsoft FrontPage 6.0">
+<meta name="ProgId" content="FrontPage.Editor.Document">
+<title>UTS #6: Compression Scheme for Unicode</title>
+<link rel="stylesheet" href="../unicode/reports/reports.css" type="text/css">
+</head>
+
+<body>
+
+<!-- COMMON HEADER -->
+<table class="header" cellpadding="0" cellspacing="0" width="100%">
+  <tr>
+    <td class="icon"><a href="http://www.unicode.org"><img align="middle" alt="[Unicode]" border="0" src="../webscripts/logo60s2.gif" width="34" height="33"></a>&nbsp;&nbsp;<a class="bar" href="http://www.unicode.org/unicode/reports/">Technical          
+      Reports</a></td>
+  </tr>
+  <tr>
+    <td class="gray">&nbsp;</td>
+  </tr>
+</table>
+<!--UTR TITLE -->
+<div class="body">
+  <center>
+  <h2>Unicode Technical Standard #6</h2>          
+  <h1>A Standard Compression Scheme for Unicode</h1>
+  </center>
+  <!-- UTR VERSION HEADER -->
+  <table class="wide" border="1">
+    <tr>
+      <td>Version</td>
+      <td>3.6</td>
+    </tr>
+    <tr>
+      <td>Authors</td>
+      <td>Misha Wolf, Ken Whistler, Charles Wicksteed, Mark Davis, Asmus Freytag,
+        and Markus Scherer</td>
+    </tr>
+    <tr>
+      <td>Date</td>
+      <td>2005-05-06</td>
+    </tr>
+    <tr>
+      <td>This Version</td>
+      <td><a href="tr6/tr6-4.html">http://www.unicode.org/reports/tr6/tr6-4.html</a>
+      </td>
+    </tr>
+    <tr>
+      <td>Previous Version</td>
+      <td><a href="tr6/tr6-3.5.html">http://www.unicode.org/reports/tr6/tr6-3.5.html</a></td>
+    </tr>
+    <tr>
+      <td>Latest Version</td>
+      <td><a href="tr6.1">http://www.unicode.org/reports/tr6/</a></td>
+    </tr>
+    <tr>
+      <td>Revision</td>
+      <td><a href="tr6.1#Modifications">4</a></td>
+    </tr>
+  </table>
+  <!-- UTR SUMMARY AND BOILERPLATE -->
+  <br>
+  <h3><i>Summary</i></h3>
+  <p><i>This report presents the specifications of a compression scheme for
+  Unicode and <a href="ftp://ftp.unicode.org/Public/PROGRAMS/SCSU/">sample
+  implementation</a> [<a href="tr6.1#SampleCode">SampleCode</a>].</i></p>
+
+  <h3><i>Status</i></h3>
+  <p><i>This document has been reviewed by Unicode members and other interested 
+    parties, and has been approved for publication by the Unicode Consortium. 
+    This is a stable document and may be used as reference material or cited as a 
+    normative reference by other specifications.</i></p>
+  <blockquote>
+    <p><i><b>A Unicode Technical Standard (UTS)</b> is an 
+      independent specification. Conformance to the Unicode Standard does 
+      not imply conformance to any UTS.</i></p>
+  </blockquote>
+
+  <p><i>Please submit corrigenda and other comments with the online reporting
+  form [<a href="tr6.1#Feedback">Feedback</a>]. Related information that is useful in
+  understanding this document is found in the <a href="tr6.1#References">References</a>.
+  For the latest version of the Unicode Standard see [<a href="tr6.1#Unicode">Unicode</a>].
+  For a list of current Unicode Technical Reports see [<a href="tr6.1#Reports">Reports</a>].
+  For more information about versions of the Unicode Standard, see [<a href="tr6.1#Versions">Versions</a>].</i></p>
+
+  <!-- UTR TABLE OF CONTENTS AND BODY OF TEXT -->
+  <h3><i>Contents</i></h3>
+  <ul class="toc">
+    <li>1&nbsp; <a href="tr6.1#Scope">Scope</a></li>
+    <li>2&nbsp; <a href="tr6.1#Description">Description</a>&nbsp;
+      <ul class="toc">
+        <li>2.1&nbsp; <a href="tr6.1#Scheme">Compression Scheme for Unicode</a></li>          
+        <li>2.2&nbsp; <a href="tr6.1#Encoders">Encoders and Decoders</a></li>
+        <li>2.3&nbsp; <a href="tr6.1#Limitations">Limitations</a></li>
+      </ul>
+    </li>
+    <li>3&nbsp; <a href="tr6.1#Definitions">Definitions</a></li>
+    <li>4&nbsp; <a href="tr6.1#Conformance">Conformance</a></li>
+    <li>5&nbsp; <a href="tr6.1#Compression">Compression</a>
+      <ul class="toc">
+        <li>5.1&nbsp; <a href="tr6.1#Single_byte_mode">Single-Byte Mode</a></li>
+        <li>5.2&nbsp; <a href="tr6.1#Unicode_Mode">Unicode Mode</a>
+          <ul class="toc">
+            <li>5.2.1&nbsp; <a href="tr6.1#Quoting">Quoting in Unicode Mode</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+    <li>6&nbsp; <a href="tr6.1#Windows">Windows</a>
+      <ul class="toc">
+        <li>6.1&nbsp; <a href="tr6.1#Dynamic">Dynamically Positioned Windows</a>
+          <ul class="toc">
+            <li>6.1.1&nbsp; <a href="tr6.1#Locking-Shifts">Locking Shifts (Dynamically
+              Positioned Windows Only)</a></li>
+            <li>6.1.2&nbsp; <a href="tr6.1#Positioning">Window Positioning</a></li>
+            <li>6.1.3&nbsp; <a href="tr6.1#Extended_Windows">Extended Windows</a></li>
+          </ul>
+        </li>
+        <li>6.2&nbsp; <a href="tr6.1#Non-locking">Non-Locking Shifts and Static Windows</a>
+          <ul class="toc">
+            <li>6.2.1&nbsp; <a href="tr6.1#Static_Windows">Static Windows</a></li>
+            <li>6.2.2&nbsp; <a href="tr6.1#Use_of_SQ0">Use of SQ0</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+    <li>7&nbsp; <a href="tr6.1#Special_Issues">Special Issues</a>
+      <ul class="toc">
+        <li>7.1&nbsp; <a href="tr6.1#Initial_State">Initial State</a></li>
+        <li>7.2&nbsp; <a href="tr6.1#Initial_Window">Initial Window Settings</a></li>
+        <li>7.3&nbsp; <a href="tr6.1#Surrogate_Pairs">Surrogate Pairs</a></li>
+        <li>7.4&nbsp; <a href="tr6.1#Private_Use_Area">Private Use Area</a></li>
+        <li>7.5&nbsp; <a href="tr6.1#Tag_Allocation">Tag Allocation</a></li>
+      </ul>
+    </li>
+    <li>8&nbsp; <a href="tr6.1#Notes">Notes (Informative)</a>
+      <ul class="toc">
+        <li>8.1&nbsp; <a href="tr6.1#Signature">Signature Byte Sequence for SCSU</a></li>
+        <li>8.2&nbsp; <a href="tr6.1#Worst_Case">Worst Case Behavior for SCSU</a></li>
+        <li>8.3&nbsp; <a href="tr6.1#XML_Suitability">XML Suitability</a></li>
+        <li>8.4&nbsp; <a href="tr6.1#Minimal_Encoder">Minimal Encoder</a></li>
+        <li>8.5&nbsp; <a href="tr6.1#Encoder_Strategies">Encoder Strategies</a></li>
+      </ul>
+    </li>
+    <li>9&nbsp; <a href="tr6.1#Examples">Examples (Informative)</a>
+      <ul class="toc">
+        <li>9.1&nbsp; <a href="tr6.1#German">German</a></li>
+        <li>9.2&nbsp; <a href="tr6.1#Russian">Russian</a></li>
+        <li>9.3&nbsp; <a href="tr6.1#Japanese">Japanese</a></li>
+        <li>9.4&nbsp; <a href="tr6.1#All_Features">All Features</a></li>
+      </ul>
+    </li>
+    <li>10&nbsp; <a href="tr6.1#Possible">Possible Private Extensions (Informative)</a>
+      <ul class="toc">
+        <li>10.1&nbsp; <a href="tr6.1#Avoiding">Avoiding Control Byte Values</a></li>
+        <li>10.2&nbsp; <a href="tr6.1#Handling">Handling Runs of the Same Characters</a></li>
+      </ul>
+    </li>
+    <li><a href="tr6.1#References">References</a></li>
+    <li><a href="tr6.1#Acknowledgements">Acknowledgements</a></li>
+    <li><a href="tr6.1#Authors">Authors</a></li>
+    <li><a href="tr6.1#Revisions">Revisions</a></li>
+  </ul>
+
+  <hr align="LEFT">
+  <h2><a name="Scope"></a>1 Scope</h2>          
+  The Standard Compression Scheme for Unicode will:          
+  <ul>
+    <li>express all code points in Unicode</li>
+    <li>approximate the storage size of traditional character sets</li>
+    <li>work well for short strings</li>
+    <li>provide transparency for characters between U+0020-U+00FF, as well as
+      CR, LF and TAB.</li>
+    <li>support very simple decoders</li>
+    <li>support simple as well as sophisticated encoders</li>
+  </ul>
+  It does not attempt to avoid the use of control bytes (including NUL) in the          
+  compressed stream, and does not attempt to preserve binary ordering of          
+  strings.&nbsp;
+  <p>The compression scheme is mainly intended for use with short to medium          
+  length Unicode strings. The resulting compressed format is intended for          
+  storage or transmission in bandwidth limited environments. It can be used          
+  stand-alone or as input to traditional general purpose data compression          
+  schemes. It is not intended as processing format or as general purpose          
+  interchange format.          
+  <h2><a name="Description"></a>2 Description</h2>          
+  <p>The following description is stated as an encoding of a sequence of Unicode          
+  <i>characters</i> as a compressed stream of <i>bytes</i>. It is therefore          
+  independent, for example,          
+  of whether the uncompressed data is encoded as          
+  UTF-8, UTF-16 or&nbsp; UTF-32 (also known as UCS-4 in ISO 10646). If the compressed data          
+  consists of the same sequence of bytes, it represents the same sequence of          
+  characters. The reverse is not true — there are multiple ways of compressing          
+  any character sequence.</p>          
+  <p>While the description uses the term character throughout, no limitation to <i>assigned</i>
+  characters is implied; in other words, SCSU is defined in
+  terms of code points.</p>
+  <h3><a name="Scheme"></a>2.1 Compression Scheme for Unicode</h3>          
+  Compressing Unicode text for transmission or storage is often useful. The          
+  traditional general purpose data compression schemes          
+  such as Huffman or          
+  LZW are effective, but          
+   require considerable context for best results. In          
+  the course of implementing Unicode, it became apparent that there is a need          
+  for a compression scheme that is efficient even for short strings. The          
+  compression scheme          
+  described here compresses Unicode text into a sequence of          
+  bytes by taking advantage of the characteristics of Unicode text. The          
+  resulting compressed sequence can be used on its own or as further input to a          
+  general purpose compression scheme. The latter          
+  achieves even better compression than either method alone.          
+  <p>Some languages use a small repertoire of characters. Strings in such
+  languages often contain runs of characters encoded close together in [<a href="tr6.1#Unicode">Unicode</a>]. These runs are typically interrupted only
+  by punctuation characters, which are
+  encoded in proximity to each
+  other in Unicode, usually in the Basic Latin range.</p>
+  <p>
+  The compression scheme sets up a so-called
+  dynamically positioned window, which is a region of 128 consecutive characters
+  in Unicode. This window can be positioned to contain the alphabetic characters
+  in question. Each character that fits this window is represented as a byte
+  between 0x80 and 0xFF in the compressed data stream, while any character from
+  the Basic Latin range (as well as CR, LF, and TAB)
+  is represented by a byte
+  in the range 0x20 to 0x7F (as well as 0x0D, 0x0A or 0x09).
+  <p>Runs of characters from a selected window which are intermixed only with
+  characters from the range U+0020..U+007F can be compressed without requiring
+  tag bytes beyond the initial setup of the window.
+  <p>Tag bytes are bytes in the range 0x00 to 0x1F (except CR, LF, TAB) that are
+  used as commands to select, define and position windows, or to escape to an
+  uncompressed stream of Unicode text. Strings from languages using large
+  alphabets use this uncompressed mode.
+  <p>There are scripts for which the characters ordinarily show larger
+  fluctuation in code values than can be contained in a dynamically positioned
+  window. For these areas of the Unicode code space, windows cannot be set.
+  Instead, an escape to uncompressed UTF-16 can be used.
+  <h3><a name="Encoders"></a>2.2 Encoders and Decoders</h3>          
+  There is more than one possible encoding for a given Unicode string, and it is          
+  possible to trade off speed of encoding against the compression achieved.          
+  <p>It is possible to write a simple encoder for this scheme which uses a
+  subset of the allowed tags. For example, it could use only SCU, SD0, UQU and
+  UC0 and still achieve respectable compression with typical text. See <a href="tr6.1#Minimal_Encoder">Section
+  8.4</a>, <i>Minimal Encoder</i> for further discussion and sample code.</p>
+
+    <p>Encoders should follow the recommendations in <a href="tr6.1#XML_Suitability">Section
+    8.3</a>, <i>XML Suitability</i> so that they can be used to encode XML, HTML and
+  similar document formats.</p>
+  <h3><a name="Limitations"></a>2.3 Limitations</h3>          
+  SCSU does not attempt to avoid the use of control bytes (including NUL) in the          
+  compressed stream. It is sometimes possible to escape control characters in          
+  the manner of <a href="tr6.1#Avoiding">Section 10.1</a>, <i>Avoiding Control Byte Values</i>          
+  but this requires an          
+  additional agreement between sender and receiver.&nbsp;          
+  <p>SCSU also does not attempt to preserve the binary ordering of strings, and          
+  is not MIME compatible, which limits its attractiveness          
+  as a processing          
+  format, particularly in databases, or as general purpose interchange format. If these features are required, a different compression scheme,          
+  such as [<a href="tr6.1#BOCU">BOCU</a>] could be employed.&nbsp;</p>          
+  <h2><a name="Definitions"></a>3 Definitions</h2>          
+  <dl>
+    <dt><i>All terms not defined here shall be as defined in the Unicode
+      Standard [<a href="tr6.1#Unicode">Unicode</a>] or in the online [<a href="tr6.1#Glossary">Glossary</a>].</i></dt>
+    <dd>&nbsp;</dd>
+
+    <dt><i>CD1. Single-Byte Mode</i></dt>          
+    <dd>A mode where each character is represented in compressed form as a single byte.</dd>
+    <dd>&nbsp;</dd>
+
+    <dt><i>CD2. Unicode Mode</i></dt>          
+    <dd>A mode where each character is represented by big-endian UTF-16.</dd>
+    <dd>&nbsp;</dd>
+
+    <dt><i>CD3. Window</i></dt>          
+    <dd>A range of 128 consecutive Unicode character values.</dd>
+    <dd>&nbsp;</dd>
+
+    <dt><i>CD4. Locking Shift</i></dt>          
+    <dd>A permanent shift to a new active window.</dd>
+    <dd>&nbsp;</dd>
+
+    <dt><i>CD5. Non-Locking Shift </i></dt>          
+    <dd>A non-locking shift selects a window only for
+      the immediately following character, before returning to the active
+      window.</dd>
+    <dd>&nbsp;</dd>
+
+    <dt><i>CD6. Dynamically Positioned Window</i>          
+    <dd>A window with a position that can
+      be selected starting at a multiple of 128 or at one of several predefined
+      locations. Dynamically positioned windows can be accessed by locking or
+      non-locking shifts, and are only used in single-byte mode with bytes in the range 0x80 to
+      0xFF.</dd>
+    <dd>&nbsp;</dd>
+
+    <dt><i>CD7. Static Window</i></dt>          
+    <dd>A window with fixed position which can be
+      accessed by non-locking shift only. They are used in single-byte mode with
+      bytes in the range 0x00 to 0x7F.</dd>
+    <dd>&nbsp;</dd>
+
+    <dt><i>CD8. Tag Byte </i></dt>          
+    <dd>Any of the predefined single byte values that select
+      compression functions in this scheme.</dd>
+    <dd>&nbsp;</dd>
+
+    <dt><i>CD9. Index Byte</i></dt>          
+    <dd>A byte that is used as an index into the offset
+      table (for example, to select a window offset).</dd>
+    <dd>&nbsp;</dd>
+
+    <dt><i>CD10. Supplementary Codespace</i></dt>          
+    <dd>The codespace accessed by surrogate pairs in UTF-16.</dd>
+    <dd>&nbsp;</dd>
+  </dl>
+
+  <h2><a name="Conformance"></a>4 Conformance</h2>          
+  <table class="noborder" cellSpacing="0" cellPadding="4" border="0" id="table1">
+    <tr>
+      <td class="noborder" vAlign="top">C1</td>
+      <td class="noborder">Decoders are required to accept and interpret the full range of tags and        
+      arguments defined here. The action of a conformant decoder on illegal or        
+      reserved input is undefined.        
+      </td>
+    </tr>
+    <tr>
+      <td class="noborder" vAlign="top">C2</td>
+      <td class="noborder">Conformant
+      encoders must not emit illegal or reserved combinations of
+      bytes. Encoders are not required to utilize (or be able to utilize) all the
+      features of this compression scheme. Encoders must be able to encode strings
+      containing any valid sequence of Unicode characters. The action of a
+      conformant encoder on malformed input is undefined.
+      </td>
+    </tr>
+    <tr>
+      <td class="noborder" vAlign="top">C3</td>
+      <td class="noborder">Encoders and decoders must always start in the initial state defined below.
+      Encoders must remain in Single-Byte Mode at least until the first code
+      point is encountered that is not U+0000 (NUL), U+0009 (HT), U+000A (LF),
+      U+000D (CR), or U+0020..U+00FF (Latin-1), or an initial U+FEFF. See <a href="tr6.1#Signature">Section
+      8.1</a>, <i>Signature Byte Sequence for SCSU</i>
+       and <a href="tr6.1#XML_Suitability">Section 8.3</a>, <i>XML Suitability</i>.
+      </td>
+    </tr>
+    <tr>
+      <td class="noborder" vAlign="top">C4</td>
+      <td class="noborder">Conformance to SCSU requires conformance to Unicode 2.0.0 or later.</td>
+    </tr>
+  </table>
+
+  <p>Conformance to SCSU excludes the options in <a href="tr6.1#Possible">Section 10</a>,
+  <i>Possible Private Extensions</i>. A higher-level protocol could define an
+  extended form of SCSU that implements these or other extensions to SCSU. Such
+  a higher-level protocol requires a separate agreement between sender and
+  receiver.
+  </p>
+
+  <h2><a name="Compression"></a>5 Compression</h2>          
+  The Unicode Compression Scheme compresses text by defining a set of windows          
+  into the [<a href="tr6.1#Unicode">Unicode</a>] codespace and interpreting byte values relative to the          
+  position of the window currently in force. Thus characters from languages that          
+  use a small alphabet can be encoded with one byte per character. By switching          
+  to Unicode mode, non-alphabetic scripts can be encoded with two bytes per          
+  character on the BMP or four bytes per supplementary character.          
+  <p>The compression scheme is capable of compressing strings containing any
+  Unicode character. Some control character and private use character values
+  overlap with the tag byte values. They can still be encoded, though at a cost
+  of an additional byte per character.
+  <p>There are two compression modes:
+  <ul>
+    <li>single-byte mode, where each byte represents one character and is
+      interpreted according to the current window setting.</li>
+    <li>Unicode mode, where each character is represented as big-endian UTF-16.</li>
+  </ul>
+  <i>In the following text all byte values are given in hex.</i>
+  <h3><a name="Single_byte_mode"></a>5.1 Single-Byte Mode</h3>          
+  Compressed text in single-byte mode consists of a tag byte followed by zero,          
+  one, or two argument bytes followed by one or more text bytes. Single-byte          
+  mode is in effect from initialization until the end of input or until an SCU          
+  tag. An SCU tag indicates that all following bytes are interpreted in Unicode          
+  mode as big-endian UTF-16. An SQU tag indicates that the following two bytes          
+  are interpreted as a sixteen bit Unicode BMP character, most significant byte          
+  first.
+  <p>In single-byte mode, bytes between 00 and 1F are used as tags. The tags 
+  used in single-byte mode are shown in Table 1, their corresponding byte values are 
+  shown in Table 6.<center> 
+  </center>
+  <table border="1" width="98%">
+    <caption>Table 1. Tags for Use in Single-Byte Mode</caption>
+    <tr>
+      <th bgcolor="#CCFFCC">Name&nbsp;</th>
+      <th bgcolor="#CCFFCC">Meaning&nbsp;</th>
+      <th bgcolor="#CCFFCC">Arguments&nbsp;</th>
+      <th bgcolor="#CCFFCC">Function&nbsp;</th>
+    </tr>
+    <tr>
+      <td>SQU&nbsp;</td>
+      <td>Quote Unicode</td>          
+      <td>hbyte, lbyte&nbsp;</td>          
+      <td>Quote Unicode character = (hbyte &lt;&lt; 8) + lbyte.<br>          
+        Used for isolated characters from the BMP that do not fit in any of the          
+        current windows.</td>          
+    </tr>
+    <tr>
+      <td>SCU&nbsp;</td>
+      <td>Change to Unicode</td>          
+      <td>&nbsp;</td>
+      <td>Change to UTF-16 mode (locking shift).<br>          
+        Used for runs of characters not part of a small alphabet</td>          
+    </tr>
+    <tr>
+      <td>SQn&nbsp;</td>
+      <td>Quote from Window <i>n</i> .</td>          
+      <td>byte&nbsp;</td>
+      <td>Non-locking shift to window n.<br>          
+        If the byte is in the range 00 to 7F, use static window <i>n</i>.<br>          
+        If the byte is in the range 80 to FF, use dynamically positioned window <i>n</i>.</td>          
+    </tr>
+    <tr>
+      <td>SCn&nbsp;</td>
+      <td>Change to Window <i>n</i></td>          
+      <td>&nbsp;</td>
+      <td>Change to window n (locking shift).<br>          
+        Use static window 0 for all following bytes that are in the range 20 to          
+        7F, or CR, LF, HT.<br>          
+        Use dynamically positioned window <i>n</i> for all following bytes that          
+        are in the range 80 to FF.</td>          
+    </tr>
+    <tr>
+      <td>SDn&nbsp;</td>
+      <td>Define Window <i>n</i></td>          
+      <td>byte&nbsp;</td>
+      <td>Define window position <i>n</i> as OffsetTable[byte], and change to          
+        window <i>n</i>.&nbsp;</td>          
+    </tr>
+    <tr>
+      <td>SDX&nbsp;</td>
+      <td>Define Extended</td>          
+      <td>hbyte, lbyte</td>
+      <td>Define window <i>n</i> in the supplementary codespace and change to
+        it.<br>
+        <i>n</i> = top 3 bits of hbyte.<br>
+        Window base = 10000 + (80 * remaining 13 bits of hbyte and lbyte).</td>
+    </tr>
+  </table>
+  <h3><a name="Unicode_Mode"></a>5.2 Unicode Mode</h3>          
+  In Unicode mode, each character is encoded by two or four bytes as big-endian          
+  UTF-16, i.e. with the most significant byte first. This mode has its own set          
+  of reserved byte values which are used as tags, as shown in Table 2. Their          
+  corresponding byte values are          
+  shown in Table 6. Once selected by SCU, Unicode          
+  mode is in effect until the end of input, or until any tag that selects an          
+  active window.          
+  <h4><a name="Quoting"></a>5.2.1 Quoting in Unicode Mode</h4>          
+  Note that in Unicode mode all tags are single bytes. Therefore all bytes which          
+  are not tag bytes are the most significant bytes (MSB) of a Unicode character.          
+  Each reserved tag value collides with 256 Unicode characters. A quoting          
+  mechanism is defined for Unicode mode to enable a character to be encoded          
+  whose first byte would collide with a tag value. The two bytes following a UQU          
+  tag are taken as a Unicode character on the BMP. The tags values used in          
+  Unicode mode are chosen so that they correspond to the most significant bytes          
+  of Unicode character values from the private use area, since private use          
+  characters are not in frequent use.<center>          
+  </center>
+  <table border="1" width="98%">
+    <caption>Table 2. Tags for Use in Unicode Mode</caption>
+    <tr>
+      <th bgcolor="#CCFFCC">Name&nbsp;</th>
+      <th bgcolor="#CCFFCC">Meaning&nbsp;</th>
+      <th bgcolor="#CCFFCC">Arguments&nbsp;</th>
+      <th bgcolor="#CCFFCC">Function&nbsp;</th>
+    </tr>
+    <tr>
+      <td>UQU&nbsp;</td>
+      <td>Quote Unicode</td>          
+      <td>hbyte, lbyte&nbsp;</td>          
+      <td>Quote a Unicode BMP character.<br>          
+        Used to quote tag bytes.&nbsp;</td>          
+    </tr>
+    <tr>
+      <td>UCn&nbsp;</td>
+      <td>Change to Window <i>n</i></td>          
+      <td>&nbsp;</td>
+      <td>Change to single-byte mode, window n (locking shift).<br>          
+        Use static window 0 for all following bytes that are in the range 20 to          
+        7F, or CR, LF, HT.<br>          
+        Use dynamically positioned window <i>n</i> for all following bytes that          
+        are in the range 80 to FF.</td>          
+    </tr>
+    <tr>
+      <td>UDn&nbsp;</td>
+      <td>Define Window <i>n</i></td>          
+      <td>byte&nbsp;</td>
+      <td>Define window position <i>n</i> as OffsetTable[byte], and change to          
+        window <i>n</i>.&nbsp;</td>          
+    </tr>
+    <tr>
+      <td>UDX</td>
+      <td>Define Extended</td>
+      <td>hbyte, lbyte</td>
+      <td>Define window <i>n</i> in the supplementary codespace and change to
+        it.<br>
+        <i>n</i> = top 3 bits of hbyte<br>
+        Window base = 10000 + (80 * remaining 13 bits of hbyte and lbyte)</td>
+    </tr>
+  </table>
+  <h2><a name="Windows"></a>6 Windows</h2>          
+  Windows are always 128 code positions in length. There are two kinds of          
+  windows, static (or fixed position) windows and dynamically positioned          
+  windows.
+  <h3><a name="Dynamic"></a>6.1 Dynamically Positioned Windows</h3>          
+  There are          
+  eight dynamically positioned windows used when compressing          
+  alphabetic text. Locking shift tags in the byte stream are used to select an          
+  active window, and other tags are used to redefine the position of any window.          
+  At initialization, the dynamically positioned windows are in their default          
+  positions          
+  shown in Table 5.          
+  <h4><a name="Locking-Shifts"></a>6.1.1 Locking Shifts (Dynamically Positioned          
+  Windows Only)</h4>          
+  An SC<i>n</i> tag (or UC<i>n</i> tag in Unicode mode) is used for a locking          
+  shift to dynamically positioned window <i>n</i>. Following such a tag, bytes          
+  in the range 80 to FF represent characters in the active dynamically          
+  positioned window. Therefore any byte <i>xx</i> between 80 and FF encodes the          
+  Unicode character          
+  as follows:
+  <p><i>Unicode character </i>= DynamicOffset[<i>n</i>]<i> + </i>(<i>xx</i> -
+  80)
+  <p>The values for the starting offsets of dynamically positioned windows can
+  change. Their initial values are specified in Table 5. Bytes in the range 20
+  to 7F always represent the corresponding character from the Basic Latin block
+  (U+0020 to U+007F). In addition, LF, CR and HT represent U+000A, U+000D and
+  U+0009 respectively.
+  <h4><a name="Positioning"></a>6.1.2 Window Positioning</h4>          
+  <p>An SD<i>n</i> tag (or UD<i>n </i>tag) followed by an index byte repositions
+  window <i>n</i> and makes it the active window.
+  To keep the encoding
+  compact, the positions of the dynamically positioned windows are defined via a lookup table. Each window definition tag in the
+  byte stream is followed by one byte that is used as an index into this table.
+  The set of legal positions is defined by the Window Offset Table
+  shown in
+  Table 3.</p>
+  <p>The first part of the Window Offset Table defines half blocks covering the
+  alphabetic scripts, symbols and the private use area. The individual entries
+  from F9 onwards cover the scripts that cross a half-block boundary, plus one
+  useful segment of European characters. Some collections of miscellaneous
+  symbols and punctuation also cross half-block boundaries, but these
+  characters are likely to occur rarely, or in isolation. Therefore no special
+  offsets for them are included here.</p>
+  <table border="1" width="95%">
+    <caption>Table 3. Window Offset Table</caption>
+    <tr>
+      <th bgcolor="#CCFFCC">Byte x&nbsp;</th>          
+      <th bgcolor="#CCFFCC">OffsetTable[x]&nbsp;</th>
+      <th bgcolor="#CCFFCC">Comment&nbsp;</th>
+    </tr>
+    <tr>
+      <td>00&nbsp;</td>
+      <td>reserved&nbsp;</td>
+      <td>reserved for internal use&nbsp;</td>          
+    </tr>
+    <tr>
+      <td>01..67&nbsp;</td>
+      <td>x*80&nbsp;</td>
+      <td>half-blocks from U+0080 to U+3380&nbsp;</td>          
+    </tr>
+    <tr>
+      <td>68..A7&nbsp;</td>
+      <td>x*80+AC00&nbsp;</td>
+      <td>half-blocks from U+E000 to U+FF80&nbsp;</td>          
+    </tr>
+    <tr>
+      <td>A8..F8</td>
+      <td>reserved&nbsp;</td>
+      <td>reserved for future use&nbsp;</td>          
+    </tr>
+    <tr>
+      <td>F9&nbsp;</td>
+      <td>00C0&nbsp;</td>
+      <td>Latin-1 letters + half of Latin Extended-A&nbsp;</td>          
+    </tr>
+    <tr>
+      <td>FA&nbsp;</td>
+      <td>0250&nbsp;</td>
+      <td>IPA Extensions</td>          
+    </tr>
+    <tr>
+      <td>FB&nbsp;</td>
+      <td>0370&nbsp;</td>
+      <td>Greek&nbsp;</td>
+    </tr>
+    <tr>
+      <td>FC&nbsp;</td>
+      <td>0530&nbsp;</td>
+      <td>Armenian&nbsp;</td>
+    </tr>
+    <tr>
+      <td>FD</td>
+      <td>3040&nbsp;</td>
+      <td>Hiragana&nbsp;</td>
+    </tr>
+    <tr>
+      <td>FE</td>
+      <td>30A0</td>
+      <td>Katakana</td>
+    </tr>
+    <tr>
+      <td>FF&nbsp;</td>
+      <td>FF60&nbsp;</td>
+      <td>Halfwidth Katakana&nbsp;</td>          
+    </tr>
+  </table>
+  <h4><a name="Extended_Windows"></a>6.1.3 Extended Windows</h4>          
+  An SDX tag (or UDX tag in Unicode mode) followed by two argument bytes (hbyte          
+  and lbyte) defines window <i>n</i> in the supplementary codespace and makes          
+  it the active window. The window index <i>n</i> is given by the top 3 bits of          
+  hbyte. The window offset is calculated from the remaining thirteen bits of          
+  hbyte and lbyte as follows:          
+  <p><i>offset</i> = 10000 + (80 * ((hbyte &amp; 1F) * 100 + lbyte))
+  <p>where &amp; is the bitwise AND operator and all values are in hexadecimal
+  notation. After an extended window is defined each subsequent byte in the
+  range 80 to FF represents a character from the supplementary codespace.
+  <p>For example, when decoding SCSU into UTF-16, the bits in the two argument 
+  bytes following the SDX (or UDX) and a subsequent data byte map onto the bits 
+  in the resulting surrogate pair as shown in the following table:
+  <p>&nbsp;
+    <table border="1">
+      <caption>Table 3a. Parameter Format Following SDX</caption>         
+      <tr>
+        <th colspan="3">High Surrogate</th>
+        <th colspan="3">Low Surrogate</th>
+      </tr>
+      <tr>
+        <td colspan="3">110110wwwwwzzzzz</td>
+        <td colspan="3">110111yyyxxxxxxx</td>
+      </tr>
+      <tr>
+        <td colspan="2">nnnwwwww</td>
+        <td colspan="2">zzzzzyyy</td>
+        <td colspan="2">1xxxxxxx</td>
+      </tr>
+      <tr>
+        <th colspan="2">High Byte</th>
+        <th colspan="2">Low Byte</th>
+        <th colspan="2">Data Byte</th>
+      </tr>
+    </table>
+  <h3><a name="Non-locking"></a>6.2 Non-Locking Shifts and Static Windows</h3>          
+  An SQ<i>n</i> tag switches temporarily to a different window for just one          
+  character. The byte following the tag is interpreted relative to the window <i>n</i>,          
+  and then the window reverts to the previous value. This is called a          
+  non-locking shift. If the byte following the SQ<i>n</i> is in the range 80 to          
+  FF, dynamically positioned window <i>n</i> is used.          
+  <h4><a name="Static_Windows"></a>6.2.1 Static Windows</h4>          
+  There are          
+  eight static windows, seven of which are used only in conjunction with          
+  non-locking shifts. If any data byte following an SQ<i>n</i> tag is in the          
+  range 00 to 7F, static window <i>n</i> is used. Therefore byte <i>xx</i>          
+  between 00 and 7F encodes the Unicode character          
+  as follows:
+  <p><i>Unicode character </i>= StartingOffset[<i>n</i>]<i> + </i>xx
+  <p>The positions of static windows are as 
+  shown in Table 4 and cannot be 
+  changed. 
+  The static windows cover character ranges which contain characters that tend to 
+  occur in isolation and therefore are suitable for access via non-locking 
+  shifts. Static window 0 is also used when bytes following an SC<i>n</i> or UC<i>n</i> 
+  are in the range 20 to 7F.<center> 
+  </center>
+  <table border="1" width="98%">
+    <caption>Table 4. Static Window Positions</caption>
+    <tr>
+      <th bgcolor="#CCFFCC">Window&nbsp;</th>
+      <th bgcolor="#CCFFCC">Starting Offset&nbsp;</th>          
+      <th bgcolor="#CCFFCC">Major Area Covered&nbsp;</th>          
+    </tr>
+    <tr>
+      <td>0&nbsp;</td>
+      <td>0000&nbsp;</td>
+      <td>(for quoting of tags used in single-byte mode)</td>          
+    </tr>
+    <tr>
+      <td>1&nbsp;</td>
+      <td>0080&nbsp;</td>
+      <td>Latin-1 Supplement&nbsp;</td>          
+    </tr>
+    <tr>
+      <td>2&nbsp;</td>
+      <td>0100&nbsp;</td>
+      <td>Latin Extended-A</td>          
+    </tr>
+    <tr>
+      <td>3&nbsp;</td>
+      <td>0300&nbsp;</td>
+      <td>Combining Diacritical Marks</td>          
+    </tr>
+    <tr>
+      <td>4&nbsp;</td>
+      <td>2000&nbsp;</td>
+      <td>General Punctuation&nbsp;</td>          
+    </tr>
+    <tr>
+      <td>5&nbsp;</td>
+      <td>2080</td>
+      <td>Currency Symbols</td>
+    </tr>
+    <tr>
+      <td>6&nbsp;</td>
+      <td>2100</td>
+      <td>Letterlike Symbols and Number Forms</td>
+    </tr>
+    <tr>
+      <td>7&nbsp;</td>
+      <td>3000</td>
+      <td>CJK Symbols &amp; Punctuation&nbsp;</td>          
+    </tr>
+  </table>
+  <h4><a name="Use_of_SQ0"></a>6.2.2 Use of SQ0</h4>          
+  SQ0 is used to quote characters that would otherwise collide with          
+  tag bytes. It may not be used with bytes in the range 20 to 7F. These values          
+  shall not be used by encoders. Decoders are not required to detect them as          
+  errors. Note that this restriction applies only to SQ0, which maps to ASCII.          
+  SQ1 to SQ7 may be followed by any byte value.          
+  <p>As in the general case of SC<i>n</i>, a following byte value in the range
+  80 to FF indicates use of dynamically positioned window 0.
+  <h2><a name="Special_Issues"></a>7 Special Issues</h2>          
+
+  <h3><a name="Initial_State"></a>7.1 Initial State</h3>          
+  The initial state of encoder and decoder is as follows:          
+  <ul>
+    <li>single-byte mode</li>
+    <li>locking shift</li>
+    <li>window 0 as the active window</li>
+    <li>all windows in their default positions</li>
+  </ul>
+  <b>Note:</b> For APIs or data streams that mix text and data, it is expected that          
+  the encoder and decoder will be reinitialized at the beginning of each string or          
+  compressible chunk of text data.          
+  <h3><a name="Initial_Window"></a>7.2 Initial Window Settings</h3>          
+  Encoder and Decoder are initialized with certain default settings for the          
+  windows. These allow use of the windows without predefining them,          
+  generally saving a few          
+  bytes. Encoder and Decoder always start with dynamically          
+positioned window 0 active, so a string of characters that          
+  consists entirely of characters from the range U+0020..U+00FF plus CR, LF, TAB          
+  is effectively converted to ISO 8859-1.          
+  <p>Default positions are assigned based on the following criteria:
+  <ul>
+    <li>Dynamically positioned windows: Frequently occurring ranges of characters
+      which commonly appear in runs containing characters in the selected range
+      or intermixed with characters in the range U+0020..U+007F.</li>
+    <li>Static windows: ranges of characters which commonly occur in isolation.</li>
+  </ul>
+  <p>
+  The choice of offsets makes it possible to handle most
+  languages by requiring no more than the definition of one extra window, at the
+  cost of a single byte. The default settings of the dynamically positioned windows are shown in
+  Table 5. The static window positions are fixed and are shown in Table 4.</p>
+  <table border="1" width="98%">
+    <caption>Table 5. Default Positions for Dynamically Positioned Windows</caption>
+    <tr>
+      <th bgcolor="#CCFFCC">Window&nbsp;</th>
+      <th bgcolor="#CCFFCC">Starting Offset&nbsp;</th>          
+      <th bgcolor="#CCFFCC">Major Area Covered&nbsp;</th>          
+    </tr>
+    <tr>
+      <td>0&nbsp;</td>
+      <td>0080&nbsp;</td>
+      <td>Latin-1 Supplement&nbsp;</td>          
+    </tr>
+    <tr>
+      <td>1&nbsp;</td>
+      <td>00C0&nbsp;</td>
+      <td>(combined partial Latin-1 Supplement/Latin Extended-A)</td>          
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>0400&nbsp;</td>
+      <td>Cyrillic</td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td>0600</td>
+      <td>Arabic</td>
+    </tr>
+    <tr>
+      <td>4&nbsp;</td>
+      <td>0900&nbsp;</td>
+      <td>Devanagari&nbsp;</td>
+    </tr>
+    <tr>
+      <td>5</td>
+      <td>3040&nbsp;</td>
+      <td>Hiragana</td>
+    </tr>
+    <tr>
+      <td>6</td>
+      <td>30A0&nbsp;</td>
+      <td>Katakana&nbsp;</td>
+    </tr>
+    <tr>
+      <td>7</td>
+      <td>FF00&nbsp;</td>
+      <td>Fullwidth ASCII&nbsp;</td>          
+    </tr>
+  </table>
+
+    <h3><a name="Surrogate_Pairs"></a>7.3 Surrogate Pairs</h3>          
+  A supplementary character,          
+  that is, a character corresponding to a surrogate pair          
+  in UTF-16, can be encoded in any of          
+  the following ways:          
+  <ul>
+    <li>in Unicode mode, as a surrogate pair</li>
+    <li>in single-byte mode, as a surrogate pair, with each value quoted: SQU <i>hbyte1</i>
+      <i>lbyte1</i> SQU <i>hbyte2 lbyte2</i></li>
+    <li>
+  in any otherwise legal combination of the above</li>
+    <li>or in single-byte mode, as a single byte, by setting a dynamically
+      positioned window to the appropriate position using an SDX or UDX tag.</li>
+  </ul>
+  It is not possible to set a window to the surrogate range, such that one byte          
+  would represent one half of a surrogate pair.          
+  However, the encoding for both halves of a surrogate
+  pair is not required to use the same method.
+  <p><b>Note: </b>All conformant decoders that output UTF-8 or UTF-32 must be
+  prepared to convert surrogate pairs to characters, even for the case SQU <i>hbyte1
+  lbyte1</i> SQU <i>hbyte2 lbyte2</i>.</p>
+  <h3><a name="Private_Use_Area"></a>7.4 Private Use Area</h3>          
+  A character in the Private Use Area on the BMP can be encoded in any of          
+  the following
+  ways:          
+  <ul>
+    <li>in Unicode mode, by quoting with UQU</li>
+    <li>in Unicode mode, if above F2FF, with no quoting</li>
+    <li>in single-byte mode, by quoting with SQU</li>
+    <li>in single-byte mode, as a single byte, by setting a dynamically
+      positioned window to the required position in the Private Use Area using
+      an SDn or UDn tag</li>
+  </ul>
+  <h3><a name="Tag_Allocation"></a>7.5 Tag Allocation</h3>          
+  The tag byte values used in single-byte mode are shown in Table 6. In this table,          
+  &quot;pass&quot; means that the byte value (XX) represents the Unicode code          
+  point U+00XX.<center>          
+  </center>
+  <table border="1" width="98%">
+    <caption>Table 6. Single-Byte Mode Tag Values</caption>
+    <tr>
+      <th bgcolor="#CCFFCC">Name&nbsp;</th>
+      <th bgcolor="#CCFFCC">Value&nbsp;</th>
+      <th bgcolor="#CCFFCC">Comment&nbsp;</th>
+    </tr>
+    <tr>
+      <td>pass</td>
+      <td>00&nbsp;</td>
+      <td>NUL</td>
+    </tr>
+    <tr>
+      <td>SQ0 - SQ7</td>
+      <td>01 - 08&nbsp;</td>          
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td>pass&nbsp;</td>
+      <td>09</td>
+      <td>HT</td>
+    </tr>
+    <tr>
+      <td>pass&nbsp;</td>
+      <td>0A&nbsp;</td>
+      <td>LF</td>
+    </tr>
+    <tr>
+      <td>SDX</td>
+      <td>0B&nbsp;</td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td>reserved</td>
+      <td>0C&nbsp;</td>
+      <td>reserved for future use</td>          
+    </tr>
+    <tr>
+      <td>pass</td>
+      <td>0D</td>
+      <td>CR</td>
+    </tr>
+    <tr>
+      <td>SQU</td>
+      <td>0E</td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td>SCU</td>
+      <td>0F</td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td>SC0 - SC7</td>          
+      <td>10 - 17</td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td>SD0 - SD7</td>          
+      <td>18 - 1F</td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td>pass</td>
+      <td>20 - 7F</td>
+      <td>&nbsp;</td>
+    </tr>
+  </table>
+  <p>The tag byte values used in Unicode mode are shown in Table 7. In this          
+  table <i>MSB</i> means that the byte value is used as the most significant          
+  byte of a two byte sequence representing a Unicode code point on the BMP.          
+  There are no restrictions on the values of the byte immediately following an <i>MSB</i>.          
+  <p><center>
+  </center>
+  <table border="1" width="98%">
+    <caption>Table 7. Unicode Mode Tag Values</caption>
+    <tr>
+      <th>Name&nbsp;</th>
+      <th>Value&nbsp;</th>
+      <th>Comment&nbsp;</th>
+    </tr>
+    <tr>
+      <td><i>MSB</i></td>
+      <td>00 - DF</td>
+      <td>Start of a Unicode character</td>
+    </tr>
+    <tr>
+      <td>UC0 - UC7</td>
+      <td>E0 - E7</td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td>UD0 - UD7</td>          
+      <td>E8 - EF</td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td>UQU</td>
+      <td>F0&nbsp;</td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td>UDX</td>
+      <td>F1&nbsp;</td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
+      <td>reserved</td>
+      <td>F2&nbsp;</td>
+      <td>reserved for future use</td>          
+    </tr>
+    <tr>
+      <td><i>MSB</i></td>
+      <td>F3 - FF</td>
+      <td>Start of a Unicode character</td>
+    </tr>
+  </table>
+
+<h2><a name="Notes"></a>8 Notes (Informative)</h2>          
+  <h3><a name="Signature"></a>8.1 Signature Byte Sequence for SCSU</h3>          
+<p>Where data streams are not tagged externally, it is useful to provide a
+  signature at the beginning of the stream. For UTF-16, UTF-32 and UTF-8, this
+  is done
+   by using U+FEFF to allow identification
+  of the text as Unicode
+  and to distinguish little-endian from big-endian
+  forms of UTF-16 and UTF-32.</p>
+  <p>Unlike the standard character encoding forms defined in [<a href="tr6.1#Unicode">Unicode</a>], SCSU does not have a single
+  representation for U+FEFF. Depending on the implementation of an SCSU encoder,
+  and depending on the following text, a leading U+FEFF character could be
+  encoded as one of these initial byte sequences:</p>
+  <table border="1" width="90%">
+    <caption>Table 8. Possible Encodings of Initial U+FEFF</caption>
+    <tr>
+      <th height="19" bgcolor="#ccffcc" width="25%">Bytes&nbsp;</th>
+      <th height="19" bgcolor="#ccffcc" width="25%">Commands&nbsp;</th>
+      <th height="19" bgcolor="#ccffcc" width="55%">Comment&nbsp;</th>
+    </tr>
+    <tr>
+      <th valign="top" colspan="3" bgcolor="#C0C0C0">
+        <p align="center">Preferred
+      </th>
+    </tr>
+    <tr>
+      <td valign="top">
+        <p><b>0E FE FF</b></p>
+      </td>
+      <td valign="top">
+        <p><b>SQU FE FF</b></p>
+      </td>
+      <td valign="top">
+        <p>Single-byte mode Quote Unicode</p>
+      </td>
+    </tr>
+    <tr>
+      <th valign="top" colspan="3" bgcolor="#C0C0C0">
+        <p align="center">Not Recommended
+      </th>
+    </tr>
+    <tr>
+      <td valign="top">
+        <p>0F FE FF</p>
+      </td>
+      <td valign="top">
+        <p>SCU FE FF</p>
+      </td>
+      <td valign="top">
+        <p>Single-byte mode Change to Unicode&nbsp;</p>          
+      </td>
+    </tr>
+    <tr>
+      <td valign="top">
+        <p>18 A5 FF</p>          
+      </td>
+      <td valign="top">
+        <p>SD0 A5 FF</p>
+      </td>
+      <td valign="top">
+        <p>Single-byte mode Define dynamic window 0 to 0xFE80&nbsp;</p>          
+      </td>
+    </tr>
+    <tr>
+      <td valign="top">
+        <p>19 A5 FF</p>          
+      </td>
+      <td valign="top">
+        <p>SD1 A5 FF</p>
+      </td>
+      <td valign="top">
+        <p>Single-byte mode Define dynamic window 1 to 0xFE80&nbsp;</p>          
+      </td>
+    </tr>
+    <tr>
+      <td valign="top">
+        <p>1A A5 FF</p>          
+      </td>
+      <td valign="top">
+        <p>SD2 A5 FF</p>
+      </td>
+      <td valign="top">
+        <p>Single-byte mode Define dynamic window 2 to 0xFE80&nbsp;</p>          
+      </td>
+    </tr>
+    <tr>
+      <td valign="top">
+        <p>1B A5 FF</p>          
+      </td>
+      <td valign="top">
+        <p>SD3 A5 FF</p>
+      </td>
+      <td valign="top">
+        <p>Single-byte mode Define dynamic window 3 to 0xFE80&nbsp;</p>          
+      </td>
+    </tr>
+    <tr>
+      <td valign="top">
+        <p>1C A5 FF</p>          
+      </td>
+      <td valign="top">
+        <p>SD4 A5 FF</p>
+      </td>
+      <td valign="top">
+        <p>Single-byte mode Define dynamic window 4 to 0xFE80&nbsp;</p>          
+      </td>
+    </tr>
+    <tr>
+      <td valign="top">
+        <p>1D A5 FF</p>          
+      </td>
+      <td valign="top">
+        <p>SD5 A5 FF</p>
+      </td>
+      <td valign="top">
+        <p>Single-byte mode Define dynamic window 5 to 0xFE80&nbsp;</p>          
+      </td>
+    </tr>
+    <tr>
+      <td valign="top">
+        <p>1E A5 FF</p>          
+      </td>
+      <td valign="top">
+        <p>SD6 A5 FF</p>
+      </td>
+      <td valign="top">
+        <p>Single-byte mode Define dynamic window 6 to 0xFE80&nbsp;</p>          
+      </td>
+    </tr>
+    <tr>
+      <td valign="top">
+        <p>1F A5 FF</p>          
+      </td>
+      <td valign="top">
+        <p>SD7 A5 FF</p>
+      </td>
+      <td valign="top">
+        <p>Single-byte mode Define dynamic window 7 to 0xFE80</p>
+      </td>
+    </tr>
+  </table>
+  <p>It is recommended to use only the byte sequence &lt;0E FE FF&gt; for an          
+  initial U+FEFF character (0E is the &quot;SQU&quot; tag). This convention will          
+  assist receiving processes that use initial byte sequences to identify a data          
+  file or stream as being encoded in SCSU. Every SCSU encoder should write this          
+  particular initial byte sequence if a U+FEFF is encountered as the first          
+  character in the stream. Any further occurrences of this character may be          
+  encoded in the most compact way possible with SCSU.&nbsp;</p>          
+  <p><b>Note:</b> The recommended sequence is the only one that does not affect          
+  the state of the encoder or decoder, and may be safely stripped by a receiver          
+  even before initiating a decoder.</p>          
+  <p>A process reading text from a file or stream could interpret the initial
+  bytes &lt;0E FE FF&gt; as a signature for SCSU and assume
+  that the file or stream is encoded in SCSU. The process or SCSU decoder may or may not strip the
+  initial U+FEFF character from the resulting text. Any other encoding of an
+  initial U+FEFF character, and any encoding of a U+FEFF after the initial
+  character are normally interpreted as a ZWNBSP.</p>
+  <p> If the input text starts with a U+FEFF that is to be
+  interpreted as a ZWNBSP, then an encoder or sending process may prepend the
+  text with another U+FEFF which may be safely recognized as an SCSU signature
+  and stripped by a receiving process. Otherwise, the initial ZWNBSP could be misinterpreted as a signature and stripped by a receiving process.
+  This is equivalent to sending and receiving text in UTF-16 or UTF-32. A
+  signature should not be used where a protocol specification, database design,
+  or out-of-band information or similar specifies the encoding.</p>
+  <h3><a name="Worst_Case"></a>8.2 Worst Case Behavior</h3>          
+<p>By using SCU plus an input string in UTF-16, almost all Unicode strings can be
+  represented with the same number of bytes as their UTF-16 encoding plus 1
+  byte.
+  Strings containing private use characters in which the
+  MSB collides with the tag byte values are the exception. These characters must be
+  quoted with SQU or UQU, requiring three bytes instead of two bytes per character.
+  Therefore, an absolute upper limit of required SCSU length is three bytes per
+  UTF-16 code unit. (See also <a href="tr6.1#Quoting">Section 5.2.1</a>, <i>Quoting in Unicode
+Mode</i>). This upper
+limit is reached only for strings of <i>n</i> characters containing at least <i>n</i>-1
+  private use characters, subject to the quoting requirement.</p>
+  <p>
+  Because the characters requiring SQU or UQU are in the BMP, an SCSU encoded
+  string is never required to be longer than four bytes per character. In other
+  words, it is never longer than its UTF-32 encoding. For supplementary
+  characters there is no need for a
+  one byte overhead,
+  because any supplementary
+  character can be represented using four bytes in SCSU by using SDX. (See also <a href="tr6.1#Extended_Windows">Section
+  6.1.3</a>, <i>Extended Windows</i>).</p>
+  <p>A Unicode string consisting entirely of certain control characters will
+  take up twice as much space in SCSU than in UTF-8,
+  since each control character must be individually quoted with SQ0. (See also <a href="tr6.1#Single_byte_mode">Section
+  5.1</a>, <i>Single-Byte Mode</i>).</p>
+  <p>All of these upper limits can be exceeded, if an encoder deliberately
+  chooses a particularly inefficient representation, such as using SQU or UQU to
+  quote each surrogate separately for characters in the supplementary codespace (see also <a href="tr6.1#Surrogate_Pairs">Section
+  7.3</a>,
+  <i>Surrogate Pairs</i>), or inserting redundant
+  tags.</p>
+<p>Typical compression of average text is markedly better than the worst case
+  behavior,
+  and normal text is encoded with fewer bytes in SCSU than
+  in either UTF-8 or UTF-16.</p>
+  <h3><a name="XML_Suitability"></a>8.3 XML Suitability</h3>          
+  <p>SCSU can be used for XML or HTML or similar documents if attention is paid
+  to the in-document encoding declaration. The process emitting the document
+  should place the encoding declaration at the earliest possible
+  location, in front of any non-Latin-1 characters. Such documents can be parsed properly up to and
+  including the encoding declaration, because many document parsers initially
+  assume ASCII-compatible encodings. (See also Section F, <i> <a href="http://www.w3.org/TR/REC-xml/#sec-guessing">Autodetection of Character Encodings</a></i> of [<a href="tr6.1#XML">XML 
+	1.0</a>].)</p>
+  <p>An SCSU encoder is XML-Suitable if it encodes all initial Latin-1 text
+  (code points U+0000, U+0009, U+000A, U+000D, U+0020..U+00FF) in the shortest
+  possible form. That is, it uses Single-Byte Mode without SQ0, SC0 or any other
+  commands. This encodes initial Latin-1 text with the same bytes as with ISO
+  8859-1.
+  It would be unusual for an SCSU encoder to not encode
+  initial Latin-1 text in the shortest form, so most existing SCSU encoders are
+  XML-Suitable.</p>
+  <p>If there were an initial U+FEFF indicating a Unicode encoding signature, it
+  would be encoded with SQU (see <a href="tr6.1#Signature"> Section 8.1</a>, <i>Signature Byte Sequence for
+  SCSU</i>).
+  However, many HTML and XML parsers do not recognize Unicode encoding
+  signatures other than for UTF-16, so such a signature should not be used with
+  XML and HTML documents.</p>
+
+  <h3><a name="Minimal_Encoder"></a>8.4 Minimal Encoder</h3>          
+  <p>While it is straightforward to write an SCSU decoder,
+  writing an encoder may seem complicated because there are many ways to encode
+  the same text. The choices that are made for an implementation affect the
+  achievable compression ratio.</p>
+  <p>However, it is quite simple to write a <i>minimal</i> SCSU
+  encoder that still produces valid and reasonable, even XML-suitable, output.
+  The <a href="http://www.unicode.org/Public/PROGRAMS/SCSUMini/scsumini.c">scsumini.c</a> sample C code [<a href="tr6.1#SampleMini">SampleMini</a>]
+  demonstrates this; its
+  encoder function consists of about 75 lines of C code and uses only
+  a very small amount of state:
+  a boolean flag for single-byte versus Unicode mode and an integer for the current
+  window. It uses most SCSU commands, including quoting from and switching to
+  all pre-defined windows, but does not <i>define</i> dynamic windows and does
+  not use any look-ahead.</p>
+<p>This kind of encoder is generally sufficient for text with
+mostly Latin/Cyrillic/Arabic/Devanagari/Japanese characters and CJK ideographs.</p>
+
+  <h3><a name="Encoder_Strategies"></a>8.5 Encoder Strategies</h3>          
+  <p>Even an encoder with good compression performance is
+  relatively easy to write. The following are tactics used:</p>
+<ul>
+  <li>
+    <p><i>Use all dynamic windows.</i><br>
+    Using all dynamic windows is important for multi-script text because
+    redefining windows is expensive.</li>
+  <li>
+    <p><i>Use the current window if possible.</i><br>
+    Output a single byte per character for as long as possible for maximum
+    compression.</li>
+  <li>
+    <p><i>Use a static window if a matching character is found.</i><br>
+    Static windows are defined for punctuation, controls and combining marks and
+    similar characters. Using a static window avoids a switch from the current
+    dynamic window, which is likely to be needed for the following character,
+    and avoids using a dynamic window for relatively rare characters.</li>
+  <li>
+    <p><i>Switch to Unicode mode for uncompressible text.</i><br>
+    SCSU does not provide for window definitions for the main Han and Hangul
+    character ranges, which are too large for effective use of dynamic windows.
+    The Unicode mode should also be used for large scripts using supplementary
+    code points.</li>
+  <li>
+    <p><i>Switch to an already-defined window if a matching
+    character is found.</i><br>
+    Avoid defining a new window.</li>
+  <li>
+    <p><i>Quote a standalone character.</i><br>
+    Some characters, like U+FEFF (used for the signature), specials (U+FFF0..U+FFFD)
+    and non-characters are always best quoted with SQU, for the same reasons as
+    using a static window (see above). Other standalone characters should also
+    be quoted, for example a single Telugu letter in Japanese text.</li>
+  <li>
+    <p><i>Define a new window for a string of compressible
+    characters.</i><br>
+    Whenever there is a string of characters that does not fit into an existing 
+    window, but would fit in a new dynamic window, such a window should be 
+    defined. Simple tactics for choosing a window 
+    number (for example, the least recently used one) and for choosing to define a 
+    window rather than quoting characters (for example, two or more same-window 
+    characters in a row) yield good results.</li> 
+</ul>
+  <p>For optimal compression, an encoder would have to look
+  ahead several characters and probably compare multiple alternatives for
+  sections of the text. The compression of normal text may improve only by a
+  relatively small percentage compared to the strategy outlined in the previous
+  paragraph.</p>
+  <h2><a name="Examples"></a>9 Examples (Informative)</h2>          
+  <h3><a name="German"></a>9.1 German</h3>          
+  German can be written using only Basic Latin and the Latin-1 supplement, so          
+  all characters above 0x0080 use the default position of dynamically positioned          
+  window 0.          
+  <p>Sample text (9 characters)     
+  <p>Öl fließt          
+  <p>Unicode code points (9 code 
+  points):
+  <p><code>00D6 006C 0020 0066 006C 0069 0065 00DF 0074</code>
+  <p>Compressed (9 bytes):
+  <p><code>D6 6C 20 66 6C 69 65 DF 74</code>
+  <h3><a name="Russian"></a>9.2 Russian</h3>          
+  Russian can use the default position of window 2. The first byte of the          
+  compressed data is the tag SC2.          
+  <p>Sample text (6 characters)     
+  <p>Москва     
+  <p>Unicode code points (6 code     
+  points):
+  <p><code>041C 043E 0441 043A 0432 0430</code>
+  <p>Compressed (7 bytes):
+  <p><code>12 9C BE C1 BA B2 B0</code>
+  <h3><a name="Japanese"></a>9.3 Japanese</h3>          
+  Japanese text almost always profits from the multiple predefined windows in          
+  SCSU. For more details on this sample see below.         
+  <p>Sample text (116 characters)    
+  <p>　♪リンゴ可愛いや可愛いやリンゴ。半世紀も前に流行した「リンゴの歌」がぴったりするかもしれない。米アップルコンピュータ社のパソコン「マック（マッキントッシュ）」を、こよなく愛する人たちのことだ。「アップル信者」なんて言い方まである。    
+  <p>Unicode code points (116 code     
+  points)
+  <p><code>3000 266A 30EA 30F3 30B4 53EF 611B<br>
+3044 3084 53EF 611B 3044 3084 30EA 30F3<br>
+30B4 3002 534A 4E16 7D00 3082 524D 306B<br>
+6D41 884C 3057 305F 300C 30EA 30F3 30B4<br>
+306E 6B4C 300D 304C 3074 3063 305F 308A<br>
+3059 308B 304B 3082 3057 308C 306A 3044<br>
+3002 7C73 30A2 30C3 30D7 30EB 30B3 30F3<br>
+30D4 30E5 30FC 30BF 793E 306E 30D1 30BD<br>
+30B3 30F3 300C 30DE 30C3 30AF FF08 30DE<br>
+30C3 30AD 30F3 30C8 30C3 30B7 30E5 FF09<br>
+300D 3092 3001 3053 3088 306A 304F 611B<br>
+3059 308B 4EBA 305F 3061 306E 3053 3068<br>
+3060 3002 300C 30A2 30C3 30D7 30EB 4FE1<br>
+8005 300D 306A 3093 3066 8A00 3044 65B9<br>
+307E 3067 3042 308B 3002</code>
+  <p>Compressed (178 bytes)
+  <p><code>08 00 1B 4C EA 16 CA D3 94 0F 53 EF 61 1B E5 84<br>
+C4 0F 53 EF 61 1B E5 84 C4 16 CA D3 94 08 02 0F<br>
+53 4A 4E 16 7D 00 30 82 52 4D 30 6B 6D 41 88 4C<br>
+E5 97 9F 08 0C 16 CA D3 94 15 AE 0E 6B 4C 08 0D<br>
+8C B4 A3 9F CA 99 CB 8B C2 97 CC AA 84 08 02 0E<br>
+7C 73 E2 16 A3 B7 CB 93 D3 B4 C5 DC 9F 0E 79 3E<br>
+06 AE B1 9D 93 D3 08 0C BE A3 8F 08 88 BE A3 8D<br>
+D3 A8 A3 97 C5 17 89 08 0D 15 D2 08 01 93 C8 AA<br>
+8F 0E 61 1B 99 CB 0E 4E BA 9F A1 AE 93 A8 A0 08<br>
+02 08 0C E2 16 A3 B7 CB 0F 4F E1 80 05 EC 60 8D<br>
+EA 06 D3 E6 0F 8A 00 30 44 65 B9 E4 FE E7 C2 06<br>
+CB 82</code>
+
+<h4>Details about the Japanese Text Example</h4>
+    <p><img border="0" src="tr6/tr6-example1.gif" alt="Japanese example"></p>
+    <p>The example above consists of a short piece of text found  
+    in a Japanese news story. Each character is color coded to indicate which  
+    characters can be encoded using the same window. The table lists the number  
+    of occurrences of characters for a given window divided by the number of  
+    runs, yielding the average run length.</p> 
+    <p>The reference encoder will encode the 116 characters of  
+    this example into 178 bytes. This is approximately 3/4 of the size required  
+    to store the text in UTF-16, or any of the double byte character sets. A  
+    single window implementation, like the original Reuters' RCSU version of the  
+    Compression scheme would have required about a dozen window resets, plus  
+    would have had to resort to quoting Unicode a few more times. A complex  
+    example like this demonstrates the advantage of the multiple window  
+    implementation quite nicely.</p> 
+
+  <h3><a name="All_Features"></a>9.4 All Features</h3>          
+  The following sample compressed string contains all the features of the          
+  compression scheme, but limited to only representative instances of the eight          
+  SQ<i>n</i> and the seventeen SC<i>n</i>/UC<i>n</i>, SD<i>n</i>/UD<i>n,</i> and          
+  SDX/UDX pairs. The text is repeated to demonstrate how the same substring can          
+  yield different compressed strings.          
+  <p>Unicode code points (18 code points):
+  <p><code>0041 00DF 0401 015F 00DF 01DF F000 10FFFF 000D 000A 0041 00DF 0401 015F 00DF 01DF F000 10FFFF</code>      
+  <p>UTF-16 code units (20 code units)
+  <p><code>0041 00DF 0401 015F 00DF 01DF F000 DBFF DFFF
+  000D 000A 0041 00DF 0401 015F 00DF 01DF F000 DBFF DFFF</code>
+  <p>Compressed (35 bytes)
+  <p><code>41 DF 12 81 03 5F 10 DF 1B 03 DF 1C 88 80 0B
+  BF FF FF 0D 0A 41 10 DF 12 81 03 5F 10 DF 13 DF 14 80 15 FF</code>
+
+  <h2><a name="Possible"></a>10 Possible Private Extensions (Informative)</h2>          
+  During the design and review phase of the compression scheme,          
+  the extensions described in this section were suggested. Although these          
+  extensions were not accepted as part of the compression scheme itself,          
+   they
+  are documented here as examples of how certain problems          
+  can be solved by adding higher-level          
+  protocols, for use by consenting parties.          
+  <h3><a name="Avoiding"></a>10.1 Avoiding Control Byte Values</h3>          
+  <p>With a simple re-mapping, the SCSU encoded data stream can be made free of <i>most</i>
+  control byte values so that it can be passed where ASCII text is expected.
+  This re-mapping is not as costly as more general schemes for converting binary
+  data to text and leaves the text parts of compressed Latin-1 text fully
+  readable.
+  <blockquote>
+    <p>After encoding, replace any control byte by DLE (0x10) followed by the
+    original byte
+  plus 0x40. NUL becomes DLE followed by '@' (0x40). DLE is
+    replaced by DLE followed by U+0050.
+  Before decoding, the opposite transformation must be
+  performed.
+  </blockquote>
+  <h3><a name="Handling"></a>10.2 Handling Runs of the Same Character</h3>          
+  <p>Longer runs of the same character allow additional compression.
+  Because this scenario is unusual, it was omitted from
+  the standard algorithm. In situations where sender and receiver can agree on
+  the additional specification and where runs are common, the following method
+  is suggested:
+  <blockquote>
+    <p>Before encoding, replace any run of four or more Unicode characters by '@'
+    (U+0040), followed by the character to repeat, followed by a 16-bit count
+    (packed into one Unicode character). The sequence of 33 hyphens
+    --------------------------------- becomes '@' '-' '!' (0x40, 0x2D, 0x21).
+    Any occurrence of @ sign by itself is replaced by @@U+0001.
+  After decoding, the reverse operation must be performed.<br>
+  </blockquote>
+  <h2><a name="References"></a>References</h2>
+  <table style="border-style:none" cellspacing="12" cellpadding="0" width="99%" border="0">
+    <tr>
+      <td class="noborder" valign="top">[<a name="BOCU">BOCU</a>]</td>
+      <td class="noborder" valign="top">
+        <p>BOCU-1: MIME-Compatible Unicode Compression<br>
+        <a href="../notes/tn6.1">http://www.unicode.org/notes/tn6/</a><br>
+        <i>Binary Ordered Compression for Unicode (BOCU)</i></td>
+    </tr>
+    <tr>
+      <td class="noborder" valign="top">[<a name="FAQ">FAQ</a>]</td>
+      <td class="noborder" valign="top">Unicode Frequently Asked Questions<br>
+		<a href="http://www.unicode.org/faq/">http://www.unicode.org/faq/</a><br>
+        <i>For answers to common questions on technical issues; see in 
+		particular</i> <a href="http://www.unicode.org/faq/compression.html">
+		http://www.unicode.org/faq/compression.html</a></td>
+    </tr>
+    <tr>
+      <td valign="top" class="noborder">[<a name="Feedback">Feedback</a>]</td>
+      <td valign="top" class="noborder">Reporting Errors and Requesting
+        Information Online<i><br>
+        </i><a href="http://www.unicode.org/reporting.html">http://www.unicode.org/reporting.html</a></td>
+    </tr>
+    <tr>
+      <td class="noborder" valign="top">[<a name="Glossary">Glossary</a>]</td>
+      <td class="noborder" valign="top">Unicode Glossary<a href="http://www.unicode.org/glossary/"><br>
+        http://www.unicode.org/glossary/</a><br>
+        <i>For explanations of terminology used in this and other documents.</i></td>
+    </tr>
+    <tr>
+      <td class="noborder" valign="top">[<a name="Reports">Reports</a>]</td>
+      <td class="noborder" valign="top">Unicode Technical Reports<br>
+        <a href="index.html">http://www.unicode.org/reports/</a><br>
+        <i>For information on the status and development process for
+        technical reports, and for a list of technical reports.</i></td>
+    </tr>
+    <tr>
+      <td class="noborder" valign="top">[<a name="SampleCode">SampleCode</a>]</td>
+      <td class="noborder" valign="top">Sample Java code with a full implementation of SCSU<br>
+		<a href="http://www.unicode.org/Public/PROGRAMS/SCSU/">http://www.unicode.org/Public/PROGRAMS/SCSU/</a> 
+		or<br>
+        <a href="ftp://ftp.unicode.org/Public/PROGRAMS/SCSU/">ftp://ftp.unicode.org/Public/PROGRAMS/SCSU/</a><br>
+    </tr>
+    <tr>
+      <td class="noborder" valign="top">[<a name="SampleMini">SampleMini</a>]</td>
+      <td class="noborder" valign="top">Sample C code with a minimal implementation of an SCSU encoder;
+        see <a href="tr6.1#Minimal_Encoder">Section 8.4</a>, <i>Minimal Encoder</i><br>
+        <a title="Minmal Encoder Source File" href="http://www.unicode.org/Public/PROGRAMS/SCSUMini/">
+		http://www.unicode.org/Public/PROGRAMS/SCSUMini/</a> or<br>
+		<a href="ftp://ftp.unicode.org/Public/PROGRAMS/SCSUMini/">
+		ftp://ftp.unicode.org/Public/PROGRAMS/SCSUMini/</a><br>
+    </tr>
+    <tr>
+      <td valign="top" class="noborder">[<a name="Unicode">Unicode</a>]</td>
+      <td valign="top" class="noborder">The Unicode Consortium. <a href="http://www.unicode.org/uni2book/u2.html">The
+        Unicode Standard, Version 4.0</a>. Reading, MA, Addison-Wesley, 2003.
+        0-321-18578-1.</td>
+    </tr>
+    <tr>
+      <td class="noborder" valign="top">[<a name="Versions">Versions</a>]</td>
+      <td class="noborder" valign="top">Versions of the Unicode Standard<br>
+        <a href="http://www.unicode.org/standard/versions/">http://www.unicode.org/standard/versions/</a><br>
+        <i>For details on the precise contents of each version of the
+        Unicode Standard, and how to cite them.</i></td>
+    </tr>
+    <tr>
+      <td class="noborder" valign="top">[<a name="XML">XML 1.0</a>]</td>
+      <td class="noborder" valign="top"><i>Extensible Markup Language (XML) 1.0</i> (Third Edition)<br>
+		W3C Recommendation 04 February 2004<br>
+		<a href="http://www.w3.org/TR/REC-xml/">http://www.w3.org/TR/REC-xml/</a><br>
+		In particular, see Section F,
+		<i>Autodetection of Character Encodings<br>
+		</i>
+		<a href="http://www.w3.org/TR/REC-xml/#sec-guessing">http://www.w3.org/TR/REC-xml/#sec-guessing</a></td>
+    </tr>
+  </table>
+  <h2><a name="Acknowledgements"></a>Acknowledgements</h2>
+  The authors would like to thank Dr. Laura Wideburg for assistance in copy          
+  editing. Thanks to David Pope, Doug Ewell and Roman Czyborra for bug reports.          
+  Markus Scherer proposed the signature sequence for SCSU. David Starner          
+  suggested a section on worst-case behavior.          
+  <h2><a name="Authors"></a>Authors</h2>
+  The original concept of a standard compression scheme for Unicode was          
+  implemented at Reuters and proposed by Misha          
+  Wolf and Charles Wicksteed.          
+  Extensions and refinements were proposed by Mark          
+  Davis, Ken Whistler and Martin          
+  Duerst. The final text for the Technical Report and the original sample          
+  implementations were created by <a href="mailto:asmus@unicode.org">Asmus          
+  Freytag</a>. The Technical Report is now maintained by Markus          
+  Scherer, who also contributed the <tt>scsumini</tt> sample.
+  <h2><a name="Revisions"></a>Revisions</h2>
+  <p>Note: none of the fixes imply a change to the specification.</p>
+  <h2><a name="Modifications"></a>Modifications</h2>
+  <p>The following summarizes modifications from the previous version of this
+  document.</p>
+  <table class="noborder" style="border-collapse: collapse" cellspacing="0" cellpadding="8">
+    <tbody>
+      <tr>
+        <td class="noborder"><a name="TrackingNumber4">4</a></td>
+        <td class="noborder"><p>Added <a href="tr6.1#Minimal_Encoder">8.4 Minimal Encoder</a> and
+          <a href="tr6.1#Encoder_Strategies">8.5 Encoder Strategies</a> and the
+          [<a href="tr6.1#SampleMini">SampleMini</a>] sample
+          code for a minimal encoder.
+          Many editorial changes, including a move of sections 8.1..8.3 to
+          7.2..7.5. Included the formerly linked details page for the Japanese
+          Text Example (9.3) into this text directly.</p><p>Adopted the common style 
+		of separate version number from document revision numbering.</p></td>
+      </tr>
+      <tr>
+        <td class="noborder"><a name="TrackingNumber3_5">3.5</a></td>
+        <td class="noborder">Added recommendation to remain in Single-Byte Mode
+          for initial Latin-1 text, and an informative section about the
+          resulting XML suitability.</td>
+      </tr>
+      <tr>
+        <td class="noborder">1.0 - 3.4</td>
+        <td class="noborder">1. Russian uses SC2 instead of SC7 as claimed in 
+          the examples. 
+          <p>2. The 'All Features' example has been corrected.
+          <p>3. A new Japanese example has been added.
+          <p>4. Changed Table 3 from<br> 
+          &nbsp;
+          <table border="1" width="98%">
+            <tr>
+              <td>68..A7&nbsp;</td>
+              <td>x*80+AE00&nbsp;</td>
+              <td>half-blocks from U+E000 to U+FF80&nbsp;</td> 
+            </tr>
+          </table>
+          <p>to<br>
+          &nbsp;
+          <table border="1" width="98%">
+            <tr>
+              <td>68..A7&nbsp;</td>
+              <td>x*80+AC00&nbsp;</td>
+              <td>half-blocks from U+E000 to U+FF80&nbsp;</td> 
+            </tr>
+          </table>
+          <p>to match the correct value used in the sample code. 
+          <p>5. Corrected 1FFF to 1F in the offset calculation equation for
+          defining extended windows.
+          <p>6. Corrected a few minor typographical errors [6/5/99].
+          <p>7. Corrected dynamic offset in for Window 1 in sample code to
+          0x00C0 to match Table 5 of specification (updated internal version
+          number of SCSU.java to 005 and commented changed source line).
+          <p>8. Changed methods in the expander from private to protected to
+          support a minor update of the driver program. (Updated internal
+          version number to 005 in Expand.java and added a comment).
+          <p>9. Minor improvements to the driver program. (Updated internal
+          version number to 005 in CompressMain.java)
+          <p>10. Editorial reformatting. [11/12/99]
+          <p>11. Added the section on use of signature and changed version to
+          3.1 (The sample programs have not been updated to implement this
+          recommendation).
+          <p>12. Fixed HTML validation error. [3/11/00]
+          <p>13. Added an informative section on worst-case behavior [10/31/01].</p>
+          <p>14. Changed references to 'expansion space' to 'supplementary
+          coding space', to be more in line with terminology introduced in
+          Unicode 3.1.</p>
+          <p>15. Clarified that the &quot;Unicode&quot; data in Unicode Mode is
+          UTF-16BE. This clarification is necessary since later versions of the
+          Unicode Standard add UTF-8 and UTF-32 on an equal basis.</p>
+          <p>16. Clarified that SCSU is an encoding of a sequence of code
+          points, independent of the encoding form. This makes no change to the
+          specification, since nothing in the original wording required the
+          uncompressed data to be in UTF-16.</p>
+          <p>17. Clarified that SQU and UQU may only be applied to characters on
+          the BMP, which are represented by two bytes in SCSU.</p>
+          <p>18. In 6.2.1, corrected</p>
+          <blockquote>
+            <p>Static window 0 is also used when bytes following an SC<i>n</i>
+            or UC<i>n</i> are in the range 80 to FF.</p>
+          </blockquote>
+          <p>to</p>
+          <blockquote>
+            <p>Static window 0 is also used when bytes following an SC<i>n</i>
+            or UC<i>n</i> are in the range 20 to 7F.</p>
+          </blockquote>
+          <p>19. Corrected the example in section 10.2.</p>
+          <p>20. Changed styles and template.
+          <p>21. Added section 2.3 to discuss limitations of SCSU.&nbsp; Added 
+          references. [05/08/02] 
+          <p>22. Changed &quot;Unicode Values&quot; to &quot;code points&quot;
+          and made similar clarifications throughout.
+          <p>Added restriction to remain in Single-Byte Mode for initial Latin-1
+          text, and an informative section about the resulting XML suitability.</p>
+        </td>
+      </tr>
+  </table>
+  <p>&nbsp;
+  <hr>
+  <p>Copyright © 1999-2005 Unicode, Inc. All Rights Reserved. The 
+  Unicode Consortium makes no expressed or implied warranty of any kind, and 
+  assumes no liability for errors or omissions. No liability is assumed for 
+  incidental and consequential damages in connection with or arising out of the 
+  use of the information or programs contained or accompanying this technical 
+  report.</p>
+  <p>Unicode and the Unicode logo are trademarks of Unicode, Inc., and are
+  registered in some jurisdictions.</p>
+</div>
+
+</body>
+
+</html>

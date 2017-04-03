@@ -1,0 +1,479 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
+
+       "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta http-equiv="Content-Language" content="en-us">
+<link rel="stylesheet" href="../../unicode/reports/reports.css" type="text/css">
+<title>UAX #34: Unicode Named Character Sequences</title>
+</head>
+
+<body>
+
+<table class="header" cellpadding="0" cellspacing="0" width="100%">
+	<tr>
+		<td class="icon"><a href="http://www.unicode.org">
+		<img align="middle" alt="[Unicode]" border="0" src="../../webscripts/logo60s2.gif" width="34" height="33"></a>&nbsp;
+		<a class="bar" href="../index.html">Technical Reports</a></td>
+	</tr>
+	<tr>
+		<td class="gray">&nbsp;</td>
+	</tr>
+</table>
+<div class="body">
+	<h2 align="center">Unicode Standard Annex #34</h2>
+	<h1 align="center">Unicode Named Character Sequences</h1>
+	<table border="1" cellpadding="2" width="95%">
+		<tr>
+			<td height="24" valign="TOP" width="20%">Version</td>
+			<td valign="TOP">4.1.0</td>
+		</tr>
+		<tr>
+			<td height="24" valign="TOP">Authors</td>
+			<td valign="TOP">Ken Whistler</td>
+		</tr>
+		<tr>
+			<td height="24" valign="TOP">Date</td>
+			<td valign="TOP">2005-03-25</td>
+		</tr>
+		<tr>
+			<td height="24" valign="TOP">This Version</td>
+			<td valign="TOP">
+			<a href="tr34-3.html">http://www.unicode.org/reports/tr34/tr34-3.html</a></td>
+		</tr>
+		<tr>
+			<td height="24" valign="TOP">Previous Version</td>
+			<td valign="TOP">
+			<a href="tr34-1.html">http://www.unicode.org/reports/tr34/tr34-1.html</a></td>
+		</tr>
+		<tr>
+			<td height="24" valign="TOP">Latest Version</td>
+			<td valign="TOP"><a href="index.html">http://www.unicode.org/reports/tr34/</a>
+			</td>
+		</tr>
+		<tr>
+			<td height="24" valign="TOP">Revision</td>
+			<td valign="TOP"><a href="tr34-3.html#Modifications">3</a><font color="#FF0000"> </font></td>
+		</tr>
+	</table>
+	<!-- BEGIN OF DOCUMENT FRONT MATTER -->
+	<p><b>Summary</b></p>
+	<p><i>This annex defines the concept of a </i>Unicode named character sequence<i>, 
+    specifies a notational convention for them and a set of rules constraining 
+    possible names applied to character sequences, and gives the normative list 
+    of existing Unicode named character sequences.</i></p>
+	<p><b>Status</b></p>
+	  <p><i>This document has been reviewed by Unicode members and other interested 
+  parties, and has been approved by the Unicode Technical Committee as a <b>Unicode 
+  Standard Annex</b>. 
+  This is a stable document and may be used as reference material or cited as a 
+  normative reference by other specifications.</i></p>
+ 	<blockquote>
+		<p><i><b>A Unicode Standard Annex (UAX)</b> forms an integral part of the 
+		Unicode Standard, but is published as a separate document. The Unicode Standard 
+		may require conformance to normative content in a Unicode Standard Annex, 
+		if so specified in the Conformance chapter of that version of the Unicode 
+		Standard. The version number of a UAX document corresponds to the version 
+		number of the Unicode Standard at the last point that the UAX document was 
+		updated.</i></p>
+	</blockquote>
+	<p><i>Please submit corrigenda and other comments with the online reporting 
+	form [<a href="tr34-3.html#Feedback">Feedback</a>]. Related information that is useful 
+	in understanding this document is found in the <a href="tr34-3.html#References">References</a>. 
+	For the latest version of the Unicode Standard see [<a href="tr34-3.html#Unicode">Unicode</a>]. 
+	For a list of current Unicode Technical Reports see [<a href="tr34-3.html#Reports">Reports</a>]. 
+	For more information about versions of the Unicode Standard, see [<a href="tr34-3.html#Versions">Versions</a>].</i></p>
+	<h4>Contents</h4>
+	<ul class="toc">
+		<li>1&nbsp;<a href="tr34-3.html#Overview">Overview</a> </li>
+		<li>2&nbsp;<a href="tr34-3.html#Notation">Definitions and Notation</a>&nbsp;&nbsp; </li>
+		<li>3&nbsp;<a href="tr34-3.html#Conformance">Conformance</a>&nbsp;&nbsp; </li>
+		<li>4&nbsp;<a href="tr34-3.html#Names">Names</a>&nbsp;&nbsp; </li>
+		<li>5&nbsp;<a href="tr34-3.html#DataFile">Data File</a>&nbsp;&nbsp; </li>
+		<li><a href="tr34-3.html#References">References</a></li>
+		<li><a href="tr34-3.html#Modifications">Modifications</a></li>
+	</ul>
+	<hr>
+	<h2><a name="Overview">1 Overview</a> </h2>
+	<p>The Unicode Standard specifies notational conventions for 
+    referring to sequences of characters (or code points), using angle brackets 
+    surrounding a comma-delimited list of code points, code points plus 
+    character names, and so on. For example:</p>
+	<blockquote>
+	<p>&lt;U+0065, U+0302, U+0301&gt;</p>
+    </blockquote>
+    <p></p>
+    <p>or</p>
+    <blockquote>
+    <p>&lt;U+0065 LATIN SMALL LETTER A, U+0302 COMBINING CIRCUMFLEX ACCENT, U+0301 
+    COMBINING ACUTE ACCENT&gt;</p>
+    </blockquote>
+    <p></p>
+    <p>to refer to a combining character sequence consisting of the letter &#39;a&#39; 
+    with a circumflex and an acute accent applied to it.</p>
+    <p>See Section 0.3, <i>Notational Conventions</i> in [<a href="tr34-3.html#Unicode">Unicode</a>] for the 
+    description of the conventions for expression of code points and for the 
+    representation of sequences of code points.</p>
+    <p>The Unicode conventions for referring to a sequence of characters (or 
+    code points) are a generalization of the formal syntax specified in ISO/IEC 
+    10646:2003 for UCS Sequence Identifiers, or USI. A USI has the form:</p>
+    <blockquote>
+    <p>&lt;UID1, UID2, ... UIDn&gt;</p>
+    </blockquote>
+    <p></p>
+    <p>where UID1, UID2, etc., represent the short identifiers for code points, 
+    that is, most commonly &quot;U+0065&quot; or &quot;0065&quot;, and so on. A USI has the 
+    additional requirement that it must contain at least two code points.</p>
+    <p>Having a conventional notation for sequences of Unicode code points 
+    treated as a unit is useful in a number of circumstances. For example, other standards may need to refer to entities which are 
+    represented in Unicode by sequences of characters. Mapping tables may map single characters in other standards to sequences 
+    of Unicode characters. And listings of repertoire coverage for fonts or 
+    keyboards may need to reference entities which do not correspond to single 
+    Unicode code points.</p>
+    <p>In some limited circumstances it is necessary to also provide a name for 
+    such sequences. While it is clearly impossible to provide names for all 
+    possible sequences of Unicode characters that could be of any interest, the 
+    Unicode Standard defines a mechanism for naming sequences and a short list 
+    of sequences which have been formally named.</p>
+    <p>This annex defines the concept of a <i>Unicode named character sequence</i>, 
+    specifies a notational convention for them and a set of rules constraining 
+    possible names applied to character sequences, and gives the normative list 
+    of existing Unicode named character sequences.</p>
+    <p>Table 1 provides some examples of Unicode named character sequences, to 
+    illustrate the kinds of entities which have been formally named. The 
+    &quot;Appearance&quot; column illustrates the entity in question with a representative 
+    glyph. The &quot;Code Points&quot; column gives the actual sequence of encoded Unicode 
+    characters which represent that entity, and the &quot;Name&quot; column shows the name 
+    which has been associated with that sequence.</p>
+    <p></p>
+    <p></p>
+    <p></p>
+	<div align="center">
+		<center>
+		<table cellpadding="4" border="1" id="table6">
+			<caption>Table 1 Examples of Named Sequences</caption>
+			<tr>
+				<th align="left" style="text-align: center">Appearance</th>
+				<th align="left">Code Points</th>
+				<th align="left">Name</th>
+				<th align="left">Notes on Usage</th>
+			</tr>
+			<tr>
+				<th style="text-align: center">
+				<img src="i-macron-grave.jpg" border="0" alt="012B, 0300"></th>
+				<td style="vertical-align: middle" nowrap>012B 0300</td>
+				<td style="vertical-align: middle">LATIN SMALL LETTER I WITH MACRON AND GRAVE</td>
+				<td style="vertical-align: middle">Livonian</td>
+			</tr>
+			<tr>
+				<th style="text-align: center">
+				<img src="high-low-tone.jpg" border="0" alt="02E5, 02E9"></th>
+				<td style="vertical-align: middle" nowrap>02E5 02E9</td>
+				<td style="vertical-align: middle">MODIFIER LETTER EXTRA-HIGH 
+				EXTRA-LOW CONTOUR TONE BAR</td>
+				<td style="vertical-align: middle">Contour tone letter</td>
+			</tr>
+			<tr>
+				<th style="text-align: center">
+				<img src="katakana-ainu-p.jpg" border="0" alt="31F7, 309A"></th>
+				<td style="vertical-align: middle" nowrap>31F7 309A</td>
+				<td style="vertical-align: middle">KATAKANA LETTER AINU P</td>
+				<td style="vertical-align: middle">Ainu in kana transcription</td>
+			</tr>
+			<tr>
+				<td style="vertical-align: middle; text-align:center">
+				<img alt="17BB, 17C6" src="../tr28/images/17BB17C6.gif" ></td>
+				<td style="vertical-align: middle" nowrap>17BB 17C6</td>
+				<td style="vertical-align: middle">KHMER VOWEL SIGN SRAK OM</td>
+				<td style="vertical-align: middle">Khmer</td>
+			</tr>
+			<tr>
+				<td style="vertical-align: middle; text-align:center">
+				<img alt="17B6,17C6" src="../tr28/images/17B617C6.gif" ></td>
+				<td style="vertical-align: middle" nowrap>17B6 17C6</td>
+				<td style="vertical-align: middle">KHMER VOWEL SIGN SRAK AM</td>
+				<td style="vertical-align: middle">Khmer</td>
+			</tr>
+			<tr>
+				<td style="vertical-align: middle; text-align:center">
+				<img alt="17D2,1780" src="../tr28/images/17D21780.gif" ></td>
+				<td style="vertical-align: middle" nowrap>17D2 1780</td>
+				<td style="vertical-align: middle">KHMER CONSONANT SIGN COENG KA</td>
+				<td style="vertical-align: middle">Khmer</td>
+			</tr>
+		</table>
+		</center></div>
+    <p>Unicode named character sequences differ from Unicode variation 
+    sequences. The latter are documented in Section 15.6, <i>Variation Selectors</i> in [<a href="tr34-3.html#Unicode">Unicode</a>] and are listed exhaustively in the data file StandardizedVariants.txt 
+    in the Unicode Character Database [<a href="tr34-3.html#UCD">UCD</a>].</p>
+    <p>Variation sequences consist of a sequence of code points, but they can <i>
+    only</i> be two code points in length, there are constraints on which types 
+    of characters they can start with, and they must have a variation selector 
+    as their second code point. Variation sequences have a specifically defined 
+    glyphic shape, but have no associated name.</p>
+    <p>Named character sequences can, in principle, consist of code point 
+    sequences of any length, without constraints on what types of characters are 
+    involved. They do not have a specifically defined glyphic shape, but they <i>
+    do</i> have a formally specified name associated with them.</p>
+	<h2><a name="Notation">2 Definitions and Notation</a></h2>
+	<table class="noborder" cellspacing="0" cellpadding="4" border="0" id="table2">
+		<tr>
+			<td class="noborder" valign="top">D1</td>
+			<td class="noborder">
+			<p>Unicode named character sequence: A specific sequence of two or 
+            more Unicode characters, together with a formal name designating 
+            that sequence.</p>
+            			</td>
+		</tr>
+		</table>
+    <p></p>
+    <p>The notation for a Unicode named character sequence makes use of the 
+    general conventions for character sequences in the standard, together with 
+    name conventions as specified in Section 4, <i><a href="tr34-3.html#Names">Names</a></i> below. Thus a typical 
+    representation of a Unicode named character sequence would be as:</p>
+    <blockquote>
+    <p>&lt;U+012B, U+0300&gt; LATIN SMALL LETTER I WITH MACRON AND GRAVE</p>
+    </blockquote>
+    <p></p>
+    <p>In contexts which supply other clear means for delimitation, such as data 
+    files or tables, the bracketing and comma delimitation conventions for the 
+    sequences may be dropped, as in:</p>
+    <blockquote>
+    <p>012B 0300;LATIN SMALL LETTER I WITH MACRON AND GRAVE</p>
+	</blockquote>
+	<h2><a name="Conformance">3 Conformance</a></h2>
+	<p>Conformance to the Unicode Standard <b><i>re</i></b><i><b>quires</b></i> 
+	conformance to the specification in this document. The relationship between 
+	conformance to the Unicode Standard, and conformance to an individual Unicode 
+	Standard Annex (UAX) is described in more detail  in 
+	Section 3.2, <i>Conformance Requirements </i>in [<a href="tr34-3.html#Unicode">Unicode</a>]. </p>
+	<table class="noborder" cellspacing="0" cellpadding="4" border="0" id="table1">
+		<tr>
+			<td class="noborder" valign="top">C1</td>
+			<td class="noborder">
+			<p>If a process purports to implement Unicode named 
+            character sequences, it shall use only those named character 
+            sequences defined in the file NamedSequences.txt in the Unicode 
+            Character Database.</p>
+            			</td>
+		</tr>
+		</table>
+	    <p>Only the named character sequences in NamedSequences.txt are defined in 
+    this standard. No other Unicode character sequences are given names, 
+    although additional named character sequences might be added to 
+    NamedSequences.txt in the future.</p>
+    <p>Conformance to this clause should not be construed as preventing 
+    implementers from providing informal names of their choice to any entities 
+    or character sequences, as appropriate. However, such informal names are not 
+    specified in any way by this standard for use in interchange.</p>
+   	<h2 align="left"><a name="Names">4 Names</a></h2>
+	<p align="left">Names of Unicode named character sequences are unique. 
+	They are part of the same name space as Unicode character names. As a 
+	result, where a name exists as a character name, a modified name must be 
+	assigned instead. The same applies to not-yet-encoded characters.</p>
+	<p align="left">Where possible, the names for sequences 
+	are constructed by appending the names of the constituent elements together 
+	while eliding duplicate elements. Where this process would result in a 
+	name that already exists, the name is modified suitably to guarantee uniqueness.
+	</p>
+	<p align="left"></p>
+	<div align="center">
+		<table border="1" id="table7">
+			<caption>Table 2 Examples of Hypothetical Sequence Names</caption>
+			<tr>
+				<th>USI</th>
+				<th>Alternate Representation of Sequence</th>
+				<th>Name</th>
+			</tr>
+			<tr>
+				<td nowrap>
+				<p align="left">&lt;0041, 0043, 0043&gt;&nbsp;&nbsp; </p>
+				</td>
+				<td>&lt;A, B, C&gt;</td>
+				<td>LATIN CAPITAL LETTER A B C</td>
+			</tr>
+			<tr>
+				<td nowrap>
+				<p align="left">&lt;00CA, 0046&gt;&nbsp;&nbsp;&nbsp; </p>
+				</td>
+				<td>&lt;AE, F&gt;</td>
+				<td>LATIN CAPITAL LETTER AE F</td>
+			</tr>
+			<tr>
+				<td nowrap>
+				<p align="left">&lt;0058, 030A&gt; </p>
+				</td>
+				<td>&lt;X, COMBINING RING ABOVE&gt;</td>
+				<td>LATIN CAPITAL LETTER X WITH RING ABOVE</td>
+			</tr>
+		</table>
+	</div>
+	<p align="left">Where names are constructed other than by merging existing character 
+	names for the constituent characters of the sequence, convention restricts any 
+	additional items to the Latin capital letters A to Z, SPACE, HYPHEN-MINUS 
+	and the digits 0 to 9, provided that a digit is not the first character in a 
+	word. This convention makes it possible to turn 
+	names into identifiers using straightforward transformations.</p>
+	<p>Names for named sequences are constructed 
+	according to the following rules:</p>
+	<p><i>R1: Only Latin capital letters A to Z, 
+	Digits 0-9 (provided that a digit is not the first character in a word), 
+	SPACE, and HYPHEN-MINUS are used for writing the names.</i><br>
+&nbsp;</p>
+	<p><i>R2:&nbsp; Only one name is given to each 
+	named sequence and each named sequence must have a unique name within the a 
+	shared name space that also contains character names. </i><br>
+&nbsp;</p>
+	<p><i>R3:&nbsp; Like character names, names 
+	for sequences are unique if they are different even when SPACE and medial 
+	HYPHEN-MINUS characters are ignored, and when the strings “LETTER”, 
+	“CHARACTER”, and “DIGIT” are ignored in comparison of the names.</i></p>
+	<p>The following two character names are exceptions to this rule, because 
+	they were created before this rule was specified:<br>
+	116C HANGUL JUNGSEONG OE<br>
+	1180 HANGUL JUNGSEONG O-E</p>
+	<p>Examples of unacceptable names that are not 
+	unique:<br>
+	SARATI LETTER AA<br>
+	SARATI CHARACTER AA</p>
+	<p>These two names would not be unique if the 
+	strings “LETTER” and “CHARACTER” were ignored.</p>
+	<p><i>R4: Where possible, names for named 
+	sequences are constructed by appending the names of the constituent elements 
+	together while eliding duplicate elements. Should this process result in a 
+	name that already exists, the name is modified suitably to guarantee 
+	uniqueness among character names and names for named sequences.&nbsp; </i>
+	</p>
+	<p align="left"><i>R5: Where applicable, the rules from Appendix L in ISO/IEC 
+	10646:2003 apply.</i></p>
+	<p align="left">Note: Just like character names, the names for sequences may be translated, with the translated 
+	names for each language being unique with respect to each other and the corresponding 
+	set of translated character names. However, translated names are not restricted to the same limited character 
+	set as the English names. Translated names may not be suitable as 
+	identifiers without modification.</p>
+	<h2 align="left"><a name="DataFile">5 Data File</a></h2>
+	<p align="left">A data file is available
+	consisting of those named sequences 
+	defined by The Unicode Technical Committee. The sequences are listed in the 
+	data file in an abbreviated format. See [<a href="tr34-3.html#Data">Data</a>].</p>
+	<h2><a name="References">References</a></h2>
+	<table cellspacing="12" cellpadding="0" border="0" class="noborder">
+		<tr>
+			<td class="noborder" valign="top" width="1">
+			[10646]</td>
+			<td class="noborder" valign="top">International Organization for Standardization. <i>
+			Information Technology--</i>Universal Multiple-Octet 
+			Coded Character Set (UCS).&nbsp; (ISO/IEC
+			10646:2003). <i><br>
+			For availability see <a href="http://www.iso.org">http://www.iso.org</a></i></td>
+		</tr>
+		<tr>
+			<td class="noborder" valign="top" width="1">[<a name="Charts">Charts</a>]</td>
+			<td class="noborder" valign="top">The online code charts can be found 
+			at <a href="http://www.unicode.org/charts/">http://www.unicode.org/charts/</a><br>
+			An index to characters names with links to the corresponding chart is 
+			found at <a href="http://www.unicode.org/charts/charindex.html">http://www.unicode.org/charts/charindex.html</a></td>
+		</tr>
+		<tr>
+			<td class="nb">[<a name="Data">Data</a>]</td>
+			<td class="nb">Named Sequences Data File <i><br>
+			For the latest version, see: </i>
+			<a href="http://www.unicode.org/Public/UNIDATA/NamedSequences.txt">
+			http://www.unicode.org/Public/UNIDATA/NamedSequences.txt</a> <i><br>
+			For the current version see:</i>
+			<a href="http://www.unicode.org/Public/4.1.0/ucd/NamedSequences.txt">http://www.unicode.org/Public/4.1.0/ucd/NamedSequences.txt</a> <i><br>
+			For other versions, see: 
+			</i><a href="http://www.unicode.org/versions/">http://www.unicode.org/versions/</a></td>
+		</tr>
+		<tr>
+			<td class="nb">[<a name="Feedback">Feedback</a>]</td>
+			<td class="nb">Reporting Errors and Requesting Information Online<i>
+			</i><a href="http://www.unicode.org/reporting.html">http://www.unicode.org/reporting.html</a></td>
+		</tr>
+		<tr>
+			<td class="noborder" valign="top" width="1">[<a name="FAQ">FAQ</a>]</td>
+			<td class="noborder" valign="top">Unicode Frequently Asked Questions
+			<a href="http://www.unicode.org/faq/">http://www.unicode.org/faq/</a><br>
+			<i>For answers to common questions on technical issues.</i></td>
+		</tr>
+		<tr>
+			<td class="noborder" valign="top" width="1">[<a name="Glossary">Glossary</a>]</td>
+			<td class="noborder" valign="top">Unicode Glossary<a href="http://www.unicode.org/glossary/"> 
+			http://www.unicode.org/glossary/</a><br>
+			<i>For explanations of terminology used in this and other documents.</i></td>
+		</tr>
+		<tr>
+			<td class="nb">[<a name="Reports">Reports</a>]</td>
+			<td class="nb">Unicode Technical Reports
+			<a href="../index.html">http://www.unicode.org/reports/</a><br>
+			<i>For information on the status and development process for technical 
+			reports, and for a list of technical reports.</i></td>
+		</tr>
+		<tr>
+			<td class="noborder" valign="top" width="1">[<a name="UCD">UCD</a>]</td>
+			<td class="noborder" valign="top">Unicode Character Database.
+			<a href="http://www.unicode.org/ucd/">http://www.unicode.org/ucd/
+			</a>
+			<i>For an overview of the Unicode Character Database and a list of its 
+			associated files</i></td>
+		</tr>
+		<tr>
+			<td class="nb">[<a name="Unicode">Unicode</a>]</td>
+			<td class="nb">The Unicode Standard<i> <br>
+			For the latest version see:</i>
+			<a href="http://www.unicode.org/versions/latest/">http://www.unicode.org/versions/latest/</a>.
+			<i><br>
+			For the current version see:</i>
+			<a href="http://www.unicode.org/versions/Unicode4.1.0/">http://www.unicode.org/versions/Unicode4.1.0/</a>.
+			<i><br>
+			For the last major version see:</i> <br>
+			The Unicode Consortium.
+			<a href="http://www.unicode.org/versions/Unicode4.0.0/">The Unicode 
+			Standard, Version 4.0</a>. (Boston, MA, Addison-Wesley, 2003. 0-321-18578-1).</td>
+		</tr>
+		<tr>
+			<td class="nb">[<a name="Versions">Versions</a>]</td>
+			<td class="nb">Versions of the Unicode Standard
+			<a href="http://www.unicode.org/versions/">
+			http://www.unicode.org/versions/ </a><i><br>
+			For information on version numbering, and citing and referencing the 
+			Unicode Standard, the Unicode Character Database, and Unicode Technical 
+			Reports.</i></td>
+		</tr>
+	</table>
+	<p>&nbsp;</p>
+	<h2><a name="Modifications">Modifications</a></h2>
+	<p>The following summarizes modifications from the previous version of this 
+	document.</p>
+	<b>Revision 3</b><ul>
+		<li>Finished editing for initial publication as part of Unicode 
+		4.1.0.</li>
+	</ul>
+	<p>
+	<b>Revision 2</b></p>
+    <ul>
+		<li>Internal draft, revised substantially for initial publication as part of Unicode 
+		4.1.0.</li>
+	</ul>
+	<p><b>Revision 1</b></p>
+	<ul>
+		<li>Initial version</li>
+	</ul>
+	<hr align="LEFT">
+	<p><font size="-1">Copyright © 2001-<span style="background-color:#COCOCO">2005</span> 
+	Unicode, Inc. All Rights Reserved. The Unicode Consortium makes no expressed 
+	or implied warranty of any kind, and assumes no liability for errors or omissions. 
+	No liability is assumed for incidental and consequential damages in connection 
+	with or arising out of the use of the information or programs contained or accompanying 
+	this technical report. The Unicode
+	<a href="http://www.unicode.org/copyright.html">Terms of Use</a> apply.</font></p>
+	<p><font size="-1">Unicode and the Unicode logo are trademarks of Unicode, Inc., 
+	and are registered in some jurisdictions.</font></p>
+	<p>&nbsp;</p>
+</div>
+
+</body>
+
+</html>

@@ -1,0 +1,456 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
+       "http://www.w3.org/TR/REC-html40/loose.dtd"> 
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta http-equiv="Content-Language" content="en-us">
+<meta name="GENERATOR" content="Microsoft FrontPage 6.0">
+<meta name="ProgId" content="FrontPage.Editor.Document">
+<link rel="stylesheet" href="../unicode/reports/reports.css" type="text/css">
+<title>UTN #6: BOCU-1</title>
+</head>
+
+<body bgcolor="#ffffff">
+
+<table class="header">
+  <tr>
+    <td class="icon"><a href="http://www.unicode.org">
+    <img align="middle" alt="[Unicode]" border="0" src="../webscripts/logo60s2.gif" width="34" height="33"></a>&nbsp;&nbsp;             
+    <font size="3">    
+    <a class="bar" href="index.html">Technical Notes</a></font></td>            
+  </tr>    
+  <tr>    
+    <td class="gray">&nbsp;</td>    
+  </tr>    
+</table>    
+<div style="margin: 2em">    
+  <h2 align="center">Unicode Technical Note #6</h2>            
+  <h1 align="center">BOCU-1:<br>
+  MIME-Compatible Unicode Compression</h1>   
+   
+   
+  <table class="wide">   
+    <tr>   
+      <td>Version</td>   
+      <td><a href="tn6.1#TrackingNumber2">2</a></td>   
+    </tr>   
+    <tr>   
+      <td>Authors</td>   
+      <td><a href="http://www.unicode.org/unicode/reporting.html">Markus W. 
+      Scherer</a>, <a href="http://www.unicode.org/unicode/reporting.html">Mark 
+      Davis</a></td>  
+    </tr>  
+    <tr>  
+      <td>Date</td>  
+      <td>2006-02-04</td>  
+    </tr>  
+    <tr>  
+      <td>This Version</td>  
+      <td><a href="tn6/tn6-2.html">http://www.unicode.org/notes/tn6/tn6-2.html</a></td>  
+    </tr>  
+    <tr>  
+      <td>Previous Version</td>  
+      <td><a href="tn6/tn6-1.html">http://www.unicode.org/notes/tn6/tn6-1.html</a></td>  
+    </tr>  
+    <tr>  
+      <td>Latest Version</td>  
+      <td><a href="tn6.1">http://www.unicode.org/notes/tn6/</a></td>  
+    </tr>  
+  </table>  
+  <br>  
+  <h3><i>Summary</i></h3>  
+<p><i>This document describes a Unicode compression scheme that is MIME-compatible (directly usable 
+for emails) and preserves binary order (for databases and sorted lists). BOCU-1 is a MIME-compatible application of the <a href="http://icu.sourceforge.net/docs/papers/binary_ordered_compression_for_unicode.html">Binary    
+Ordered Compression for Unicode</a> [<a href="tn6.1#BOCU">BOCU</a>] base algorithm.</i></p>    
+  <h3><i>Status</i></h3>    
+  <p><i>This document is a <b>Unicode     
+  Technical Note</b>. It is supplied purely for informational purposes and     
+  publication does not imply any endorsement by the Unicode     
+  Consortium. For general information on Unicode Technical Notes, see <a href="index.html">    
+  http://www.unicode.org/notes/</a>.</i></p>    
+  <h3><i>Contents</i></h3>    
+  <ol>    
+    <li><a href="tn6.1#Introduction">Introduction</a>    
+    </li>    
+    <li><a href="tn6.1#Features">Features of BOCU-1</a> 
+      <ol> 
+        <li><a href="tn6.1#Compression">Compression</a></li>
+        <li><a href="tn6.1#Binary_Order">Binary Order</a></li>
+        <li><a href="tn6.1#MIME_Compatibility">MIME Compatibility</a></li>
+        <li><a href="tn6.1#Details">Details</a></li>
+      </ol>
+    </li>  
+    <li><a href="tn6.1#Signature">Signature Byte Sequence</a></li>  
+    <li><a href="tn6.1#Algorithm">Encoding Algorithm</a></li>  
+    <li><a href="tn6.1#Sample_Code">Sample C Code</a></li>  
+    <li><a href="tn6.1#Performance">BOCU-1 Performance</a>  
+      <ol>  
+        <li><a href="tn6.1#SCSU_vs_BOCU">SCSU vs. BOCU-1</a></li>   
+        <li><a href="tn6.1#Test_Setup">Test Setup</a></li>  
+      </ol>  
+    </li>  
+    <li><a href="tn6.1#Intellectual_Property">Intellectual Property</a></li>  
+    <li><a href="tn6.1#References">References</a></li>  
+    <li><a href="tn6.1#Modifications">Modifications</a></li>  
+  </ol>  
+  <h2>1 <a name="Introduction">Introduction</a></h2>  
+<p>The most popular encoding for Unicode text data exchange is UTF-8. It is  
+relatively simple and widely applicable: MIME/email/HTML/XML, in-process use in  
+some systems, etc. However, UTF-8 uses more bytes per code point for non-Latin  
+scripts than language-specific codepages.</p>  
+<p>In some markets where scripts other than Latin are used, the high bytes/code  
+point ratio of UTF-8 (and of UTF-16 for scripts other than Latin and CJK  
+ideographs) has been criticized and used as a motivation to not use Unicode for  
+the exchange of documents in some languages. Larger document sizes are also  
+a problem in low-bandwidth environments such as wireless networks for handheld  
+systems.</p>  
+<p>The Standard Compression Scheme for Unicode [<a href="tn6.1#SCSU">SCSU</a>] was created as a Unicode compression scheme with a byte/code point ratio   
+similar to language-specific codepages. It has not been widely adopted although   
+it fulfills the criteria for an IANA charset and is registered as one. [<a href="tn6.1#SCSU">SCSU</a>] is not suitable for MIME  
+“text” media types, i.e.,   
+it cannot be used directly in emails and similar protocols. [<a href="tn6.1#SCSU">SCSU</a>] requires a   
+complicated encoder design for good performance.</p>   
+<p>BOCU-1 combines the wide applicability of UTF-8 with the compactness of [<a href="tn6.1#SCSU">SCSU</a>].   
+It is useful for short strings and maintains code point order.</p>   
+<h2>2 <a name="Features">Features of BOCU-1</a></h2>    
+<h3>2.1 <a name="Compression">Compression</a></h3>   
+<p>The byte/code point ratio is 1 for runs of code points from the same block of    
+0x80 code points (and for Hiragana), and 2 for runs of CJK Unihan code points, as with [<a href="tn6.1#SCSU">SCSU</a>]. The    
+startup overhead is very low (similar to [<a href="tn6.1#SCSU">SCSU</a>]), which makes it useful for very short strings like    
+individual names. The maximum number of bytes per code point is four.</p>    
+  <p>With BOCU-1, texts in languages with Latin-based scripts take about the same amount of space as         
+  with UTF-8, while texts in all other languages take about 25%-60% less space. Compared to UTF-16,         
+  texts in all languages with small character repertoires take approximately half as much space in         
+  BOCU-1. For large character sets, i.e., Chinese/Japanese/Korean, texts are about the same size for         
+  UTF-16 and BOCU-1.&nbsp;</p>           
+<h3>2.2 <a name="Binary_Order">Binary Order</a></h3>           
+<p>The lexical order of BOCU-1 bytes is the same    
+as the code point order of the original text &mdash; like UTF-8 but unlike [<a href="tn6.1#SCSU">SCSU</a>]    
+&mdash;    
+which allows the compression of large, sorted lists of strings. This makes BOCU-1 suitable for use 
+in databases to reduce storage requirements as described above.</p>   
+<h3>2.3 <a name="MIME_Compatibility">MIME Compatibility</a></h3>   
+<p>The C0 control codes NUL, CR and LF and nine others are encoded with the same    
+byte values as in US-ASCII, and those byte values are used <em>only </em>for the    
+encoding of these twelve C0 control codes. This makes BOCU-1 suitable for MIME “text” media types, directly usable in emails and generally   
+“friendly” for    
+ASCII-based tools. The SUB control and its byte value 1A is included in this set    
+to avoid problems in DOS/Windows/OS/2 systems where 1A is interpreted as an    
+end-of-file marker in text mode.</p>    
+    
+  <h3>2.4 <a name="Details">Details</a></h3>   
+<p>BOCU-1 is byte-oriented and stateful. Its    
+inter-character state consists of a single integer. It is deterministic, i.e.,    
+the    
+same complete input text is always encoded the same way by all encoders (unlike with [<a href="tn6.1#SCSU">SCSU</a>]). 
+Like [<a href="tn6.1#SCSU">SCSU</a>] it can be    
+classified as a Character Encoding Scheme (CES) or as a Transfer Encoding Syntax (TES). It is a “charset” according to    
+IANA, and it is suitable for    
+MIME “text” media types.</p>    
+    
+<p>The state is reset at each C0 control (U+0000..U+001F, includes CR, LF, TAB). CRLF-separated lines do not affect each  
+other’s encoding. Together with BOCU-1    
+being deterministic, this allows line-based file comparisons (diff) and makes BOCU-1 usable    
+with RCS, CVS and other source-code control systems (unlike [<a href="tn6.1#SCSU">SCSU</a>]). This also allows some    
+limited random access.</p>    
+    
+<p>Byte values for single-byte codes and lead bytes overlap with trail bytes.    
+So unlike UTF-8, character boundaries cannot be determined in random access, except    
+by backing up to a reset point. Byte values 7F..9F (DEL and C1 control codes) are used as lead and trail bytes. 
+US-ASCII characters (code points U+0021..U+007E) are not encoded with the    
+same bytes as in US-ASCII. Therefore, the charset must be specified with a    
+signature byte sequence or in a higher-level protocol.</p>    
+    
+  <p>As a single/lead byte, byte value FF is used as a special “reset-state-only” command.    
+It does not encode any code point. FF is also a normal trail byte. Having a “reset only” command allows simple concatenation of BOCU-1 byte streams.    
+(All other BOCU-1 byte sequences would append some code point.)    
+<em>Using FF to reset the state breaks the ordering!    
+The use of FF resets is discouraged.</em> Byte stream concatenation without resetting with FF requires to scan back to    
+a C0 control whose byte value is not used for trail bytes    
+(last known reset to initial state);    
+then decode to the end of the first stream and encode the first non-U+0020 code point    
+of the second stream according to the current state;    
+then append the rest of the second stream.    
+The same procedure could be used to remove an FF reset command.</p>    
+    
+<h2>3 <a name="Signature">Signature Byte Sequence</a></h2>   
+<p>An initial U+FEFF is encoded in BOCU-1 with the three bytes FB EE 28.</p>   
+   
+<h2>4 <a name="Algorithm">Encoding Algorithm</a></h2>   
+<p>The basic algorithm is as described in <a href="http://icu.sourceforge.net/docs/papers/binary_ordered_compression_for_unicode.html">Binary    
+Ordered Compression for Unicode</a> [<a href="tn6.1#BOCU">BOCU</a>].</p>   
+<p>BOCU-1 differs from the generic algorithm by using a different set of byte   
+value ranges and by encoding U+0000..U+0020 directly with byte values 00..20. In   
+addition, the space character U+0020 does not affect the state. This is to avoid large difference values at the beginning and end of   
+each word.</p>   
+<p>Partial pseudo-code for a per-code point encoding function is as follows:</p>   
+<pre>encode(int &amp;prev, int c) {
+    if(c&lt;=0x20) {
+        output (byte)c;
+        if(c!=0x20) {
+            prev=0x40;
+        }
+    } else {
+        int diff=c-prev;
+        // encode diff in 1..4 bytes and output them
+
+        // adjust prev
+        if(c is Hiragana) {
+            prev=middle of Hiragana;
+        } else if(c is CJK Unihan) {
+            prev=middle of CJK Unihan;
+        } else if(c is Hangul) {
+            prev=middle of Hangul;
+        } else {
+            prev=(c&amp;~0x7f)+0x40;
+        }
+    }
+}
+</pre>   
+<h2>5 <a name="Sample_Code">Sample C Code</a></h2>   
+<p>The sample C code serves as the full specification of   
+BOCU-1. Every conformant encoder and decoder must generate equivalent output and   
+detect any illegal input code points and illegal input byte sequences. Recovery   
+from illegal input is not specified. Single surrogates are encoded if present in   
+the input (e.g., unmatched single surrogate code units in UTF-16). Proper input   
+of supplementary code points (e.g., matched surrogate pairs in UTF-16) must be   
+encoded by code points.</p>   
+   
+  <p>This code uses <a href="http://ibm.com/software/globalization/icu">International Components for Unicode</a>    
+  [<a href="tn6.1#ICU">ICU</a>] standard    
+headers and the one implementation file <code>icu/source/common/utf_impl.c</code>.    
+(It is not necessary to link the entire [<a href="tn6.1#ICU">ICU</a>] common library.) This is for    
+convenience in the surrounding test functions and not necessary for the core    
+BOCU-1 functions. These headers and implementation file provide the following:</p>    
+    
+<ul>    
+  <li>Include inttypes.h or define its types.</li>    
+  <li>Define UChar for UTF-16 as an unsigned 16-bit type (wchar_t or uint16_t).</li>    
+  <li>Define UTF* macros to handle reading and writing of in-process UTF-8/16    
+    strings.</li>    
+</ul>    
+<p>This code is under the <a href="http://dev.icu-project.org/cgi-bin/viewcvs.cgi/*checkout*/icu/license.html">X    
+license (ICU version)</a>  [<a href="tn6.1#ICULicense">ICULicense</a>].</p>  
+  
+<p>Files:</p>  
+  
+<ul>  
+  <li><a href="tn6/bocu1.h">bocu1.h</a> (constants and macros)</li>  
+  <li><a href="tn6/bocu1.c">bocu1.c</a> (encoder and decoder functions)</li>  
+  <li><a href="tn6/bocu1tst.c">bocu1tst.c</a> (test code with <code>main()</code>  
+    function, see below)</li>  
+</ul>  
+  
+<p>A complete, compiled sample <a href="tn6/bocu1.exe">executable for Windows&reg;</a>        
+from this source code is available for download. Aside from basic implementation        
+and consistency tests, this also provides file conversion between UTF-8 and        
+BOCU-1. Use a command-line argument of “?” or “-h” for        
+usage.</p>    
+    
+  <h2>6 <a name="Performance">BOCU-1 Performance</a></h2>   
+  <p>This is a performance comparison between BOCU-1,    
+    UTF-8, and [<a href="tn6.1#SCSU">SCSU</a>] when implemented as [<a href="tn6.1#ICU">ICU</a>] converters,    
+    which convert to and from UTF-16. The time is for roundtrip conversions from the internal UTF-16 form to the encoding and back. 
+  Values are relative to UTF-8.</p>    
+    
+  <table border="1">    
+    <tr>    
+      <th></th>    
+      <th colspan="2">BOCU-1</th>    
+      <th colspan="2">SCSU</th>    
+    </tr>    
+    <tr>    
+      <th>Languages</th>    
+      <th>Size of text</th>    
+      <th>Time to convert<br>to/from UTF-16</th>    
+      <th>Size of text</th>    
+      <th>Time to convert<br>to/from UTF-16</th>    
+    </tr>    
+    <tr>    
+      <th>English/French</th>    
+      <td>100%</td>    
+      <td>160..170%</td>    
+      <td>100%</td>    
+      <td>125%</td>    
+    </tr>    
+    <tr>    
+      <th>Greek/Russian/Arabic/Hebrew</th>    
+      <td>60%</td>    
+      <td>65..70%</td>    
+      <td>55%</td>    
+      <td>70%</td>    
+    </tr>    
+    <tr>    
+      <th>Hindi</th>    
+      <td>40%</td>    
+      <td>45%</td>    
+      <td>40%</td>    
+      <td>45%</td>    
+    </tr>    
+    <tr>    
+      <th>Thai (<a href="tn6.1#Thai">see below</a>)</th>    
+      <td>45%</td>    
+      <td>60%</td>    
+      <td>40%</td>    
+      <td>55%</td>    
+    </tr>    
+    <tr>    
+      <th>Japanese</th>    
+      <td>60%</td>    
+      <td>150%</td>    
+      <td>55%</td>    
+      <td>110%</td>    
+    </tr>    
+    <tr>    
+      <th>Korean</th>    
+      <td>75%</td>    
+      <td>155%</td>    
+      <td>85%</td>    
+      <td>70%</td>    
+    </tr>    
+    <tr>    
+      <th>Chinese</th>    
+      <td>75%</td>    
+      <td>165%</td>    
+      <td>70%</td>    
+      <td>65%</td>    
+    </tr>    
+  </table>    
+  <p>(Smaller percentages are better. Percentages are rounded to the nearest 5%.)</p>    
+    
+  <p>The compression ratio is smaller for web pages (lots of ASCII in HTML).    
+    The performance difference tends to be smaller for smaller buffers.    
+    When the text is transmitted between machines (emails, web pages),    
+    then the transmission time may swamp the conversion time.    
+    Smaller text will then transmit faster.</p>    
+    
+  <h3>6.1 <a name="SCSU_vs_BOCU">SCSU vs. BOCU-1</a></h3>    
+  <ul>    
+    <li>[<a href="tn6.1#SCSU">SCSU</a>] and BOCU-1 have similar compression characteristics.</li>    
+    <li>[<a href="tn6.1#SCSU">SCSU</a>] tends to be faster than BOCU-1.</li>    
+    <li>BOCU-1 is applicable in <em>many</em> more environments    
+      (it is MIME-friendly, CVS-friendly, and has the same binary order as UTF-8).</li>    
+    <li>The optimized [<a href="tn6.1#ICU">ICU</a>] converter for BOCU-1 is somewhat less complex than the one for [<a href="tn6.1#SCSU">SCSU</a>],    
+      and the output is deterministic, unlike with [<a href="tn6.1#SCSU">SCSU</a>].</li>   
+  </ul>   
+   
+  <h3>6.2 <a name="Test_Setup">Test Setup</a></h3>   
+  <p>The texts are the <a href="http://www.unicode.org/unicode/standard/WhatIsUnicode.html">“What is   
+  Unicode” pages from www.unicode.org</a>, except for Thai.   
+    Note that english.html contains non-ASCII characters in the index sidebar. The <a name="Thai"> Thai</a> text, <a href="http://dev.icu-project.org/cgi-bin/viewcvs.cgi/*checkout*/icu/source/test/testdata/Attic/th18057.txt">th18057.txt</a>,    
+    has a different structure: It is a Thai word list from [<a href="tn6.1#ICU">ICU</a>]’s test data, with one Thai word on each line.    
+    Compared to the other texts, it contains only a few characters between CRLF.</p>   
+   
+  <p>This comparison uses full-fledged [<a href="tn6.1#ICU">ICU</a>] converters for UTF-8, [<a href="tn6.1#SCSU">SCSU</a>] and BOCU-1.   
+  “Full-fledged [<a href="tn6.1#ICU">ICU</a>] converter” means that this is with the [<a href="tn6.1#ICU">ICU</a>] 
+  conversion API,    
+    designed for external encodings, as used e.g. by an XML parser or web browser.</p>    
+    
+  <p>The [<a href="tn6.1#ICU">ICU</a>] converter code for [<a href="tn6.1#SCSU">SCSU</a>] and BOCU-1 that is tested here    
+    is part of [<a href="tn6.1#ICU">ICU</a>] 2.2.    
+    The [<a href="tn6.1#SCSU">SCSU</a>] converter was optimized slightly (conversion function variants without offset handling).    
+    The BOCU-1 converter is optimized compared to the reference code    
+    in the design document. The test machine is a Pentium 2 laptop.</p>   
+   
+   
+   
+   
+  <h2><a name="Intellectual_Property">Intellectual Property</a></h2>
+  <p align="center"><i>Letter regarding licensing of IBM Technology. Hardcopy is  
+  on file with the Chair of the UTC.</i></p>
+
+  <p align="center"><i>For information, see the <a href="http://www.unicode.org/policies/patent_policy.html">Unicode 
+  Consortium Patent Policy</a>.</i></p>
+
+  <p>January 23, 2006</p>
+  <p>Ms. Lisa Moore, UTC Chair<br>
+  The Unicode Consortium<br>
+  P.O. Box 391476<br>
+  Mountain View, CA 94039-1476</p>
+  <p>VIA: US Mail and e-mail</p>
+  <p>SUBJECT: Binary Ordered Compression for Unicode (BOCU)</p>
+  <p>&nbsp;</p>
+  <p>IBM would like to bring to your attention, US Patent 6737994         
+  &quot;Binary-Ordered Compression For Unicode&quot;, which may contain claims         
+  necessary to, or which may facilitate the implementation of, BOCU-1. Because         
+  we believe that access to this patent may be important to the successful         
+  implementation of BOCU-1, and although not required to do so by the Unicode         
+  Consortium’s IP policies, IBM would like to offer a royalty free license to         
+  this patent upon request to implementers of a fully compliant version of         
+  BOCU-1.</p>
+  <p>A party wishing to request a license should contact:</p>
+  <p>IBM Director of Licensing<br>
+  North Castle Drive<br>
+  Armonk, NY 10504</p>
+  <p>FAX: 914 765 4420</p>
+  <p>&nbsp;</p>
+  <p>Sincerely,</p>
+  <p>&nbsp;</p>
+  <p>Marcia Courtemanche<br>        
+  Program Director<br>        
+  Intellectual Property and Standards</p>        
+  <p>&nbsp;</p>
+
+   
+   
+   
+  <h2> <a name="References">References</a></h2>    
+  <table class="noborder" style="border-collapse: collapse" cellpadding="8" cellspacing="0">   
+    <tr>   
+      <td width="1" class="noborder">[<a name="BOCU">BOCU</a>]</td>  
+      <td class="noborder">Binary Ordered Compression for Unicode<br>
+        <a href="http://www.icu-project.org/docs/papers/binary_ordered_compression_for_unicode.html">http://www.icu-project.org/docs/papers/binary_ordered_compression_for_unicode.html</a><br>
+        <i>Describes the base algorithm, of which BOCU-1 is a profile. It 
+        serves as background information and is not necessary for the 
+        specification of BOCU-1.</i></td>  
+    </tr>  
+    <tr>  
+      <td width="1" class="noborder">[<a name="SCSU">SCSU</a>]</td>  
+      <td class="noborder">Unicode Technical Standard #6: A Standard Compression Scheme for Unicode<a href="../reports/tr6.1"><br>  
+        http://www.unicode.org/reports/tr6/</a></td>  
+    </tr>  
+    <tr>  
+      <td width="1" class="noborder">[<a name="ICULicense">ICULicense</a>]</td>  
+      <td class="noborder">The X license, modified for ICU<br>  
+        <a href="http://source.icu-project.org/repos/icu/icu/trunk/license.html">http://source.icu-project.org/repos/icu/icu/trunk/license.html</a></td>  
+    </tr>  
+    <tr>     
+      <td width="1" class="noborder">[<a name="ICU">ICU</a>]</td>     
+      <td class="noborder">     
+      International Components for Unicode<br>      
+      <a href="http://www.icu-project.org">http://www.icu-project.org</a><br>     
+      <i>Open-source C/C++ and Java libraries for Unicode and I18N support.</i>     
+      </td>     
+    </tr>     
+  </table>     
+  &nbsp;  
+  <h2><a name="Modifications">Modifications</a></h2>  
+  <p>The following summarizes modifications from the previous version of this   
+  document.</p>  
+  <table class="noborder" style="border-collapse: collapse" cellpadding="8" cellspacing="0">  
+    <tr>  
+      <td width="1" class="noborder">2008.10.01</td>  
+      <td class="noborder">Updated stale links in version 2</td>  
+    </tr>  
+    <tr>  
+      <td width="1" class="noborder"><a name="TrackingNumber2">2</a></td>  
+      <td class="noborder">Added Intellectual Property section and updated URLs</td>  
+    </tr>  
+    <tr>  
+      <td width="1" class="noborder"><a name="TrackingNumber1">1</a></td>  
+      <td class="noborder">Initial version</td>  
+    </tr>  
+  </table>  
+  <p class="copyright">Copyright © 2002-2006 Markus W. Scherer, Mark Davis. All Rights Reserved. The     
+  Unicode Consortium and the authors make no expressed or implied warranty of any     
+  kind, and assume no liability for errors or omissions. No liability is assumed     
+  for incidental and consequential damages in connection with or arising out of     
+  the use of the information or programs contained or accompanying this     
+  technical note. The Unicode <a href="http://www.unicode.org/copyright.html"> 
+  Terms of Use</a> apply.</p>    
+  <p class="copyright">Unicode and the Unicode logo are trademarks of Unicode,    
+  Inc., and are registered in some jurisdictions.</p>   
+</div>   
+   
+</body>

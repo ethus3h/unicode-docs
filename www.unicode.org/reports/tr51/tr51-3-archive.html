@@ -1,0 +1,4004 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+   "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Language" content="en-us">
+<title>UTR #51: Unicode Emoji</title>
+<link rel="stylesheet" type="text/css"
+	href="../../unicode/reports/reports.css">
+<style type="text/css">
+<!--
+a:visited.plain, a:link.plain {
+	color: black;
+	text-decoration: none
+}
+
+a:hover.plain {
+	color: red;
+	text-decoration: underline;
+}
+
+.fake_color {
+	color: #E56756;
+}
+
+.alink {
+	text-decoration: underline;
+}
+
+.linkstyle {
+	font-weight: bold;
+	text-decoration: underline;
+	font-size: 90%;
+}
+
+.works {
+	background-color: #ccFFcc;
+}
+
+.fails {
+	background-color: #FFcccc;
+}
+
+.modcharbg {
+	background-color: #E0E0FF;
+}
+
+.nolink:link, .nolink:visited {
+	color: black;
+	text-decoration: none;
+}
+
+.nolink:hover {
+	color: red;
+	text-decoration: underline;
+}
+
+.body ol li em {
+	font-family: Georgia, Times New Roman, Times, serif;
+}
+
+.green {
+	color: #00B800;
+}
+
+th {
+	background-color: #EEE;
+}
+
+.nowrap {
+	white-space: nowrap;
+}
+
+.serif {
+	font-family: serif;
+}
+
+.imgb {
+	width: 24px;
+	height: 24px;
+	margin-top: 1px;
+	margin-bottom: 1px;
+	vertical-align: text-bottom;
+}
+-->
+</style>
+</head>
+<body bgcolor="#ffffff">
+	<table class="header">
+		<tr>
+			<td class="icon"><a href="http://www.unicode.org"> <img
+					align="middle" alt="[Unicode]" border="0"
+					src="../../webscripts/logo60s2.gif" width="34"
+					height="33"></a>&nbsp; <a class="bar"
+				href="../index.html">Technical Reports</a></td>
+		</tr>
+		<tr>
+			<td class="gray">&nbsp;</td>
+		</tr>
+	</table>
+	<div class="body">
+		<h2 align="center">Unicode® Technical Report #51</h2>
+		<h1>Unicode Emoji</h1>
+		<table class="wide" cellspacing="0" cellpadding="2" border="1">
+			<tr>
+				<td width="20%">Version</td>
+				<td>1.0</td>
+			</tr>
+			<tr>
+				<td>Editors</td>
+				<td><a
+					href="https://plus.google.com/114199149796022210033?rel=author">Mark
+						Davis</a> (Google Inc.), Peter Edberg (Apple Inc.)</td>
+			</tr>
+			<tr>
+				<td>Date</td>
+				<td>2015-06-09</td>
+			</tr>
+			<tr>
+				<td>This Version</td>
+				<td><a href="tr51-3.html">http://www.unicode.org/reports/tr51/tr51-3.html</a></td>
+			</tr>
+			<tr>
+				<td>Previous Version</td>
+				<td><a href="tr51-2.html">http://www.unicode.org/reports/tr51/tr51-2.html</a></td>
+			</tr>
+			<tr>
+				<td>Latest Version</td>
+				<td><a href="../tr51.1">http://www.unicode.org/reports/tr51/</a></td>
+			</tr>
+			<tr>
+				<td valign="top">Latest Proposed Update</td>
+				<td valign="top"><a
+					href="proposed.html">http://www.unicode.org/reports/tr51/proposed.html</a></td>
+			</tr>
+			<tr>
+				<td>Revision</td>
+				<td><a href="tr51-3-archive.html#Modifications">3</a></td>
+			</tr>
+		</table>
+		<h3>
+			<i>Summary</i>
+		</h3>
+		<p>
+			<i>This document aims to improve the interoperability of emoji
+				characters across implementations by providing guidelines and data</i>.
+		</p>
+		<ul>
+			<li><em>design guidelines for improving interoperability
+					across platforms and implementations</em></li>
+			<li><em>data for</em>
+				<ul>
+					<li><em>which characters normally can be considered to be
+							emoji</em></li>
+					<li><em>which of those should be displayed by default
+							with a text-style versus an emoji-style</em></li>
+					<li><em>displaying emoji with a variety of skin tones</em></li>
+				</ul>
+			</li>
+		</ul>
+		<h3>
+			<i>Status</i>
+		</h3>
+		<!-- NOT YET APPROVED
+	<p class="changed"><i>This document is a <b><font color="#ff3333"> proposed update 
+	of a previously approved Unicode Technical Report</font></b>. This document 
+	may be updated, replaced, or superseded by other documents at any time. 
+	Publication does not imply endorsement by the Unicode Consortium. This 
+	is not a stable document; it is inappropriate to cite this document as other 
+	than a work in progress.</i></p>
+        END NOT YET APPROVED -->
+		<!-- APPROVED -->
+		<p>
+			<i>This document has been reviewed by Unicode members and other
+				interested parties, and has been approved for publication by the
+				Unicode Consortium. This is a stable document and may be used as
+				reference material or cited as a normative reference by other
+				specifications.</i>
+		</p>
+		<!-- END APPROVED -->
+
+		<blockquote>
+			<p>
+				<i><b>A Unicode Technical Report (UTR)</b> contains informative
+					material. Conformance to the Unicode Standard does not imply
+					conformance to any UTR. Other specifications, however, are free to
+					make normative references to a UTR.</i>
+			</p>
+		</blockquote>
+		<p>
+			<i>Please submit corrigenda and other comments with the online
+				reporting form [<a href="http://www.unicode.org/reporting.html">Feedback</a>].
+				Related information that is useful in understanding this document is
+				found in the <a href="tr51-3-archive.html#References">References</a>. For the latest
+				version of the Unicode Standard, see [<a
+				href="http://www.unicode.org/versions/latest/">Unicode</a>]. For a
+				list of current Unicode Technical Reports, see [<a
+				href="../index.html">Reports</a>]. For more
+				information about versions of the Unicode Standard, see [<a
+				href="http://www.unicode.org/versions/">Versions</a>].
+			</i>
+		</p>
+		<h3>
+			<i><a name="Contents" href="tr51-3-archive.html#Contents">Contents</a></i>
+		</h3>
+		<ul class="toc">
+			<li>1 <a href="tr51-3-archive.html#Introduction">Introduction</a>
+				<ul class="toc">
+					<li>Table: <a href="tr51-3-archive.html#Proposals">Emoji Proposals</a></li>
+					<li>Table: <a href="tr51-3-archive.html#Major_Sources">Major Sources</a></li>
+					<li>Table: <a href="tr51-3-archive.html#Selected_Products">Selected Products</a></li>
+					<li>1.1 <a href="tr51-3-archive.html#Emoticons">Emoticons and Emoji</a></li>
+					<li>1.2 <a href="tr51-3-archive.html#Encoding">Encoding Considerations</a></li>
+					<li>1.3 <a href="tr51-3-archive.html#Goals">Goals</a></li>
+					<li>1.4 <a href="tr51-3-archive.html#Definitions">Definitions</a>
+						<ul class="toc">
+							<li>1.4.1 <a href="tr51-3-archive.html#Emoji_Levels">Emoji Levels</a></li>
+							<li>1.4.2 <a href="tr51-3-archive.html#Emoji_Presentation">Emoji
+									Presentation</a></li>
+							<li>1.4.3 <a href="tr51-3-archive.html#Emoji_Variation_Sequences">Emoji
+									Variation Sequences</a></li>
+							<li>1.4.4 <a href="tr51-3-archive.html#Emoji_Modifiers">Emoji Modifiers</a></li>
+						</ul>
+					</li>
+				</ul>
+			</li>
+			<li>2 <a href="tr51-3-archive.html#Design_Guidelines">Design Guidelines</a>
+				<ul class="toc">
+					<li>2.1 <a href="tr51-3-archive.html#Gender">Gender</a></li>
+					<li>2.2 <a href="tr51-3-archive.html#Diversity">Diversity</a>
+						<ul class="toc">
+							<li>Table: <a href="tr51-3-archive.html#Emoji_Modifiers">Emoji Modifiers</a></li>
+							<li>2.2.1 <a href="tr51-3-archive.html#Multi_Person_Groupings">Multi-Person
+									Groupings</a>
+								<ul class="toc">
+									<li>Table: <a href="tr51-3-archive.html#ZWJ_Display">ZWJ Sequence Display</a></li>
+								</ul>
+							</li>
+							<li>2.2.2 <a href="tr51-3-archive.html#Diversity_Implementations">Implementations</a>
+								<ul class="toc">
+									<li>Table: <a href="tr51-3-archive.html#Subject_Emoji_Modifiers">Characters
+											Subject to Emoji Modifiers</a></li>
+									<li>Table: <a href="tr51-3-archive.html#Emoji_Modifiers_Display">Expected
+											Emoji Modifiers Display</a></li>
+									<li>Table: <a
+										href="tr51-3-archive.html#Emoji_Modifiers_And_Variation_Selectors">Emoji
+											Modifiers and Variation Selectors</a></li>
+								</ul>
+							</li>
+							<li>2.2.3 <a href="tr51-3-archive.html#Emoji_Modifiers_in_Text">Emoji
+									Modifiers in Text</a>
+								<ul class="toc">
+									<li>Table: <a href="tr51-3-archive.html#Minipalette">Minipalettes</a></li>
+								</ul>
+							</li>
+						</ul>
+					</li>
+				</ul>
+			</li>
+			<li>3 <a href="tr51-3-archive.html#Identification">Which Characters are Emoji</a>
+				<ul class="toc">
+					<li>3.1 <a href="tr51-3-archive.html#Level_1_Emoji">Level 1 Emoji</a>
+						<ul class="toc">
+							<li>Table: <a href="tr51-3-archive.html#Japanese_Carrier">Japanese Carrier
+									Emoji</a></li>
+							<li>Table: <a href="tr51-3-archive.html#Common_Additions">Common Additions</a></li>
+						</ul>
+					</li>
+					<li>3.2 <a href="tr51-3-archive.html#Level_2_Emoji">Level 2 Emoji</a>
+						<ul class="toc">
+							<li>Table: <a href="tr51-3-archive.html#Other_Flags">Other Flags</a></li>
+							<li>Table: <a href="tr51-3-archive.html#Standard_Additions">Standard
+									Additions</a></li>
+							<li>Table: <a href="tr51-3-archive.html#Standard_Additions8">Standard
+									Additions 8.0</a></li>
+						</ul>
+					</li>
+					<li>3.3 <a href="tr51-3-archive.html#Methodology">Methodology</a></li>
+				</ul>
+			</li>
+			<li>4 <a href="tr51-3-archive.html#Presentation_Style">Presentation Style</a>
+				<ul class="toc">
+					<li>Table: <a href="tr51-3-archive.html#Emoji_vs_Text_Display">Emoji vs Text
+							Display</a></li>
+				</ul>
+			</li>
+			<li>5 <a href="tr51-3-archive.html#Sorting">Ordering and Grouping</a></li>
+			<li>6 <a href="tr51-3-archive.html#Input">Input</a>
+				<ul class="toc">
+					<li>Table: <a href="tr51-3-archive.html#Palette_Input">Palette Input</a></li>
+				</ul>
+			</li>
+			<li>7 <a href="tr51-3-archive.html#Searching">Searching</a></li>
+			<li>8 <a href="tr51-3-archive.html#Longer_Term">Longer Term Solutions</a></li>
+			<li><a href="tr51-3-archive.html#Data_Files">Annex A: Data Files</a></li>
+			<li><a href="tr51-3-archive.html#Flags">Annex B: Flags</a></li>
+			<li><a href="tr51-3-archive.html#Selection_Factors">Annex C: Selection Factors</a></li>
+			<li><a href="tr51-3-archive.html#Standard_Additions_8">Annex D: Standard
+					Additions for Unicode 8.0</a>
+				<ul class="toc">
+					<li>Table: <a href="tr51-3-archive.html#Additions_80">Additions for Unicode
+							8.0</a></li>
+				</ul></li>
+			<li><a href="tr51-3-archive.html#ZWJ_Sequences">Annex E: Existing Use of ZWJ
+					Sequences</a></li>
+			<li><a href="tr51-3-archive.html#Acknowledgements">Acknowledgments</a></li>
+			<li><a href="tr51-3-archive.html#Rights_to_Emoji_Images">Rights to Emoji Images</a></li>
+			<li><a href="tr51-3-archive.html#References">References</a></li>
+			<li><a href="tr51-3-archive.html#Modifications">Modifications</a></li>
+		</ul>
+		<br>
+		<hr>
+		<br>
+		<h2>
+			1 <a name="Introduction" href="tr51-3-archive.html#Introduction">Introduction</a><a
+				name="Background"> </a>
+		</h2>
+		<p>Emoji are pictographs (pictorial symbols) that are typically
+			presented in a colorful cartoon form and used inline in text. They
+			represent things such as faces, weather, vehicles and buildings, food
+			and drink, animals and plants, or icons that represent emotions,
+			feelings, or activities.</p>
+		<p>
+			Emoji on smartphones and in chat and email applications have become
+			extremely popular worldwide. As of 2015, for example, Instagram
+			reported that “in March of this year, nearly half of text [on
+			Instagram] contained emoji.” Individual emoji also vary greatly in
+			popularity (and even by country), as described in the SwiftKey Emoji
+			Report. See <a href='http://www.unicode.org/press/emoji.html'>emoji press page</a> for
+			details about these reports and others.
+		</p>
+		<p>Emoji are most often used in social media—in quick, short
+			messages where they connect with the reader and add flavor, color,
+			and emotion. Emoji do not have the grammar or vocabulary to
+			substitute for written language. In social media, emoji make up for
+			the lack of gestures, facial expressions, and intonation that are
+			found in speech. They also add useful ambiguity to messages, allowing
+			the writer to convey many different possible concepts at the same
+			time. Many people are also attracted by the challenge of composing
+			messages in emoji, and puzzling out emoji messages.</p>
+		<p>
+			The word <em>emoji</em> comes from the Japanese:
+		</p>
+		<p align="center">
+			<a
+				href="http://unicode.org/cgi-bin/GetUnihanData.pl?codepoint=%E7%B5%B5"
+				target='unihan' style="text-decoration: none">絵</a> (e ≅ picture) <a
+				href="http://unicode.org/cgi-bin/GetUnihanData.pl?codepoint=%E6%96%87"
+				target='unihan' style="text-decoration: none">文</a> (mo ≅ writing) <a
+				href="http://unicode.org/cgi-bin/GetUnihanData.pl?codepoint=%E5%AD%97"
+				target='unihan' style="text-decoration: none">字</a> (ji ≅
+			character).
+		</p>
+		<p>
+			Emoji may be represented internally as graphics or they may be
+			represented by normal glyphs encoded in fonts like other characters.
+			These latter are called <em>emoji characters</em> for clarity. Some
+			Unicode characters are normally displayed as emoji; some are normally
+		displayed as ordinary text, and some can be displayed both ways.</p>
+		<p>
+			<a name="Media" href="tr51-3-archive.html#Media"></a>There’s been considerable media
+			attention to emoji since they appeared in the Unicode Standard, with
+			increased attention starting in late 2013. For example, there were
+			some 6,000 articles on the emoji appearing in Unicode 7.0, according
+			to Google News. See the <a href='http://www.unicode.org/press/emoji.html'>emoji
+				press page</a> for many samples of such articles, and also the <a
+				href='http://www.unicode.org/press/emoji.html#keynote'>Keynote</a> from the 38th
+			Internationalization &amp; Unicode Conference.
+		</p>
+		<p>Emoji became available in 1999 on Japanese mobile phones. There
+			was an early proposal in 2000 to encode DoCoMo emoji in Unicode. At
+			that time, it was unclear whether these characters would come into
+			widespread use—and there wasn't support from the Japanese mobile
+			phone carriers to add them to Unicode—so no action was taken.</p>
+		<p>The emoji turned out to be quite popular in Japan, but each
+			mobile phone carrier developed different (but partially overlapping)
+			sets, and each mobile phone vendor used their own text encoding
+			extensions, which were incompatible with one another. The vendors
+			developed cross-mapping tables to allow limited interchange of emoji
+			characters with phones from other vendors, including email.
+			Characters from other platforms that could not be displayed were
+			represented with 〓 (U+3013 GETA MARK), but it was all too easy for
+			the characters to get corrupted or dropped.</p>
+		<p>
+			When non-Japanese email and mobile phone vendors started to support
+			email exchange with the Japanese carriers, they ran into those
+			problems. Moreover, there was no way to represent these characters in
+			Unicode, which was the basis for text in all modern programs. In
+			2006, Google started work on converting Japanese emoji to Unicode
+			private-use codes, leading to the development of internal mapping
+			tables for supporting the carrier emoji via Unicode characters in <a
+				href="http://gmailblog.blogspot.com/2007/11/group-chat-and-rich-emoticons-now.html">2007</a>.
+		</p>
+		<p>There are, however, many problems with a private-use approach,
+			and thus a proposal was made to the Unicode Consortium to expand the
+			scope of symbols to encompass emoji. This proposal was approved in
+			May 2007, leading to the formation of a symbols subcommittee, and in
+			August 2007 the technical committee agreed to support the encoding of
+			emoji in Unicode based on a set of principles developed by the
+			subcommittee. The following are a few of the documents tracking the
+			progression of Unicode emoji characters.</p>
+		<div align="center">
+			<table border="1" cellspacing="0" cellpadding="0">
+				<caption>
+					<a name="Proposals" href="tr51-3-archive.html#Proposals">Emoji Proposals</a>
+				</caption>
+				<tr>
+					<th>Date</th>
+					<th>Doc No.</th>
+					<th>Title</th>
+					<th>Authors</th>
+				</tr>
+				<tr>
+					<td class="nowrap">2000-04-26</td>
+					<td class="nowrap">L2/00-152</td>
+					<td>NTT DoCoMo Pictographs</td>
+					<td>Graham Asher (Symbian)</td>
+				</tr>
+				<tr>
+					<td class="nowrap">2006-11-01</td>
+					<td class="nowrap">L2/06-369</td>
+					<td>Symbols (scope extension)</td>
+					<td>Mark Davis (Google)</td>
+				</tr>
+				<tr>
+					<td class="nowrap">2007-08-03</td>
+					<td class="nowrap">L2/07-257</td>
+					<td>Working Draft Proposal for Encoding Emoji Symbols</td>
+					<td>Kat Momoi, Mark Davis, Markus Scherer (Google)</td>
+				</tr>
+				<tr>
+					<td class="nowrap">2007-08-09</td>
+					<td class="nowrap">L2/07-274R</td>
+					<td>Symbols draft resolution</td>
+					<td>Mark Davis (Google)</td>
+				</tr>
+				<tr>
+					<td class="nowrap">2007-09-18</td>
+					<td class="nowrap">L2/07-391</td>
+					<td>Japanese TV Symbols (ARIB)</td>
+					<td>Michel Suignard (Microsoft)</td>
+				</tr>
+				<tr>
+					<td class="nowrap">2009-01-30</td>
+					<td class="nowrap">L2/09-026</td>
+					<td>Emoji Symbols Proposed for New Encoding</td>
+					<td rowspan="3">Markus Scherer, Mark Davis, Kat Momoi, Darick
+						Tong (Google);<br> Yasuo Kida, Peter Edberg (Apple)
+					</td>
+				</tr>
+				<tr>
+					<td class="nowrap">2009-03-05</td>
+					<td class="nowrap">L2/09-025R2</td>
+					<td>Proposal for Encoding Emoji Symbols</td>
+				</tr>
+				<tr>
+					<td class="nowrap">2010-04-27</td>
+					<td class="nowrap">L2/10-132</td>
+					<td>Emoji Symbols: Background Data</td>
+				</tr>
+				<tr>
+					<td class="nowrap">2011-02-15</td>
+					<td class="nowrap">L2/11-052R</td>
+					<td>Wingdings and Webdings Symbols</td>
+					<td>Michel Suignard</td>
+				</tr>
+			</table>
+		</div>
+		<p>
+			To find the documents in this table, see <a
+				href='http://www.unicode.org/L2/all-docs.html'>UTC Documents</a>.
+		</p>
+		<p>In 2009, the first Unicode characters explicitly intended as
+			emoji were added to Unicode 5.2 for interoperability with the ARIB
+			(Association of Radio Industries and Businesses) set. A set of 722
+			characters was defined as the union of emoji characters used by
+			Japanese mobile phone carriers: 114 of these characters were already
+			in Unicode 5.2. In 2010, the remaining 608 emoji characters were
+			added to Unicode 6.0, along with some other emoji characters. In
+			2012, a few more emoji were added to Unicode 6.1, and in 2014 a
+			larger number were added to Unicode 7.0.</p>
+		<p>Here is a summary of when some of the major sources of
+			pictographs used as emoji were encoded in Unicode. These sources
+			include other characters in addition to emoji.</p>
+		<div align="center">
+			<table border="1" cellspacing="0" cellpadding="1">
+				<caption>
+					<a name="Major_Sources" href="tr51-3-archive.html#Major_Sources">Major Sources</a>
+				</caption>
+				<tr>
+					<th rowspan="2">Source</th>
+					<th rowspan="2"><div align="center">Abbr</div></th>
+					<th rowspan="2"><div align="center">L</div></th>
+					<th rowspan="2"><div align="center">
+							Dev.<br>Starts
+						</div></th>
+					<th rowspan="2"><div align="center">Released</div></th>
+					<th rowspan="2"><div align="center">
+							Unicode<br>Version
+						</div></th>
+					<th colspan="4"><div align="center">Sample Character</div></th>
+				</tr>
+				<tr>
+					<th><div align="center">B&amp;W</div></th>
+					<th>
+						<div align="center">Color</div>
+					</th>
+					<th><div align="right">Code</div></th>
+					<th>Name</th>
+				</tr>
+				<tr>
+					<td>Zapf Dingbats</td>
+					<td><div align="center">ZDings</div></td>
+					<td><div align="center">z</div></td>
+					<td><div align="center">1989</div></td>
+					<td><div align="center" class="nowrap">1991-10</div></td>
+					<td><div align="center">
+							<a target="_blank"
+								href="http://www.unicode.org/versions/Unicode1.0.0/">1.0</a>
+						</div></td>
+					<td><div align="center">
+							<img height='24' width="auto" alt="✏"
+								src="images/ref/ref_270f.png">
+						</div></td>
+					<td><div align="center">
+							<img height='24' width="auto" alt="✏"
+								src="images/apple/apple_270f.png">
+						</div></td>
+					<td><div align="right">U+270F</div></td>
+					<td><em>pencil</em></td>
+				</tr>
+				<tr>
+					<td>ARIB</td>
+					<td><div align="center">ARIB</div></td>
+					<td><div align="center">a</div></td>
+					<td><div align="center">2007</div></td>
+					<td><div align="center" class="nowrap">2008-10-01</div></td>
+					<td><div align="center">
+							<a target="_blank"
+								href="http://unicode-inc.blogspot.ch/2009/10/unicode-announcement-unicode-520.html">5.2</a>
+						</div></td>
+					<td><div align="center">
+							<img height='24' width='auto' alt="☔"
+								src="images/ref/ref_2614.png">
+						</div></td>
+					<td><div align="center">
+							<img height='24' width='auto' alt="☔"
+								src="images/apple/apple_2614.png">
+						</div></td>
+					<td><div align="right">U+2614</div></td>
+					<td><em>umbrella with rain drops</em></td>
+				</tr>
+				<tr>
+					<td>Japanese carriers</td>
+					<td><div align="center">JCarrier</div></td>
+					<td><div align="center">j</div></td>
+					<td><div align="center">2007</div></td>
+					<td><div align="center" class="nowrap">2010-10-11</div></td>
+					<td><div align="center">
+							<a target="_blank"
+								href="http://unicode-inc.blogspot.ch/2010/10/unicode-version-60-support-for-popular.html">6.0</a>
+						</div></td>
+					<td><div align="center">
+							<img height='24' width='auto' alt="😎"
+								src="images/ref/ref_1f60e.png">
+						</div></td>
+					<td><div align="center">
+							<img height='24' width='auto' alt="😎"
+								src="images/twitter/twitter_1f60e.png">
+						</div></td>
+					<td><div align="right">U+1F60E</div></td>
+					<td><em>smiling face with sunglasses</em></td>
+				</tr>
+				<tr>
+					<td>Wingdings &amp; Webdings</td>
+					<td><div align="center">WDings</div></td>
+					<td><div align="center">w</div></td>
+					<td><div align="center">2010</div></td>
+					<td><div align="center" class="nowrap">2014-06-16</div></td>
+					<td><div align="center">
+							<a target="_blank"
+								href="http://unicode-inc.blogspot.ch/2014/06/announcing-unicode-standard-version-70.html">7.0</a>
+						</div></td>
+					<td><div align="center">
+							<img height='24' width="auto" alt="🌶"
+								src="images/ref/ref_1f336.png" title="U+1F336 🌶 hot pepper">
+						</div></td>
+					<td><div align="center">
+							<img height='20' width="auto" alt="🌶"
+								src="images/other/other_1f336.png" title="U+1F336 🌶 hot pepper">
+						</div></td>
+					<td><div align="right">U+1F336</div></td>
+					<td><em>hot pepper</em></td>
+				</tr>
+			</table>
+		</div>
+		<p>
+			Unicode characters can correspond to multiple sources. The L column
+			contains single-letter abbreviations for use in charts [<a
+				href="tr51-3-archive.html#emoji_charts">emoji-charts</a>] and data files [<a
+				href="tr51-3-archive.html#emoji_data">emoji-data</a>]. Characters that do not
+			correspond to any of these sources can be marked with Other (x).
+		</p>
+		<p>
+			For a detailed view of when various source sets of emoji were added
+			to Unicode, see <em>emoji-versions-sources</em> [<a
+				href="tr51-3-archive.html#emoji_charts">emoji-charts</a>]. The data file <span
+				class="noborder">[<a href="tr51-3-archive.html#JSources">JSources</a>]
+			</span> shows the correspondence to the original Japanese carrier symbols.
+		</p>
+		<p>
+			The <a href="tr51-3-archive.html#Selected_Products">Selected Products</a> table lists
+			when Unicode emoji characters were incorporated into selected
+			products. (The Private Use characters (PUA) were a temporary
+			solution.)
+		</p>
+		<div align="center">
+			<table>
+				<caption>
+					<a name="Selected_Products" href="tr51-3-archive.html#Selected_Products">Selected
+						Products</a>
+				</caption>
+				<tr>
+					<th><strong>Date</strong></th>
+					<th><strong>Product</strong></th>
+					<th><strong>Version</strong></th>
+					<th><strong>Encoding</strong></th>
+					<th><strong>Display</strong></th>
+					<th><strong>Input</strong></th>
+					<th><strong>Notes, Links</strong></th>
+				</tr>
+				<tr>
+					<td class="nowrap">2008-01</td>
+					<td>GMail mobile</td>
+					<td></td>
+					<td>PUA</td>
+					<td>color</td>
+					<td>palette</td>
+					<td><a
+						href="http://googlejapan.blogspot.com/2008/01/gmail.html">モバイル
+							Gmail が携帯絵文字に対応しました</a></td>
+				</tr>
+				<tr>
+					<td>2008-10</td>
+					<td>GMail web</td>
+					<td></td>
+					<td>PUA</td>
+					<td>color</td>
+					<td>palette</td>
+					<td><a
+						href="http://googlejapan.blogspot.com/2008/10/gmail.html">Gmail
+							で絵文字が使えるようになりました</a></td>
+				</tr>
+				<tr>
+					<td>2008-11</td>
+					<td>iPhone</td>
+					<td>iPhone OS 2.2</td>
+					<td>PUA</td>
+					<td>color</td>
+					<td>palette</td>
+					<td>Softbank users, others via 3rd party apps. <a
+						href="http://japan.cnet.com/news/media/20384088/">CNET Japan
+							article</a> on Nov. 21, 2008.
+					</td>
+				</tr>
+				<tr>
+					<td>2011-07</td>
+					<td>Mac</td>
+					<td>OSX 10.7</td>
+					<td>Unicode 6.0</td>
+					<td>color</td>
+					<td>Character Viewer</td>
+					<td></td>
+				</tr>
+				<tr>
+					<td>2011-11</td>
+					<td>iPhone, iPad</td>
+					<td>iOS 5</td>
+					<td>Unicode 6.0</td>
+					<td>color</td>
+					<td>+emoji keyboard</td>
+					<td></td>
+				</tr>
+				<tr>
+					<td>2012-06</td>
+					<td>Android</td>
+					<td>Jelly Bean</td>
+					<td></td>
+					<td>B&amp;W</td>
+					<td>3rd party input</td>
+					<td><a
+						href="http://phandroid.com/2012/08/30/tips-tricks-heres-a-quick-list-of-a-few-jelly-bean-emojis/">…Quick
+							List of Jelly Bean Emoji…</a></td>
+				</tr>
+				<tr>
+					<td>2012-09</td>
+					<td>iPhone, iPad</td>
+					<td>iOS 6</td>
+					<td>+ variation selectors</td>
+					<td></td>
+					<td></td>
+					<td></td>
+				</tr>
+				<tr>
+					<td>2012-08</td>
+					<td>Windows</td>
+					<td>8</td>
+					<td>Unicode only; no emoji variation sequences</td>
+					<td>desktop/tablet: b&amp;w;<br> phone: color
+					</td>
+					<td>integrated in touch keyboards</td>
+					<td></td>
+				</tr>
+				<tr>
+					<td>2013-08</td>
+					<td>Windows</td>
+					<td>8.1</td>
+					<td>Unicode only; emoji variation sequences</td>
+					<td>all: color</td>
+					<td>touch keyboards; phone: text prediction features (e.g.
+						&ldquo;love&rdquo; -&gt; ❤)</td>
+					<td>Color using scalable glyphs (OpenType extension)</td>
+				</tr>
+				<tr>
+					<td>2013-11</td>
+					<td>Android</td>
+					<td>Kitkat</td>
+					<td></td>
+					<td>color</td>
+					<td>native keyboard</td>
+					<td><a
+						href="http://www.techhive.com/article/2062244/express-yourself-with-the-new-colorful-emoji-in-android-kitkat.html">…new,
+							colorful Emoji in Android KitKat</a></td>
+				</tr>
+			</table>
+		</div>
+		<p>
+			People often ask how many emoji are in the Unicode Standard. This
+			question does not have a simple answer, because there is no clear
+			line separating which pictographic characters should be displayed
+			with a typical emoji style. For a complete picture, see <a
+				href="tr51-3-archive.html#Identification">Which Characters are Emoji</a>.
+		</p>
+		<p>
+			The colored images used in this document and associated charts <span
+				class="noborder">[<a href="tr51-3-archive.html#emoji_charts">emoji-charts</a>]
+			</span> are for illustration only. They do not appear in the Unicode
+			Standard, which has only black and white images. They are either made
+			available by the respective vendors for use in this document, or are
+			believed to be available for non-commercial reuse. Inquiries for
+			permission to use vendor images should be directed to those vendors,
+			not to the Unicode Consortium. For more information, see <a
+				href="tr51-3-archive.html#Rights_to_Emoji_Images"><em>Rights to Emoji Images</em></a>.
+		</p>
+		<h3>
+			1.1 <a name="Emoticons" href="tr51-3-archive.html#Emoticons">Emoticons and Emoji</a>
+		</h3>
+		<p>
+			The term <em>emoticon</em> refers to a series of text characters
+			(typically punctuation or symbols) that is meant to represent a
+			facial expression or gesture (sometimes when viewed sideways), such
+			as the following.
+		</p>
+		<p align="center">;-)</p>
+		<p align="left">
+			Emoticons <a target="_blank"
+				href="http://en.wikipedia.org/wiki/Emoticon">predate Unicode and
+				emoji</a>, but were later adapted to include Unicode characters. The
+			following examples use not only ASCII characters, but also U+203F ( ‿
+			), U+FE35 ( ︵ ), U+25C9 ( ◉ ), and U+0CA0 ( ಠ ).
+		</p>
+		<p align="center">^‿^</p>
+		<p align="center">◉︵◉</p>
+		<p align="center">ಠ_ಠ</p>
+		<p>
+			Often implementations allow emoticons to be used to input emoji. For
+			example, the emoticon ;-) can be mapped to <img height='14'
+				width='auto' alt="😉" src="images/apple/apple_1f609.png"> in a
+			chat window. The term <em>emoticon</em> is sometimes used in a
+			broader sense, to also include the emoji for facial expressions and
+			gestures. That broad sense is used in the Unicode block name <em>Emoticons</em>,
+			covering the code points from U+1F600 to U+1F64F.
+		</p>
+		<h3>
+			1.2 <a name="Encoding" href="tr51-3-archive.html#Encoding">Encoding Considerations</a>
+		</h3>
+		<p>
+			Unicode is the foundation for text in all modern software: it’s how
+			all mobile phones, desktops, and other computers represent the text
+			of every language. People are using Unicode every time they type a
+			key on their phone or desktop computer, and every time they look at a
+			web page or text in an application. It is very important that the
+			standard be stable, and that every character that goes into it be
+			scrutinized carefully. This requires a formal <a target="_blank"
+				href="http://www.unicode.org/pending/proposals.html#Proposal_Review_Process">process</a>
+			with a long development cycle. For example, the <img height='14'
+				width="auto" alt="🕶" src="images/ref/ref_1f576.png"> <em>dark
+				sunglasses</em> character was first proposed years before it was released
+			in Unicode 7.0.
+		</p>
+		<p>
+			Characters considered for encoding must normally be in widespread use
+			as elements of text. The emoji and various symbols were added to
+			Unicode because of their use as characters for text-messaging in a
+			number of Japanese manufacturers’ corporate standards, and other
+			places, or in long-standing use in widely distributed fonts such as
+			Wingdings and Webdings. In many cases, the characters were added for
+			complete round-tripping to and from a source set, <em>not</em>
+			because they were inherently of more importance than other
+			characters. For example, the <img height='14' width="auto" alt="🖁"
+				src="images/ref/ref_1f581.png"
+				title="U+1F581 🖁 clamshell mobile phone"> <em>clamshell
+				phone</em> character was included because it was in Wingdings and
+			Webdings, not because it is more important than, say, a “skunk”
+			character.
+		</p>
+		<p>
+			In some cases, a character was added to complete a set: for example,
+			a <img height='14' width="auto" alt="🏉"
+				src="images/apple/apple_1f3c9.png"> <em>rugby football</em>
+			character was added to Unicode 6.0 to complement the <img height='14'
+				width="auto" alt="🏈" src="images/apple/apple_1f3c8.png"> <em>american
+				football</em> character (the <img height='14' width="auto" alt="⚽"
+				src="images/apple/apple_26bd.png"> <em>soccer ball</em> had
+			been added back in Unicode 5.2). Similarly, a mechanism was added
+			that could be used to represent all country flags (those
+			corresponding to a two-letter <a target="_blank"
+				href="../tr35/index.html#Language_Locale_Field_Definitions">unicode_region_subtag</a>),
+			such as the <img height='14' width="auto" alt="🇨🇦"
+				src="images/ref/ref_1f1e8_1f1e6.png"> <em>flag for Canada</em>,
+			even though the Japanese carrier set only had 10 country flags.
+		</p>
+		<p>
+			This document describes a new set of selection factors used to weigh
+			the encoding of prospective candidates, in <a
+				href="tr51-3-archive.html#Selection_Factors">Annex C: Selection Factors</a>.
+		</p>
+		<p>
+			That annex also points to instructions on submitting character
+			encoding proposals. People wanting to submit emoji for consideration
+			for encoding should see that annex. It may be helpful to review the <a
+				target="_blank"
+				href="http://www.unicode.org/consortium/distlist.html">Unicode
+				Mail List</a> as well.
+		</p>
+		<p>
+			For a list of frequently asked questions on emoji, see the <a
+				href="http://unicode.org/faq/emoji_dingbats.html" target="_blank">Unicode
+				Emoji FAQ</a>.
+		</p>
+		<h3>
+			1.3 <a name="Goals" href="tr51-3-archive.html#Goals">Goals</a>
+		</h3>
+		<p>This document provides:</p>
+		<ul>
+			<li>design guidelines for improving interoperability across
+				platforms and implementations</li>
+			<li>background information about emoji characters, and long-term
+				alternatives</li>
+			<li>data for
+				<ul>
+					<li>which characters normally can be considered to be emoji</li>
+					<li>which of those should be displayed by default with a
+						text-style versus an emoji-style</li>
+					<li>displaying emoji with a variety of skin tones</li>
+				</ul>
+			</li>
+			<li>pointers to [<a href="tr51-3-archive.html#CLDR">CLDR]</a> data for
+				<ul>
+					<li>sorting emoji characters more naturally</li>
+					<li>annotations for searching and grouping emoji characters</li>
+				</ul>
+			</li>
+		</ul>
+		<p>It also provides background information about emoji, and
+			discusses longer-term approaches to emoji.</p>
+		<p>As new Unicode characters are added or the “common practice”
+			for emoji usage changes, the data and recommendations supplied by
+			this document may change in accordance. Thus the recommendations and
+			data will change across versions of this document.</p>
+		<p>Additions beyond Unicode 7.0 are being addressed by the Unicode
+			Technical Committee: as any new characters are approved, this
+			document will be updated as appropriate.</p>
+		<h3>
+			1.4 <a name="Definitions" href="tr51-3-archive.html#Definitions">Definitions</a>
+		</h3>
+		<p>
+			The following provide more formal definitions of some of the terms
+			used in this document. Readers who are more interested in other
+			features of the document may choose to continue from <em>Section
+				2 <a href="tr51-3-archive.html#Design_Guidelines">Design Guidelines</a>
+			</em>.
+		</p>
+		<blockquote>
+			<p>
+				<strong><em><a name="def_emoji" href="tr51-3-archive.html#def_emoji">ED-1</a>.
+						emoji</em></strong> — A colorful pictograph that can be used inline in text.
+				Internally the representation is either (a) an image or (b) an
+				encoded character. The term <em>emoji character</em> can be used for
+				(b) where not clear from context.
+			</p>
+			<p>
+				<strong><em><a name="def_emoticon"
+						href="tr51-3-archive.html#def_emoticon">ED-2</a>. emoticon</em></strong> — (1) A series of text
+				characters (typically punctuation or symbols) that is meant to
+				represent a facial expression or gesture such as ;-) (2) a broader
+				sense, also including emoji for facial expressions and gestures.
+			</p>
+		</blockquote>
+		<h4>
+			1.4.1 <a name="Emoji_Levels" href="tr51-3-archive.html#Emoji_Levels">Emoji Levels</a>
+		</h4>
+		<blockquote>
+			<p>
+				<em><strong><a name="def_emoji_character"
+						href="tr51-3-archive.html#def_emoji_character">ED-3</a>. emoji character</strong></em> — A
+				character that is recommended for use as emoji.
+			</p>
+			<ul>
+				<li>These are the characters listed in [<a href="tr51-3-archive.html#emoji_data">emoji-data</a>].
+				</li>
+			</ul>
+			<p>
+				<em><strong><a name="def_level1_emoji"
+						href="tr51-3-archive.html#def_level1_emoji">ED-4</a>. level 1 emoji character</strong></em> — An
+				emoji character that is among those most commonly supported as emoji
+				by vendors at present.
+			</p>
+			<ul>
+				<li>These characters have an [<a href="tr51-3-archive.html#emoji_data">emoji-data</a>]
+					Field 2 value of “L1”.
+				</li>
+			</ul>
+			<p>
+				<em> <strong><a name="def_level2_emoji"
+						href="tr51-3-archive.html#def_level2_emoji">ED-5</a>. level 2 emoji character</strong></em> — An
+				emoji character that is not a level 1 emoji character.
+			</p>
+			<ul>
+				<li>These characters have an [<a href="tr51-3-archive.html#emoji_data">emoji-data</a>]
+					Field 2 value of “L2”.
+				</li>
+			</ul>
+		</blockquote>
+		<p>
+			For more details about level 1 and level 2 emoji, see <em>Section
+				3 <a href="tr51-3-archive.html#Identification">Which Characters are Emoji</a>
+			</em>.
+		</p>
+		<h4>
+			1.4.2 <a name="Emoji_Presentation" href="tr51-3-archive.html#Emoji_Presentation">Emoji
+				Presentation</a>
+		</h4>
+		<blockquote>
+			<p>
+				<em><strong><a name="def_emoji_presentation"
+						href="tr51-3-archive.html#def_emoji_presentation">ED-6</a>. default emoji
+						presentation character </strong></em>— A character that, by default, should
+				appear with an emoji presentation, rather than a text presentation.
+			</p>
+			<ul>
+				<li>These characters have an [<a href="tr51-3-archive.html#emoji_data">emoji-data</a>]
+					Field 1 value of “emoji”.
+				</li>
+			</ul>
+			<p>
+				<em><strong><a name="def_text_presentation"
+						href="tr51-3-archive.html#def_text_presentation">ED-7</a>. default text presentation
+						character</strong></em> — A character that, by default, should appear with a
+				text presentation, rather than an emoji presentation.
+			</p>
+			<ul>
+				<li>These characters have an [<a href="tr51-3-archive.html#emoji_data">emoji-data</a>]
+					Field 1 value of “text”.
+				</li>
+			</ul>
+
+		</blockquote>
+		<p>
+			For more details about emoji and text presentation, see <em>2 <a
+				href="tr51-3-archive.html#Design_Guidelines">Design Guidelines</a></em> and <em>Section
+				4 <a href="tr51-3-archive.html#Presentation_Style">Presentation Style</a>
+			</em>.
+		</p>
+		<h4>
+			1.4.3 <a name="Emoji_Variation_Sequences"
+				href="tr51-3-archive.html#Emoji_Variation_Sequences">Emoji Variation Sequences</a>
+		</h4>
+		<blockquote>
+			<p>
+				<em><strong><a name="def_emoji_variation_selector"
+						href="tr51-3-archive.html#def_emoji_variation_selector">ED-8</a>. emoji variation
+						selector</strong></em> — Either of the two variation selectors used to request a
+				text or emoji presentation for an emoji character:
+			</p>
+			<ul>
+				<li>U+FE0E VARIATION SELECTOR-15 (VS15) for a text presentation
+				</li>
+				<li>U+FE0F VARIATION SELECTOR-16 (VS16) for an emoji
+					presentation</li>
+			</ul>
+			<p>
+				<em><strong><a name="def_emoji_variation_sequence"
+						href="tr51-3-archive.html#def_emoji_variation_sequence">ED-9</a>. emoji variation
+						sequence</strong></em> — A variation sequence listed in <span class="noborder">[<a
+					href="tr51-3-archive.html#VSData">VSData</a>]
+				</span> that contains an emoji variation selector.
+			</p>
+			<ul>
+				<li>For a chart of these, see<span class="noborder"> [<a
+						href="tr51-3-archive.html#VSChart">VSChart</a>]
+				</span>.
+				</li>
+			</ul>
+			<p>
+				<em><strong><a
+						name="def_emoji_base_variation_selector"
+						href="tr51-3-archive.html#def_emoji_base_variation_selector">ED-10</a>. emoji base
+						variation sequence</strong></em> — An emoji variation sequence that starts with
+				an <em><a href="tr51-3-archive.html#def_emoji_modifier_base">emoji modifier
+						base</a></em>.
+			</p>
+		</blockquote>
+		<h4>
+			1.4.4 <a name="Emoji_Modifiers" href="tr51-3-archive.html#Emoji_Modifiers">Emoji
+				Modifiers</a>
+		</h4>
+		<blockquote>
+			<p>
+				<em><strong><a name="def_emoji_modifier"
+						href="tr51-3-archive.html#def_emoji_modifier">ED-11</a>. emoji modifier</strong></em> — A character
+				that can be used to modify the appearance of a preceding emoji in an
+				<em><a href="tr51-3-archive.html#def_emoji_modifier_sequence">emoji modifier
+						sequence</a></em>.
+			</p>
+			<ul>
+				<li>These characters have an [<a href="tr51-3-archive.html#emoji_data">emoji-data</a>]
+					Field 3 value of “modifier”.
+				</li>
+			</ul>
+
+			<p>
+				<em><strong><a name="def_emoji_modifier_base"
+						href="tr51-3-archive.html#def_emoji_modifier_base">ED-12</a>. emoji modifier base</strong></em> — A
+				character whose appearance can be modified by a subsequent emoji
+				modifier in an <em><a href="tr51-3-archive.html#def_emoji_modifier_sequence">emoji
+						modifier sequence</a></em>.
+			</p>
+			<ul>
+				<li>These characters have an [<a href="tr51-3-archive.html#emoji_data">emoji-data</a>]
+					Field 3 value of either “primary” or “secondary”, and are listed in
+					<a href="tr51-3-archive.html#Subject_Emoji_Modifiers">Characters Subject to Emoji
+						Modifiers</a>.
+				</li>
+			</ul>
+
+			<p>
+				<em><strong><a name="def_emoji_modifier_sequence"
+						href="tr51-3-archive.html#def_emoji_modifier_sequence">ED-13</a>. emoji modifier
+						sequence</strong></em> — A sequence of the following form:
+			</p>
+			<p align="center">
+				<code>(emoji_modifier_base | emoji_base_variation_sequence)
+					emoji_modifier</code>
+			</p>
+		</blockquote>
+		<p>
+			For more details about emoji modifiers, see <em>Section 2.2 <a
+				href="tr51-3-archive.html#Diversity">Diversity</a>.
+			</em>
+		</p>
+		<h2>
+			2 <a name="Design_Guidelines" href="tr51-3-archive.html#Design_Guidelines">Design
+				Guidelines</a>
+		</h2>
+		<p>Unicode characters can have many different presentations as
+			text. An &quot;a&quot; for example, can look quite different
+			depending on the font. Emoji characters can have two main kinds of
+			presentation:</p>
+		<ul>
+			<li>an <em>emoji presentation, </em>with colorful and perhaps
+				whimsical shapes, even animated
+			</li>
+			<li>a <em>text presentation, </em>such as black &amp; white
+			</li>
+		</ul>
+		<p>
+			More precisely, a text presentation is a simple foreground shape
+			whose color which is determined by other information, such as setting
+			a <span class="green">color</span> on the text, while an emoji
+			presentation determines the color(s) of the character, and is
+			typically multicolored. In other words, when someone changes the text
+			color in a word processor, a character with an emoji presentation
+			will not change color.
+		</p>
+		<p>Any Unicode character can be presented with a text
+			presentation, as in the Unicode charts. For the emoji presentation,
+			both the name and the representative glyph in the Unicode chart
+			should be taken into account when designing the appearance of the
+			emoji, along with the images used by other vendors. The shape of the
+			character can vary significantly. For example, here are just some of
+			the possible images for U+1F36D LOLLIPOP, U+1F36E CUSTARD, U+1F36F
+			HONEY POT, and U+1F370 SHORTCAKE:</p>
+		<p align="center">
+			<img width='50%' height='auto'
+				src="http://unicode.org/faq/emoji-examples.png" alt="">
+		</p>
+		<p>
+			While the shape of the character can vary significantly, designers
+			should maintain the same “core” shape, based on the shapes used
+			mostly commonly in industry practice. For example, a U+1F36F HONEY
+			POT encodes for a pictorial representation of a pot of honey, not for
+			some semantic like &quot;sweet&quot;. It would be unexpected to
+			represent U+1F36F HONEY POT as a sugar cube, for example. Deviating
+			too far from that core shape can cause interoperability problems: see
+			<a target="_blank"
+				href="http://www.tuaw.com/2014/04/30/you-may-be-accidentally-sending-friends-a-hairy-heart-emoji/">accidentally-sending-friends-a-hairy-heart-emoji</a>.
+			Direction (whether a person or object faces to the right or left, up
+			or down) should also be maintained where possible, because a change
+			in direction can change the meaning: when sending <img width="auto"
+				height='14' alt="🐊" src="images/apple/apple_1f40a.png"> <img
+				width="auto" height='14' alt="🔫" src="images/apple/apple_1f52b.png"><img
+				width="auto" height='14' alt="👮"
+				src="images/twitter/twitter_1f46e.png"> “crocodile shot by
+			police”, people expect any recipient to see the pistol pointing in
+			the same direction as when they composed it. Similarly, the U+1F6B6 <em>pedestrian</em>
+			should face to the left <img width="auto" height='14' alt="🚶"
+				src="images/ref/ref_1f6b6.png">, not to the right.
+		</p>
+		<p>
+			General-purpose emoji for people and body parts should also not be
+			given overly specific images: the general recommendation is to be as
+			neutral as possible regarding race, ethnicity, and gender. Thus for
+			the character U+1F64B <em>happy person raising one hand</em>, the
+			recommendation is to use a neutral graphic like <img
+				src="images/android/android_1f64b.png" alt="🙋" width="auto"
+				height='14'> instead of an overly-specific image like <img
+				src="images/twitter/twitter_1f64b.png" alt="🙋" width="auto"
+				height='14'>. This includes the <a
+				href="tr51-3-archive.html#def_emoji_modifier_base">emoji modifier base</a> characters
+			listed in <a href="tr51-3-archive.html#Subject_Emoji_Modifiers">Characters Subject
+				to Emoji Modifiers</a>. The representative glyph used in the Unicode
+			charts, or images from other vendors may be misleading: for example,
+			the construction worker <img height='14' width="auto" alt="👷"
+				src="images/android/android_1f477.png"> may be male or female.
+			For more information, see the <a target="_blank"
+				href="http://unicode.org/faq/emoji_dingbats.html">Unicode Emoji
+				FAQ</a>.
+		</p>
+		<p>
+			Names of symbols such as BLACK MEDIUM SQUARE or WHITE MEDIUM SQUARE
+			are not meant to indicate that the corresponding character must be
+			presented in black or white, respectively; rather, the use of “black”
+			and “white” in the names is generally just to contrast <strong>filled</strong>
+			versus <strong>outline</strong> shapes, or a darker color fill versus
+			a lighter color fill. Similarly, in other symbols such as the hands
+			U+261A BLACK LEFT POINTING INDEX and U+261C WHITE LEFT POINTING
+			INDEX, the words “white” and “black” also refer to outlined versus
+			filled, and do not indicate skin color.
+		</p>
+		<p>However, other color words in the name, such as YELLOW,
+			typically provide a recommendation as to the emoji presentation,
+			which should be followed to avoid interoperability problems.</p>
+		<p>Emoji characters may not always be displayed on a white
+			background. They are often best given a faint, narrow contrasting
+			border to keep the character visually distinct from a similarly
+			colored background. Thus a Japanese flag would have a border so that
+			it would be visible on a white background, and a Swiss flag have a
+			border so that it is visible on a red background.</p>
+		<p>Current practice is for emoji to have a square aspect ratio,
+			deriving from their origin in Japanese. For interoperability, it is
+			recommended that this practice be continued with current and future
+			emoji.</p>
+		<p>
+			Flag emoji characters are discussed in <a href="tr51-3-archive.html#Flags"> Annex B:
+				Flags</a>.
+		</p>
+		<p>
+			Combining marks may be applied to emoji, just like they can be
+			applied to other characters. When that is done, the combination
+			should take on an emoji presentation. For example, a <img height='14'
+				width='auto' alt="1⃣"
+				src="images/apple/apple_0031_20e3.png">
+			is represented as the sequence &quot;1&quot; plus an emoji variation
+			selector plus U+20E3 COMBINING ENCLOSING KEYCAP. Systems are
+			unlikely, however, to support arbitrary combining marks with
+			arbitrary emoji. Aside from U+20E3, the following can be used:
+		</p>
+		<ul>
+			<li>U+20E4 COMBINING ENCLOSING UPWARD POINTING TRIANGLE to
+				indicate a warning</li>
+			<li>U+20E0 COMBINING ENCLOSING CIRCLE BACKSLASH to indicate a
+				prohibition.</li>
+		</ul>
+		<p>
+			For example, <img src="images/other/other_pedestrian.jpg"
+				alt="ped. ahead" height='14' width='auto'> (pedestrian
+			crossing ahead) can be represented as <img height='14' width='auto'
+				alt="🚶" src="images/apple/apple_1f6b6.png">+ U+20E4, and <img
+				src="images/other/other_no_bike.jpg" alt="no bike" width="auto"
+				height="14"> (no bicycles allowed) can be represented as <img
+				height='14' width='auto' alt="🚲" src="images/apple/apple_1f6b2.png">
+			+ U+20E0.
+		</p>
+		<h3>
+			2.1 <a name="Gender" href="tr51-3-archive.html#Gender">Gender</a>
+		</h3>
+		<p>The following emoji have explicit gender, based on the name and
+			explicit, intentional contrasts with other characters.</p>
+		<p>
+			U+1F466 boy<br> U+1F467 girl<br> U+1F468 man<br>
+			U+1F469 woman<br> U+1F474 older man<br> U+1F475 older woman<br>
+			U+1F46B man and woman holding hands<br> U+1F46C two men holding
+			hands<br> U+1F46D two women holding hands<br> U+1F6B9 mens
+			symbol<br> U+1F6BA womens symbol<br>
+		</p>
+		<p>
+			U+1F478 princess<br> U+1F46F woman with bunny ears<br>
+			U+1F470 bride with veil<br> U+1F472 man with gua pi mao<br>
+			U+1F473 man with turban<br> U+1F574 man in business suit
+			levitating<br> U+1F385 father christmas
+		</p>
+		<p>
+			All others should be depicted in a gender-neutral way.<br>
+		</p>
+		<h3>
+			2.2 <a name="Diversity" href="tr51-3-archive.html#Diversity">Diversity</a>
+		</h3>
+		<p>People all over the world want to have emoji that reflect more
+			human diversity, especially for skin tone. The Unicode emoji
+			characters for people and body parts are meant to be generic, yet
+			following the precedents set by the original Japanese carrier images,
+			they are often shown with a light skin tone instead of a more generic
+			(nonhuman) appearance, such as a yellow/orange color or a silhouette.</p>
+		<p>
+			Five symbol modifier characters that provide for a range of skin
+			tones for human emoji are planned for Unicode Version 8.0 (scheduled
+			for mid-2015). These characters are based on the six tones of the
+			Fitzpatrick scale, a recognized standard for dermatology (there are
+			many examples of this scale online, such as <a
+				href="http://www.arpansa.gov.au/pubs/RadiationProtection/FitzpatrickSkinType.pdf">FitzpatrickSkinType.pdf</a>).
+			The exact shades may vary between implementations.
+		</p>
+		<div align="center">
+			<table border="1" cellspacing="0" cellpadding="1">
+				<caption>
+					<a name="Emoji_Modifiers_Table" href="tr51-3-archive.html#Emoji_Modifiers_Table">Emoji
+						Modifiers</a>
+				</caption>
+				<tbody>
+					<tr>
+						<th><strong>Code</strong></th>
+						<th><strong>Name</strong></th>
+						<th colspan="2"><strong>Samples</strong></th>
+					</tr>
+					<tr>
+						<td>U+1F3FB</td>
+						<td>EMOJI MODIFIER FITZPATRICK TYPE-1-2</td>
+						<td><img src="images/other/swatch-type-1-2.png" height='20'
+							width='auto' alt=""></td>
+						<td><img src="images/other/swatch-type-1-2-bw.png"
+							height='20' width='auto' alt=""></td>
+					</tr>
+					<tr>
+						<td>U+1F3FC</td>
+						<td>EMOJI MODIFIER FITZPATRICK TYPE-3</td>
+						<td><img src="images/other/swatch-type-3.png" height='20'
+							width='auto' alt=""></td>
+						<td><img src="images/other/swatch-type-3-bw.png" height='20'
+							width='auto' alt=""></td>
+					</tr>
+					<tr>
+						<td>U+1F3FD</td>
+						<td>EMOJI MODIFIER FITZPATRICK TYPE-4</td>
+						<td><img src="images/other/swatch-type-4.png" height='20'
+							width='auto' alt=""></td>
+						<td><img src="images/other/swatch-type-4-bw.png" height='20'
+							width='auto' alt=""></td>
+					</tr>
+					<tr>
+						<td>U+1F3FE</td>
+						<td>EMOJI MODIFIER FITZPATRICK TYPE-5</td>
+						<td><img src="images/other/swatch-type-5.png" height='20'
+							width='auto' alt=""></td>
+						<td><img src="images/other/swatch-type-5-bw.png" height='20'
+							width='auto' alt=""></td>
+					</tr>
+					<tr>
+						<td>U+1F3FF</td>
+						<td>EMOJI MODIFIER FITZPATRICK TYPE-6</td>
+						<td><img src="images/other/swatch-type-6.png" height='20'
+							width='auto' alt=""></td>
+						<td><img src="images/other/swatch-type-6-bw.png" height='20'
+							width='auto' alt=""></td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<p>These characters have been designed so that even where diverse
+			color images for human emoji are not available, readers can see what
+			the intended meaning was.</p>
+		<p>
+			The default representation of these modifier characters when used
+			alone is as a color swatch. Whenever one of these characters <em>immediately</em>
+			follows certain characters (such as WOMAN), then a font should show
+			the sequence as a single glyph corresponding to the image for the
+			person(s) or body part with the specified skin tone, such as the
+			following:
+		</p>
+		<p align="center">
+			<img src="images/other/person.png" height='36' width='auto' alt=""><font
+				size="36"> + </font><img src="images/other/swatch-type-5.png"
+				height='36' width='auto' alt=""><font size='36'>&nbsp;→&nbsp;</font><img
+				src="images/other/person-5.png" height='36' width='auto' alt="">
+		</p>
+		<p>However, even if the font doesn’t show the combined character,
+			the user can still see that a skin tone was intended:</p>
+		<p align="center">
+			<img src="images/other/person.png" height='36' width='auto' alt=""><img
+				src="images/other/swatch-type-5.png" height='36' width='auto' alt="">
+		</p>
+		<p>This may fall back to a black and white stippled or hatched
+			image such as when colorful emoji are not supported.</p>
+		<p align="center">
+			<img src="images/other/person-bw.png" height='36' width='auto' alt=""><font
+				size="36"> + </font><img src="images/other/swatch-type-4-bw.png"
+				height='36' width='auto' alt=""><font size='36'>&nbsp;→&nbsp;</font><img
+				src="images/other/person-5-bw.png" height='36' width='auto' alt="">
+		</p>
+		<p>
+			When a human emoji is not <em>immediately</em> followed by a emoji
+			modifier character, it should use a generic, <em><a
+				href="tr51-3-archive.html#non-realistic" name="non-realistic">non-realistic</a></em> skin
+			tone, such as:
+		</p>
+		<ul>
+			<li><img src="images/other/swatch-generic.png" height='18'
+				width='auto' alt=""> <code>RGB #FFCC22</code> (one of the
+				colors typically used for the smiley faces)</li>
+			<li><img src="images/other/swatch-avatar.png" height='18'
+				width='auto' alt=""> <code>RGB #3399CC</code></li>
+			<li><img src="images/other/swatch-gray.png" height='18'
+				width='auto' alt=""> <code>RGB #CCCCCC</code></li>
+		</ul>
+		<p>For example, the following set uses gray as the generic skin
+			tone:</p>
+		<p align="center">
+			<img src="images/other/palette-with-gray.png" alt="" height='48'
+				width='auto'>
+		</p>
+		<p>As to hair color, dark hair tends to be more neutral, because
+			people of every skin tone can have black (or very dark brown)
+			hair—however, there is no requirement for any particular hair color.
+			One exception is PERSON WITH BLOND HAIR, which needs to have blond
+			hair regardless of skin tone.</p>
+		<p>To have an effect on an emoji, an emoji modifier must
+			immediately follow that emoji. There is only one exception: there may
+			be an emoji variation selector between them. The emoji modifier
+			automatically implies the emoji presentation style, so the variation
+			selector is not needed. However, if the emoji modifier is present it
+			must come immediately after the modified emoji character, such as in:</p>
+		<p align="center">&lt;U+270C VICTORY HAND, FE0F, TYPE-3&gt;</p>
+		<p align="left">Any other intervening character causes the emoji
+			modifier to appear as a free-standing character. Thus</p>
+		<p align="center">
+			<img src="images/other/person.png" height='36' width='auto' alt=""><font
+				size="36"> + </font><img src="images/other/zwsp.png" width="auto"
+				height="36" alt=""><font size="36"> + </font><img
+				src="images/other/swatch-type-5.png" height='36' width='auto' alt=""><font
+				size='36'>&nbsp;→&nbsp;</font><img src="images/other/person.png"
+				height='36' width='auto' alt=""><img
+				src="images/other/swatch-type-5.png" height='36' width='auto' alt="">
+		</p>
+		<h4>
+			2.2.1 <a name="Multi_Person_Groupings" href="tr51-3-archive.html#Multi_Person_Groupings">Multi-Person
+				Groupings</a>
+		</h4>
+		<p>Emoji for multi-person groupings present some special
+			challenges:</p>
+		<ul>
+			<li><b>Gender combinations.</b> Some multi-person groupings
+				explicitly indicate gender: MAN AND WOMAN HOLDING HANDS, TWO MEN
+				HOLDING HANDS, TWO WOMEN HOLDING HANDS. Others do not: KISS, COUPLE
+				WITH HEART, FAMILY (the latter is also non-specific as to the number
+				of adult and child members). While the <em>default</em>
+				representation for the characters in the latter group should be
+				gender-neutral, implementations may desire to provide (and users may
+				desire to have available) multiple representations of each of these
+				with a variety of more-specific gender combinations.</li>
+			<li><b>Skin tones.</b> In real multi-person groupings, the
+				members may have a variety of skin tones. However, this cannot be
+				indicated using an emoji modifier with any <em>single</em> character
+				for a multi-person grouping.</li>
+		</ul>
+		<p>The basic solution for each of these cases is to represent the
+			multi-person grouping as a sequence of characters—a separate
+			character for each person intended to be part of the grouping, along
+			with characters for any other symbols that are part of the grouping.
+			Each person in the grouping could optionally be followed by an emoji
+			modifier. For example, conveying the notion of COUPLE WITH HEART for
+			a couple involving two women can use a sequence with WOMAN followed
+			by an emoji-style HEAVY BLACK HEART followed by another WOMAN
+			character; each of the WOMAN characters could have an emoji modifier
+			if desired. This makes use of conventions already found in current
+			emoji usage, in which certain sequences of characters are intended to
+			be read as a single unit. For example:</p>
+		<p align="center">
+			<img height='36' width="auto" alt="👩"
+				src="images/apple/apple_1f469_1f3fc.png"><img height='36'
+				width="auto" alt="&#x2764;️‍" src="images/apple/apple_2764.png"><img
+				height='36' width="auto" alt="👩"
+				src="images/apple/apple_1f469_1f3fe.png">
+		</p>
+		<p>Some implementations may provide single glyphs that correspond
+			to several such sequences, and may provide a palette or keyboard that
+			generates the appropriate sequences for the glyphs shown. In that
+			case U+200D ZERO WIDTH JOINER (ZWJ) can be used in the sequences as
+			an indication that a single glyph (a ligature) should be used if
+			available. If such a sequence is sent to a system that does not have
+			a corresponding single glyph, the ZWJ characters would be ignored and
+			a sequence of separate images would be displayed. Thus the ZWJ
+			sequences should only be used where the sequence of separate images
+			would make sense to a recipient using an implementation that didn't
+			support the combined glyph.</p>
+		<p align="left">For example, the following are possible displays:</p>
+		<div align="center">
+			<table border="1" cellpadding="1" cellspacing="0">
+				<caption>
+					<a name="ZWJ_Display" href="tr51-3-archive.html#ZWJ_Display">ZWJ Sequence Display</a>
+				</caption>
+				<tr>
+					<th align='center'><strong>Sequence</strong></th>
+					<th align='center'><strong>Display</strong></th>
+					<th align='center'><strong>Combined glyph?</strong></th>
+				</tr>
+				<tr>
+					<td rowspan="2" style="vertical-align: center"><img
+						height='36' width="auto" alt="👩"
+						src="images/apple/apple_1f469.png"><img height='36'
+						width="auto" alt="&#x2764;️‍" src="images/other/zwj.png"><img
+						height='36' width="auto" alt="&#x2764;️‍"
+						src="images/apple/apple_2764.png"><img height='36'
+						width="auto" alt="&#x2764;️‍" src="images/other/zwj.png"><img
+						height='36' width="auto" alt="👩"
+						src="images/apple/apple_1f469.png"></td>
+					<td align='center'><div align="center">
+							<img height='36' width="auto" alt="👩‍❤️‍👩"
+								src="http://www.unicode.org/reports/tr51/images/apple/apple_1f469_200d_2764_fe0f_200d_1f469.png">
+						</div></td>
+					<td align='center'><div align="center">Yes</div></td>
+				</tr>
+				<tr>
+					<td align='center'><div align="center">
+							<img height='36' width="auto" alt="👩"
+								src="images/apple/apple_1f469.png"><img height='36'
+								width="auto" alt="&#x2764;️‍" src="images/apple/apple_2764.png"><img
+								height='36' width="auto" alt="👩"
+								src="images/apple/apple_1f469.png">
+						</div></td>
+					<td align='center'><div align="center">No</div></td>
+				</tr>
+			</table>
+		</div>
+		<p align="left">
+			See also <a href="tr51-3-archive.html#ZWJ_Sequences">Annex E: Existing Use of ZWJ
+				Sequences</a>.
+		</p>
+		<p>In a sequence of characters connected using ZWJ, it is
+			recommended that the entire sequence have an emoji presentation if
+			any character in the sequence has explicit or default emoji
+			presentation.</p>
+		<h4>
+			2.2.2 <a name="Diversity_Implementations"
+				href="tr51-3-archive.html#Diversity_Implementations">Implementations</a>
+		</h4>
+		<p>Implementations can present the emoji modifiers as separate
+			characters in an input palette, or present the combined characters
+			using mechanisms such as long press.</p>
+		<p>The emoji modifiers are not intended for combination with
+			arbitrary emoji characters. Instead, they are restricted to the
+			following characters, in two separate sets. Of these characters, it
+			is strongly recommended that the Primary set for combination be
+			supported. No characters outside of these two sets are to be combined
+			with emoji modifiers. These sets may change over time, with
+			successive versions of this document.</p>
+		<div align="center">
+			<table width="100%" border="1" cellspacing="0" cellpadding="1">
+				<caption>
+					<a name="Subject_Emoji_Modifiers" href="tr51-3-archive.html#Subject_Emoji_Modifiers">Characters
+						Subject to Emoji Modifiers</a>
+				</caption>
+				<tr>
+					<th width="1%">Type</th>
+					<th width="80%">Images</th>
+				</tr>
+				<tr>
+					<th>Primary Set<br> <br> (26 code points)
+					</th>
+					<td><img
+						alt="👦 👧 👨 👩 👴 👵 👶 👱 👮 👲 👳 👷 👸 💂 🎅 👼 💆 💇 👰 🙍 🙎 🙅 🙆 💁 🙋 🙇"
+						width="100%" height="auto" src="images/other/primary.png"></td>
+				</tr>
+				<tr>
+					<th>Secondary Set<br> <br> (107 code points)
+					</th>
+					<td><img
+						alt="😀 😁 😂 😃 😄 😅 😆 😉 😊 😋 😎 😍 😘 😗 😙 😚 ☺ 🙂 🤗 😇 🤔 😐 😑 😶 🙄 😏 😣 😥 😮 🤐 😯 😪 😫 😴 😌 🤓 😛 😜 😝 ☹ 🙁 😒 😓 😔 😕 😖 🙃 😷 🤒 🤕 🤑 😲 😞 😟 😤 😢 😭 😦 😧 😨 😩 😬 😰 😱 😳 😵 😡 😠 👿 😈 🙌 🙏 🚶 🏃 💃 💪 👈 👉 ☝ 👆 🖕 👇 ✌ 🖖 🤘 🖐 ✊ ✋ 👊 👌 👍 👎 👋 👏 👐 ✍ 💅 👂 👃 🚣 🛀 🏂 🏄 🏇 🏊 🚴 🚵"
+						width="100%" height="auto" src="images/other/secondary.png">
+					</td>
+				</tr>
+			</table>
+		</div>
+		<p>The following chart shows the expected display with emoji modifiers,
+			depending on the preceding character and the level of support for
+			the emoji modifier. The “Unsupported” rows show how the character
+			would typically appear on a system that doesn't have a font with
+			that character in it: with a missing glyph indicator.</p>
+		<div align="center">
+			<table border="1" cellspacing="0" cellpadding="1">
+				<caption>
+					<a name="Emoji_Modifiers_Display" href="tr51-3-archive.html#Emoji_Modifiers_Display">Expected
+						Emoji Modifiers Display</a>
+				</caption>
+				<tr>
+					<th align='center'><strong>Support Level</strong></th>
+					<th align='center'><strong>Emoji Type</strong></th>
+					<th align='center'><strong>Sequence</strong></th>
+					<th align='center'><strong>Display Color</strong></th>
+					<th align='center'><strong>Display B&amp;W</strong></th>
+				</tr>
+				<tr>
+					<td rowspan="2">Fully supported</td>
+					<td align='center'>primary<br> /secondary
+					</td>
+					<td align='center'><img src="images/other/person.png"
+						height='36' width='auto' alt=""><font size="36"> + </font><img
+						src="images/other/swatch-type-5.png" height='36' width='auto'
+						alt=""></td>
+					<td align='center'><img src="images/other/person-5.png"
+						height='36' width='auto' alt=""><font size="36"> </font></td>
+					<td align='center'><img src="images/other/person-5-bw.png"
+						height='36' width='auto' alt=""><font size="36"> </font></td>
+				</tr>
+				<tr>
+					<td align='center'>other</td>
+					<td align='center'><img src="images/twitter/twitter_26fd.png"
+						alt="⛽" width="auto" height='36'><font size="36"> + </font><img
+						src="images/other/swatch-type-5.png" height='36' width='auto'
+						alt=""></td>
+					<td align='center'><img src="images/twitter/twitter_26fd.png"
+						alt="⛽" width="auto" height='36'><img
+						src="images/other/swatch-type-5.png" height='36' width='auto'
+						alt=""><font size="36"> </font></td>
+					<td align='center'><img src="images/other/fuel_pump.png"
+						height='36' width='auto' alt="⛽"><img
+						src="images/other/swatch-type-4-bw.png" height='36' width='auto'
+						alt=""><font size="36"> </font></td>
+				</tr>
+				<tr>
+					<td rowspan="2">Fallback</td>
+					<td align='center'>primary<br> /secondary
+					</td>
+					<td align='center'><img src="images/other/person.png"
+						height='36' width='auto' alt=""><font size="36"> + </font><img
+						src="images/other/swatch-type-5.png" height='36' width='auto'
+						alt=""></td>
+					<td align='center'><img src="images/other/person.png"
+						height='36' width='auto' alt=""><img
+						src="images/other/swatch-type-5.png" height='36' width='auto'
+						alt=""><font size="36"> </font></td>
+					<td align='center'><img src="images/other/person-bw.png"
+						height='36' width='auto' alt=""><img
+						src="images/other/swatch-type-4-bw.png" height='36' width='auto'
+						alt=""><font size="36"> </font></td>
+				</tr>
+				<tr>
+					<td align='center'>other</td>
+					<td align='center'><img src="images/twitter/twitter_26fd.png"
+						alt="⛽" width="auto" height='36'><font size="36"> + </font><img
+						src="images/other/swatch-type-5.png" height='36' width='auto'
+						alt=""></td>
+					<td align='center'><img src="images/twitter/twitter_26fd.png"
+						alt="⛽" width="auto" height='36'><img
+						src="images/other/swatch-type-5.png" height='36' width='auto'
+						alt=""><font size="36"> </font></td>
+					<td align='center'><img src="images/other/fuel_pump.png"
+						height='36' width='auto' alt="⛽"><img
+						src="images/other/swatch-type-4-bw.png" height='36' width='auto'
+						alt=""><font size="36"> </font></td>
+				</tr>
+				<tr>
+					<td rowspan="2">Unsupported</td>
+					<td align='center'>primary<br> /secondary
+					</td>
+					<td align='center'><img src="images/other/person.png"
+						height='36' width='auto' alt=""><font size="36"> + </font><img
+						src="images/other/swatch-type-5.png" height='36' width='auto'
+						alt=""></td>
+					<td align='center'><img src="images/other/person.png"
+						height='36' width='auto' alt=""><img
+						src="images/other/unsupported.png" height='36' width='auto' alt=""><font
+						size="36"> </font></td>
+					<td align='center'><img src="images/other/person-bw.png"
+						height='36' width='auto' alt=""><img
+						src="images/other/unsupported.png" height='36' width='auto' alt=""><font
+						size="36"> </font></td>
+				</tr>
+				<tr>
+					<td align='center'>other</td>
+					<td align='center'><img src="images/twitter/twitter_26fd.png"
+						alt="⛽" width="auto" height='36'><font size="36"> + </font><img
+						src="images/other/swatch-type-5.png" height='36' width='auto'
+						alt=""></td>
+					<td align='center'><img src="images/twitter/twitter_26fd.png"
+						alt="⛽" width="auto" height='36'><img
+						src="images/other/unsupported.png" height='36' width='auto' alt=""><font
+						size="36"> </font></td>
+					<td align='center'><img src="images/other/fuel_pump.png"
+						height='36' width='auto' alt="⛽"><img
+						src="images/other/unsupported.png" height='36' width='auto' alt=""><font
+						size="36"> </font></td>
+				</tr>
+			</table>
+		</div>
+		<p>The interaction between variation selectors and emoji modifiers
+			is specified as follows:</p>
+		<table border="1" cellspacing="0" cellpadding="1">
+			<caption>
+				<a name="Emoji_Modifiers_And_Variation_Selectors"
+					href="tr51-3-archive.html#Emoji_Modifiers_And_Variation_Selectors">Emoji Modifiers
+					and Variation Selectors</a>
+			</caption>
+			<tr>
+				<th align='center'>Variation Selector</th>
+				<th align='center'><strong>Emoji Modifier</strong></th>
+				<th align='center'><strong>Result</strong></th>
+				<th align='center'><strong>Comment</strong></th>
+			</tr>
+			<tr>
+				<td align='center'>None</td>
+				<td rowspan="3" align='center'>Yes</td>
+				<td align='center' rowspan="2">Emoji Presentation</td>
+				<td align='center'>In the absence of other information, the
+					emoji modifier implies emoji appearance.</td>
+			</tr>
+			<tr>
+				<td align='center'>Emoji (U+FE0F)</td>
+				<td align='center' rowspan="2">The <a
+					href="tr51-3-archive.html#def_emoji_modifier_base">emoji modifier base</a> and <a
+					href="tr51-3-archive.html#def_emoji_variation_selector">emoji variation selector</a>
+					must form a valid variation sequence, and the order must as
+					specified in <a href="tr51-3-archive.html#def_emoji_modifier_sequence">emoji
+						modifier sequence</a>—otherwise support of the variation selector
+					would be non-conformant.
+				</td>
+			</tr>
+			<tr>
+				<td align='center'>Text (U+FE0E)</td>
+				<td align='center'>Text Presentation</td>
+			</tr>
+		</table>
+		<br>
+		<h4>
+			2.2.3 <a name="Emoji_Modifiers_in_Text"
+				href="tr51-3-archive.html#Emoji_Modifiers_in_Text">Emoji Modifiers in Text</a>
+		</h4>
+
+		<p>
+			A supported emoji modifier sequence should be treated as a single
+			grapheme cluster for editing purposes (cursor moment, deletion,
+			etc.); word break, line break, etc. For input, the composition of
+			that cluster does not need to be apparent to the user: it appears on
+			the screen as a single image. On a phone, for example, a <a
+				href="http://en.wikipedia.org/wiki/Multi-touch#Multi-touch_gestures">long-press</a>
+			on a human figure can bring up a minipalette of different skin tones,
+			without the user having to separately find the human figure and then
+			the modifier. The following shows some possible appearances:
+		</p>
+		<div align="center">
+			<table class="noborder" cellspacing="0" cellpadding="1">
+				<caption>
+					<a name="Minipalette" href="tr51-3-archive.html#Minipalette">Minipalettes</a>
+				</caption>
+				<tr>
+					<td align='center'><img src="images/other/person-1-2.png"
+						height='36' width='auto' alt=""> <img
+						src="images/other/person-3.png" height='36' width='auto' alt="">
+						<img src="images/other/person-4.png" height='36' width='auto'
+						alt=""> <img src="images/other/person-5.png" height='36'
+						width='auto' alt=""><img src="images/other/person-6.png"
+						height='36' width='auto' alt=""></td>
+					<td class="noborder" align='center' width="30%"><div
+							align="center">
+							<em>or</em>
+						</div></td>
+					<td align='center'><img src="images/other/person-6.png"
+						height='36' width='auto' alt=""><img
+						src="images/other/person-5.png" height='36' width='auto' alt=""><img
+						src="images/other/person-4.png" height='36' width='auto' alt=""><img
+						src="images/other/person-3.png" height='36' width='auto' alt=""><img
+						src="images/other/person-1-2.png" height='36' width='auto' alt=""></td>
+				</tr>
+				<tr>
+					<td class="noborder" align='center'><div align="center">
+							<img src="images/other/person.png" height='36' width='auto'
+								alt="">
+						</div></td>
+					<td class="noborder" align='center'>&nbsp;</td>
+					<td class="noborder" align='center'><div align="center">
+							<img src="images/other/person.png" height='36' width='auto'
+								alt="">
+						</div></td>
+				</tr>
+			</table>
+		</div>
+		<p>
+			Of course, there are many other types of diversity in human
+			appearance besides different skin tones: Different hair styles and
+			color, use of eyeglasses, various kinds of facial hair, different
+			body shapes, different headwear, and so on. It is beyond the scope of
+			Unicode to provide an encoding-based mechanism for representing every
+			aspect of human appearance diversity that emoji users might want to
+			indicate. The best approach for communicating very specific human
+			images—or any type of image in which preservation of specific
+			appearance is very important—is the use of embedded graphics, as
+			described in <a href="tr51-3-archive.html#Longer_Term">Longer Term Solutions</a>.
+		</p>
+		<h2>
+			3 <a name="Identification" href="tr51-3-archive.html#Identification">Which
+				Characters are Emoji</a>
+		</h2>
+		<h3>
+			3.1 <a href="tr51-3-archive.html#Level_1_Emoji" name="Level_1_Emoji">Level 1 Emoji</a>
+		</h3>
+		<p>There are 722 Unicode emoji characters corresponding to the
+			Japanese carrier sets. Three of these are space characters in
+			Unicode, which cannot have an emoji presentation. This leaves 719
+			characters, shown below.</p>
+		<table width="100%" border="1" cellpadding="1" cellspacing="0">
+			<caption>
+				<a href="tr51-3-archive.html#Japanese_Carrier" name="Japanese_Carrier">Japanese
+					Carrier Emoji</a>
+			</caption>
+			<tr>
+				<td><img
+					alt="😁 😂 😃 😄 😅 😆 😉 😊 😋 😍 😘 😚 ☺ 😏 😣 😥 😪 😫 😌 😜 😝 😒 😓 😔 😖 😷 😲 😞 😤 😢 😭 😨 😩 😰 😱 😳 😵 😡 😠 👿 👦 👧 👨 👩 👴 👵 👶 👱 👮 👲 👳 👷 👸 💂 🎅 👼 👯 💆 💇 👰 🙍 🙎 🙅 🙆 💁 🙋 🙇 🙌 🙏 👤 🚶 🏃 💃 💏 💑 👪 👫 💪 👈 👉 ☝ 👆 👇 ✌ ✊ ✋ 👊 👌 👍 👎 👋 👏 👐 💅 👣 👀 👂 👃 👅 👄 💋 💘 ❤ 💓 💔 💕 💖 💗 💙 💚 💛 💜 💝 💞 💟 💌 💧 💤 💢 💣 💥 💦 💨 💫 💬 👓 👔 👕 👖 👗 👘 👙 👚 👛 👜 👝 🎒 👞 👟 👠 👡 👢 👑 👒 🎩 💄 💍 💎 👹 👺 👻 💀 👽 👾 💩 🐵 🙈 🙉 🙊 🐒 🐶 🐩 🐺 🐱 😸 😹 😺 😻 😼 😽 😾 😿 🙀 🐯 🐴 🐎 🐮 🐷 🐗 🐽 🐑 🐫 🐘 🐭 🐹 🐰 🐻 🐨 🐼 🐾 🐔 🐣 🐤 🐥 🐦 🐧 🐸 🐢 🐍 🐲 🐳 🐬 🐟 🐠 🐡 🐙 🐚 🐌 🐛 🐜 🐝 🐞 💐 🌸 💮 🌹 🌺 🌻 🌼 🌷 🌱 🌴 🌵 🌾 🌿 🍀 🍁 🍂 🍃 🍇 🍈 🍉 🍊 🍌 🍍 🍎 🍏 🍑 🍒 🍓 🍅 🍆 🌽 🍄 🌰 🍞 🍖 🍗 🍔 🍟 🍕 🍲 🍱 🍘 🍙 🍚 🍛 🍜 🍝 🍠 🍢 🍣 🍤 🍥 🍡 🍦 🍧 🍨 🍩 🍪 🎂 🍰 🍫 🍬 🍭 🍮 🍯 ☕ 🍵 🍶 🍷 🍸 🍹 🍺 🍻 🍴 🍳 🌏 🌋 🗻 🏠 🏡 ⛪ 🏢 🏣 🏥 🏦 🏨 🏩 🏪 🏫 🏬 🏭 🏯 🏰 💒 🗼 🗽 🗾 ⛲ ⛺ 🌁 🌃 🌄 🌅 🌆 🌇 🌉 🌊 ♨ 🗿 🌌 🎠 🎡 🎢 💈 🎪 🎭 🎨 🎰 🚃 🚄 🚅 🚇 🚉 🚌 🚏 🚑 🚒 🚓 🚕 🚗 🚙 🚚 🚲 ⛽ 🚨 ⚓ 🔱 ⛵ 🚤 🚢 ✈ 💺 🚀 🏧 🚥 🚧 🚫 🚭 ♿ 🚹 🚺 🚻 🚼 🚾 ⚠ ⛔ 🚪 🚽 🛀 ⌛ ⏳ ⌚ ⏰ 🕛 🕐 🕑 🕒 🕓 🕔 🕕 🕖 🕗 🕘 🕙 🕚 ♈ ♉ ♊ ♋ ♌ ♍ ♎ ♏ ♐ ♑ ♒ ♓ ⛎ 🌑 🌓 🌔 🌕 🌙 🌛 ☀ ☁ ⛅ 🌀 🌈 🌂 ☔ ❄ ⛄ 🌟 🌠 🔥 🎃 🎄 🎆 🎇 ✨ 🎈 🎉 🎊 🎋 🎌 🎍 🎎 🎏 🎐 🎑 🎓 🎯 🎴 🎀 🎁 🎫 ⚽ ⚾ 🏀 🏈 🎾 🎱 🎳 ⛳ 🎣 🎽 🎿 🏂 🏄 🏊 🏆 🎮 🎲 ♠ ♥ ♦ ♣ 🃏 🀄 🔊 📢 📣 🔔 ▶ ⏩ ◀ ⏪ 🔼 ⏫ 🔽 ⏬ 🎼 🎵 🎶 🎤 🎧 🎷 🎸 🎹 🎺 🎻 📻 📱 📳 📴 📲 ☎ 📞 #⃣ 0⃣ 1⃣ 2⃣ 3⃣ 4⃣ 5⃣ 6⃣ 7⃣ 8⃣ 9⃣ 🔟 📶 📟 📠 🔋 🔌 💻 💽 💾 💿 📀 🎥 🎦 🎬 📺 📷 📹 📼 🔍 🔎 📡 💡 🔦 🏮 📔 📕 📖 📗 📘 📙 📚 📓 📒 📃 📜 📄 📰 📑 🔖 💰 💴 💵 💸 💱 💲 💳 💹 ✉ 📧 📨 📩 📤 📥 📦 📫 📪 📮 ✏ ✒ 📝 💼 📁 📂 📅 📆 📇 📈 📉 📊 📋 📌 📍 📎 📏 📐 📛 ✂ 🔒 🔓 🔏 🔐 🔑 🔨 🔧 🔩 🔗 💉 💊 🔪 🔫 🚬 🏁 🚩 🇨🇳 🇫🇷 🇩🇪 🇮🇹 🇯🇵 🇷🇺 🇰🇷 🇪🇸 🇬🇧 🇺🇸 ⬆ ↗ ➡ ↘ ⬇ ↙ ⬅ ↖ ↕ ↔ ↩ ↪ ⤴ ⤵ 🔃 🔙 🔚 🔛 🔜 🔝 🔰 🔮 🔯 ♻ ⚡ ⭐ ⭕ ✅ ☑ ✔ ✖ ❌ ❎ ➕ ➖ ➗ ➰ 〽 ✳ ✴ ❇ ‼ ⁉ ❓ ❔ ❕ ❗ 〰 © ® ™ 💯 🔞 🔠 🔡 🔢 🔣 🔤 🅰 🆎 🅱 🆑 🆒 🆓 ℹ 🆔 Ⓜ 🆕 🆖 🅾 🆗 🅿 🆘 🆙 🆚 🈁 🈂 🈷 🈶 🈯 🉐 🈹 🈚 🈲 🉑 🈸 🈴 🈳 ㊗ ㊙ 🈺 🈵 ▪ ▫ ◻ ◼ ◽ ◾ ⬛ ⬜ 🔶 🔷 🔸 🔹 🔺 🔻 💠 🔘 🔲 🔳 ⚪ ⚫ 🔴 🔵"
+					width="100%" height="auto" src="images/other/level1-jcarriers.png"></td>
+			</tr>
+		</table>
+		<p>In addition, most vendors support another 126 characters (from
+			Unicode 6.0 and 6.1):</p>
+		<table width="100%" border="1" cellpadding="1" cellspacing="0">
+			<caption>
+				<a name="Common_Additions" href="tr51-3-archive.html#Common_Additions">Common
+					Additions</a>
+			</caption>
+			<tr>
+				<td><img
+					alt="😀 😎 😗 😙 😇 😐 😑 😶 😮 😯 😴 😛 😕 😟 😦 😧 😬 😈 👥 👬 👭 💭 🐕 🐈 🐅 🐆 🐂 🐃 🐄 🐖 🐏 🐐 🐪 🐁 🐀 🐇 🐓 🐊 🐉 🐋 🌲 🌳 🍋 🍐 🍼 🌍 🌎 🌐 🏤 🚂 🚆 🚈 🚊 🚝 🚞 🚋 🚍 🚎 🚐 🚔 🚖 🚘 🚛 🚜 🚳 🚣 🚁 🚟 🚠 🚡 🚮 🚦 🚯 🚰 🚱 🚷 🚸 🛂 🛃 🛄 🛅 🚿 🛁 🕧 🕜 🕝 🕞 🕟 🕠 🕡 🕢 🕣 🕤 🕥 🕦 🌒 🌖 🌗 🌘 🌚 🌜 🌝 🌞 🏉 🏇 🚴 🚵 🔇 🔈 🔉 📯 🔕 🔀 🔁 🔂 📵 🔅 🔆 🔬 🔭 💶 💷 📬 📭 🔄 ➿"
+					width="100%" height="auto"
+					src="images/other/level1-common-additions.png"></td>
+			</tr>
+		</table>
+		<p>
+			The <strong>Japanese Carrier Emoji</strong> plus the <strong>Common
+				Additions</strong> comprise the 845 characters of <em><strong><a
+					href="tr51-3-archive.html#def_level1_emoji">level 1</a></strong></em> emoji.
+		</p>
+		<h3>
+			3.2 <a name="Level_2_Emoji" href="tr51-3-archive.html#Level_2_Emoji">Level 2 Emoji</a>
+		</h3>
+		<p>There are another 247 flags (aside from the 10 from the
+			Japanese carrier sets) that can be supported with Unicode 6.0
+			characters.</p>
+		<table width="100%" border="1" cellpadding="1" cellspacing="0">
+			<caption>
+				<a name="Other_Flags" href="tr51-3-archive.html#Other_Flags">Other Flags</a>
+			</caption>
+			<tr>
+				<td><img
+					alt="🇦🇫 🇦🇽 🇦🇱 🇩🇿 🇦🇸 🇦🇩 🇦🇴 🇦🇮 🇦🇶 🇦🇬 🇦🇷 🇦🇲 🇦🇼 🇦🇨 🇦🇺 🇦🇹 🇦🇿 🇧🇸 🇧🇭 🇧🇩 🇧🇧 🇧🇾 🇧🇪 🇧🇿 🇧🇯 🇧🇲 🇧🇹 🇧🇴 🇧🇦 🇧🇼 🇧🇻 🇧🇷 🇮🇴 🇻🇬 🇧🇳 🇧🇬 🇧🇫 🇧🇮 🇰🇭 🇨🇲 🇨🇦 🇮🇨 🇨🇻 🇧🇶 🇰🇾 🇨🇫 🇪🇦 🇹🇩 🇨🇱 🇨🇽 🇨🇵 🇨🇨 🇨🇴 🇰🇲 🇨🇬 🇨🇩 🇨🇰 🇨🇷 🇨🇮 🇭🇷 🇨🇺 🇨🇼 🇨🇾 🇨🇿 🇩🇰 🇩🇬 🇩🇯 🇩🇲 🇩🇴 🇪🇨 🇪🇬 🇸🇻 🇬🇶 🇪🇷 🇪🇪 🇪🇹 🇪🇺 🇫🇰 🇫🇴 🇫🇯 🇫🇮 🇬🇫 🇵🇫 🇹🇫 🇬🇦 🇬🇲 🇬🇪 🇬🇭 🇬🇮 🇬🇷 🇬🇱 🇬🇩 🇬🇵 🇬🇺 🇬🇹 🇬🇬 🇬🇳 🇬🇼 🇬🇾 🇭🇹 🇭🇲 🇭🇳 🇭🇰 🇭🇺 🇮🇸 🇮🇳 🇮🇩 🇮🇷 🇮🇶 🇮🇪 🇮🇲 🇮🇱 🇯🇲 🇯🇪 🇯🇴 🇰🇿 🇰🇪 🇰🇮 🇽🇰 🇰🇼 🇰🇬 🇱🇦 🇱🇻 🇱🇧 🇱🇸 🇱🇷 🇱🇾 🇱🇮 🇱🇹 🇱🇺 🇲🇴 🇲🇰 🇲🇬 🇲🇼 🇲🇾 🇲🇻 🇲🇱 🇲🇹 🇲🇭 🇲🇶 🇲🇷 🇲🇺 🇾🇹 🇲🇽 🇫🇲 🇲🇩 🇲🇨 🇲🇳 🇲🇪 🇲🇸 🇲🇦 🇲🇿 🇲🇲 🇳🇦 🇳🇷 🇳🇵 🇳🇱 🇳🇨 🇳🇿 🇳🇮 🇳🇪 🇳🇬 🇳🇺 🇳🇫 🇲🇵 🇰🇵 🇳🇴 🇴🇲 🇵🇰 🇵🇼 🇵🇸 🇵🇦 🇵🇬 🇵🇾 🇵🇪 🇵🇭 🇵🇳 🇵🇱 🇵🇹 🇵🇷 🇶🇦 🇷🇪 🇷🇴 🇷🇼 🇼🇸 🇸🇲 🇸🇹 🇸🇦 🇸🇳 🇷🇸 🇸🇨 🇸🇱 🇸🇬 🇸🇽 🇸🇰 🇸🇮 🇸🇧 🇸🇴 🇿🇦 🇬🇸 🇸🇸 🇱🇰 🇧🇱 🇸🇭 🇰🇳 🇱🇨 🇲🇫 🇵🇲 🇻🇨 🇸🇩 🇸🇷 🇸🇯 🇸🇿 🇸🇪 🇨🇭 🇸🇾 🇹🇼 🇹🇯 🇹🇿 🇹🇭 🇹🇱 🇹🇬 🇹🇰 🇹🇴 🇹🇹 🇹🇦 🇹🇳 🇹🇷 🇹🇲 🇹🇨 🇹🇻 🇺🇬 🇺🇦 🇦🇪 🇺🇾 🇺🇲 🇻🇮 🇺🇿 🇻🇺 🇻🇦 🇻🇪 🇻🇳 🇼🇫 🇪🇭 🇾🇪 🇿🇲 🇿🇼"
+					width="100%" height="auto"
+					src="images/other/level2-other-flags.png"></td>
+			</tr>
+		</table>
+		<p>
+			Some of these flags use the same glyphs. For more about flags, see <a
+				href="tr51-3-archive.html#Flags">Annex B: Flags</a>.
+		</p>
+		<p>The following additional 148 characters are recommended as
+			emoji. Most, but not all, of these are new in Unicode 7.0.</p>
+		<table width="100%" border="1" cellpadding="1" cellspacing="0">
+			<caption>
+				<a name="Standard_Additions" href="tr51-3-archive.html#Standard_Additions">Standard
+					Additions</a>
+			</caption>
+			<tr>
+				<td><img
+					alt="🙂 ☹ 🙁 ⛑ 🕵 🗣 🕴 🖕 🖖 🖐 ✍ 👁 ❣ 🕳 🗯 🕶 🛍 ☠ 🐿 🕊 🕷 🕸 🏵 ☘ 🌶 🍽 🗺 🏔 ⛰ 🏕 🏖 🏜 🏝 🏞 🏟 🏛 🏗 🏘 🏙 🏚 🖼 🛢 🛣 🛤 🛳 ⛴ 🛥 🛩 🛫 🛬 🛰 🛎 🛌 🛏 🛋 ⏱ ⏲ 🕰 🌡 ⛈ 🌤 🌥 🌦 🌧 🌨 🌩 🌪 🌫 🌬 ☂ ⛱ ☃ ☄ 🎖 🎗 🎞 🎟 🏷 🏌 ⛸ ⛷ ⛹ 🏋 🏎 🏍 🏅 🕹 ⏭ ⏯ ⏮ ⏸ ⏹ ⏺ ⏏ 🎙 🎚 🎛 *⃣ 🖥 🖨 ⌨ 🖱 🖲 📽 📸 🕯 🗞 🗳 🖋 🖊 🖌 🖍 🗂 🗒 🗓 🖇 🗃 🗄 🗑 🗝 ⛏ ⚒ 🛠 ⚙ 🗜 ⚗ ⚖ ⛓ 🗡 ⚔ 🛡 ⚰ ⚱ 🏳 🏴 ⚜ ⚛ 🕉 ✡ ☸ ☯ ✝ ☦ ⛩ ☪ ☮ ☢ ☣"
+					width="100%" height="auto"
+					src="images/other/level2-standard-additions.png"></td>
+			</tr>
+		</table>
+		<p>Thus vendors that support emoji should provide a colorful
+			appearance for each of these, such as the following:</p>
+		<p align="center">
+			<img alt='🏝' height="36" width="auto" src='images/ref/ref_1f3dd.png'
+				title='U+1F3DD 🏝 desert island'><font size='36'>&nbsp;→&nbsp;</font><img
+				alt='🏝' height="36" width="auto"
+				src='images/other/desert-island.png'
+				title='U+1F3DD 🏝 desert island'> <br> <img alt="🕊"
+				height="36" width="auto" src="images/ref/ref_1f54a.png"
+				title="U+1F54A 🕊 dove of peace"><font size='36'>&nbsp;→&nbsp;</font><img
+				alt="🕊" height="36" width="auto" src="images/other/flying-dove.png"
+				title="U+1F54A 🕊 dove of peace">
+		</p>
+		<p>
+			The 41 characters that are new in Unicode 8.0 are listed below. For
+			details, including sample colorful images, see <a
+				href="tr51-3-archive.html#Emoji_Candidates">Annex D: Standard Additions for Unicode
+				8.0</a>.
+		</p>
+		<table width="100%" border="1" cellpadding="1" cellspacing="0">
+			<caption>
+				<a name="Standard_Additions8" href="tr51-3-archive.html#Standard_Additions8">Standard
+					Additions 8.0</a>
+			</caption>
+			<tr>
+				<td><img
+					alt="🤗 🤔 🙄 🤐 🤓 🙃 🤒 🤕 🤑 🏻 🏼 🏽 🏾 🏿 🤘 📿 🤖 🦁 🦄 🦃 🦀 🦂 🧀 🌭 🌮 🌯 🍿 🍾 🏺 🛐 🕋 🕌 🕍 🕎 🏏 🏐 🏑 🏒 🏓 🏸 🏹"
+					width="100%" height="auto"
+					src="images/other/level2-standard-additions8.png"></td>
+			</tr>
+		</table>
+		<p>
+			The <strong>Other Flags</strong>, <strong>Standard Additions</strong>,
+			and <strong>Standard Additions 8.0</strong> comprise the 436
+			characters of <em><strong><a href="tr51-3-archive.html#def_level2_emoji">level
+						2</a></strong></em> emoji. Thus there is a total of 1,281 level 1 and 2 emoji
+			characters in Unicode 8.0.
+		</p>
+		<h3>
+			3.3 <a name="Methodology" href="tr51-3-archive.html#Methodology">Methodology</a>
+		</h3>
+		<p>
+			This document provides data files [<a href="tr51-3-archive.html#emoji_data">emoji-data</a>],
+			described in the section <a href="tr51-3-archive.html#Data_Files">Data Files</a>, for
+			determining the set of characters which are expected to have an emoji
+			presentation, either as a default or as a alternate presentation.
+			While Unicode conformance allows any character to be given an emoji
+			representation, characters that are not listed in [<a
+				href="tr51-3-archive.html#emoji_data">emoji-data</a>] should not normally be given an
+			emoji presentation. For example, pictographic symbols such as
+			keyboard symbols or math symbols (like ANGLE) that should never be
+			treated as emoji. These are current recommendations: existing symbols
+			can be added to this list over time.
+		</p>
+		<p>This data was derived by starting with the characters that came
+			from the original Japanese sets, plus those that major vendors have
+			provided emoji fonts for. Characters that are similar to those in
+			shape or design were then added. Often these characters are in the
+			same Unicode blocks as the original set, but sometimes not.</p>
+		<p>This document takes a functional view regarding the
+			identification of emoji: pictographs are categorized as emoji when it
+			is reasonable to give them an emoji presentation, and where they are
+			sufficiently distinct from other emoji characters. Symbols with a
+			graphical form that people may treat as pictographs, such as U+2615
+			HELM SYMBOL (introduced in Unicode 3.0) may be included.</p>
+		<p>This document takes a functional view as to the identification
+			of emoji, which is that pictographs—or symbols that have a graphical
+			form that people may treat as pictographs—are categorized as emoji,
+			such as U+260E BLACK TELEPHONE (introduced in Unicode 1.1) or U+2615
+			HOT BEVERAGE (introduced in Unicode 4.0):</p>
+		<p align="center">
+			<img height='48' width='auto' alt="☎" src="images/ref/ref_260e.png"><font
+				size='36'> → </font><img height='48' width='auto' alt="☎"
+				src="images/apple/apple_260e.png">
+		</p>
+		<p align="center">
+			<img height='56' width='auto' alt="⎈" src="images/ref/ref_2615.png"><font
+				size='36'> → </font><img height='48' width='auto' alt="⎈"
+				src="images/apple/apple_2615.png">
+		</p>
+		<p>
+			The data does not include <em>non</em>-pictographs, except for those
+			in Unicode that are used to represent characters from emoji sources,
+			such as:
+		</p>
+		<p align="center">
+			<img height='48' width='auto' alt="🈹"
+				src="images/apple/apple_1f239.png"> or <img height='48'
+				width='auto' alt="🆔" src="images/apple/apple_1f194.png">
+		</p>
+		<p align="left">
+			Game pieces, such as the dominos (🀰 🀱 🀲 ... 🂑 🂒), are currently
+			not included as emoji, with the exceptions of U+1F0CF ( <img
+				height='18' width='auto' alt="🈹" src="images/apple/apple_1f0cf.png">
+			) PLAYING CARD BLACK JOKER and U+1F004 ( <img height='18'
+				width='auto' alt="🈹" src="images/apple/apple_1f004.png"> )
+			MAHJONG TILE RED DRAGON. These are included because they correspond
+			each to an emoji character from one of the carrier sets.
+		</p>
+		<h2>
+			4 <a name="Presentation_Style" href="tr51-3-archive.html#Presentation_Style">Presentation
+				Style</a>
+		</h2>
+		<p>Certain emoji have defined variation sequences, where an emoji
+			character can be followed by one of two invisible emoji variation
+			selectors:</p>
+		<ul>
+			<li>U+FE0E for a text presentation</li>
+			<li>U+FE0F for an emoji presentation</li>
+		</ul>
+		<p>
+			This capability was added in <a
+				href="http://unicode-inc.blogspot.com/2012/01/announcing-unicode-standard-version-61.html">Unicode
+				6.1</a>. Some systems may also provide this distinction with
+			higher-level markup, rather than variation sequences. For more
+			information on these selectors, see <span class="noborder">[<a
+				href="tr51-3-archive.html#VSChart">VSChart</a>]
+			</span>.
+		</p>
+		<p>Implementations should support both styles of presentation for
+			the characters with variation sequences, if possible. Most of these
+			characters are emoji that were unified with preexisting characters.
+			Because people are now using emoji presentation for a broader set of
+			characters, it is anticipated that more such variation sequences will
+			be needed.</p>
+		<p>
+			However, even where the variation selectors exist, it has not been
+			clear for implementers whether the <em>default</em> presentation for
+			pictographs should be emoji or text. That means that a piece of text
+			may show up in a different style than intended when shared across
+			platforms. While this is all a perfectly legitimate for Unicode
+			characters—<em>presentation style is never guaranteed</em>—a shared
+			sense among developers of when to use emoji presentation by default
+			is important, so that there are fewer unexpected and
+			&quot;jarring&quot; presentations. Implementations need to know what
+			the generally expected default presentation is, to promote
+			interoperability across platforms and applications.
+		</p>
+		<p>There has been no clear line for implementers between three
+			categories of Unicode characters:</p>
+		<ol>
+			<li><strong>emoji-default:</strong> those expected to have an
+				emoji presentation by default, but can also have a text presentation</li>
+			<li><strong>text-default:</strong> those expected to have a text
+				presentation by default, but could also have an emoji presentation</li>
+			<li><strong>text-only:</strong> those that should only have a
+				text presentation</li>
+		</ol>
+		<p>
+			The data files [<a href="tr51-3-archive.html#emoji_data">emoji-data</a>], described in
+			the section <a href="tr51-3-archive.html#Data_Files">Data Files</a>, provide data to
+			distinguish between the first two categories: see the <strong>Default</strong>
+			column of <a target='full'
+				href="http://www.unicode.org/Public/emoji/1.0/full-emoji-list.html">full-emoji-list</a>.
+			The data assignment is based upon current usage in browsers for
+			Unicode 6.3 characters. For other characters, especially the new 7.0
+			characters, the assignment is based on that of the related emoji
+			characters. For example, the “vulcan” hand <img width='auto'
+				height='14' alt="🖖" src="images/ref/ref_1f596.png"> is marked
+			as <em>emoji-default</em> because of the emoji styling currently
+			given to other hands like <img width='auto' height='14' alt="✋"
+				src="images/apple/apple_270b.png">. The <em>text-only</em>
+			characters are all those not listed in the data files.
+		</p>
+		<p>
+			In general, emoji characters are marked as <em>text-default</em> if
+			they were in common use and predated the use of emoji. The characters
+			are otherwise marked as <em>emoji-default</em>. For example, the
+			negative squared A and B are text-default, while the negative squared
+			AB is emoji-default. The reason is that A and B are part of a set of
+			negative squared letters A-Z, while the AB was a new character. The
+			default status may change over time, however, if common usage
+			changes.
+		</p>
+		<p>The presentation of a given emoji character depends on the
+			environment, whether or not there is an emoji or text variation
+			selector, and the default presentation style (emoji vs text). In
+			informal environments like texting and chats, it is more appropriate
+			for most emoji characters to appear with a colorful emoji
+			presentation, and only get a text presentation with a text variation
+			selector. Conversely, in formal environments such as word processing,
+			it is generally better for emoji characters to appear with a text
+			presentation, and only get the colorful emoji presentation with the
+			emoji variation selector.</p>
+		<p>Based on those factors, here is typical presentation behavior.
+			However, these guidelines may change with changing user expectations.
+		</p>
+		<div align="center">
+			<table border="1" cellspacing="0" cellpadding="1">
+				<caption>
+					<a name="Emoji_vs_Text_Display" href="tr51-3-archive.html#Emoji_vs_Text_Display">Emoji
+						vs Text Display</a>
+				</caption>
+				<tr>
+					<th rowspan="2">Example Environment</th>
+					<th rowspan="2"><div align="center">with Emoji VS</div></th>
+					<th rowspan="2"><div align="center">with Text VS</div></th>
+					<th colspan="2"><div align="center">with no VS</div></th>
+				</tr>
+				<tr>
+					<th><div align="center">text-default</div></th>
+					<th><div align="center">emoji-default</div></th>
+				</tr>
+				<tr>
+					<td>word processing</td>
+					<td><div align="center">
+							<img height='18' width='auto' alt="⎈"
+								src="images/apple/apple_2615.png">
+						</div></td>
+					<td><div align="center">
+							<img height='18' width='auto' alt="⎈"
+								src="images/ref/ref_2615.png">
+						</div></td>
+					<td><div align="center">
+							<img height='18' width='auto' alt="⎈"
+								src="images/ref/ref_2615.png">
+						</div></td>
+					<td><div align="center">
+							<img height='18' width='auto' alt="⎈"
+								src="images/ref/ref_2615.png">
+						</div></td>
+				</tr>
+				<tr>
+					<td>plain web pages</td>
+					<td><div align="center">
+							<img height='18' width='auto' alt="⎈"
+								src="images/apple/apple_2615.png">
+						</div></td>
+					<td><div align="center">
+							<img height='18' width='auto' alt="⎈"
+								src="images/ref/ref_2615.png">
+						</div></td>
+					<td><div align="center">
+							<img height='18' width='auto' alt="⎈"
+								src="images/ref/ref_2615.png">
+						</div></td>
+					<td><div align="center">
+							<img height='18' width='auto' alt="⎈"
+								src="images/apple/apple_2615.png">
+						</div></td>
+				</tr>
+				<tr>
+					<td>texting, chats</td>
+					<td><div align="center">
+							<img height='18' width='auto' alt="⎈"
+								src="images/apple/apple_2615.png">
+						</div></td>
+					<td><div align="center">
+							<img height='18' width='auto' alt="⎈"
+								src="images/ref/ref_2615.png">
+						</div></td>
+					<td><div align="center">
+							<img height='18' width='auto' alt="⎈"
+								src="images/apple/apple_2615.png">
+						</div></td>
+					<td><div align="center">
+							<img height='18' width='auto' alt="⎈"
+								src="images/apple/apple_2615.png">
+						</div></td>
+				</tr>
+			</table>
+			<br>
+		</div>
+		<h2>
+			5 <a name="Sorting" href="tr51-3-archive.html#Sorting">Ordering and Grouping</a>
+		</h2>
+		<p>Neither the Unicode code point order, nor the standard Unicode
+			Collation ordering (DUCET), are currently well suited for emoji,
+			since they separate conceptually-related characters. From the user's
+			perspective, the ordering in the following selection of characters
+			sorted by DUCET appears quite random, as illustrated by the following
+			example:</p>
+		<p align="center">
+			<img width='auto' height='36' alt="↪"
+				src="images/apple/apple_21aa.png"
+				title="U+21AA ↪ rightwards arrow with hook"> <img width='auto'
+				height='36' alt="⌚" src="images/apple/apple_231a.png"
+				title="U+231A ⌚ watch"> <img width='auto' height='36' alt="⌛"
+				src="images/apple/apple_231b.png" title="U+231B ⌛ hourglass"><img
+				width='auto' height='36' alt="⏩" src="images/apple/apple_23e9.png"
+				title="U+23E9 ⏩ black right-pointing double triangle"> <img
+				width='auto' height='36' alt="⏰" src="images/apple/apple_23f0.png"
+				title="U+23F0 ⏰ alarm clock"> <img width='auto' height='36'
+				alt="⏲" src="images/ref/ref_23f2.png" title="U+23F2 ⏲ timer clock">
+			<img width='auto' height='36' alt="⏳"
+				src="images/apple/apple_23f3.png"
+				title="U+23F3 ⏳ hourglass with flowing sand"> <img
+				width='auto' height='36' alt="▶" src="images/apple/apple_25b6.png"
+				title="U+25B6 ▶ black right-pointing triangle"> <img
+				width='auto' height='36' alt="☀" src="images/apple/apple_2600.png"
+				title="U+2600 ☀ black sun with rays"> <img width='auto'
+				height='36' alt="☝" src="images/apple/apple_261d.png"
+				title="U+261D ☝ white up pointing index"> <img width='auto'
+				height='36' alt="☺" src="images/apple/apple_263a.png"
+				title="U+263A ☺ white smiling face"> <img width='auto'
+				height='36' alt="🌞" src="images/apple/apple_1f31e.png"
+				title="U+1F31E 🌞 sun with face"> <img width='auto'
+				height='36' alt="👇" src="images/apple/apple_1f447.png"
+				title="U+1F447 👇 white down pointing backhand index"> <img
+				width='auto' height='36' alt="🕐" src="images/apple/apple_1f550.png"
+				title="U+1F550 🕐 clock face one oclock"> <img width='auto'
+				height='36' alt="😀" src="images/apple/apple_1f600.png"
+				title="U+1F600 😀 grinning face">
+		</p>
+		<p>
+			The <a target='order'
+				href="http://www.unicode.org/Public/emoji/1.0/emoji-ordering.html">emoji-ordering</a>
+			chart file shows an ordering for emoji characters that groups them
+			together in a more natural fashion. This data has been incorporated
+			into [<a href="tr51-3-archive.html#CLDR">CLDR]</a>.
+		</p>
+		<p align="center">
+			<img width='auto' height='36' alt="☺"
+				src="images/apple/apple_263a.png"
+				title="U+263A ☺ white smiling face"> <img width='auto'
+				height='36' alt="😀" src="images/apple/apple_1f600.png"
+				title="U+1F600 😀 grinning face"> <img width='auto'
+				height='36' alt="☝" src="images/apple/apple_261d.png"
+				title="U+261D ☝ white up pointing index"> <img width='auto'
+				height='36' alt="👇" src="images/apple/apple_1f447.png"
+				title="U+1F447 👇 white down pointing backhand index"><img
+				width='auto' height='36' alt="⌛" src="images/apple/apple_231b.png"
+				title="U+231B ⌛ hourglass"> <img width='auto' height='36'
+				alt="⏳" src="images/apple/apple_23f3.png"
+				title="U+23F3 ⏳ hourglass with flowing sand"> <img
+				width='auto' height='36' alt="⌚" src="images/apple/apple_231a.png"
+				title="U+231A ⌚ watch"> <img width='auto' height='36' alt="⏰"
+				src="images/apple/apple_23f0.png" title="U+23F0 ⏰ alarm clock">
+			<img width='auto' height='36' alt="⏲" src="images/ref/ref_23f2.png"
+				title="U+23F2 ⏲ timer clock"> <img width='auto' height='36'
+				alt="🕐" src="images/apple/apple_1f550.png"
+				title="U+1F550 🕐 clock face one oclock"> <img width='auto'
+				height='36' alt="☀" src="images/apple/apple_2600.png"
+				title="U+2600 ☀ black sun with rays"> <img width='auto'
+				height='36' alt="🌞" src="images/apple/apple_1f31e.png"
+				title="U+1F31E 🌞 sun with face"> <img width='auto'
+				height='36' alt="▶" src="images/apple/apple_25b6.png"
+				title="U+25B6 ▶ black right-pointing triangle"> <img
+				width='auto' height='36' alt="⏩" src="images/apple/apple_23e9.png"
+				title="U+23E9 ⏩ black right-pointing double triangle"> <img
+				width='auto' height='36' alt="↪" src="images/apple/apple_21aa.png"
+				title="U+21AA ↪ rightwards arrow with hook">
+		</p>
+		<p>
+			This ordering groups characters presents a cleaner and more expected
+			ordering for sorted lists of characters. The groupings include:
+			faces, people, body-parts, emotion, clothing, animals, plants, food,
+			places, transport, and so on. The ordering also groups more naturally
+			for the purpose of selection in input palettes. However, for sorting,
+			each character must occur in only one position, which is not a
+			restriction for input palettes. See <em>Section 6 <a
+				href="tr51-3-archive.html#Input">Input</a></em>.
+		</p>
+		<h2>
+			6 <a name="Input" href="tr51-3-archive.html#Input">Input</a>
+		</h2>
+		<p>
+			Emoji are not typically typed on a keyboard. Instead, they are
+			generally picked from a palette, or recognized via a dictionary. The
+			mobile keyboards typically have a <img src="images/ref/ref_263a.png"
+				alt="☺" width="auto" height='14'> button to select a palette
+			of emoji, such as in the left image below. Clicking on the <img
+				src="images/ref/ref_263a.png" alt="☺" width="auto" height='14'>
+			button reveals a palette, as in the right image.
+		</p>
+		<table style='width: 100%; border-width: 0px'>
+			<caption>
+				<a name="Palette_Input" href="tr51-3-archive.html#Palette_Input">Palette Input</a>
+			</caption>
+			<tr>
+				<td style='border-width: 0px'><div align="center">
+						<img alt="palette1" src="images/other/open-emoji-palette.png"
+							width="auto" height="220">
+					</div></td>
+				<td style='border-width: 0px; text-align: right'><div
+						align="center">
+						<img alt="palette1" src="images/other/emoji-palette.png"
+							width="auto" height="220">
+					</div></td>
+			</tr>
+		</table>
+		<p>The palettes need to be organized in a meaningful way for
+			users. They typically provide a small number of broad categories,
+			such as People, Nature, and so on. These categories typically have
+			100-200 emoji.</p>
+		<p>Many characters can be categorized in multiple ways: an orange
+			is both a plant and a food. Unlike a sort order, an input palette can
+			have multiple instances of a single character. It can thus extend the
+			sort ordering to add characters in any groupings where people might
+			reasonably be expected to look for them.</p>
+		<p>More advanced palettes will have long-press enabled, so that
+			people can press-and-hold on an emoji and have a set of related emoji
+			pop up. This allows for faster navigation, with less scrolling
+			through the palette.</p>
+		<p>
+			Annotations for emoji characters are much more finely grained
+			keywords. They can be used for searching characters, and are often
+			easier than palettes for entering emoji characters. For example, when
+			someone types “hourglass” on their mobile phone, they could see and
+			pick from either of the matching emoji characters <img
+				src="images/apple/apple_23f3.png" alt="⏳" width="auto" height='14'>
+			or <img alt="⌛" src="images/apple/apple_231b.png" width="auto"
+				height='14'>. That is often much easier than scrolling through
+			the palette and visually inspecting the screen. Input mechanisms may
+			also map <em>emoticons</em> to emoji as keyboard shortcuts: typing
+			:-) can result in <img height='14' width="auto" alt="😄"
+				src="images/twitter/twitter_1f604.png">.
+		</p>
+		<p>
+			In some input systems, a word or phrase bracketed by colons is used
+			to explicitly pick emoji characters. Thus typing in “I saw an <em>:ambulance:</em>”
+			is converted to “I saw an <img height='14' width='auto' alt="🚑"
+				src="images/android/android_1f691.png">”. For completeness,
+			such systems might support all of the full Unicode names, such as <em>:first
+				quarter moon with face:</em> for <img height='14' width="auto" alt="🌛"
+				src="images/apple/apple_1f31b.png">. Spaces within the phrase
+			may be represented by _, as in the following:
+		</p>
+		<p align="center">
+			“my <em>:alarm_clock: </em>didn’t work”
+		</p>
+		<p align="center">
+			<font size='36'>&nbsp;→&nbsp;</font>
+		</p>
+		<p align="center">
+			“my <img height='14' width='auto' alt="⏰"
+				src="images/android/android_23f0.png"> didn’t work”.
+		</p>
+		<p>However, in general the full Unicode names are not especially
+			suitable for that sort of use; they were designed to be unique
+			identifiers, and tend to be overly long or confusing.</p>
+		<h2>
+			7 <a name="Searching" href="tr51-3-archive.html#Searching">Searching</a>
+		</h2>
+		<p>
+			Searching includes both searching for emoji characters in queries,
+			and finding emoji characters in the target. These are most useful
+			when they include the annotations as synonyms or hints. For example,
+			when someone searches for <img src="images/twitter/twitter_26fd.png"
+				alt="⛽" width="auto" height='14'> on <a target='yelp'
+				href="http://www.yelp.com/search#find_desc=%E2%9B%BD">yelp.com</a>,
+			they see matches for “gas station”. Conversely, searching for “gas
+			pump” in a search engine could find pages containing <img
+				src="images/twitter/twitter_26fd.png" alt="⛽" width="auto"
+				height='14'>. Similarly, searching for “gas pump” in an email
+			program can bring up all the emails containing <img
+				src="images/twitter/twitter_26fd.png" alt="⛽" width="auto"
+				height='14'>.
+		</p>
+		<p>
+			There is no requirement for uniqueness in both palette categories and
+			annotations: an emoji should show up wherever users would expect it.
+			A gas pump <img src="images/twitter/twitter_26fd.png" alt="⛽"
+				width="auto" height='14'> might show up under “object” and
+			“travel”; a heart <img src="images/android/android_1f494.png"
+				alt="💔" width="auto" height='14'> under “heart” and
+			“emotion”, a <img src="images/twitter/twitter_1f63b.png" alt="😻"
+				width="auto" height='14'> under “animal”, “cat”, and “heart”.
+		</p>
+		<p>
+			Annotations are language-specific: searching on <a target='yelp'
+				href="http://www.yelp.de/search#find_desc=%E2%9B%BD">yelp.de</a>,
+			someone would expect a search for <img
+				src="images/twitter/twitter_26fd.png" alt="⛽" width="auto"
+				height='14'> to result in matches for “Tankstelle”. Thus
+			annotations need to be in multiple languages to be useful across
+			languages. They should also include regional annotations within a
+			given language, like “petrol station”, which people would expect
+			search for <img src="images/twitter/twitter_26fd.png" alt="⛽"
+				width="auto" height='14'> to result in on <a target='yelp'
+				href="http://www.yelp.co.uk/search#find_desc=%E2%9B%BD">yelp.co.uk</a>.
+			An English annotation cannot simply be translated into different
+			languages, since different words may have different associations in
+			different languages. The emoji <img width="auto" height='14' alt="🌵"
+				src="images/apple/apple_1f335.png" title="U+1F335 🌵 cactus">
+			may be associated with Mexican or Southwestern restaurants in the US,
+			but not be associated with them in, say, Greece.
+		</p>
+		<p>
+			There is one further kind of annotation, called a <em>TTS name</em>,
+			for text-to-speech processing. For accessibility when reading text,
+			it is useful to have a short, descriptive name for an emoji
+			character. A Unicode character name can often serve as a basis for
+			this, but its requirements for name uniqueness often ends up with
+			names that are overly long, such as <em>black right-pointing
+				double triangle with vertical bar</em> for <img alt="⏯"
+				src="images/windows/windows_23ef.png" width="auto" height='14'>.
+			TTS names are also outside the current scope of this document.
+		</p>
+		<h2>
+			8 <a name="Longer_Term" href="tr51-3-archive.html#Longer_Term">Longer Term Solutions</a>
+		</h2>
+		<p>
+			The longer-term goal for implementations should be to support
+			embedded graphics, in addition to the emoji characters. Embedded
+			graphics allow arbitrary emoji symbols, and are not dependent on
+			additional Unicode encoding. Some examples of this are found in Skype
+			and LINE—see the <a href='http://www.unicode.org/press/emoji.html'>emoji press
+				page</a> for more examples.
+		</p>
+		<p>However, to be as effective and simple to use as emoji
+			characters, a full solution requires significant infrastructure
+			changes to allow simple, reliable input and transport of images
+			(stickers) in texting, chat, mobile phones, email programs, virtual
+			and mobile keyboards, and so on. (Even so, such images will never
+			interchange in environments that only support plain text, such as
+			email addresses.) Until that time, many implementations will need to
+			use Unicode emoji instead.</p>
+		<p>
+			For example, mobile keyboards need to be enhanced. Enabling embedded
+			graphics would involve adding an additional custom mechanism for
+			users to add in their own graphics or purchase additional sets, such
+			as a <img width='auto' height='14' alt="➕"
+				src="images/android/android_2795.png"> sign to add an image to
+			the palette above. This would prompt the user to paste or otherwise
+			select a graphic, and add annotations for dictionary selection.
+		</p>
+		<p>With such an enhanced mobile keyboard, the user could then
+			select those graphics in the same way as selecting the Unicode emoji.
+			If users started adding many custom graphics, the mobile keyboard
+			might even be enhanced to allow ordering or organization of those
+			graphics so that they can be quickly accessed. The extra graphics
+			would need to be disabled if the target of the mobile keyboard (such
+			as an email header line) would only accept text.</p>
+		<p>Other features required to make embedded graphics work well
+			include the ability of images to scale with font size, inclusion of
+			embedded images in more transport protocols, switching services and
+			applications to use protocols that do permit inclusion of embedded
+			images (eg, MMS versus SMS for text messages). There will always,
+			however, be places where embedded graphics can’t be used—such as
+			email headers, SMS messages, or file names. There are also privacy
+			aspects to implementations of embedded graphics: if the graphic
+			itself is not packaged with the text, but instead is just a reference
+			to an image on a server, then that server could track usage.</p>
+		<h2>
+			<a name="Data_Files" href="tr51-3-archive.html#Data_Files">Annex A: Data Files</a>
+		</h2>
+		<p>
+			The main data file is [<a href="tr51-3-archive.html#emoji_data">emoji-data</a>]. The
+			format for that file is described in its header.
+		</p>
+		<p>
+			See [<a href="tr51-3-archive.html#emoji_charts">emoji-charts</a>] for a collection of
+			charts that have been generated from the emoji data file that may be
+			useful in helping to understand it and the related [<a href="tr51-3-archive.html#CLDR">CLDR]</a>
+			emoji data (annotations and ordering). These charts are not
+			versioned, and are purely illustrative; the data to use for
+			implementation is in [<a href="tr51-3-archive.html#emoji_data">emoji-data</a>].
+		</p>
+		<h2>
+			<a name="Flags" href="tr51-3-archive.html#Flags">Annex B: Flags</a>
+		</h2>
+		<p>26 REGIONAL INDICATOR symbols are used in pairs to represent
+			country flags. Only valid sequences should be used, where:</p>
+		<ul>
+			<li>The valid region sequences are specified by <a
+				href="../tr35/index.html#unicode_region_subtag">Unicode
+					region subtags</a> as defined in [<a href="tr51-3-archive.html#CLDR">CLDR]</a>, excluding
+				those that are designated private-use or deprecated in [<a
+				href="tr51-3-archive.html#CLDR">CLDR]</a>. (An overseas territory of a country may
+				share the same flag as for the country itself.)
+			</li>
+		</ul>
+		<p>
+			Emoji are generally presented with a square aspect ratio, which
+			presents a problem for flags. The flag for Qatar <img height='14'
+				width='auto' alt="🇶🇦" src="images/ref/ref_1f1f6_1f1e6.png">
+			is over 150% wider than tall; for Switzerland <img height='14'
+				width='auto' alt="🇨🇭" src="images/ref/ref_1f1e8_1f1ed.png">
+			it is square; for Nepal <img height='14' width='auto' alt="🇳🇵"
+				src="images/ref/ref_1f1f3_1f1f5.png"> it is over 20% taller
+			than wide. To avoid a ransom-note effect, implementations may want to
+			use a fixed ratio across all flags, such as 150%, with a blank band
+			on the top and bottom. (The average width for flags is between 150%
+			and 165%.) Narrower flags, such as the Swiss flag, may also have
+			white bands on the side.
+		</p>
+		<p>Flags should have a visible edge. One option is to use a 1
+			pixel gray line chosen to be contrasting with the adjacent field
+			color.</p>
+		<p>
+			The code point order of flags is by region code, which will not be
+			intuitive for viewers, since that rarely matches the order of
+			countries in the viewer's language. English speakers are surprised
+			that the flag for Germany comes before the flag for Djibouti. An
+			alternative is to present the sorted order according to the localized
+			country name, using [<a href="tr51-3-archive.html#CLDR">CLDR]</a> data.
+		</p>
+		<p>
+			For an open-source set of flag images (png and svg), see <a
+				href="https://github.com/googlei18n/region-flags">region-flags</a>.
+		</p>
+		<h2>
+			<a name="Selection_Factors" href="tr51-3-archive.html#Selection_Factors">Annex C:
+				Selection Factors</a>
+		</h2>
+		<p>In the past, most emoji characters have been selected primarily
+			on the basis of compatibility. The scope is being broadened to
+			include other factors, as listed below.</p>
+		<p>
+			To submit a proposal for a new emoji character, fill out the form for
+			<a href="http://unicode.org/pending/proposals.html">Submitting
+				Character Proposals</a>. To that form, also add an annex that lists each
+			of the selection factors below, and for each one provides evidence as
+			to what degree each proposed character would satisfy that factor.
+		</p>
+		<p>None of these factors are completely determinant. For example,
+			the word for an object may be extremely common on the internet, but
+			the object not necessarily a good candidate due to other factors.</p>
+		<ol type="a">
+			<li><a name="Selection_Factors_Compatibility"
+				href="tr51-3-archive.html#Selection_Factors_Compatibility">Compatibility</a>.<em>
+					Are these needed for compatibility with high-use emoji in existing
+					systems, such as Gmail?</em>
+				<ul>
+					<li>For example, FACE WITH ROLLING EYES.</li>
+					<li>Compatibility is a strong selection factor. There are many
+						cases where characters are or have been added for compatibility
+						alone, such as <img width='auto' height='18' alt="🆕"
+						src="images/apple/apple_1f195.png"> SQUARED NEW, or <img
+						width='auto' height='18' alt="👷"
+						src="images/apple/apple_1f477.png"> CONSTRUCTION WORKER. In
+						such cases, many of the other factors don&rsquo;t apply.
+					</li>
+				</ul></li>
+			<li><a name="Selection_Factors_Usage"
+				href="tr51-3-archive.html#Selection_Factors_Usage">Expected usage level</a>. <em>Is
+					there a high expected frequency of use?</em>
+				<ul>
+					<li>There are various possible measures of this that can be
+						presented as evidence, such as:
+						<ul>
+							<li>whether closely-related characters show up above the
+								median in <a target="_blank" href="http://emojitracker.com">emojitracker.com</a>
+							</li>
+							<li>the frequency of related words in web pages</li>
+							<li>the frequency in image search (eg, <a target="_blank"
+								href="https://www.google.com/search?q=lion&amp;tbm=isch&amp;tbs=itp:clipart">google</a>
+								or <a target="_blank"
+								href="http://www.bing.com/images/search?&amp;q=lion&amp;qft=+filterui:photo-clipart">bing</a>)
+							</li>
+							<li>whether the object is commonly encountered in daily life</li>
+							<li>multiple usages, such as SHARK for not only the animal,
+								but also for a <em>huckster</em>, in <em>jumping the shark</em>,
+								<em>card shark</em>, <em>loan shark</em>, etc.
+							</li>
+						</ul>
+					</li>
+				</ul></li>
+			<li><a name="Selection_Factors_Distinctive"
+				href="tr51-3-archive.html#Selection_Factors_Distinctive">Image distinctiveness</a>. <em>Is
+					there a clearly recognizable image of physical objects that could
+					serve as a paradigm, that would be distinct enough from other
+					emoji?</em>
+				<ul>
+					<li>For example, CASSOULET or STEW probably couldn&rsquo;t be
+						easily distinguished from <img width='auto' height='18' alt="🍲"
+						src="images/apple/apple_1f372.png"> POT OF FOOD.
+					</li>
+
+					<li>Simple words (&ldquo;NEW&rdquo;) or abstract symbols
+						(&ldquo;∰&rdquo;) would not qualify as emoji.</li>
+					<li>Note that objects often may represent activities or
+						modifiers, such as <em><img width='auto' height='18' alt="😢"
+							src="images/apple/apple_1f622.png"></em>CRYING FACE for <em>crying</em>
+						or <img width='auto' height='18' alt="🏃"
+						src="images/apple/apple_1f3c3.png"> RUNNER for <em>running</em>.
+					</li>
+				</ul></li>
+			<li><a name="Selection_Factors_Disparity"
+				href="tr51-3-archive.html#Selection_Factors_Disparity">Disparity</a>. <em>Does the
+					proposed pictograph fill in a gap in existing types of emoji?</em>
+				<ul>
+					<li>For example, in Unicode 7.0 we have <img width='auto'
+						height='18' alt="🐯" src="images/apple/apple_1f42f.png">
+						TIGER, but not LION; <img width='auto' height='18' alt="⛪️"
+						src="images/apple/apple_26ea.png"> CHURCH but not MOSQUE.
+					</li>
+				</ul></li>
+			<li><a name="Selection_Factors_Requested"
+				href="tr51-3-archive.html#Selection_Factors_Requested">Frequently requested</a>. <em>Is
+					it often requested of the Unicode Consortium, or of Unicode member
+					companies?</em>
+				<ul>
+					<li>For example, HOT DOG or UNICORN.</li>
+					<li>Petitions are only considered as possible indications of
+						potential frequency of usage, among the other selection factors.
+						Citations of petition results should provide evidence as how
+						reliable the petition mechanism is (in terms of preventing
+						duplicates or robovotes) and account to what extent the results
+						could be skewed by commercial promotion of the petition.</li>
+				</ul></li>
+			<li><a name="Selection_Factors_Generality"
+				href="tr51-3-archive.html#Selection_Factors_Generality">Generality</a>. <em>Is the
+					proposed character overly specific?</em>
+				<ul>
+					<li>For example, <img width='auto' height='18' alt="🍣"
+						src="images/apple/apple_1f363.png"> SUSHI represents sushi
+						in general, even though a common image will be of a specific type,
+						such as Maguro. Adding SABA, HAMACHI, SAKE, AMAEBI and others
+						would be overly specific.
+					</li>
+				</ul></li>
+			<li><a name="Selection_Factors_Open"
+				href="tr51-3-archive.html#Selection_Factors_Open">Open-ended</a>. <em>Is it just
+					one of many, with no special reason to favor it over others of that
+					type?</em>
+				<ul>
+					<li>For example, there are thousands of people, including
+						occupations (DOCTOR, DENTIST, JANITOR, POLITICIAN, etc.): is there
+						a special reason to favor particular ones of them?</li>
+				</ul></li>
+			<li><a name="Selection_Factors_Representable"
+				href="tr51-3-archive.html#Selection_Factors_Representable">Representable already</a>. <em>Can
+					the concept be represented by another emoji or sequence?</em>
+				<ul>
+					<li>For example, a <em>crying baby</em> can already be
+						represented by <em><img width='auto' height='18' alt="😢"
+							src="images/apple/apple_1f622.png"></em><img width='auto'
+						height='18' alt="👶" src="images/apple/apple_1f476.png">
+						CRYING FACE + BABY
+					</li>
+					<li>A building associated with a particular religion might be
+						represented by a PLACE OF WORSHIP emoji followed by a one of the
+						many religious symbols in Unicode.</li>
+					<li>Halloween could be represented by either just <img
+						width='auto' height='18' alt="🎃"
+						src="images/apple/apple_1f383.png"> JACK-O-LANTERN, or a
+						sequence of &nbsp;<img width='auto' height='18' alt="🎃"
+						src="images/apple/apple_1f383.png"><img width='auto'
+						height='18' alt="👻" src="images/apple/apple_1f47b.png">
+						JACK-O-LANTERN + GHOST.
+					</li>
+				</ul></li>
+			<li><a name="Selection_Factors_Inappropriate"
+				href="tr51-3-archive.html#Selection_Factors_Inappropriate">Logos, Brands, UI icons,
+					signage, specific people, deities</a>. <em>Are the images
+					unsuitable for encoding as characters?</em>
+				<ul>
+					<li>These are strong factors for <strong>ex</strong>clusion.
+					</li>
+					<li>They include:
+						<ul>
+							<li>Images such as company logos, or those showing company
+								brands as part or all of the image.</li>
+							<li>UI icons such as <a
+								href="https://github.com/google/material-design-icons#material-design-icons">Material
+									Design Icons</a>, <a
+								href="https://github.com/winjs/winjs/tree/master/src/fonts#symbolsttf">Winjs
+									Icons</a>, or <a
+								href="https://github.com/FortAwesome/Font-Awesome#font-awesome-v420">Font
+									Awesome Icons</a>, which are often discarded or modified to meet
+								evolving UI needs.
+							</li>
+							<li>Signage such as <img width='auto' height='18' alt="🍣"
+								src="images/other/exit-sign.png">. See also Slate’s <a
+								href="http://www.slate.com/articles/life/signs/2010/03/the_big_red_word_vs_the_little_green_man.html"><em>The
+										Big Red Word vs. the Little Green Man</em></a>.
+							</li>
+							<li>Specific people, whether historic or living.</li>
+							<li>Deities.</li>
+						</ul>
+					</li>
+				</ul></li>
+		</ol>
+		<p>Note that symbols used in signage or user interfaces may be
+			encoded in Unicode for reasons unconnected with their use as emoji.</p>
+		<h2>
+			<a name="Standard_Additions_8" href="tr51-3-archive.html#Standard_Additions_8">Annex
+				D: Standard Additions for Unicode 8.0</a><a name="Emoji_Candidates"></a>
+		</h2>
+		<p>
+			Unicode 8.0 contains 41 new emoji characters. The 5 <a
+				href='tr51-3-archive.html#Emoji_Modifiers_List'>Emoji modifiers</a> are discussed in <em>Section
+				2.2 <a href="tr51-3-archive.html#Diversity">Diversity</a>
+			</em>. The <a href='tr51-3-archive.html#Faces_Hands_Zodiac'>Faces, Hands, and Zodiac
+				Symbols</a> are for compatibility with other messaging and email
+			systems. Others were selected based on the <a
+				href="tr51-3-archive.html#Selection_Factors">Annex C: Selection Factors</a>.
+		</p>
+		<p>
+			The images in the <strong> Chart Glyph</strong> column below are
+			black and white versions for the Unicode charts. Vendors that support
+			emoji should provide a colorful appearance for each of these. The
+			samples in the <strong>Sample Colored Glyph</strong> column below use
+			a variety of different styles to show some possible presentations. <em>These
+				are only illustrative samples; vendor images may vary.</em>
+		</p>
+
+		<table align='center'>
+			<caption>
+				<a name="Additions_80" href="tr51-3-archive.html#Additions_80">Additions for
+					Unicode 8.0</a><a name="Candidate_List"></a>
+			</caption>
+			<tr>
+				<th width="7em">Code Point</th>
+				<th width="5em">Chart Glyph</th>
+				<th width="5em">Sample Colored Glyph</th>
+				<th>Name</th>
+			</tr>
+			<tr>
+				<th colspan='4'><a href='tr51-3-archive.html#Emoji_Modifiers_List'
+					name='Emoji_Modifiers_List'>Emoji modifiers</a> (See <em>Section
+						2.2 <a href="tr51-3-archive.html#Diversity">Diversity)</a>
+				</em></th>
+			</tr>
+			<tr>
+				<td style="text-align: center"><a href='tr51-3-archive.html#1F3FB' name='1F3FB'>U+1F3FB</a></td>
+				<td style="text-align: center"><img height="36" width="auto"
+					alt="&#x1F3FB;" src="images/ref/ref_1f3fb.png"></td>
+				<td style="text-align: center"><span><img height="36"
+						width="auto" alt="&#x1F3FB;" src="images/sample/sample_1f3fb.png"></span></td>
+				<td>EMOJI MODIFIER FITZPATRICK TYPE-1-2</td>
+			</tr>
+			<tr>
+				<td style="text-align: center"><a href='tr51-3-archive.html#1F3FC' name='1F3FC'>U+1F3FC</a></td>
+				<td style="text-align: center"><img height="36" width="auto"
+					alt="&#x1F3FC;" src="images/ref/ref_1f3fc.png"></td>
+				<td style="text-align: center"><span><img height="36"
+						width="auto" alt="&#x1F3FB;" src="images/sample/sample_1f3fc.png"></span></td>
+				<td>EMOJI MODIFIER FITZPATRICK TYPE-3</td>
+			</tr>
+			<tr>
+				<td style="text-align: center"><a href='tr51-3-archive.html#1F3FD' name='1F3FD'>U+1F3FD</a></td>
+				<td style="text-align: center"><img height="36" width="auto"
+					alt="&#x1F3FD;" src="images/ref/ref_1f3fd.png"></td>
+				<td style="text-align: center"><span><img height="36"
+						width="auto" alt="&#x1F3FB;" src="images/sample/sample_1f3fd.png"></span></td>
+				<td>EMOJI MODIFIER FITZPATRICK TYPE-4</td>
+			</tr>
+			<tr>
+				<td style="text-align: center"><a href='tr51-3-archive.html#1F3FE' name='1F3FE'>U+1F3FE</a></td>
+				<td style="text-align: center"><img height="36" width="auto"
+					alt="&#x1F3FE;" src="images/ref/ref_1f3fe.png"></td>
+				<td style="text-align: center"><span><img height="36"
+						width="auto" alt="&#x1F3FB;" src="images/sample/sample_1f3fe.png"></span></td>
+				<td>EMOJI MODIFIER FITZPATRICK TYPE-5</td>
+			</tr>
+			<tr>
+				<td style="text-align: center"><a href='tr51-3-archive.html#1F3FF' name='1F3FF'>U+1F3FF</a></td>
+				<td style="text-align: center"><img height="36" width="auto"
+					alt="&#x1F3FF;" src="images/ref/ref_1f3ff.png"></td>
+				<td style="text-align: center"><span><img height="36"
+						width="auto" alt="&#x1F3FB;" src="images/sample/sample_1f3ff.png"></span></td>
+				<td>EMOJI MODIFIER FITZPATRICK TYPE-6</td>
+			</tr>
+			<tr>
+				<th colspan='4'><a href='tr51-3-archive.html#Faces_Hands_Zodiac'
+					name='Faces_Hands_Zodiac'>Faces, Hands, and Zodiac Symbols</a></th>
+			</tr>
+			<tr>
+				<td style="text-align: center"><a href='tr51-3-archive.html#1F910' name='1F910'>U+1F910</a></td>
+				<td style="text-align: center"><img height="36" width="auto"
+					alt="&#x1F910;" src="images/ref/ref_1f910.png"></td>
+				<td style="text-align: center"><span><img height="36"
+						width="auto" alt="&#x1F3FB;" src="images/sample/sample_1f910.png"></span></td>
+				<td>ZIPPER-MOUTH FACE</td>
+			</tr>
+			<tr>
+				<td style="text-align: center"><a href='tr51-3-archive.html#1F911' name='1F911'>U+1F911</a></td>
+				<td style="text-align: center"><img height="36" width="auto"
+					alt="&#x1F911;" src="images/ref/ref_1f911.png"></td>
+				<td style="text-align: center"><img height="36" width="auto"
+					alt="&#x1F3FB;" src="images/sample/sample_1f911.png"></td>
+				<td>MONEY-MOUTH FACE</td>
+			</tr>
+			<tr>
+				<td style="text-align: center"><a href='tr51-3-archive.html#1F912' name='1F912'>U+1F912</a></td>
+				<td style="text-align: center"><img height="36" width="auto"
+					alt="&#x1F912;" src="images/ref/ref_1f912.png"></td>
+				<td style="text-align: center"><img height="36" width="auto"
+					alt="&#x1F3FB;" src="images/sample/sample_1f912.png"></td>
+				<td>FACE WITH THERMOMETER</td>
+			</tr>
+			<tr>
+				<td style="text-align: center"><a href='tr51-3-archive.html#1F913' name='1F913'>U+1F913</a></td>
+				<td style="text-align: center"><img height="36" width="auto"
+					alt="&#x1F913;" src="images/ref/ref_1f913.png"></td>
+				<td style="text-align: center"><img height="36" width="auto"
+					alt="&#x1F3FB;" src="images/sample/sample_1f913.png"></td>
+				<td>NERD FACE</td>
+			</tr>
+			<tr>
+				<td style="text-align: center"><a href='tr51-3-archive.html#1F914' name='1F914'>U+1F914</a></td>
+				<td style="text-align: center"><img height="36" width="auto"
+					alt="&#x1F914;" src="images/ref/ref_1f914.png"></td>
+				<td style="text-align: center"><img height="36" width="auto"
+					alt="&#x1F3FB;" src="images/sample/sample_1f914.png"></td>
+				<td>THINKING FACE</td>
+			</tr>
+			<tr>
+				<td style="text-align: center"><a href='tr51-3-archive.html#1F644' name='1F644'>U+1F644</a></td>
+				<td style="text-align: center"><img height="36" width="auto"
+					alt="&#x1F644;" src="images/ref/ref_1f644.png"></td>
+				<td style="text-align: center"><span><img height="36"
+						width="auto" alt="&#x1F644;" src="images/sample/sample_1f644.png"></span></td>
+				<td>FACE WITH ROLLING EYES</td>
+			</tr>
+			<tr>
+				<td style="text-align: center"><a href='tr51-3-archive.html#1F643' name='1F643'>U+1F643</a></td>
+				<td style="text-align: center"><img height="36" width="auto"
+					alt="&#x1F643;" src="images/ref/ref_1f643.png"></td>
+				<td style="text-align: center"><span><img height="36"
+						width="auto" alt="&#x1F643;" src="images/sample/sample_1f643.png"></span></td>
+				<td>UPSIDE-DOWN FACE</td>
+			</tr>
+			<tr>
+				<td style="text-align: center"><a href='tr51-3-archive.html#1F915' name='1F915'>U+1F915</a></td>
+				<td style="text-align: center"><img height="36" width="auto"
+					alt="&#x1F915;" src="images/ref/ref_1f915.png"></td>
+				<td style="text-align: center"><img height="36" width="auto"
+					alt="&#x1F3FB;" src="images/sample/sample_1f915.png"></td>
+				<td>FACE WITH HEAD-BANDAGE</td>
+			</tr>
+			<tr>
+				<td style="text-align: center"><a href='tr51-3-archive.html#1F916' name='1F916'>U+1F916</a></td>
+				<td style="text-align: center"><img height="36" width="auto"
+					alt="&#x1F916;" src="images/ref/ref_1f916.png"></td>
+				<td style="text-align: center"><img height="36" width="auto"
+					alt="&#x1F3FB;" src="images/sample/sample_1f916.png"></td>
+				<td>ROBOT FACE</td>
+			</tr>
+			<tr>
+				<td style="text-align: center"><a href='tr51-3-archive.html#1F917' name='1F917'>U+1F917</a></td>
+				<td style="text-align: center"><img height="36" width="auto"
+					alt="&#x1F917;" src="images/ref/ref_1f917.png"></td>
+				<td style="text-align: center"><img height="36" width="auto"
+					alt="&#x1F3FB;" src="images/sample/sample_1f917.png"></td>
+				<td>HUGGING FACE</td>
+			</tr>
+			<tr>
+				<td style="text-align: center"><a href='tr51-3-archive.html#1F918' name='1F918'>U+1F918</a></td>
+				<td style="text-align: center"><img height="36" width="auto"
+					alt="&#x1F918;" src="images/ref/ref_1f918.png"></td>
+				<td style="text-align: center"><span><img height="36"
+						width="auto" alt="&#x1F918;" src="images/sample/sample_1f918.png"></span></td>
+				<td>SIGN OF THE HORNS</td>
+			</tr>
+			<tr>
+				<td style="text-align: center"><a href='tr51-3-archive.html#1F980' name='1F980'>U+1F980</a></td>
+				<td style="text-align: center"><img height="36" width="auto"
+					alt="&#x1F980;" src="images/ref/ref_1f980.png"></td>
+				<td style="text-align: center"><img height="36" width="auto"
+					alt="&#x1F3FB;" src="images/sample/sample_1f980.png"></td>
+				<td>CRAB<em> (also Cancer)</em></td>
+			</tr>
+			<tr>
+				<td style="text-align: center"><a href='tr51-3-archive.html#1F982' name='1F982'>U+1F982</a></td>
+				<td style="text-align: center"><img height="36" width="auto"
+					alt="&#x1F982;" src="images/ref/ref_1f982.png"></td>
+				<td style="text-align: center"><img height="36" width="auto"
+					alt="&#x1F3FB;" src="images/sample/sample_1f982.png"></td>
+				<td>SCORPION<em> (also Scorpio)</em></td>
+			</tr>
+			<tr>
+				<td style="text-align: center"><a href='tr51-3-archive.html#1F981' name='1F981'>U+1F981</a></td>
+				<td style="text-align: center"><img height="36" width="auto"
+					alt="&#x1F981;" src="images/ref/ref_1f981.png"></td>
+				<td style="text-align: center"><img height="36" width="auto"
+					alt="&#x1F3FB;" src="images/sample/sample_1f981.png"></td>
+				<td>LION FACE<em> (also Leo)</em></td>
+			</tr>
+			<tr>
+				<td style="text-align: center"><a href='tr51-3-archive.html#1F3F9' name='1F3F9'>U+1F3F9</a></td>
+				<td style="text-align: center"><img height="36" width="auto"
+					alt="&#x1F3F9;" src="images/ref/ref_1f3f9.png"></td>
+				<td style="text-align: center"><img height="36" width="auto"
+					alt="&#x1F3FB;" src="images/sample/sample_1f3f9.png"></td>
+				<td>BOW AND ARROW<em> (also Sagittarius)</em></td>
+			</tr>
+			<tr>
+				<td style="text-align: center"><a href='tr51-3-archive.html#1F3FA' name='1F3FA'>U+1F3FA</a></td>
+				<td style="text-align: center"><img height="36" width="auto"
+					alt="&#x1F3FA;" src="images/ref/ref_1f3fa.png"></td>
+				<td style="text-align: center"><img height="36" width="auto"
+					alt="&#x1F3FB;" src="images/sample/sample_1f3fa.png"></td>
+				<td>AMPHORA<em> (also Aquarius)</em></td>
+			</tr>
+			<tr>
+				<th colspan='4'><a href='tr51-3-archive.html#Religious_Significance'
+					name='Religious_Significance'>Symbols of Religious Significance</a></th>
+			</tr>
+			<tr>
+				<td style="text-align: center"><a href='tr51-3-archive.html#1F6D0' name='1F6D0'>U+1F6D0</a></td>
+				<td style="text-align: center"><img height="36" width="auto"
+					alt="&#x1F6D0;" src="images/ref/ref_1f6d0.png"></td>
+				<td style="text-align: center"><span><img height="36"
+						width="auto" alt="&#x1F6D0;" src="images/sample/sample_1f6d0.png"></span></td>
+				<td><p>PLACE OF WORSHIP</p>
+					<ul>
+						<li>both intended for stand-alone use and also for use in
+							sequences with a religious symbol, such as<br> <span
+							style="text-align: center"><img height="24" width="auto"
+								alt="&#x1F6D0;" src="images/ref/ref_1f6d0.png"></span><img
+							alt="🕉" height="24" width="auto" src="images/ref/ref_1f549.png"
+							title="U+1F549 🕉 om symbol">
+						</li>
+					</ul></td>
+			</tr>
+			<tr>
+				<td style="text-align: center"><a href='tr51-3-archive.html#1F54B' name='1F54B'>U+1F54B</a></td>
+				<td style="text-align: center"><img height="36" width="auto"
+					alt="&#x1F54B;" src="images/ref/ref_1f54b.png"></td>
+				<td style="text-align: center"><span><img height="36"
+						width="auto" alt="&#x1F54B;" src="images/sample/sample_1f54b.png"></span></td>
+				<td>KAABA</td>
+			</tr>
+			<tr>
+				<td style="text-align: center"><a href='tr51-3-archive.html#1F54C' name='1F54C'>U+1F54C</a></td>
+				<td style="text-align: center"><img height="36" width="auto"
+					alt="&#x1F54C;" src="images/ref/ref_1f54c.png"></td>
+				<td style="text-align: center"><span><img height="36"
+						width="auto" alt="&#x1F54C;" src="images/sample/sample_1f54c.png"></span></td>
+				<td>MOSQUE</td>
+			</tr>
+			<tr>
+				<td style="text-align: center"><a href='tr51-3-archive.html#1F54D' name='1F54D'>U+1F54D</a></td>
+				<td style="text-align: center"><img height="36" width="auto"
+					alt="&#x1F54D;" src="images/ref/ref_1f54d.png"></td>
+				<td style="text-align: center"><span><img height="36"
+						width="auto" alt="&#x1F54D;" src="images/sample/sample_1f54d.png"></span></td>
+				<td>SYNAGOGUE</td>
+			</tr>
+			<tr>
+				<td style="text-align: center"><a href='tr51-3-archive.html#1F54E' name='1F54E'>U+1F54E</a></td>
+				<td style="text-align: center"><img height="36" width="auto"
+					alt="&#x1F54E;" src="images/ref/ref_1f54e.png"></td>
+				<td style="text-align: center"><span><img height="36"
+						width="auto" alt="&#x1F54E;" src="images/sample/sample_1f54e.png"></span></td>
+				<td>MENORAH WITH NINE BRANCHES</td>
+			</tr>
+			<tr>
+				<td style="text-align: center"><a href='tr51-3-archive.html#1F4FF' name='1F4FF'>U+1F4FF</a></td>
+				<td style="text-align: center"><img height="36" width="auto"
+					alt="&#x1F4FF;" src="images/ref/ref_1f4ff.png"></td>
+				<td style="text-align: center"><span><img height="36"
+						width="auto" alt="&#x1F4FF;" src="images/sample/sample_1f4ff.png"></span></td>
+				<td>PRAYER BEADS</td>
+			</tr>
+			<tr>
+				<th colspan='4'><a href='tr51-3-archive.html#Popularly_Requested'
+					name='Popularly_Requested'>Most Popularly Requested Emoji</a></th>
+			</tr>
+			<tr>
+				<td style="text-align: center"><a href='tr51-3-archive.html#1F32D' name='1F32D'>U+1F32D</a></td>
+				<td style="text-align: center"><img height="36" width="auto"
+					alt="&#x1F32D;" src="images/ref/ref_1f32d.png"></td>
+				<td style="text-align: center"><span><img height="36"
+						width="auto" alt="&#x1F32D;" src="images/sample/sample_1f32d.png"></span></td>
+				<td>HOT DOG</td>
+			</tr>
+			<tr>
+				<td style="text-align: center"><a href='tr51-3-archive.html#1F32E' name='1F32E'>U+1F32E</a></td>
+				<td style="text-align: center"><img height="36" width="auto"
+					alt="&#x1F32E;" src="images/ref/ref_1f32e.png"></td>
+				<td style="text-align: center"><span><img height="36"
+						width="auto" alt="&#x1F3FB;" src="images/sample/sample_1f32e.png"></span></td>
+				<td>TACO</td>
+			</tr>
+			<tr>
+				<td style="text-align: center"><a href='tr51-3-archive.html#1F32F' name='1F32F'>U+1F32F</a></td>
+				<td style="text-align: center"><img height="36" width="auto"
+					alt="&#x1F32F;" src="images/ref/ref_1f32f.png"></td>
+				<td style="text-align: center"><span><img height="36"
+						width="auto" alt="&#x1F32F;" src="images/sample/sample_1f32f.png"></span></td>
+				<td>BURRITO</td>
+			</tr>
+			<tr>
+				<td style="text-align: center"><a href='tr51-3-archive.html#1F9C0' name='1F9C0'>U+1F9C0</a></td>
+				<td style="text-align: center"><img height="36" width="auto"
+					alt="&#x1F9C0;" src="images/ref/ref_1f9c0.png"></td>
+				<td style="text-align: center"><span><img height="36"
+						width="auto" alt="&#x1F9C0;" src="images/sample/sample_1f9c0.png"></span></td>
+				<td>CHEESE WEDGE</td>
+			</tr>
+			<tr>
+				<td style="text-align: center"><a href='tr51-3-archive.html#1F37F' name='1F37F'>U+1F37F</a></td>
+				<td style="text-align: center"><img height="36" width="auto"
+					alt="&#x1F37F;" src="images/ref/ref_1f37f.png"></td>
+				<td style="text-align: center"><span><img height="36"
+						width="auto" alt="&#x1F37F;" src="images/sample/sample_1f37f.png"></span></td>
+				<td>POPCORN</td>
+			</tr>
+			<tr>
+				<td style="text-align: center"><a href='tr51-3-archive.html#1F37E' name='1F37E'>U+1F37E</a></td>
+				<td style="text-align: center"><img height="36" width="auto"
+					alt="&#x1F37E;" src="images/ref/ref_1f37e.png"></td>
+				<td style="text-align: center"><span><img height="36"
+						width="auto" alt="&#x1F37E;" src="images/sample/sample_1f37e.png"></span></td>
+				<td>BOTTLE WITH POPPING CORK</td>
+			</tr>
+			<tr>
+				<td style="text-align: center"><a href='tr51-3-archive.html#1F983' name='1F983'>U+1F983</a></td>
+				<td style="text-align: center"><img height="36" width="auto"
+					alt="&#x1F983;" src="images/ref/ref_1f983.png"></td>
+				<td style="text-align: center"><span><img height="36"
+						width="auto" alt="&#x1F983;" src="images/sample/sample_1f983.png"></span></td>
+				<td>TURKEY</td>
+			</tr>
+			<tr>
+				<td style="text-align: center"><a href='tr51-3-archive.html#1F984' name='1F984'>U+1F984</a></td>
+				<td style="text-align: center"><img height="36" width="auto"
+					alt="&#x1F984;" src="images/ref/ref_1f984.png"></td>
+				<td style="text-align: center"><span><img height="36"
+						width="auto" alt="&#x1F3FB;" src="images/sample/sample_1f984.png"></span></td>
+				<td>UNICORN FACE</td>
+			</tr>
+			<tr>
+				<th colspan='4'><a href='tr51-3-archive.html#Top_Sports' name='Top_Sports'>Missing
+						Top Sports Symbols</a></th>
+			</tr>
+			<tr>
+				<td style="text-align: center"><a href='tr51-3-archive.html#1F3CF' name='1F3CF'>U+1F3CF</a></td>
+				<td style="text-align: center"><img height="36" width="auto"
+					alt="&#x1F3CF;" src="images/ref/ref_1f3cf.png"></td>
+				<td style="text-align: center"><img height="36" width="auto"
+					alt="&#x1F3FB;" src="images/sample/sample_1f3cf.png"></td>
+				<td>CRICKET BAT AND BALL</td>
+			</tr>
+			<tr>
+				<td style="text-align: center"><a href='tr51-3-archive.html#1F3D0' name='1F3D0'>U+1F3D0</a></td>
+				<td style="text-align: center"><img height="36" width="auto"
+					alt="&#x1F3D0;" src="images/ref/ref_1f3d0.png"></td>
+				<td style="text-align: center"><span><img height="36"
+						width="auto" alt="&#x1F3D0;" src="images/sample/sample_1f3d0.png"></span></td>
+				<td>VOLLEYBALL</td>
+			</tr>
+			<tr>
+				<td style="text-align: center"><a href='tr51-3-archive.html#1F3D1' name='1F3D1'>U+1F3D1</a></td>
+				<td style="text-align: center"><img height="36" width="auto"
+					alt="&#x1F3D1;" src="images/ref/ref_1f3d1.png"></td>
+				<td style="text-align: center"><img height="36" width="auto"
+					alt="&#x1F3FB;" src="images/sample/sample_1f3d1.png"></td>
+				<td>FIELD HOCKEY STICK AND BALL</td>
+			</tr>
+			<tr>
+				<td style="text-align: center"><a href='tr51-3-archive.html#1F3D2' name='1F3D2'>U+1F3D2</a></td>
+				<td style="text-align: center"><img height="36" width="auto"
+					alt="&#x1F3D2;" src="images/ref/ref_1f3d2.png"></td>
+				<td style="text-align: center"><img height="36" width="auto"
+					alt="&#x1F3FB;" src="images/sample/sample_1f3d2.png"></td>
+				<td>ICE HOCKEY STICK AND PUCK</td>
+			</tr>
+			<tr>
+				<td style="text-align: center"><a href='tr51-3-archive.html#1F3D3' name='1F3D3'>U+1F3D3</a></td>
+				<td style="text-align: center"><img height="36" width="auto"
+					alt="&#x1F3D3;" src="images/ref/ref_1f3d3.png"></td>
+				<td style="text-align: center"><img height="36" width="auto"
+					alt="&#x1F3FB;" src="images/sample/sample_1f3d3.png"></td>
+				<td>TABLE TENNIS PADDLE AND BALL</td>
+			</tr>
+			<tr>
+				<td style="text-align: center"><a href='tr51-3-archive.html#1F3F8' name='1F3F8'>U+1F3F8</a></td>
+				<td style="text-align: center"><img height="36" width="auto"
+					alt="&#x1F3F8;" src="images/ref/ref_1f3f8.png"></td>
+				<td style="text-align: center"><img height="36" width="auto"
+					alt="&#x1F3FB;" src="images/sample/sample_1f3f8.png"></td>
+				<td>BADMINTON RACQUET AND SHUTTLECOCK</td>
+			</tr>
+		</table>
+		<br>
+
+		<h2>
+			<a name="ZWJ_Sequences" href="tr51-3-archive.html#ZWJ_Sequences">Annex E: Existing
+				Use of ZWJ Sequences</a>
+		</h2>
+		<p>Since April 2015, Apple’s system software has used ZWJ
+			sequences to enable presentation of multiple variations for FAMILY,
+			COUPLE WITH HEART, and KISS; these are available as single images in
+			the OS X Emoji Picker and the iOS Emoji Keyboard, and display as
+			single images on those systems. These may be included in e-mail or
+			text message sent to other systems.</p>
+
+		<table border="1" cellspacing="0" cellpadding="1">
+			<!-- nocaption -->
+			<tr align="left">
+				<th align="center">Image</th>
+				<th>User-Interface Name</th>
+				<th colspan="2">Sequence (invisible characters indicated with a
+					light blue background)</th>
+			</tr>
+
+			<tr align="left">
+				<td rowspan="7" align="center"><img height='36' width="auto"
+					alt="👪" src="images/apple/apple_1f46a.png"></td>
+				<td rowspan="7">FAMILY (man, woman, boy)</td>
+				<td>U+1F46A</td>
+				<td>FAMILY</td>
+			</tr>
+			<tr align="left">
+				<td colspan="2">(output using the single character above, but
+					the same image is also displayed for the following sequence:)</td>
+			</tr>
+			<tr align="left">
+				<td>U+1F468</td>
+				<td>MAN</td>
+			</tr>
+			<tr align="left" class="modcharbg">
+				<td>U+200D</td>
+				<td>ZWJ</td>
+			</tr>
+			<tr align="left">
+				<td>U+1F469</td>
+				<td>WOMAN</td>
+			</tr>
+			<tr align="left" class="modcharbg">
+				<td>U+200D</td>
+				<td>ZWJ</td>
+			</tr>
+			<tr align="left">
+				<td>U+1F466</td>
+				<td>BOY</td>
+			</tr>
+
+			<tr align="left">
+				<td rowspan="5" align="center"><img height='36' width="auto"
+					alt="👨‍👩‍👧"
+					src="images/apple/apple_1f468_200d_1f469_200d_1f467.png"></td>
+				<td rowspan="5">FAMILY (man, woman, girl)</td>
+				<td>U+1F468</td>
+				<td>MAN</td>
+			</tr>
+			<tr align="left" class="modcharbg">
+				<td>U+200D</td>
+				<td>ZWJ</td>
+			</tr>
+			<tr align="left">
+				<td>U+1F469</td>
+				<td>WOMAN</td>
+			</tr>
+			<tr align="left" class="modcharbg">
+				<td>U+200D</td>
+				<td>ZWJ</td>
+			</tr>
+			<tr align="left">
+				<td>U+1F467</td>
+				<td>GIRL</td>
+			</tr>
+
+			<tr align="left">
+				<td rowspan="7" align="center"><img height='36' width="auto"
+					alt="👨‍👩‍👧‍👦"
+					src="images/apple/apple_1f468_200d_1f469_200d_1f467_200d_1f466.png">
+				</td>
+				<td rowspan="7">FAMILY (man, woman, girl, boy)</td>
+				<td>U+1F468</td>
+				<td>MAN</td>
+			</tr>
+			<tr align="left" class="modcharbg">
+				<td>U+200D</td>
+				<td>ZWJ</td>
+			</tr>
+			<tr align="left">
+				<td>U+1F469</td>
+				<td>WOMAN</td>
+			</tr>
+			<tr align="left" class="modcharbg">
+				<td>U+200D</td>
+				<td>ZWJ</td>
+			</tr>
+			<tr align="left">
+				<td>U+1F467</td>
+				<td>GIRL</td>
+			</tr>
+			<tr align="left" class="modcharbg">
+				<td>U+200D</td>
+				<td>ZWJ</td>
+			</tr>
+			<tr align="left">
+				<td>U+1F466</td>
+				<td>BOY</td>
+			</tr>
+
+			<tr align="left">
+				<td rowspan="7" align="center"><img height='36' width="auto"
+					alt="👨‍👩‍👦‍👦"
+					src="images/apple/apple_1f468_200d_1f469_200d_1f466_200d_1f466.png">
+				</td>
+				<td rowspan="7">FAMILY (man, woman, boy, boy)</td>
+				<td>U+1F468</td>
+				<td>MAN</td>
+			</tr>
+			<tr align="left" class="modcharbg">
+				<td>U+200D</td>
+				<td>ZWJ</td>
+			</tr>
+			<tr align="left">
+				<td>U+1F469</td>
+				<td>WOMAN</td>
+			</tr>
+			<tr align="left" class="modcharbg">
+				<td>U+200D</td>
+				<td>ZWJ</td>
+			</tr>
+			<tr align="left">
+				<td>U+1F466</td>
+				<td>BOY</td>
+			</tr>
+			<tr align="left" class="modcharbg">
+				<td>U+200D</td>
+				<td>ZWJ</td>
+			</tr>
+			<tr align="left">
+				<td>U+1F466</td>
+				<td>BOY</td>
+			</tr>
+
+			<tr align="left">
+				<td rowspan="7" align="center"><img height='36' width="auto"
+					alt="👨‍👩‍👧‍👧"
+					src="images/apple/apple_1f468_200d_1f469_200d_1f467_200d_1f467.png">
+				</td>
+				<td rowspan="7">FAMILY (man, woman, girl, girl)</td>
+				<td>U+1F468</td>
+				<td>MAN</td>
+			</tr>
+			<tr align="left" class="modcharbg">
+				<td>U+200D</td>
+				<td>ZWJ</td>
+			</tr>
+			<tr align="left">
+				<td>U+1F469</td>
+				<td>WOMAN</td>
+			</tr>
+			<tr align="left" class="modcharbg">
+				<td>U+200D</td>
+				<td>ZWJ</td>
+			</tr>
+			<tr align="left">
+				<td>U+1F467</td>
+				<td>GIRL</td>
+			</tr>
+			<tr align="left" class="modcharbg">
+				<td>U+200D</td>
+				<td>ZWJ</td>
+			</tr>
+			<tr align="left">
+				<td>U+1F467</td>
+				<td>GIRL</td>
+			</tr>
+
+			<tr align="left">
+				<td rowspan="5" align="center"><img height='36' width="auto"
+					alt="👩‍👩‍👦"
+					src="images/apple/apple_1f469_200d_1f469_200d_1f466.png"></td>
+				<td rowspan="5">FAMILY (woman, woman, boy)</td>
+				<td>U+1F469</td>
+				<td>WOMAN</td>
+			</tr>
+			<tr align="left" class="modcharbg">
+				<td>U+200D</td>
+				<td>ZWJ</td>
+			</tr>
+			<tr align="left">
+				<td>U+1F469</td>
+				<td>WOMAN</td>
+			</tr>
+			<tr align="left" class="modcharbg">
+				<td>U+200D</td>
+				<td>ZWJ</td>
+			</tr>
+			<tr align="left">
+				<td>U+1F466</td>
+				<td>BOY</td>
+			</tr>
+
+			<tr align="left">
+				<td rowspan="5" align="center"><img height='36' width="auto"
+					alt="👩‍👩‍👧"
+					src="images/apple/apple_1f469_200d_1f469_200d_1f467.png"></td>
+				<td rowspan="5">FAMILY (woman, woman, girl)</td>
+				<td>U+1F469</td>
+				<td>WOMAN</td>
+			</tr>
+			<tr align="left" class="modcharbg">
+				<td>U+200D</td>
+				<td>ZWJ</td>
+			</tr>
+			<tr align="left">
+				<td>U+1F469</td>
+				<td>WOMAN</td>
+			</tr>
+			<tr align="left" class="modcharbg">
+				<td>U+200D</td>
+				<td>ZWJ</td>
+			</tr>
+			<tr align="left">
+				<td>U+1F467</td>
+				<td>GIRL</td>
+			</tr>
+
+			<tr align="left">
+				<td rowspan="7" align="center"><img height='36' width="auto"
+					alt="👩‍👩‍👧‍👦"
+					src="images/apple/apple_1f469_200d_1f469_200d_1f467_200d_1f466.png">
+				</td>
+				<td rowspan="7">FAMILY (woman, woman, girl, boy)</td>
+				<td>U+1F469</td>
+				<td>WOMAN</td>
+			</tr>
+			<tr align="left" class="modcharbg">
+				<td>U+200D</td>
+				<td>ZWJ</td>
+			</tr>
+			<tr align="left">
+				<td>U+1F469</td>
+				<td>WOMAN</td>
+			</tr>
+			<tr align="left" class="modcharbg">
+				<td>U+200D</td>
+				<td>ZWJ</td>
+			</tr>
+			<tr align="left">
+				<td>U+1F467</td>
+				<td>GIRL</td>
+			</tr>
+			<tr align="left" class="modcharbg">
+				<td>U+200D</td>
+				<td>ZWJ</td>
+			</tr>
+			<tr align="left">
+				<td>U+1F466</td>
+				<td>BOY</td>
+			</tr>
+
+			<tr align="left">
+				<td rowspan="7" align="center"><img height='36' width="auto"
+					alt="👩‍👩‍👦‍👦"
+					src="images/apple/apple_1f469_200d_1f469_200d_1f466_200d_1f466.png">
+				</td>
+				<td rowspan="7">FAMILY (woman, woman, boy, boy)</td>
+				<td>U+1F469</td>
+				<td>WOMAN</td>
+			</tr>
+			<tr align="left" class="modcharbg">
+				<td>U+200D</td>
+				<td>ZWJ</td>
+			</tr>
+			<tr align="left">
+				<td>U+1F469</td>
+				<td>WOMAN</td>
+			</tr>
+			<tr align="left" class="modcharbg">
+				<td>U+200D</td>
+				<td>ZWJ</td>
+			</tr>
+			<tr align="left">
+				<td>U+1F466</td>
+				<td>BOY</td>
+			</tr>
+			<tr align="left" class="modcharbg">
+				<td>U+200D</td>
+				<td>ZWJ</td>
+			</tr>
+			<tr align="left">
+				<td>U+1F466</td>
+				<td>BOY</td>
+			</tr>
+
+			<tr align="left">
+				<td rowspan="7" align="center"><img height='36' width="auto"
+					alt="👩‍👩‍👧‍👧"
+					src="images/apple/apple_1f469_200d_1f469_200d_1f467_200d_1f467.png">
+				</td>
+				<td rowspan="7">FAMILY (woman, woman, girl, girl)</td>
+				<td>U+1F469</td>
+				<td>WOMAN</td>
+			</tr>
+			<tr align="left" class="modcharbg">
+				<td>U+200D</td>
+				<td>ZWJ</td>
+			</tr>
+			<tr align="left">
+				<td>U+1F469</td>
+				<td>WOMAN</td>
+			</tr>
+			<tr align="left" class="modcharbg">
+				<td>U+200D</td>
+				<td>ZWJ</td>
+			</tr>
+			<tr align="left">
+				<td>U+1F467</td>
+				<td>GIRL</td>
+			</tr>
+			<tr align="left" class="modcharbg">
+				<td>U+200D</td>
+				<td>ZWJ</td>
+			</tr>
+			<tr align="left">
+				<td>U+1F467</td>
+				<td>GIRL</td>
+			</tr>
+
+			<tr align="left">
+				<td rowspan="5" align="center"><img height='36' width="auto"
+					alt="👨‍👨‍👦"
+					src="images/apple/apple_1f468_200d_1f468_200d_1f466.png"></td>
+				<td rowspan="5">FAMILY (man, man, boy)</td>
+				<td>U+1F468</td>
+				<td>MAN</td>
+			</tr>
+			<tr align="left" class="modcharbg">
+				<td>U+200D</td>
+				<td>ZWJ</td>
+			</tr>
+			<tr align="left">
+				<td>U+1F468</td>
+				<td>MAN</td>
+			</tr>
+			<tr align="left" class="modcharbg">
+				<td>U+200D</td>
+				<td>ZWJ</td>
+			</tr>
+			<tr align="left">
+				<td>U+1F466</td>
+				<td>BOY</td>
+			</tr>
+
+			<tr align="left">
+				<td rowspan="5" align="center"><img height='36' width="auto"
+					alt="👨‍👨‍👧"
+					src="images/apple/apple_1f468_200d_1f468_200d_1f467.png"></td>
+				<td rowspan="5">FAMILY (man, man, girl)</td>
+				<td>U+1F468</td>
+				<td>MAN</td>
+			</tr>
+			<tr align="left" class="modcharbg">
+				<td>U+200D</td>
+				<td>ZWJ</td>
+			</tr>
+			<tr align="left">
+				<td>U+1F468</td>
+				<td>MAN</td>
+			</tr>
+			<tr align="left" class="modcharbg">
+				<td>U+200D</td>
+				<td>ZWJ</td>
+			</tr>
+			<tr align="left">
+				<td>U+1F467</td>
+				<td>GIRL</td>
+			</tr>
+
+			<tr align="left">
+				<td rowspan="7" align="center"><img height='36' width="auto"
+					alt="👨‍👨‍👧‍👦"
+					src="images/apple/apple_1f468_200d_1f468_200d_1f467_200d_1f466.png">
+				</td>
+				<td rowspan="7">FAMILY (man, man, girl, boy)</td>
+				<td>U+1F468</td>
+				<td>MAN</td>
+			</tr>
+			<tr align="left" class="modcharbg">
+				<td>U+200D</td>
+				<td>ZWJ</td>
+			</tr>
+			<tr align="left">
+				<td>U+1F468</td>
+				<td>MAN</td>
+			</tr>
+			<tr align="left" class="modcharbg">
+				<td>U+200D</td>
+				<td>ZWJ</td>
+			</tr>
+			<tr align="left">
+				<td>U+1F467</td>
+				<td>GIRL</td>
+			</tr>
+			<tr align="left" class="modcharbg">
+				<td>U+200D</td>
+				<td>ZWJ</td>
+			</tr>
+			<tr align="left">
+				<td>U+1F466</td>
+				<td>BOY</td>
+			</tr>
+
+			<tr align="left">
+				<td rowspan="7" align="center"><img height='36' width="auto"
+					alt="👨‍👨‍👦‍👦"
+					src="images/apple/apple_1f468_200d_1f468_200d_1f466_200d_1f466.png">
+				</td>
+				<td rowspan="7">FAMILY (man, man, boy, boy)</td>
+				<td>U+1F468</td>
+				<td>MAN</td>
+			</tr>
+			<tr align="left" class="modcharbg">
+				<td>U+200D</td>
+				<td>ZWJ</td>
+			</tr>
+			<tr align="left">
+				<td>U+1F468</td>
+				<td>MAN</td>
+			</tr>
+			<tr align="left" class="modcharbg">
+				<td>U+200D</td>
+				<td>ZWJ</td>
+			</tr>
+			<tr align="left">
+				<td>U+1F466</td>
+				<td>BOY</td>
+			</tr>
+			<tr align="left" class="modcharbg">
+				<td>U+200D</td>
+				<td>ZWJ</td>
+			</tr>
+			<tr align="left">
+				<td>U+1F466</td>
+				<td>BOY</td>
+			</tr>
+
+			<tr align="left">
+				<td rowspan="7" align="center"><img height='36' width="auto"
+					alt="👨‍👨‍👧‍👧"
+					src="images/apple/apple_1f468_200d_1f468_200d_1f467_200d_1f467.png">
+				</td>
+				<td rowspan="7">FAMILY (man, man, girl, girl)</td>
+				<td>U+1F468</td>
+				<td>MAN</td>
+			</tr>
+			<tr align="left" class="modcharbg">
+				<td>U+200D</td>
+				<td>ZWJ</td>
+			</tr>
+			<tr align="left">
+				<td>U+1F468</td>
+				<td>MAN</td>
+			</tr>
+			<tr align="left" class="modcharbg">
+				<td>U+200D</td>
+				<td>ZWJ</td>
+			</tr>
+			<tr align="left">
+				<td>U+1F467</td>
+				<td>GIRL</td>
+			</tr>
+			<tr align="left" class="modcharbg">
+				<td>U+200D</td>
+				<td>ZWJ</td>
+			</tr>
+			<tr align="left">
+				<td>U+1F467</td>
+				<td>GIRL</td>
+			</tr>
+
+			<tr align="left">
+				<td align="center"><img height='36' width="auto" alt="💑"
+					src="images/apple/apple_1f491.png"></td>
+				<td>COUPLE WITH HEART (woman, man)</td>
+				<td>U+1F491</td>
+				<td>COUPLE WITH HEART</td>
+			</tr>
+
+			<tr align="left">
+				<td rowspan="6" align="center"><img height='36' width="auto"
+					alt="👩‍❤️‍👩"
+					src="http://www.unicode.org/reports/tr51/images/apple/apple_1f469_200d_2764_fe0f_200d_1f469.png">
+				</td>
+				<td rowspan="6">COUPLE WITH HEART (woman, woman)</td>
+				<td>U+1F469</td>
+				<td>WOMAN</td>
+			</tr>
+			<tr align="left" class="modcharbg">
+				<td>U+200D</td>
+				<td>ZWJ</td>
+			</tr>
+			<tr align="left">
+				<td>U+2764</td>
+				<td>HEAVY BLACK HEART</td>
+			</tr>
+			<tr align="left" class="modcharbg">
+				<td>U+FE0F</td>
+				<td>VARIATION SELECTOR-16 (for emoji style)</td>
+			</tr>
+			<tr align="left" class="modcharbg">
+				<td>U+200D</td>
+				<td>ZWJ</td>
+			</tr>
+			<tr align="left">
+				<td>U+1F469</td>
+				<td>WOMAN</td>
+			</tr>
+
+			<tr align="left">
+				<td rowspan="6" align="center"><img height='36' width="auto"
+					alt="👨‍❤️‍👨"
+					src="http://www.unicode.org/reports/tr51/images/apple/apple_1f468_200d_2764_fe0f_200d_1f468.png">
+				</td>
+				<td rowspan="6">COUPLE WITH HEART (man, man)</td>
+				<td>U+1F468</td>
+				<td>MAN</td>
+			</tr>
+			<tr align="left" class="modcharbg">
+				<td>U+200D</td>
+				<td>ZWJ</td>
+			</tr>
+			<tr align="left">
+				<td>U+2764</td>
+				<td>HEAVY BLACK HEART</td>
+			</tr>
+			<tr align="left" class="modcharbg">
+				<td>U+FE0F</td>
+				<td>VARIATION SELECTOR-16 (for emoji style)</td>
+			</tr>
+			<tr align="left" class="modcharbg">
+				<td>U+200D</td>
+				<td>ZWJ</td>
+			</tr>
+			<tr align="left">
+				<td>U+1F468</td>
+				<td>MAN</td>
+			</tr>
+
+			<tr align="left">
+				<td align="center"><img height='36' width="auto" alt="💏"
+					src="images/apple/apple_1f48f.png"></td>
+				<td>KISS (woman, man)</td>
+				<td>U+1F48F</td>
+				<td>KISS</td>
+			</tr>
+
+			<tr align="left">
+				<td rowspan="8" align="center"><img height='36' width="auto"
+					alt="👩‍❤️‍💋‍👩"
+					src="http://www.unicode.org/reports/tr51/images/apple/apple_1f469_200d_2764_fe0f_200d_1f48b_200d_1f469.png">
+				</td>
+				<td rowspan="8">KISS (woman, woman)</td>
+				<td>U+1F469</td>
+				<td>WOMAN</td>
+			</tr>
+			<tr align="left" class="modcharbg">
+				<td>U+200D</td>
+				<td>ZWJ</td>
+			</tr>
+			<tr align="left">
+				<td>U+2764</td>
+				<td>HEAVY BLACK HEART</td>
+			</tr>
+			<tr align="left" class="modcharbg">
+				<td>U+FE0F</td>
+				<td>VARIATION SELECTOR-16 (for emoji style)</td>
+			</tr>
+			<tr align="left" class="modcharbg">
+				<td>U+200D</td>
+				<td>ZWJ</td>
+			</tr>
+			<tr align="left">
+				<td>U+1F48B</td>
+				<td>KISS MARK</td>
+			</tr>
+			<tr align="left" class="modcharbg">
+				<td>U+200D</td>
+				<td>ZWJ</td>
+			</tr>
+			<tr align="left">
+				<td>U+1F469</td>
+				<td>WOMAN</td>
+			</tr>
+
+			<tr align="left">
+				<td rowspan="8" align="center"><img height='36' width="auto"
+					alt="👨‍❤️‍💋‍👨"
+					src="http://www.unicode.org/reports/tr51/images/apple/apple_1f468_200d_2764_fe0f_200d_1f48b_200d_1f468.png">
+				</td>
+				<td rowspan="8">KISS (man, man)</td>
+				<td>U+1F468</td>
+				<td>MAN</td>
+			</tr>
+			<tr align="left" class="modcharbg">
+				<td>U+200D</td>
+				<td>ZWJ</td>
+			</tr>
+			<tr align="left">
+				<td>U+2764</td>
+				<td>HEAVY BLACK HEART</td>
+			</tr>
+			<tr align="left" class="modcharbg">
+				<td>U+FE0F</td>
+				<td>VARIATION SELECTOR-16 (for emoji style)</td>
+			</tr>
+			<tr align="left" class="modcharbg">
+				<td>U+200D</td>
+				<td>ZWJ</td>
+			</tr>
+			<tr align="left">
+				<td>U+1F48B</td>
+				<td>KISS MARK</td>
+			</tr>
+			<tr align="left" class="modcharbg">
+				<td>U+200D</td>
+				<td>ZWJ</td>
+			</tr>
+			<tr align="left">
+				<td>U+1F468</td>
+				<td>MAN</td>
+			</tr>
+
+		</table>
+		<p></p>
+		<h2>
+			<a name="Acknowledgements" href="tr51-3-archive.html#Acknowledgements">Acknowledgments</a>
+		</h2>
+		<p>Mark Davis and Peter Edberg created the initial versions of
+			this document, and maintain the text.</p>
+		<p>Thanks to Shervin Afshar, Julie Allen, Jeremy Burge, Michele
+			Coady, Chenjintao (陈锦涛), Chenshiwei, Peter Constable, Craig Cummings,
+			Andrew Glass, Norbert Lindenberg, Ken Lunde, Gwyneth Marshall, Rick
+			McGowan, Katsuhiko Momoi, Katsuhiro Ogata, Katrina Parrott, Michelle
+			Perham, Addison Phillips, Roozbeh Pournader, Markus Scherer, and Ken
+			Whistler for feedback on and contributions to this document,
+			including earlier versions. Thanks to Michael Everson and Microsoft
+			for 8.0 chart images.</p>
+		<p>Thanks to Apple, Google, Microsoft, and iDiversicons for
+			supplying images for illustration.</p>
+		<h2>
+			<a href="tr51-3-archive.html#Rights_to_Emoji_Images" name="Rights_to_Emoji_Images">Rights
+				to Emoji Images</a>
+		</h2>
+		<p>
+			The colored images used in this document and associated charts [<a
+				href="tr51-3-archive.html#emoji_charts">emoji-charts</a>] are for illustration only.
+			They do not appear in the Unicode Standard, which has only black and
+			white images. They are either made available by the respective
+			vendors for use in this document, or are believed to be available for
+			non-commercial reuse.
+		</p>
+		<p>The Unicode Consortium is not a designer or purveyor of emoji
+			images, nor is it the owner of any of the color images used in the
+			document, nor does it negotiate licenses for their use. Inquiries for
+			permission to use vendor images should be directed to those vendors,
+			not to the Unicode Consortium.</p>
+		<h2>
+			<a name="References" href="tr51-3-archive.html#References">References</a>
+		</h2>
+		<table cellspacing="0" cellpadding="4" border="0" class="noborder"
+			style="border-collapse: collapse">
+			<!-- nocaption -->
+			<tbody>
+				<tr>
+					<td class="noborder" valign="top">[<a class="nolink"
+						name="CLDR" href="tr51-3-archive.html#CLDR">CLDR</a>]
+					</td>
+					<td class="noborder" valign="top">CLDR - Unicode Common Locale
+						Data Repository<br> <a target="_blank" href="http://cldr.org">http://cldr.unicode.org/</a>
+						<em><br> For the latest version of the associated
+							specification (LDML), see:</em><br> <a
+						href='http://unicode.org/reports/tr35/'>http://www.unicode.org/reports/tr35/</a>
+					</td>
+				</tr>
+				<tr>
+					<td class="noborder nowrap" valign="top">[<a class="nolink"
+						name="emoji_charts" href="tr51-3-archive.html#emoji_charts">emoji-charts</a>]
+					</td>
+					<td class="noborder" valign="top">The illustrative charts of
+						emoji<br> <a href='http://www.unicode.org/emoji/charts/index.html'>http://unicode.org/emoji/charts/index.html</a>
+					</td>
+				</tr>
+				<tr>
+					<td class="noborder nowrap" valign="top">[<a class="nolink"
+						name="emoji_data" href="tr51-3-archive.html#emoji_data">emoji-data</a>]
+					</td>
+					<td class="noborder" valign="top">The associated data file for
+						emoji characters<br> 
+						 
+						<em>For the latest version, see:</em><br> <a
+						href='http://www.unicode.org/Public/emoji/latest/emoji-data.txt'>http://unicode.org/Public/emoji/latest/emoji-data.txt</a><br><em>For the 1.0 version, see:</em><br>
+						<a href='http://www.unicode.org/Public/emoji/1.0/emoji-data.txt'>http://unicode.org/Public/emoji/1.0/emoji-data.txt</a>
+					</td>
+				</tr>
+				<tr>
+					<td class="noborder nowrap" valign="top">[<a class="nolink"
+						name="JSources" href="tr51-3-archive.html#JSources">JSources</a>]
+					</td>
+					<td class="noborder" valign="top">The UCD sources for the
+						JCarrier symbols<br> <em>For the latest version, see:</em><br>
+						<a
+						href='http://unicode.org/Public/UCD/latest/ucd/EmojiSources.txt'
+						target="_blank">http://unicode.org/Public/UCD/latest/ucd/EmojiSources.txt</a><br>
+						<em>For the 8.0 version, see:</em><br> <a
+						href="http://unicode.org/Public/8.0.0/ucd/EmojiSources.txt"
+						target="_blank">http://unicode.org/Public/8.0.0/ucd/EmojiSources.txt</a> 
+					</td>
+				</tr>
+				<tr>
+					<td class="noborder" valign="top">[<a class="nolink"
+						name="Unicode" href="tr51-3-archive.html#Unicode">Unicode</a>]
+					</td>
+					<td class="noborder" valign="top">The Unicode Standard<br>
+						<em>For the latest version, see:</em><br> <a
+						href="http://unicode.org/versions/latest/">http://unicode.org/versions/latest/</a></td>
+				</tr>
+				<tr>
+					<td class="noborder" valign="top">[<a class="nolink"
+						href="tr51-3-archive.html#VSData" name="VSData">VSData</a>]
+					</td>
+					<td class="noborder" valign="top">A data file listing
+						permissible variation sequences<br> <em>For the latest
+							version, see:</em><br> <a
+						href="http://unicode.org/Public/UCD/latest/ucd/StandardizedVariants.txt"
+						target="_blank">http://unicode.org/Public/UCD/latest/ucd/StandardizedVariants.txt</a> <br>
+						<em>For the 8.0 version, see:</em><br> <a
+						href="http://unicode.org/Public/8.0.0/ucd/StandardizedVariants.txt"
+						target="_blank">http://unicode.org/Public/8.0.0/ucd/StandardizedVariants.txt</a> 
+					</td>
+				</tr>
+				<tr>
+					<td class="noborder" valign="top">[<a class="nolink"
+						href="tr51-3-archive.html#VSChart" name="VSChart">VSChart</a>]
+					</td>
+					<td class="noborder" valign="top">A chart of permissible
+						variation sequences<br> <em>For the latest version, see:</em><br>
+						<a
+						href="http://unicode.org/Public/UCD/latest/ucd/StandardizedVariants.html"
+						target="_blank">http://unicode.org/Public/UCD/latest/ucd/StandardizedVariants.htm</a><br>
+						<em>For the 8.0 version, see:</em><br> <a
+						href="http://unicode.org/Public/8.0.0/ucd/StandardizedVariants.html"
+						target="_blank">http://unicode.org/Public/8.0.0/ucd/StandardizedVariants.html</a> 
+					</td>
+				</tr>
+			</tbody>
+		</table>
+
+
+
+
+		<h2>
+			<a name="Modifications" href="tr51-3-archive.html#Modifications">Modifications</a>
+		</h2>
+		<p>The following summarizes modifications from the previous
+			revisions of this document.</p>
+
+
+		<p>
+			<strong>Revision 3</strong>
+		</p>
+		<ul>
+			<li>First approved published version.</li>
+		</ul>
+		<p>
+			<strong>Revision 2</strong>
+		</p>
+		<ul>
+			<li><strong>Draft Unicode Technical Report</strong></li>
+			<li>General
+				<ul>
+					<li>Updated Table of Contents to add links to tables</li>
+					<li>Added references for charts and CLDR, and updated
+						references to them and to [emoji-data].</li>
+					<li>Changed links from Public/UNIDATA to
+						Public/UCD/latest/ucd/</li>
+					<li>For clarity, replaced &quot;minimal&quot; with
+						&quot;primary&quot; and &quot;optional&quot; with
+						&quot;secondary&quot;.</li>
+				</ul>
+			</li>
+			<li>Section 1 <a href="tr51-3-archive.html#Introduction">Introduction</a>
+				<ul>
+					<li>Modified the introductory text slightly, incorporating
+						material from the old section 9 Media.</li>
+					<li>Added single letter abbreviations to Table: <a
+						href="tr51-3-archive.html#Major_Sources">Major Sources</a>.
+					</li>
+					<li>Added note on use of colored images.</li>
+					<li>Added new Section 1.4 <a href="tr51-3-archive.html#Definitions">Definitions</a>.
+						Added introductory text (replacing review note). This incorporates
+						definitions from the old Annex A: Terminology (which is now
+						replaced by a different Annex A) as well as the definitions from
+						the old section 2.2.1 Implementations, and adds several new
+						definitions.
+					</li>
+				</ul>
+			</li>
+			<li>Section 2 <a href="tr51-3-archive.html#Design_Guidelines">Design Guidelines</a>
+				<ul>
+					<li><em>Section 2.2 <a href="tr51-3-archive.html#Diversity">Diversity</a></em>
+						<ul>
+							<li>Added several examples of non-realistic skin tones for
+								generic human figures; clarified the guidelines on hair color.</li>
+							<li>Emphasized that an emoji modifier must occur immediately
+								following a emoji character (optionally with an intervening
+								variation selector) for it to have any effect on that emoji
+								character.</li>
+						</ul></li>
+					<li><em>Section 2.2.1 <a href="tr51-3-archive.html#Multi_Person_Groupings">Multi-Person
+								Groupings</a></em>
+						<ul>
+							<li>New section from material formerly at the end of section
+								2.2; old section 2.2.1 Implementations now becomes section
+								2.2.2.</li>
+							<li>Expanded the discussion on gender and skin tone
+								variations in emoji for multi-person groupings.</li>
+							<li>Added material on use of ZWJ in such sequences to
+								request a single glyph if available.</li>
+							<li>Restructured to provide both display options, and move
+								other text and example to <a href="tr51-3-archive.html#ZWJ_Sequences">Annex E</a>.
+							</li>
+						</ul></li>
+					<li><em>Section 2.2.2 <a
+							href="tr51-3-archive.html#Diversity_Implementations">Implementations</a></em>
+						<ul>
+							<li>Renumbered, was previously section 2.2.1.</li>
+							<li>Updated the table <a href="tr51-3-archive.html#Subject_Emoji_Modifiers">Characters
+									Subject to Emoji Modifiers</a> to add Unicode 8.0 characters as
+								secondary. Includes faces (aside from ROBOT FACE) and SIGN OF
+								THE HORNS.
+							</li>
+							<li>Removed U+1F46F WOMAN WITH BUNNY EARS from primary,
+								since it is typically represented as two people.</li>
+							<li>Removed the lists of codepoints in the table Characters
+								Subject to Emoji Modifiers, since those were only for review.
+								(The information is in the data file.)</li>
+							<li>Added sentence about ordering in the first table.</li>
+							<li>Recast list of conditions as new <em>Table: <a
+									href="tr51-3-archive.html#Emoji_Modifiers_And_Variation_Selectors">Emoji
+										Modifiers and Variation Selectors</a></em>.
+							</li>
+						</ul></li>
+					<li><em>Section 2.2.3 <a href="tr51-3-archive.html#Emoji_Modifiers_in_Text">Emoji
+								Modifiers in Text</a></em>
+						<ul>
+							<li>New section from material formerly at the end of old
+								section 2.2.1 Implementations.</li>
+							<li>Illustrated that there is no particular order among the
+								diversity modifiers in <em>Table: <a href="tr51-3-archive.html#Minipalette">Minipalettes</a></em>
+							</li>
+						</ul></li>
+				</ul>
+			</li>
+			<li>Section 3 <a href="tr51-3-archive.html#Identification">Which Characters are
+					Emoji</a>
+				<ul>
+					<li>Changed the lists of characters to use block images for
+						speed.</li>
+					<li>Added a figure showing the Japanese carrier emoji
+						(feasible as a block).</li>
+					<li>Related the sets to the emoji levels, with new subsections
+						3.1 and 3.2 for each level.</li>
+					<li>Added a figure for standard additions from Unicode 8.0.</li>
+					<li>Adjusted the text around the lists (especially the 8.0
+						characters) to reflect the release status.</li>
+					<li>Removed HELM SYMBOL.</li>
+					<li>Adjusted the character counts accordingly, and dropping
+						the three space characters — &quot;a total of 1,281 level 1&amp;2
+						emoji characters in Unicode 8.0.&quot;</li>
+					<li>Separated the material formerly at the end of section 3
+						into a new subsection 3.3. Methodology.</li>
+				</ul>
+			</li>
+			<li>Section 4 <a href="tr51-3-archive.html#Presentation_Style">Presentation
+					Style </a>
+				<ul>
+					<li>Changed &quot;text&quot; and &quot;presentation&quot; to
+						formal and informal, added more explanation.</li>
+					<li>Removed the table Emoji Environments, and modified table <a
+						href="tr51-3-archive.html#Emoji_vs_Text_Display">Emoji vs Text Display</a> to dereify
+						table rows for &quot;Formal&quot;, &quot;Informal&quot;, and
+						&quot;Mixed&quot;.
+					</li>
+				</ul>
+			</li>
+			<li>Section 5 <a href="tr51-3-archive.html#Sorting">Ordering and Grouping</a>, and
+				Section 6 <a href="tr51-3-archive.html#Input">Input</a>
+				<ul>
+					<li>Clarified the relation of grouping and ordering (replacing
+						review note).</li>
+				</ul></li>
+			<li>Section 9 Media
+				<ul>
+					<li>Moved the text to early in the introduction, and removed
+						the section.</li>
+				</ul>
+			</li>
+			<li>Section 10 Data Files becomes Annex A: Data Files, see next
+				item.</li>
+			<li><a href="tr51-3-archive.html#Data_Files">Annex A: Data Files</a>
+				<ul>
+					<li>Replaces the old Annex A: Terminology, whose material has
+						been moved to a new Section 1.4 <a href="tr51-3-archive.html#Definitions">Definitions</a>.
+					</li>
+					<li>Moved the html charts out of Annex A to a separate page
+						for <a href="http://unicode.org/emoji/charts/index.html">emoji
+							charts</a>, leaving only the data file, and a pointer to the charts
+						page.
+					</li>
+				</ul></li>
+			<li><a href="tr51-3-archive.html#Flags">Annex B: Flags</a>
+				<ul>
+					<li>Some simplification of the text.</li>
+				</ul></li>
+			<li><a href="tr51-3-archive.html#Selection_Factors">Annex C: Selection Factors</a>.
+				<ul>
+					<li>Added pointer to submission form, and a bit more
+						explanation.</li>
+					<li>Added to factors: Historic or living people, Deities;
+						petitions.</li>
+				</ul></li>
+			<li><a href="tr51-3-archive.html#Standard_Additions_8">Annex D: Standard
+					Additions for Unicode 8.0</a>
+				<ul>
+					<li>Removed DHYANI BUDDHA, changed name for BADMINTON RACQUET
+						AND SHUTTLECOCK</li>
+					<li>Changed the titles and introductory text to reflect that
+						these are no longer candidates.</li>
+					<li>Added code points to the table</li>
+					<li>Added double-links to the code points</li>
+					<li>Moved colored samples into the table, and extended them.</li>
+				</ul></li>
+			<li><a href="tr51-3-archive.html#ZWJ_Sequences">Annex E: ZWJ Sequences In Use</a>
+				<ul>
+					<li>Added</li>
+				</ul></li>
+			<li><a href="tr51-3-archive.html#Acknowledgements">Acknowledgments</a>
+				<ul>
+					<li>Added additional members of the emoji subcommittee who’ve
+						contributed to this document, and thanks to vendors for colored
+						images.</li>
+				</ul></li>
+			<li><a href="tr51-3-archive.html#Rights_to_Emoji_Images">Rights to Emoji Images</a>
+				<ul>
+					<li>Added information about the use of colored images.</li>
+				</ul></li>
+		</ul>
+		<p>
+			<strong>Revision 1</strong>
+		</p>
+		<ul>
+			<li><strong>Proposed Draft Unicode Technical Report</strong></li>
+			<li>Added new selection factor <a
+				href="tr51-3-archive.html#Selection_Factors_Inappropriate">Logos, Brands, UI icons,
+					and signage</a>, and added double-links to the clauses
+			</li>
+			<li>Moved Media list to <a
+				href='http://unicode.org/press/emoji.html'>Articles on Emoji</a>,
+				and reordered to most-recent-first.
+			</li>
+			<li>Restricted the list of recommended emoji in the data files,
+				based on the emoji subcommittee review.
+				<ul>
+					<li>Correspondingly reduced the list of optional characters in
+						<em>Table: <a href="tr51-3-archive.html#Subject_Emoji_Modifiers">Characters
+								Subject to Emoji Modifiers</a></em>
+					</li>
+					<li>Added explicit lists of emoji characters to <em>Section
+							3 <a href="tr51-3-archive.html#Identification">Which Characters are Emoji</a>
+					</em> for easier review (than looking at the data files). Moved the
+						numbers of characters to that section from the introduction.
+					</li>
+				</ul>
+			</li>
+			<li>Added recommended breaking behavior to <em>Section
+					2.2.1 <a href="tr51-3-archive.html#Diversity_Implementations">Implementations</a>.
+			</em></li>
+			<li>Added <a
+				href="http://unicode.org/Public/emoji/1.0/text-style.html">text-style.html</a>
+				chart for easier review of the default style for emoji characters.
+			</li>
+			<li>Added links to the Feedback section in relevant review
+				notes, to make it easier for people to add feedback.</li>
+			<li>Added <a href="tr51-3-archive.html#Emoji_Candidates">Annex D: Emoji
+					Candidates for Unicode 8.0</a>.
+			</li>
+			<li>Added double-linked captions to tables.</li>
+			<li>Added months to the dates in the table of <a
+				href="tr51-3-archive.html#Major_Sources">Major Sources</a>.
+			</li>
+			<li>Added more notes to <a href="tr51-3-archive.html#Flags">Annex B: Flags</a>, and
+				on their ordering in Data File Descriptions
+			</li>
+			<li>Added text on the interaction between emoji modifiers and
+				variation selectors in <em>Section 2.2.1 <a
+					href="tr51-3-archive.html#Diversity_Implementations">Implementations</a>
+			</em>
+			</li>
+			<li>Removed multiple-person emoji from the minimal set in <a
+				href="tr51-3-archive.html#Subject_Emoji_Modifiers">Characters Subject to Emoji
+					Modifiers</a>
+			</li>
+			<li>Minor edits</li>
+			<li>Added <a href="tr51-3-archive.html#Selection_Factors">Annex C: Selection
+					Factors</a></li>
+		</ul>
+		<hr width="50%">
+		<p class="copyright">
+			<font size="-1">Copyright © 2015 Unicode, Inc. All Rights
+				Reserved. The Unicode Consortium makes no expressed or implied
+				warranty of any kind, and assumes no liability for errors or
+				omissions. No liability is assumed for incidental and consequential
+				damages in connection with or arising out of the use of the
+				information or programs contained or accompanying this technical
+				report. The Unicode <a href="http://unicode.org/copyright.html">Terms
+					of Use</a> apply.
+			</font>
+		</p>
+		<p class="copyright">
+			<font size="-1">Unicode and the Unicode logo are trademarks of
+				Unicode, Inc., and are registered in some jurisdictions.</font>
+		</p>
+	</div>
+</body>
+</html>

@@ -1,0 +1,2848 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+
+       "http://www.w3.org/TR/html4/loose.dtd"> 
+
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta http-equiv="Content-Language" content="en-us">
+<meta name="keywords" content="unicode, normalization, composition, decomposition">
+<meta name="description" content="Specifies the Unicode Normalization Formats">
+
+<title>UAX #15: Unicode Normalization Forms</title>
+
+<!-- WEB ONLY -->
+<link rel="stylesheet" type="text/css" href="../reports-web.css">
+<!-- BOOK ONLY 
+<link rel="stylesheet" type="text/css" href="../reports-book.css"> -->
+<style type="text/css">div.book-only{ background-color: #FFFF00}
+span.red     { border-style: dashed; border-width: 3px; background-color: #FF0000 }
+</style>
+</head>
+<body><div class="book"><!-- START WEB ONLY --><div class="web-only">
+<table class="header" cellspacing="0" cellpadding="0" width="100%">
+  <tr>
+    <td class="icon"><a href="http://www.unicode.org">
+    <img align="middle" alt="[Unicode]" border="0" src="../logo60s2.gif" width="34" 
+    height="33"></a>&nbsp;&nbsp;<a class="bar" href="../index.html">Technical Reports</a></td>
+  </tr>
+  <tr>
+    <td class="gray">&nbsp;</td>
+  </tr>
+
+</table>
+</div>
+<div class="body">
+  <!--
+  <h2 class="uaxtitle"><span class="changedspan">Proposed Update</span></h2>
+   -->
+	<h2 class="uaxtitle">Unicode Standard Annex&nbsp;#15</h2>
+  <h1>Unicode Normalization Forms</h1>
+<div class="web-only">
+  <table border="1" cellpadding="2" width="90%">
+    <tr>
+      <td valign="top" width="20%">Version</td>
+      <td valign="top">Unicode 6.0.0</td>
+    </tr>
+    <tr>
+      <td valign="top">Editors</td>
+      <td valign="top">Mark Davis (<a href="mailto:markdavis@google.com">markdavis@google.com</a>), 
+      Ken Whistler (<a href="mailto:ken@unicode.org">ken@unicode.org</a>)</td>
+    </tr>
+    <tr>
+      <td valign="top">Date</td>
+      <td valign="top">2010-09-17</td>
+    </tr>
+    <tr>
+      <td valign="top">This Version</td>
+      <td valign="top">
+	<a href="tr15-33.html">
+	         http://www.unicode.org/reports/tr15/tr15-33.html</a></td>
+    </tr>
+    <tr>
+      <td valign="top">Previous Version</td>
+      <td valign="top">
+       <a href="tr15-31.html">
+		http://www.unicode.org/reports/tr15/tr15-31.html</a></td>
+    </tr>
+    <tr>
+      <td valign="top">Latest Version</td>
+      <td valign="top"><a href="../tr15.1">
+      http://www.unicode.org/reports/tr15/</a></td>
+    </tr>
+    <tr>
+      <td valign="top">Latest Proposed Update</td>
+      <td valign="top"><a href="proposed.html">
+      http://www.unicode.org/reports/tr15/proposed.html</a></td>
+    </tr>
+    <tr>
+      <td valign="top">Revision</td>
+      <td valign="top"><a href="tr15-33.html#Modifications">33</a></td>
+    </tr>
+  </table>
+  </div> <!-- WEB ONLY -->
+  <h4 class="summary">Summary</h4>
+  <p><i>This annex describes normalization forms for Unicode text. 
+	When implementations keep strings in a normalized form, they can be assured that equivalent 
+  strings have a unique binary representation.
+  This annex also provides examples, additional specifications
+  regarding normalization of Unicode text, and information about conformance
+  testing for Unicode normalization forms.</i></p>
+  <div class="web-only">
+  
+    <h4 class="status">Status</h4>
+	   <!-- NOT YET APPROVED
+	  <p class="changed"><i>This is a<b><font color="#ff3333"> draft </font></b>document which 
+      may be updated, replaced, or superseded by other documents at any time. 
+      Publication does not imply endorsement by the Unicode Consortium. This is 
+      not a stable document; it is inappropriate to cite this document as other 
+      than a work in progress.</i></p>
+        END NOT YET APPROVED -->
+	  <!-- APPROVED -->
+      <p><i>This document has been reviewed by Unicode members and other interested 
+	parties, and has been approved for publication by the Unicode Consortium. 
+	This is a stable document and may be used as reference material or cited as 
+	a normative reference by other specifications.</i></p>
+      <!-- END APPROVED -->
+  <blockquote>
+    <p><i><b>A Unicode Standard Annex (UAX)</b> forms an integral part of the Unicode Standard, but 
+    is published online as a separate document. The Unicode Standard may require conformance to normative 
+    content in a Unicode Standard Annex, if so specified in the Conformance chapter of that version 
+    of the Unicode Standard. The version number of a UAX document corresponds to the version of the Unicode Standard of which it forms a part.</i></p>
+  </blockquote>
+  <p><i>Please submit corrigenda and other comments with the online reporting 
+	form [<a href="../tr41/tr41-7.html#Feedback">Feedback</a>]. Related information that is useful 
+	in understanding this annex is found in Unicode Standard Annex #41, “<a href="../tr41/tr41-7.html">Common References for Unicode Standard Annexes</a>.” 
+	For the latest version of the Unicode Standard, see [<a href="../tr41/tr41-7.html#Unicode">Unicode</a>]. 
+	For a list of current Unicode Technical Reports, see [<a href="../tr41/tr41-7.html#Reports">Reports</a>]. 
+	For more information about versions of the Unicode Standard, see [<a href="../tr41/tr41-7.html#Versions">Versions</a>]. 
+  For any errata which may apply to this annex, see [<a HREF="../tr41/tr41-7.html#Errata">Errata</a>].</i></p>
+  </div> <!-- WEB ONLY -->
+  <h4 class="contents">Contents</h4>
+  <ul class="toc">
+    <li>1&nbsp;<a href="tr15-33.html#Introduction">Introduction</a>
+    <ul class="toc">
+      <li>1.1&nbsp;<a href="tr15-33.html#Canon_Compat_Equivalence">Canonical and Compatibility Equivalence</a></li>
+      <li>1.2&nbsp;<a href="tr15-33.html#Norm_Forms">Normalization Forms</a></li>
+      <li>1.3&nbsp;<a href="tr15-33.html#Description_Norm">Description of the Normalization Process</a></li>
+      <li>1.4&nbsp;<a href="tr15-33.html#Concatenation">Concatenation of Normalized Strings</a></li>
+    </ul>
+    </li>
+    <li>2&nbsp;<a href="tr15-33.html#Notation">Notation</a></li>
+    <li>3&nbsp;<a href="tr15-33.html#Versioning">Versioning and Stability</a></li>
+    <li>4&nbsp;<a href="tr15-33.html#Conformance">Conformance</a></li>
+    <li>5&nbsp;<a href="tr15-33.html#Primary_Exclusion_List_Table">Composition Exclusion Table</a></li>
+    <li>6&nbsp;<a href="tr15-33.html#Examples">Examples and Charts</a> 
+    </li>
+    <li>7&nbsp;<a href="tr15-33.html#Design_Goals">Design Goals</a></li>
+    <li>8&nbsp;<a href="tr15-33.html#Legacy_Encodings">Legacy Encodings</a></li>
+    <li>9&nbsp;<a href="tr15-33.html#Detecting_Normalization_Forms">Detecting Normalization Forms</a>
+    <ul class="toc">
+    <li>9.1&nbsp;<a href="tr15-33.html#Stable_Code_Points">Stable Code Points</a></li>
+    </ul></li>
+    <li>10&nbsp;<a href="tr15-33.html#Canonical_Equivalence">Respecting Canonical Equivalence</a></li>
+    <li>11&nbsp;<a href="tr15-33.html#Stability_Prior_to_Unicode41">Stability Prior to Unicode 4.1</a>
+    <ul class="toc">
+    <li>11.1
+	<a href="tr15-33.html#Stability_of_Normalized_Forms">Stability of Normalized Forms</a></li>
+	<li>11.2
+	<a href="tr15-33.html#Stability_of_the_Normalization_Process">Stability of the Normalization Process</a></li>
+	<li>11.3
+	<a href="tr15-33.html#Guaranteeing_Process_Stability">Guaranteeing Process Stability</a></li>
+	<li>11.4 <a href="tr15-33.html#Forbidding_Characters">Forbidding Characters</a></li>
+	<li>11.5&nbsp;<a href="tr15-33.html#Corrigendum_5_Sequences">Corrigendum 5 Sequences</a></li>
+    </ul>
+  	</li>
+    <li>12 <a href="tr15-33.html#Stabilized_Strings">Stabilized Strings</a>
+    <ul class="toc">
+        <li>12.1
+        <a href="tr15-33.html#Normalization_Process_for_Stabilized_Strings">Normalization Process for Stabilized Strings</a></li>
+    </ul>
+    </li>
+    <li>13 <a href="tr15-33.html#Stream_Safe_Text_Format">Stream-Safe Text Format</a>
+    <ul class="toc">
+        <li>13.1
+	<a href="tr15-33.html#Buffering_with_Unicode_Normalization">Buffering with Unicode Normalization</a></li>
+    </ul>
+  	</li>
+    <li>14&nbsp;<a href="tr15-33.html#Implementation_Notes">Implementation Notes</a>
+    <ul class="toc">
+    <li>14.1&nbsp;<a href="tr15-33.html#Optimization_Strategies">Optimization Strategies</a>
+    <li>14.2&nbsp;<a href="tr15-33.html#Code_Sample">Code Samples</a></li>
+    </ul></li>
+    <li>15&nbsp;<a href="tr15-33.html#Hangul">Hangul</a></li>
+    <li><a href="tr15-33.html#Intellectual_Property_Annex">Intellectual Property Considerations</a></li>
+    <li><a href="tr15-33.html#Acknowledgments">Acknowledgments</a></li>
+    <li><a href="tr15-33.html#References">References</a></li>
+    <li><a href="tr15-33.html#Modifications">Modifications</a></li>
+  </ul>
+  <br>
+ <hr>
+ 
+  <h2 class="section"><a name="Introduction"></a>1 Introduction</h2>
+  
+  <p>This annex provides subsidiary information about
+  Unicode normalization. It describes canonical and compatibility equivalence
+  and the four normalization forms, providing
+  examples, and elaborates on the formal specification of Unicode normalization,
+  with further explanations and implementation notes.</p>
+  
+  <p>This document also provides the formal specification
+  of the Stream-Safe Text Format and of the Normalization Process for Stabilized
+  Strings.</p>
+  
+  <p>For the formal specification of the Unicode Normalization
+  Algorithm, see <i>Section 3.11, Normalization Forms</i> in 
+  [<a href="../tr41/tr41-7.html#Unicode">Unicode</a>].</p>
+  
+  <p>For a general introduction to the topic of equivalent
+  sequences for Unicode strings and the need for normalization, see
+  <i>Section 2.12, Equivalent Sequences and Normalization</i> in 
+  [<a href="../tr41/tr41-7.html#Unicode">Unicode</a>].</p>
+  	
+  <h3><a name="Canon_Compat_Equivalence"></a>1.1 Canonical and Compatibility Equivalence</h3>
+	
+	<p>The Unicode Standard defines two equivalences between characters: 
+	<i>canonical equivalence</i> 
+  and <i>compatibility equivalence</i>. Canonical equivalence is a fundamental equivalency between characters or 
+  sequences of characters that represent the same 
+	abstract character, and when correctly displayed should always have the same visual appearance and 
+	behavior. <i>Figure 1</i> illustrates this equivalence.</p>
+  <p class="caption"><a name="Canonical_Equivalence_Figure"></a>Figure 1. Canonical Equivalence</p>
+  <div align="center">
+    <table cellspacing="2" cellpadding="2" style="border-collapse: collapse">
+      <tr>
+        <td>Combining sequence&nbsp;&nbsp;&nbsp;</td>
+        <td style="text-align: center"><span class="charSample">Ç</span></td>
+        <td><span class="charSample">↔</span></td>
+        <td style="text-align: center"><span class="charSample">C ◌̧</span></td>
+      </tr>
+      <tr>
+        <td>Ordering of combining marks</td>
+        <td style="text-align: center"><span class="charSample">q+  &#x0307;+  &#x0323;</span></td>
+        <td><span class="charSample">↔</span></td>
+        <td style="text-align: center"><span class="charSample">q 
+		+  &#x0323;+  &#x0307;</span></td>
+      </tr>
+      <tr>
+        <td>Hangul</td>
+        <td style="text-align: center"><span class="charSample">가</span></td>
+        <td><span class="charSample">↔</span></td>
+        <td style="text-align: center"><span class="charSample">ᄀ +ᅡ</span></td>
+      </tr>
+      <tr>
+        <td>Singleton</td>
+        <td style="text-align: center"><span class="charSample">Ω</span></td>
+        <td><span class="charSample">↔</span></td>
+        <td style="text-align: center"><span class="charSample">Ω</span></td>
+      </tr>
+    </table>
+  </div>
+  <p>Compatibility equivalence is a weaker equivalence 
+	between characters or sequences of characters that represent the same 
+	abstract character, but may have a different visual appearance or behavior. 
+	The visual representations of the variant 
+	characters are typically a subset of the possible visual representations of 
+	the nominal character, but represent visual distinctions that may be 
+	significant in some contexts but not in others, requiring greater care in 
+	the application of this equivalence. If the visual distinction is stylistic, 
+	then markup or styling could be used to represent the formatting 
+	information. However, some characters with compatibility decompositions are 
+	used in mathematical notation to represent a distinction of a semantic nature; 
+	replacing the use of distinct character codes by formatting may cause 
+	problems. <i>Figure 2</i> illustrates this equivalence.</p>
+  <p class="caption"><a name="Compatibility_Equivalence_Figure"></a>Figure 2. Compatibility Equivalence</p>
+  <div align="center">
+    <table cellspacing="2" cellpadding="2" style="border-collapse: collapse" id="table5">
+      <tr>
+        <td>Font variants</td>
+        <td align="right" style="text-align: center" colspan="2">		<span class="charSample">ℌ</span></td>
+        <td align="right" style="text-align: center" colspan="2">		<span class="charSample">ℍ</span></td>
+      </tr>
+      <tr>
+        <td>Breaking differences&nbsp;&nbsp;&nbsp;</td>
+        <td align="right" style="text-align: center" colspan="4">		<span class="charSample">-</span></td>
+      </tr>
+      <tr>
+        <td>Cursive forms</td>
+        <td align="right" style="text-align: center">
+        <span class="charSample">ﻨ</span></td>
+        <td align="right" style="text-align: center">
+        <span class="charSample">ﻧ</span></td>
+        <td align="right" style="text-align: center">
+        <span class="charSample">ﻦ</span></td>
+        <td align="right" style="text-align: center">
+        <span class="charSample">ﻥ</span></td>
+      </tr>
+      <tr>
+        <td>Circled</td>
+        <td align="right" style="text-align: center" colspan="4">
+		<span class="charSample">①</span></td>
+      </tr>
+      <tr>
+        <td>Width, size, rotated</td>
+        <td align="right" style="text-align: center"><span class="charSample">ｶ</span></td>
+        <td align="right" style="text-align: center"><span class="charSample">カ</span></td>
+        <td align="right" style="text-align: center"><span class="charSample">︷</span></td>
+        <td align="right" style="text-align: center"><span class="charSample">{</span></td>
+      </tr>
+      <tr>
+        <td>Superscripts/subscripts&nbsp;</td>
+        <td align="right" style="text-align: center" colspan="2">
+		<span class="charSample">⁹</span></td>
+        <td align="right" style="text-align: center" colspan="2">
+		<span class="charSample">₉</span></td>
+      </tr>
+      <tr>
+        <td>Squared characters</td>
+        <td align="right" style="text-align: center" colspan="4">
+		<span class="charSample">㌀</span></td>
+      </tr>
+      <tr>
+        <td>Fractions</td>
+        <td align="right" style="text-align: center" colspan="4">
+		<span class="charSample">¼</span></td>
+      </tr>
+      <tr>
+        <td>Others</td>
+        <td align="right" style="text-align: center" colspan="4">		<span class="charSample">ǆ</span></td>
+      </tr>
+    </table>
+  </div>
+  <p>Both canonical and compatibility equivalences are explained in more detail in 
+	<i>Chapter 2, General Structure</i>, and <i>Chapter 3, Conformance,</i>
+  	in [<a href="../tr41/tr41-7.html#Unicode">Unicode</a>].</p>
+  
+  <h3><a name="Norm_Forms"></a>1.2 Normalization Forms</h3>
+	
+  <p>Unicode Normalization Forms are formally defined normalizations
+  of Unicode strings which make it possible to determine whether any two Unicode strings are
+  equivalent to each other. Depending on the particular Unicode Normalization Form, that
+  equivalence can either be a canonical equivalence or a compatibility equivalence.</p>
+   
+  <p>Essentially, the Unicode Normalization Algorithm puts all
+  combining marks in a specified order, and uses rules for decomposition and composition to
+  transform each string into one of the Unicode Normalization Forms. A binary comparison of
+  the transformed strings will then determine equivalence.</p>
+  
+  	<p>The four
+	Unicode Normalization Forms are summarized in <i>Table 1.</i></p>
+	
+	<p class="caption"><a name="Normalization_Forms_Table"></a>Table 1. Normalization Forms</p>
+  <div align="center">
+  <table border="1" cellspacing="0" cellpadding="2" id="table2">
+    <tr>
+      <th align="left" height="20">Title</th>
+      <th align="left" height="20">Description</th>
+    </tr>
+    <tr>
+      <td valign="TOP" height="40">Normalization Form&nbsp;D (NFD)</td>
+      <td valign="TOP" height="40">Canonical Decomposition</td>
+    </tr>
+    <tr>
+      <td valign="TOP" height="59">Normalization Form&nbsp;C (NFC)</td>
+      <td valign="TOP" height="59">Canonical Decomposition,<br>
+      followed by Canonical Composition</td>
+    </tr>
+    <tr>
+      <td valign="TOP" height="40">Normalization Form&nbsp;KD (NFKD)</td>
+      <td valign="TOP" height="40">Compatibility Decomposition</td>
+    </tr>
+    <tr>
+      <td valign="TOP" height="60">Normalization Form&nbsp;KC (NFKC)</td>
+      <td valign="TOP" height="60">Compatibility Decomposition,<br>
+      followed by Canonical Composition</td>
+    </tr>
+  </table>
+  </div>
+  <p>There are two forms of normalization that convert to 
+	composite characters: <i>Normalization Form C</i> and <i>Normalization Form KC</i>. The difference between 
+  these depends on whether the resulting text is to be a <i>canonical</i> equivalent to the original 
+  unnormalized text or a <i>compatibility</i> equivalent to the original unnormalized 
+  text. (In <i>NFKC</i> and <i>NFKD,</i> a <i>K</i> is used to stand for <i>compatibility</i> to 
+  avoid confusion with the <i>C</i> standing for <i>composition</i>.) Both types of normalization 
+  can be useful in different circumstances.</p>
+  <p><i>Figures 3</i> through <i>6</i> illustrate different ways in which source text can be normalized. In the first three figures, the NFKD form is always the same as the NFD form, and the NFKC form is always 	
+  	the same as the NFC form, so for simplicity those columns are omitted. For 	
+  	consistency, all of these examples use Latin characters, although similar 	
+  	examples are found in other scripts.</p>
+
+  <p class="caption"><a name="Singletons_Figure"></a>Figure 3. Singletons</p>
+	  <div class="web-only">
+ 			<p class="center"><img border="0" src="images/UAX15-NormFig3.jpg" alt="ohm etc. example"></p>
+	   </div>
+	   <div class="book-only">
+		   <p class="center"><img border="0" src="print-images/UAX15-NormFig3.jpg" alt="ohm etc. example" width="184" height="84"></p>
+	   </div>
+	   
+  <p>Certain characters are known as singletons. They never remain in the text after normalization. Examples 
+	include the <i>angstrom</i> and <i>ohm</i> symbols, which map to their normal letter 
+	counterparts <i>a-with-ring </i>and<i> omega</i>, respectively.</p>
+	 	
+  <p class="caption"><a name="Canonical_Composites_Figure"></a>Figure 4. Canonical Composites</p>	
+	  <div class="web-only">
+ 			<p class="center"><img border="0" src="images/UAX15-NormFig4.jpg" alt="composition examples"></p>
+	   </div>
+	   <div class="book-only">
+		   <p class="center"><img border="0" src="print-images/UAX15-NormFig4.jpg" alt="composition examples" width="184" height="84"></p>
+	   </div>
+	   
+  <p>Many characters are known as canonical 
+	composites, or precomposed characters. In the D forms, they are decomposed; in the C forms, they are <i>
+	usually</i>
+	precomposed. (For exceptions, see 
+	<i>Section 5,&nbsp;<a href="tr15-33.html#Primary_Exclusion_List_Table">Composition Exclusion Table</a></i>.)</p>
+	<p>Normalization provides a unique order 
+	for combining marks, with a uniform order for all D and C forms. Even when there is no precomposed character, as with 
+	the “q” with accents in <i>Figure 5</i>, the ordering may be modified by 
+	normalization.</p>  
+	
+	<p class="caption"><a name="Multiple_Mark_Figure"></a>Figure 5. Multiple Combining Marks</p>
+	  <div class="web-only">
+ 		<p class="center"><img border="0" src="images/UAX15-NormFig5.jpg" alt="multiple marks examples"></p>
+	   </div>
+	   <div class="book-only">
+		 <p class="center"><img border="0" src="print-images/UAX15-NormFig5.jpg" alt="composition examples" width="209" height="156"></p>
+	   </div>
+	   
+	<p>The 
+	example of the letter “d” with accents shows a situation where a precomposed character 
+	plus another accent changes in NF(K)C to 
+	a <i>different</i> precomposed character plus a different accent.</p>
+	
+  <p class="caption"><a name="Compatibility_Composite_Figure"></a>Figure 6. Compatibility Composites</p>	
+	  <div class="web-only">
+ 		<p class="center"><img border="0" src="images/UAX15-NormFig6.jpg" alt="fi ligature, etc."></p>
+	   </div>
+	   <div class="book-only">
+		<p class="center"><img border="0" src="print-images/UAX15-NormFig6.jpg" alt="fi ligature, etc." width="317" height="149"></p>
+	   </div>
+	   
+	<p>In the NFKC and NFKD forms, many 
+	formatting distinctions are removed, as shown in <i>Figure 6</i>. The “fi” 
+	ligature changes into its components “f” and “i”, the superscript formatting 
+	is removed from the “5”, and the long “s” is changed into a normal “s”.</p>
+	<p>Normalization Form KC does <i>not</i> attempt to map character sequences to 
+    compatibility composites. For example, a compatibility composition of “office” does <i>not</i> 
+	produce “o\uFB03ce”, even though “\uFB03” is a character that is the 
+	compatibility equivalent of the sequence of three characters “ffi”. In other 
+	words, the composition phase of NFC and NFKC are the same—only their 
+	decomposition phase differs, with NFKC applying compatibility 
+	decompositions.</p>
+	
+  <p>Normalization Form C uses canonical composite characters where possible, and maintains the 
+  distinction between characters that are compatibility equivalents. Typical strings of composite 
+  accented Unicode characters are already in Normalization Form C. Implementations of Unicode 
+	that 
+  restrict themselves to a repertoire containing no combining marks are already typically 
+  using Normalization Form C. (Implementations need to be aware of  
+  versioning issues—see <i>Section 3, <a href="tr15-33.html#Versioning">Versioning and Stability</a></i>.)</p>
+ 
+  <p>The <i>W3C Character Model for the World Wide Web</i><i>, Part II: Normalization</i> 
+  [<a href="../tr41/tr41-7.html#CharNorm">CharNorm</a>] and other W3C Specifications
+  (such as XML 1.0 5th Edition) recommend using
+  Normalization Form C for all content, because this form
+  avoids potential interoperability problems arising from the use of canonically
+  equivalent, yet different, character sequences in document formats on the Web. 
+  See the <i>W3C Requirements for String Identity, Matching, 
+  and String Indexing</i> [<a href="../tr41/tr41-7.html#CharReq">CharReq</a>] for more background.</p>
+  
+  <p>Normalization Form KC additionally folds the differences between compatibility-equivalent 
+  characters that are inappropriately distinguished in many circumstances. For example, the 
+  halfwidth and fullwidth <i>katakana</i> characters will normalize to the same strings, as will 
+  Roman numerals and their letter equivalents. More complete examples are provided in 
+	<i>Section 6,
+	<a href="tr15-33.html#Examples">Examples and Charts</a></i>.</p>
+  <p>Normalization Forms KC and KD must <i>not</i> be blindly applied to arbitrary text. Because 
+  they erase many formatting distinctions, they will prevent round-trip conversion to and from many 
+  legacy character sets, and unless supplanted by formatting markup, they may remove distinctions that 
+  are important to the semantics of the text. It is best to think of these 
+	Normalization Forms as 
+  being like uppercase or lowercase mappings: useful in certain contexts for identifying core 
+  meanings, but also performing modifications to the text that may not always be appropriate. They 
+  can be applied more freely to domains with restricted character sets.
+	(See Unicode Standard Annex #31, "Unicode Identifier and Pattern Syntax" 
+	[<a href="../tr41/tr41-7.html#UAX31">UAX31</a>] for examples.)</p>
+  <p>To summarize the treatment of compatibility composites that were in the source text:</p>
+  <ul>
+    <li>Both NFD and NFC maintain compatibility composites.</li>
+    <li>Neither NFKD nor NFKC maintains compatibility composites.</li>
+    <li>None of the forms <i>generate</i> compatibility composites that were not in the source text.
+    </li>
+  </ul>
+  <p>For a list of all characters that may change in any of the Normalization 
+	Forms (aside from 
+  reordering), see the Normalization Charts [<a href="../tr41/tr41-7.html#Charts15">Charts15</a>].</p>
+
+  <h3 class="section">1.3 <a name="Description_Norm">Description of the Normalization Process</a></h3>
+
+  <p>This section provides a short summary of
+  how the Unicode Normalization Algorithm works.</p>
+
+  <p>To transform a Unicode string into a given Unicode Normalization Form,
+  the first step is to fully decompose the string. The decomposition process makes use of the Decomposition_Mapping
+  property values defined in UnicodeData.txt. There are also special rules to fully decompose
+  Hangul syllables. Full decomposition involves recursive application of the Decomposition_Mapping
+  values, because in some cases a complex composite character may have a Decomposition_Mapping into
+  a sequence of characters, one of which may also have its own non-trivial Decomposition_Mapping value.</p>
+  
+  <p>The type of full decomposition chosen depends on which Unicode Normalization
+  Form is involved. For NFC or NFD, one does a full <i>canonical</i> decomposition, which makes use
+  of only canonical Decomposition_Mapping values. For NFKC or NFKD, one does a full <i>compatibility</i>
+  decomposition, which makes use of canonical <i>and</i> compatibility Decomposition_Mapping values.</p>
+
+  <p>Once a string has been fully decomposed, any sequences of combining marks
+  that it contains are put into a well-defined order. This rearrangement of combining marks is done
+  according to a subpart of the Unicode Normalization Algorithm known as the Canonical Ordering
+  Algorithm. That algorithm sorts sequences of combining marks based on the value of their 
+  Canonical_Combining_Class (ccc) property, whose values are also defined in UnicodeData.txt.
+  Most characters (including all non-combining marks) have a Canonical_Combining_Class value of
+  zero, and are unaffected by the Canonical Ordering Algorithm. Such characters are referred to by a
+  special term, <i>starter</i>. Only the subset of combining
+  marks which have non-zero Canonical_Combining_Class property values are subject to potential
+  reordering by the Canonical Ordering Algorithm. Those characters are called <i>non-starters</i>.</p>
+  
+  <p>At this point, if one is transforming a Unicode string to NFD or NFKD,
+  the process is complete. However, one additional step is needed to transform the string to NFC or NFKC:
+  recomposition. The fully decomposed and canonically ordered string is processed by another
+  subpart of the Unicode Normalization Algorithm known as the Canonical Composition Algorithm. 
+  That process logically starts at the front of the string and systematically checks it for
+  pairs of characters which meet certain criteria and for which there is a canonically equivalent
+  composite character in the standard. Each appropriate pair of characters which meet the
+  criteria is replaced by the composite character, until the string contains no further such
+  pairs. This transforms the fully decomposed string into its most
+  fully <i>composed</i> but still canonically equivalent sequence.</p>
+    
+  <p><i>Figure 7</i> shows a sample of 
+	how the composition process works. The gray cubes represent starters, and the 
+	white cubes represent 
+  non-starters. In the first step, the string is fully decomposed and canonically reordered.
+	This is represented by the downwards arrows. In the second 
+  step, each character is checked against the last non-starter and starter, and 
+  combined if all the appropriate conditions are met. This is represented by the 
+	curved arrows pointing to the starters. Note that in each case, all of the successive white 
+	boxes (non-starters) are examined <i>plus</i> one additional gray box (starter). <i>Examples</i> are provided in <i>Section  
+	6, <a href="tr15-33.html#Examples">Examples and Charts</a></i>, and a code sample is provided in 
+	<i>Section 14.2, 
+	<a href="tr15-33.html#Code_Sample"> Code Samples</a></i>.</p>
+	
+  <p class="caption"><a name="Composition_Process_Figure"></a>Figure 7. Composition Process</p>
+	  <div class="web-only">
+ 			<p class="center"><img border="0" src="images/UAX15-figure7.jpg" alt="diagram" width="432" height="154"></p>
+	   </div>
+	  <div class="book-only">
+ 			<p class="center"><img border="0" src="print-images/UAX15-figure7.jpg" alt="diagram" width="432" height="154"></p>
+	  </div>
+	  
+  <p>Taken step-by-step, the Unicode Normalization Algorithm is
+  fairly complex. However, it is designed in such a way that it enables very efficient,
+  highly-optimized implementations. For example, checking whether a Unicode string is in
+  NFC is a very quick process, and since much text is already in NFC, an implementation that
+  normalizes strings to NFC mostly consists of quick verification checks, with only
+  very occasional modifications of any pieces which are not already in NFC. See <i>Section 9,
+  <a href="tr15-33.html#Detecting_Normalization_Forms">Detecting Normalization Forms</a></i>.</p>
+  
+  <blockquote>
+  <p><span class="note">Note:</span> 
+  Text exclusively containing ASCII characters (U+0000..U+007F) is left unaffected by all of the Normalization Forms. This is 
+	particularly important for programming languages. (See Unicode Standard Annex #31, "Unicode Identifier and Pattern Syntax" 
+	[<a href="../tr41/tr41-7.html#UAX31">UAX31</a>].)
+  Text exclusively containing
+  Latin-1 characters (U+0000..U+00FF) is left unaffected by NFC. This is effectively
+  the same as saying that all Latin-1 text is <i>already</i> normalized to NFC.</p>
+  </blockquote>
+
+  <p>The complete formal specification of the Unicode Normalization
+  Algorithm and of the Unicode Normalization Forms can be found in <i>Section 3.11, Normalization Forms</i> in 
+  [<a href="../tr41/tr41-7.html#Unicode">Unicode</a>]. See that section for all of the
+  formal definitions and for the details of the exact formulation of each step in the
+  algorithm.</p>
+
+  <h3 class="section">1.4 <a name="Concatenation">Concatenation of Normalized Strings</a></h3>
+  
+  <p>In using normalization functions, it is important to realize that <i>none</i> of 
+  the Normalization Forms are closed under string concatenation. That is, even if two strings 
+  X and Y are normalized, their string concatenation X+Y is <i>not</i> guaranteed to be normalized. 
+  This even happens in NFD, because accents are canonically ordered, and may rearrange around the 
+  point where the strings are joined. Consider the string concatenation examples shown in <i>Table 2</i>.</p>
+	<div class="book-only">
+		&nbsp;</div>
+  <p class="caption"><a name="Concatenation_Table"></a>Table 2. String Concatenation</p>
+  <div align="center">
+    <table border="1" cellpadding="2">
+      <tr>
+        <th align="left">Form</th>
+        <th align="left">String1</th>
+        <th align="left">String2</th>
+        <th align="left">Concatenation</th>
+        <th align="left">Correct Normalization</th>
+      </tr>
+      <tr>
+        <td>NFD</td>
+        <td>a ^</td>
+        <td>. (dot under)</td>
+        <td>a ^ .</td>
+        <td>a . ^</td>
+      </tr>
+      <tr>
+        <td>NFC</td>
+        <td>a</td>
+        <td>^</td>
+        <td>a ^</td>
+        <td>â</td>
+      </tr>
+      <tr>
+        <td>NFC</td>
+        <td>ᄀ</td>
+        <td>ᅡ ᆨ</td>
+        <td>ᄀ ᅡ ᆨ</td>
+        <td>각</td>
+      </tr>
+    </table>
+  </div>
+	<p>However, it is possible to produce an optimized function that concatenates two normalized 
+  strings and <i>does</i> guarantee that the result is normalized. Internally, 
+	it only needs to normalize characters around the boundary of where the 
+	original strings were joined, within stable code points. For more 
+	information, see <i>Section 9.1, <a href="tr15-33.html#Stable_Code_Points">Stable Code 
+  Points</a>.</i></p>
+  <p>In contrast to their behavior under
+  string concatenation, all of the Normalization Forms <i>are</i> closed under substringing. For 
+  example, given a substring of a normalized string X, from offsets 5 to 10,
+  the resulting string will still be normalized.</p>
+  
+  <h2 class="section"><a name="Notation"></a>2 Notation</h2>
+    
+  <p><i>Table 3</i> lists examples of the notational conventions used in this 
+	annex.</p>
+	<p class="caption"><a name="Notation_Example_Table"></a>Table 3. Notation Examples</p>
+  <div align="center">
+  <table>
+    <tr>
+      <th>Example Notation</th>
+      <th>Description</th>
+    </tr>
+    <tr>
+      <td>&quot;...\uXXXX...&quot;</td>
+      <td>The Unicode character U+XXXX embedded within a string</td>
+    </tr>
+    <tr>
+      <td>k<sub>i</sub>, a<sub>m</sub>, and k<sub>f</sub></td>
+      <td>Conjoining jamo types (initial, medial, final) represented by subscripts</td>
+    </tr>
+    <tr>
+      <td>&quot;c¸&quot;</td>
+      <td><i>c</i> followed by a <i>nonspacing cedilla:</i> spacing accents (without a dotted 
+      circle) may be used to represent nonspacing accents</td>
+    </tr>
+    <tr>
+      <td>NFx</td>
+      <td>Any Unicode Normalization Form: NFD, NFKD, NFC, 
+		or NFKC</td>
+    </tr>
+    <tr>
+      <td><i>toNFx(s)</i> </td>
+      <td>A function that produces the the normalized form of a string s 
+		according to the definition of Unicode 
+		Normalization Form X.</td>
+    </tr>
+    <tr>
+      <td><i>isNFx(s)</i></td>
+      <td>
+      <p dir="ltr">A binary property of a string s, 
+		whereby:<blockquote>
+		<p dir="ltr">isNFx(s) is true if and only if toNFX(s) 
+      is identical to s.</blockquote>
+		<p dir="ltr">See also <i>Section 9,  
+		<a href="tr15-33.html#Detecting_Normalization_Forms">Detecting Normalization Forms</a>.</i></td>
+    </tr>
+    <tr>
+      <td>X ≈ Y</td>
+      <td>X is canonically equivalent to Y</td>
+    </tr>
+    <tr>
+      <td>X[a, b]</td>
+      <td>The substring of X that includes all code units after offset a and before offset b; 
+		for 
+      example, if X is “abc”, then X[1,2] is “b”</td>
+    </tr>
+  </table>
+  </div>
+  <p>Additional conventions used in this annex:</p>
+  <ol>
+    <li>A sequence of characters may be represented by using plus signs between the character names 
+    or by using string notation.</li>
+    <li>An <i>offset into a Unicode string</i> is a number from 0 to <i>n</i>-1, where <i>n</i> is the 
+    length of the string and indicates a position that is logically between Unicode code units (or 
+    at the very front or end in the case of 0 or <i>n</i>-1, respectively).</li>
+    <li>Unicode names may be shortened, as shown in <i>Table 4.</i></li>
+  </ol>
+  <p class="caption"><a name="Abbreviation_Table"></a>Table 4. Character Abbreviation</p>
+  <div align="center">
+    <table cellpadding="2" border="0" cellspacing="0" style="border-collapse: collapse">
+      <tr>
+        <th width="129">Abbreviation</th>
+        <th width="458">Full Unicode Name</th>
+      </tr>
+      <tr>
+        <td width="129"><i>E-grave</i></td>
+        <td width="458">LATIN CAPITAL LETTER E WITH GRAVE</td>
+      </tr>
+      <tr>
+        <td width="129"><i>ka</i>&nbsp;</td>
+        <td width="458">KATAKANA LETTER KA</td>
+      </tr>
+      <tr>
+        <td width="129"><i>hw_ka</i></td>
+        <td width="458">HALFWIDTH KATAKANA LETTER KA</td>
+      </tr>
+      <tr>
+        <td width="129"><i>ten</i></td>
+        <td width="458">COMBINING KATAKANA-HIRAGANA VOICED SOUND MARK</td>
+      </tr>
+      <tr>
+        <td width="129"><i>hw_ten</i></td>
+        <td width="458">HALFWIDTH KATAKANA VOICED SOUND MARK</td>
+      </tr>
+    </table>
+  </div>
+  
+  <h2 class="section"><a name="Versioning"></a>3 Versioning and Stability</h2>
+  
+  <p>It is crucial that Normalization Forms remain stable over time. That is, if a string that does 
+  not have any unassigned characters is normalized under one version of Unicode, it must remain 
+  normalized under all future versions of Unicode. This is the backward compatibility requirement. 
+  To meet this requirement, a fixed version for the composition process is specified, called 
+  the <i>composition version.</i> The composition<i></i> version is defined to be <b>Version 3.1.0</b> 
+  of the Unicode Character Database. For more information, see</p>
+  <ul>
+    <li>Versions of the Unicode Standard [<a href="../tr41/tr41-7.html#Versions">Versions</a>]</li>
+    <li>Unicode 3.1 [<a href="../tr41/tr41-7.html#Unicode3.1">Unicode3.1</a>]</li>
+    <li>Unicode Character Database [<a href="../tr41/tr41-7.html#UCD">UCD</a>]</li>
+  </ul>
+  <p>To see what difference the composition version makes, suppose that a future version of Unicode 
+  were to add the composite <i>Q-caron</i>. For an implementation that uses that future version of 
+  Unicode, strings in Normalization Form C or KC would continue to contain the sequence <i>Q&nbsp;+&nbsp;caron,</i> 
+  and <i>not</i> the new character <i>Q-caron</i>, because a canonical composition for <i>Q-caron</i> 
+  was not defined in the composition version. See <i>Section 5,
+  <a href="tr15-33.html#Primary_Exclusion_List_Table">Composition Exclusion Table</a></i>, for more information.</p>
+  <p>It would be possible to add more compositions in a future version of Unicode, as long as the 
+  backward compatibility requirement is met. It requires that for any new composition XY 
+	→ Z, at 
+  most one of X or Y was defined in a previous version of Unicode. That is, Z must be a new 
+  character, and either X or Y must be a new character. However, the Unicode Consortium strongly 
+  discourages new compositions, even in such restricted cases.</p>
+  <p>In addition to fixing the composition version, future versions of Unicode must be restricted in 
+  terms of the kinds of changes that can be made to character properties. Because of this, the 
+  Unicode Consortium has a clear policy to guarantee the stability of 
+	Normalization Forms.</p>
+	<p>The Unicode Consortium has well-defined 
+	policies in place to govern changes that affect backward compatibility. 
+	According to the Unicode policy for Normalization Forms, applicable to 
+	Unicode 4.1 and all later versions, the results of normalizing a string on 
+	one version will always be the same as normalizing it on any other version, 
+	as long as the string contains only assigned characters according to both 
+	versions. For information on these stability policies, especially regarding 
+  normalization, see the Unicode Character Encoding Stability Policy [<a href="../tr41/tr41-7.html#Policies">Policies</a>].</p>
+	<p>If an implementation normalizes a string 
+	that contains characters that are <b>not</b> assigned in 
+	the version of Unicode that it supports, that string <b>
+	might not</b> be in normalized form according to a future 
+	version of Unicode. For example, suppose that a Unicode 
+	5.0 program normalizes a string that contains new Unicode 
+	5.1 characters. That string might not be normalized according 
+	to Unicode 5.1.</p>
+	<p>Prior to Unicode 4.1, the stability policy was 
+	not quite as strict. For more information, see <i>Section 11&nbsp;<a href="tr15-33.html#Stability_Prior_to_Unicode41">Stability Prior to Unicode 4.1</a>.</i></p>
+
+  <h2 class="section"><a name="Conformance"></a>4 Conformance</h2>
+  
+  <p>Starting with Unicode 5.2.0, conformance clauses UAX15-C1 and UAX15-C2
+  have been redirected to point to the formal specification of Unicode Normalization
+  Forms in <i>Section 3.11, Normalization Forms</i> in 
+  [<a href="../tr41/tr41-7.html#Unicode">Unicode</a>]. All of the local clauses have been
+  retained in this annex, so that any external references to Unicode Standard Annex #15 and
+  to particular conformance clauses for Unicode Normalization Forms will continue to be valid.
+  Specific references to any definitions used by the Unicode Normalization Algorithm 
+  also remain valid.</p>
+
+  <p><i><b><a name="UAX15-C1">UAX15-C1</a>.</b> A process that produces Unicode text that 
+  purports to be in a Normalization Form shall do so in accordance with the specifications in 
+  Section 3.11, Normalization Forms in
+  [<a href="../tr41/tr41-7.html#Unicode">Unicode</a>].</i></p>
+  <ul>
+     <li>See C13 in <i>Chapter 3, Conformance</i> in 
+     [<a href="../tr41/tr41-7.html#Unicode">Unicode</a>]</li>
+  </ul>
+  
+  <p><i><b><a name="UAX15-C2">UAX15-C2</a>.</b> A process that tests Unicode text to 
+  determine whether it is in a Normalization Form shall do so in accordance with the specifications 
+  in Section 3.11, Normalization Forms in 
+  [<a href="../tr41/tr41-7.html#Unicode">Unicode</a>]</i></p>
+  <ul>
+     <li>See C14 in <i>Chapter 3, Conformance</i> in 
+     [<a href="../tr41/tr41-7.html#Unicode">Unicode</a>]</li>
+  </ul>
+  
+  <p><i><b><a name="UAX15-C3">UAX15-C3</a>.</b> A process that purports to transform text 
+  into a Normalization Form must be able to 
+  produce the results of the conformance test specified in
+	the NormalizationTest.txt data
+	file [<a href="../tr41/tr41-7.html#Tests15">Test15</a>].</i></p>
+  <ul>
+     <li>See C15 in <i>Chapter 3, Conformance</i> in 
+     [<a href="../tr41/tr41-7.html#Unicode">Unicode</a>]</li>
+     <li>The NormalizationText.txt file consists of a series of fields.
+     When Normalization Forms are 
+     applied to the different fields in the test file, the results shall be as specified 
+     in the header of that file.</li>
+  </ul>
+	
+	<p><i><b><a name="UAX15-C4">UAX15-C4</a>.</b> 
+	A process that purports to transform 
+	text according to the <a href="tr15-33.html#Stream_Safe_Text_Format">
+	Stream-Safe Text Format</a> must do so in 
+	accordance with the specifications in this annex.</i></p>
+	
+	<p><i><b><a name="UAX15-C5">UAX15-C5</a>. </b>A process that purports to 
+	transform text according to the
+	<a href="tr15-33.html#Normalization_Process_for_Stabilized_Strings">Normalization 
+	Process for Stabilized Strings</a> must do so in accordance with the 
+	specifications in this annex.</i></p>
+	
+	<p>The specifications for Normalization Forms are written in terms of a process for 
+    producing a decomposition or composition from an arbitrary Unicode string. This is a 
+	<i>logical</i> 
+    description—particular implementations can have more efficient mechanisms as long as they 
+    produce the same result. See C18 in <i>Chapter 3, Conformance</i> in [<a href="../tr41/tr41-7.html#Unicode">Unicode</a>] 
+	and the notes following.</p>
+	
+    <p>Implementations must be thoroughly tested for conformance to the 
+    normalization specification. 
+    Testing for a particular Normalization Form does not require 
+    directly applying the process of normalization, so long as the result of the test is equivalent to 
+    applying normalization and then testing for binary identity.</p>
+    
+  <h2 class="section"><a name="Primary_Exclusion_List_Table"></a>5 Composition Exclusion Table</h2>
+  <p>There are four classes of canonically decomposable characters that are excluded from composition:</p>
+  <ol>
+    <li><b>Script-specifics:</b> 
+    canonically decomposable characters that are generally not the preferred form 
+    for particular scripts.
+    <ul>
+      <li>These <i>cannot</i> be computed from information in the Unicode Character Database.</li>
+		<li>An example is U+0958 (&#x958;) <span class="name">DEVANAGARI 
+		LETTER QA</span>.</li>
+    </ul>
+    </li>
+    <li><b>Post composition version:</b> 
+    canonically decomposable characters that are added after Unicode 3.0 
+    [<a href="../tr41/tr41-7.html#Unicode3.0">Unicode3.0</a>] and whose decompositions 
+	exist in prior versions of Unicode. This set will be updated with each subsequent version of Unicode. For more 
+    information, see <i>Section 3, <a href="tr15-33.html#Versioning">Versioning and 
+    Stability</a></i>.
+    <ul>
+      <li>These <i>cannot</i> be computed from information in the Unicode Character Database.</li>
+		<li>An example is U+2ADC (<span class="mathsym1">&#x2ADC;</span>) 
+		<span class="name">FORKING</span>.</li>
+    </ul>
+    </li>
+    <li><b>Singletons:</b> canonically decomposable characters having 
+    decompositions that consist of a single character.
+    <ul>
+      <li>These <i>are</i> computed from information in the Unicode Character Database.</li>
+		<li>An example is U+2126 (&#x2126;) <span class="name">OHM 
+		SIGN</span>.</li>
+    </ul><div class="book-only">&nbsp;</div>
+    </li>
+    <li><b>Non-starter decompositions:</b> characters with expanding canonical decompositions
+    (that is, those which canonically decompose to a sequence of characters instead of a single
+    character), such that (A) the character not a Starter, or (B) the
+    character's canonical decomposition starts with a character that is not a Starter.
+    (Note that a "Starter" is any character with a zero combining class).
+    <ul>
+      <li>These <i>are</i> computed from information in the Unicode Character Database.</li>
+		<li>An example is U+0344 (&nbsp;&nbsp; ̈́) <span class="name">COMBINING GREEK DIALYTIKA TONOS</span>.</li>
+    </ul>
+    </li>
+  </ol>
+  <p>Two characters may have the same canonical decomposition in the Unicode Character Database. <i>
+  	Table 5</i> shows an example.</p> 	
+  	<div class="book-only">
+		<p>&nbsp;</p></div>
+  <p class="caption"><a name="Same_Decomposition_Table"></a>Table 5. Same Canonical Decomposition</p>
+  <div align="center">
+  <table>
+    <tr>
+      <th>Source</th>
+      <th>Same Decomposition</th>
+    </tr>
+    <tr>
+      <td>212B (Å) <span class="name">ANGSTROM SIGN</span></td>
+      <td rowspan="2">0041 (A)&nbsp;<span class="name">LATIN CAPITAL LETTER A</span> + 030A 
+		(°)&nbsp;<span class="name">COMBINING RING ABOVE</span></td>
+    </tr>
+    <tr>
+      <td>00C5 (Å) <span class="name">LATIN CAPITAL LETTER A WITH RING ABOVE</span></td>
+    </tr>
+  </table> 
+  </div>	
+  <div class="book-only">
+		<p>&nbsp;</p></div>
+		
+  <p>The Unicode Character Database will first decompose one of the characters to the other, and 
+  then decompose from there. That is, one of the characters (in this case, U+212B <span class="name">ANGSTROM SIGN</span>) 
+  will have a singleton decomposition. Characters with singleton decompositions are included in 
+  Unicode for compatibility with certain preexisting standards. These singleton 
+  decompositions are excluded from primary composition.</p>
+	<p>When a character with a canonical decomposition 
+	is added to Unicode, it must be added to the composition exclusion table if 
+	there is at least one character in its decomposition that existed in a 
+	previous version of Unicode. If there are no such characters, then it is 
+	possible for it to be added or omitted from the composition exclusion 
+	table. The choice of whether to do so or not rests upon whether it is 
+	generally used in the precomposed form or not.</p>
+  <h4 align="left">Data File</h4>
+	<p>The Composition Exclusion Table is available as machine-readable 
+	data file 
+    [<a href="../tr41/tr41-7.html#Exclusions">Exclusions</a>].</p>
+	<p>All four classes of characters are included in this file, 
+	although the singletons and non-starter decompositions are commented out, 
+	as they can be computed from the decomposition mappings in the Unicode 
+	Character Database.</p>
+	<p>A derived property containing the complete list of exclusions, 
+	Full_Composition_Exclusion, 
+    is available separately in the Unicode Character Database [<a href="../tr41/tr41-7.html#UCD">UCD</a>] 
+	and is described in Unicode Standard Annex #44, "Unicode Character Database" 
+	[<a href="../tr41/tr41-7.html#UAX44">UAX44</a>]. Implementations can 
+    avoid computing the singleton and non-starter decompositions from the Unicode Character Database 
+    by using the Full_Composition_Exclusion property instead.</p> 	
+    <div class="book-only">
+		<p>&nbsp;</p>
+    </div>
+		
+  <h2 class="section"><a name="Examples"></a>6 Examples and Charts</h2>
+  
+  <p>This section provides some detailed examples of the results when each of the 
+	Normalization Forms is applied. The Normalization Charts
+  [<a href="../tr41/tr41-7.html#Charts15">Charts15</a>] provide charts of all the characters in Unicode that differ 
+  from at least one of their Normalization Forms (NFC, NFD, NFKC, NFKD).</p>
+  	<div class="book-only"><p>&nbsp;</p>
+		<p>&nbsp;</p></div><h4>Basic Examples</h4>
+	<p>The 
+	basic examples in <i>Table 6</i> do not involve compatibility 
+	decompositions. Therefore, in each case Normalization Forms NFD and NFKD are 
+	identical, and Normalization Forms NFC and NFKC are also identical.
+ </p>
+  <p class="caption"><a name="Basic_Example_Table"></a>Table 6. Basic Examples</p>
+  <div class="center">
+  <table>
+    <tr>
+      <th valign="top" height="19" width="1"></th>
+      <th valign="top" width="20%">Original</th>
+      <th valign="top" width="20%">NFD, NFKD</th>
+      <th valign="top" width="20%">NFC, NFKC</th>
+      <th valign="TOP" align="LEFT">Notes</th>
+    </tr>
+    <tr>
+      <th valign="top" height="19" width="10">a</th>
+      <td valign="TOP" align="CENTER" width="20%">D-dot_above</td>
+      <td valign="TOP" align="CENTER" width="20%">D +&nbsp;dot_above</td>
+      <td valign="TOP" align="CENTER" width="20%">D-dot_above</td>
+      <td rowspan="2" valign="TOP">Both decomposed and precomposed canonical 
+      sequences produce the same result.</td>
+    </tr>
+    <tr>
+      <th valign="top" height="19" width="10">b</th>
+      <td valign="TOP" align="CENTER" width="20%">D +&nbsp;dot_above</td>
+      <td valign="TOP" align="CENTER" width="20%">D +&nbsp;dot_above</td>
+      <td valign="TOP" align="CENTER" width="20%">D-dot_above</td>
+    </tr>
+    <tr>
+      <th valign="top" height="32" width="10">c</th>
+      <td valign="TOP" align="CENTER" width="20%">D-dot_below +&nbsp;dot_above</td>
+      <td valign="TOP" align="CENTER" width="20%">D +&nbsp;dot_below +&nbsp;dot_above</td>
+      <td valign="TOP" align="CENTER" width="20%">D-dot_below +&nbsp;dot_above</td>
+      <td rowspan="3" valign="TOP">The <i>dot_above</i> cannot be combined 
+      with the D because the D has already combined with the intervening <i>dot_below</i>.<p>&nbsp;</td>
+    </tr>
+    <tr>
+      <th valign="top" height="32" width="10">d</th>
+      <td valign="TOP" align="CENTER" width="20%">D-dot_above +&nbsp;dot_below</td>
+      <td valign="TOP" align="CENTER" width="20%">D +&nbsp;dot_below +&nbsp;dot_above</td>
+      <td valign="TOP" align="CENTER" width="20%">D-dot_below +&nbsp;dot_above</td>
+    </tr>
+    <tr>
+      <th valign="top" height="32" width="10">e</th>
+      <td valign="TOP" align="CENTER" width="20%">D +&nbsp;dot_above +&nbsp;dot_below</td>
+      <td valign="TOP" align="CENTER" width="20%">D +&nbsp;dot_below +&nbsp;dot_above</td>
+      <td valign="TOP" align="CENTER" width="20%">D-dot_below +&nbsp;dot_above</td>
+    </tr>
+    <tr>
+      <th valign="top" height="45" width="10">f</th>
+      <td valign="TOP" align="CENTER" width="20%">D +&nbsp;dot_above +&nbsp;horn +&nbsp;dot_below</td>
+      <td valign="TOP" align="CENTER" width="20%">D +&nbsp;horn +&nbsp;dot_below +&nbsp;dot_above</td>
+      <td valign="TOP" align="CENTER" width="20%">D-dot_below +&nbsp;horn +&nbsp;dot_above</td>
+      <td valign="TOP">There may be intervening combining marks, so long as the 
+      result of the combination is canonically equivalent.</td>
+    </tr>
+    <tr>
+      <th valign="top" height="29" width="10">g</th>
+      <td valign="TOP" align="CENTER" width="20%">E-macron-grave</td>
+      <td valign="TOP" align="CENTER" width="20%">E +&nbsp;macron +&nbsp;grave</td>
+      <td valign="TOP" align="CENTER" width="20%">E-macron-grave</td>
+      <td rowspan="2">Multiple combining characters are combined with the base 
+      character.</td>
+    </tr>
+    <tr>
+      <th valign="top" height="23" width="10">h</th>
+      <td valign="TOP" align="CENTER" width="20%">E-macron +&nbsp;grave</td>
+      <td valign="TOP" align="CENTER" width="20%">E +&nbsp;macron +&nbsp;grave</td>
+      <td valign="TOP" align="CENTER" width="20%">E-macron-grave</td>
+    </tr>
+    <tr>
+      <th valign="top" height="26" width="10">i</th>
+      <td valign="TOP" align="CENTER" width="20%">E-grave +&nbsp;macron</td>
+      <td valign="TOP" align="CENTER" width="20%">E +&nbsp;grave +&nbsp;macron</td>
+      <td valign="TOP" align="CENTER" width="20%">E-grave +&nbsp;macron</td>
+      <td>Characters will <i>not</i> be combined if they would not be canonical 
+      equivalents because of their ordering.</td>
+    </tr>
+    <tr>
+      <th valign="top" height="23" width="10">j</th>
+      <td valign="TOP" align="CENTER" width="20%">angstrom_sign</td>
+      <td valign="TOP" align="CENTER" width="20%">A + ring</td>
+      <td valign="TOP" align="CENTER" width="20%">A-ring</td>
+      <td rowspan="2" valign="TOP">Because Å (A-ring) is the preferred composite, it 
+      is the form produced for both characters.</td>
+    </tr>
+    <tr>
+      <th valign="top" height="23" width="10">k</th>
+      <td valign="TOP" align="CENTER" width="20%">A-ring</td>
+      <td valign="TOP" align="CENTER" width="20%">A + ring</td>
+      <td valign="TOP" align="CENTER" width="20%">A-ring</td>
+    </tr>
+  </table>
+  </div>
+  <br>
+    <div class="book-only">
+		<p>&nbsp;</p></div>
+		
+  <h4>Effect of Compatibility Decompositions</h4>
+	<p>The examples in <i>Table 7</i> and <i>Table 8</i> illustrate the 
+	effect of compatibility decompositions. When text is normalized in forms NFD 
+	and NFC, as in <i>Table 7</i>, compatibility-equivalent strings do not 
+	result in the same strings. However, when the same strings are normalized in 
+	forms NFKD and NFKC, as shown in <i>Table 8</i>, they do result in the same 
+	strings. The tables also contain an entry showing that Hangul syllables are 
+	maintained under all Normalization Forms.
+	</p> 	<div class="book-only">
+		<p>&nbsp;</p></div>
+		
+	<p class="caption"><a name="NFD_And_NFC_Applied_Table"></a>Table 7. 
+  NFD and NFC Applied to Compatibility-Equivalent Strings</p>
+  <div class="center">
+  <table>
+    <tr>
+      <th valign="top" height="19" width="1"></th>
+      <th valign="top" width="20%">Original</th>
+      <th valign="top" width="20%">NFD</th>
+      <th valign="top" width="20%">NFC</th>
+      <th valign="TOP" align="LEFT">Notes</th>
+    </tr>
+    <tr>
+      <th valign="top" height="19" width="10">l</th>
+      <td valign="top" align="CENTER" width="20%">&quot;Äffin&quot;</td>
+      <td valign="top" align="CENTER" width="20%">&quot;A\u0308ffin&quot;</td>
+      <td valign="top" align="CENTER" width="20%">&quot;Äffin&quot;</td>
+      <td valign="TOP" rowspan="2">The <i>ffi_ligature</i> (U+FB03) is <i>not</i> 
+      decomposed, because it has a compatibility mapping, not a canonical mapping. (See
+      <i>Table 8</i>.)</td>
+    </tr>
+    <tr>
+      <th valign="top" height="19" width="10">m</th>
+      <td valign="top" align="CENTER" width="20%">&quot;Ä\uFB03n&quot;</td>
+      <td valign="top" align="CENTER" width="20%">&quot;A\u0308\uFB03n&quot;</td>
+      <td valign="top" align="CENTER" width="20%">&quot;Ä\uFB03n&quot;</td>
+    </tr>
+    <tr>
+      <th valign="top" height="19" width="10">n</th>
+      <td valign="top" align="CENTER" width="20%">&quot;Henry IV&quot;</td>
+      <td valign="top" align="CENTER" width="20%">&quot;Henry IV&quot;</td>
+      <td valign="top" align="CENTER" width="20%">&quot;Henry IV&quot;</td>
+      <td rowspan="2" valign="TOP">Similarly, the ROMAN NUMERAL IV (U+2163) is <i>
+      not</i> decomposed.</td>
+    </tr>
+    <tr>
+      <th valign="top" height="19" width="10">o</th>
+      <td valign="top" align="CENTER" width="20%">&quot;Henry \u2163&quot;</td>
+      <td valign="top" align="CENTER" width="20%">&quot;Henry \u2163&quot;</td>
+      <td valign="top" align="CENTER" width="20%">&quot;Henry \u2163&quot;</td>
+    </tr>
+    <tr>
+      <th valign="top" height="20" width="10">p</th>
+      <td valign="top" align="CENTER" width="20%">ga</td>
+      <td valign="top" align="CENTER" width="20%">ka +&nbsp;ten</td>
+      <td valign="top" align="CENTER" width="20%">ga</td>
+      <td rowspan="5" valign="TOP">Different compatibility equivalents of a single 
+      Japanese character will <i>not</i> result in the same string in NFC.</td>
+    </tr>
+    <tr>
+      <th valign="top" height="19" width="10">q</th>
+      <td valign="top" align="CENTER" width="20%">ka +&nbsp;ten</td>
+      <td valign="top" align="CENTER" width="20%">ka +&nbsp;ten</td>
+      <td valign="top" align="CENTER" width="20%">ga</td>
+    </tr>
+    <tr>
+      <th valign="top" height="17" width="10">r</th>
+      <td valign="top" align="CENTER" width="20%">hw_ka +&nbsp;hw_ten</td>
+      <td valign="top" align="CENTER" width="20%">hw_ka +&nbsp;hw_ten</td>
+      <td valign="top" align="CENTER" width="20%">hw_ka +&nbsp;hw_ten</td>
+    </tr>
+    <tr>
+      <th valign="top" height="17" width="10">s</th>
+      <td valign="top" align="CENTER" width="20%">ka +&nbsp;hw_ten</td>
+      <td valign="top" align="CENTER" width="20%">ka +&nbsp;hw_ten</td>
+      <td valign="top" align="CENTER" width="20%">ka +&nbsp;hw_ten</td>
+    </tr>
+    <tr>
+      <th valign="top" height="17" width="10">t</th>
+      <td valign="top" align="CENTER" width="20%">hw_ka +&nbsp;ten</td>
+      <td valign="top" align="CENTER" width="20%">hw_ka +&nbsp;ten</td>
+      <td valign="top" align="CENTER" width="20%">hw_ka +&nbsp;ten</td>
+    </tr>
+    <tr>
+      <th valign="top" height="17" width="10">u</th>
+      <td valign="top" align="CENTER" width="20%">kaks</td>
+      <td valign="top" align="CENTER" width="20%">k<sub>i</sub> + a<sub>m</sub> + ks<sub>f</sub></td>
+      <td valign="top" align="CENTER" width="20%">kaks</td>
+      <td valign="TOP" align="CENTER">
+      <p>Hangul syllables are maintained under normalization.</td>
+    </tr>
+  </table>
+  </div>
+  <br>
+  <p class="caption"><a name="NFKD_And_NFKC_Applied_Table"></a>Table 8. 
+  NFKD and NFKC Applied to Compatibility-Equivalent Strings</p>
+  <div class="center">
+  <table>
+    <tr>
+      <th valign="top" height="19" width="10"></th>
+      <th valign="top" width="20%">Original</th>
+      <th valign="top" width="20%">NFKD</th>
+      <th valign="top" width="20%">NFKC</th>
+      <th valign="TOP" align="LEFT">Notes</th>
+    </tr>
+    <tr>
+      <th valign="top" height="19" width="10">l&#39;</th>
+      <td valign="top" align="CENTER" width="20%">&quot;Äffin&quot;</td>
+      <td valign="top" align="CENTER" width="20%">&quot;A\u0308ffin&quot;</td>
+      <td valign="top" align="CENTER" width="20%">&quot;Äffin&quot;</td>
+      <td rowspan="2" valign="TOP">The <i>ffi_ligature</i> (U+FB03) <i>is</i> 
+      decomposed in NFKC (where it is not in NFC).</td>
+    </tr>
+    <tr>
+      <th valign="top" height="19" width="10">m&#39;</th>
+      <td valign="top" align="CENTER" width="20%">&quot;Ä\uFB03n&quot;</td>
+      <td valign="top" align="CENTER" width="20%">&quot;A\u0308ffin&quot;</td>
+      <td valign="top" align="CENTER" width="20%">&quot;Äffin&quot;</td>
+    </tr>
+    <tr>
+      <th valign="top" height="19" width="10">n&#39;</th>
+      <td valign="top" align="CENTER" width="20%">&quot;Henry IV&quot;</td>
+      <td valign="top" align="CENTER" width="20%">&quot;Henry IV&quot;</td>
+      <td valign="top" align="CENTER" width="20%">&quot;Henry IV&quot;</td>
+      <td rowspan="2" valign="TOP">Similarly, the resulting strings here are 
+      identical in NFKC.</td>
+    </tr>
+    <tr>
+      <th valign="top" height="19" width="10">o&#39;</th>
+      <td valign="top" align="CENTER" width="20%">&quot;Henry \u2163&quot;</td>
+      <td valign="top" align="CENTER" width="20%">&quot;Henry IV&quot;</td>
+      <td valign="top" align="CENTER" width="20%">&quot;Henry IV&quot;</td>
+    </tr>
+    <tr>
+      <th valign="top" height="19" width="10">p&#39;</th>
+      <td valign="top" align="CENTER" width="20%">ga</td>
+      <td valign="top" align="CENTER" width="20%">ka +&nbsp;ten</td>
+      <td valign="top" align="CENTER" width="20%">ga</td>
+      <td rowspan="5" valign="TOP">Different compatibility equivalents of a single 
+      Japanese character <i>will</i> result in the same string in NFKC.</td>
+    </tr>
+    <tr>
+      <th valign="top" height="19" width="10">q&#39;</th>
+      <td valign="top" align="CENTER" width="20%">ka +&nbsp;ten</td>
+      <td valign="top" align="CENTER" width="20%">ka +&nbsp;ten</td>
+      <td valign="top" align="CENTER" width="20%">ga</td>
+    </tr>
+    <tr>
+      <th valign="top" height="18" width="10">r&#39;</th>
+      <td valign="top" align="CENTER" width="20%">hw_ka +&nbsp;hw_ten</td>
+      <td valign="top" align="CENTER" width="20%">ka +&nbsp;ten</td>
+      <td valign="top" align="CENTER" width="20%">ga</td>
+    </tr>
+    <tr>
+      <th valign="top" height="17" width="10">s&#39;</th>
+      <td valign="top" align="CENTER" width="20%">ka +&nbsp;hw_ten</td>
+      <td valign="top" align="CENTER" width="20%">ka +&nbsp;ten</td>
+      <td valign="top" align="CENTER" width="20%">ga</td>
+    </tr>
+    <tr>
+      <th valign="top" height="18" width="10">t&#39;</th>
+      <td valign="top" align="CENTER" width="20%">hw_ka +&nbsp;ten</td>
+      <td valign="top" align="CENTER" width="20%">ka +&nbsp;ten</td>
+      <td valign="top" align="CENTER" width="20%">ga</td>
+    </tr>
+    <tr>
+      <th valign="top" height="17" width="10">u&#39;</th>
+      <td valign="top" align="CENTER" width="20%">kaks</td>
+      <td valign="top" align="CENTER" width="20%">k<sub>i</sub> + a<sub>m</sub> + ks<sub>f</sub></td>
+      <td valign="top" align="CENTER" width="20%">kaks</td>
+      <td valign="TOP" align="CENTER">
+      <p>Hangul syllables are maintained under normalization.*</td>
+    </tr>
+  </table>
+  </div>
+  
+  <p>*In earlier versions of Unicode, jamo characters like ks<sub>f</sub> had 
+  compatibility mappings to k<sub>f</sub> + s<sub>f</sub>. These mappings were removed in Unicode 
+  2.1.9 to ensure that Hangul syllables would be maintained.</p>
+	<div class="book-only">
+		&nbsp;</div>
+		
+  <h2 class="section"><a name="Design_Goals"></a>7 Design Goals</h2>
+  
+  <p>The following are the design goals for the specification of the 
+	Normalization Forms and are 
+  presented here for reference. The first goal is a fundamental conformance feature of the 
+  design.</p>
+  <h4>Goal 1: Uniqueness</h4>
+  <p>The first, and by far the most important, design goal for the Normalization 
+	Forms is 
+  uniqueness. Two equivalent strings will have <i>precisely</i> the same normalized form. More 
+  explicitly,</p>
+  <ol>
+    <li>If two strings x and y are canonical equivalents, then
+    <ul class="nobullet">
+      <li>toNFC(x) = toNFC(y)</li>
+      <li>toNFD(x) = toNFD(y)</li>
+    </ul>
+    </li>
+    <li>If two strings are compatibility equivalents, then
+    <ul class="nobullet">
+      <li>toNFKC(x) = toNFKC(y)</li>
+      <li>toNFKD(x) = toNFKD(y)</li>
+    </ul>
+    </li>
+    <li>All of the transformations are idempotent: that is,<ul class="nobullet">
+      <li>toNFC(toNFC(x)) = toNFC(x)</li>
+      <li>toNFD(toNFD(x)) = toNFD(x)</li>
+      <li>toNFKC(toNFKC(x)) = toNFKC(x)</li>
+      <li>toNFKD(toNFKD(x)) = toNFKD(x)</li>
+    </ul>
+    </li>
+  </ol>
+  <p>Goal 1.3 is a consequence of Goals 1.2 and 1.1, but is stated here for clarity.</p>
+  <h4>Goal 2: Stability</h4>
+  <p>The second major design goal for the Normalization Forms is stability of characters that are 
+  not involved in the composition or decomposition process.</p>
+  <ol>
+    <li>If X contains a character with a compatibility decomposition, then toNFD(X) and toNFC(X) 
+    still contain that character.</li>
+    <li>As much as possible, if there are no combining characters in X, then toNFC(X) = X.<ul>
+      <li dir="ltr">
+      <p dir="ltr">The only characters for which this is not true are those in the 
+      <i>Section 5, <a href="tr15-33.html#Primary_Exclusion_List_Table">Composition Exclusion Table</a></i>.</li>
+    </ul>
+    </li>
+    <li>Irrelevant combining marks should not affect the results of composition. See example <b>f</b> 
+    in <i>Section 6, <a href="tr15-33.html#Examples">Examples and Charts</a>,</i> where the <i>horn</i> 
+    character does not affect the results of composition.</li>
+  </ol>
+  <h4>Goal 3: Efficiency</h4>
+  <p>The third major design goal for the Normalization Forms is to allow efficient 
+  implementations.</p>
+  <ol>
+    <li>It is possible to implement efficient code for producing the Normalization Forms. In 
+    particular, it should be possible to produce Normalization Form C very quickly from strings that 
+    are already in Normalization Form C or are in Normalization Form D.<br>
+
+	</li>
+    <li>Normalization Forms that compose do not have to produce the shortest possible results, because that can be 
+    computationally expensive.</li>
+  </ol> 
+  	
+  <h2 class="section"><a name="Legacy_Encodings"></a>8 Legacy Encodings</h2>
+  <p>While the Normalization Forms are specified for Unicode text, they can also be extended to 
+  non-Unicode (legacy) character encodings. This is based on mapping the legacy character set 
+  strings to and from Unicode using definitions UAX15-D1 
+  and UAX15-D2.</p>
+
+  <p><a name="UAX15-D1"></a><i><b>UAX15-D1.</b></i> An <i>invertible transcoding</i> T for a legacy character set L is 
+  a one-to-one mapping from characters encoded in L to characters in Unicode with an associated 
+  mapping T<sup>-1</sup> such that for any string S in L, T<sup>-1</sup>(T(S))&nbsp;=&nbsp;S.</p>
+  <p>Most legacy character sets have a single invertible transcoding
+  in common use. In a few cases there may be multiple invertible transcodings. For example, 
+  Shift-JIS may have two different mappings used in different circumstances: one to preserve the 
+	&#39;\&#39; 
+  semantics of 5C<sub>16</sub>, and one to preserve the &#39;¥&#39; semantics.</p>
+  <p>The character indexes in the legacy character set string may be different from
+  character indexes in the Unicode equivalent. For example, if a legacy string uses visual encoding 
+  for Hebrew, then its first character might be the last character in the Unicode string.</p>
+  <p>If transcoders are implemented for legacy character sets, it is recommended that the result be 
+  in Normalization Form C where possible. See Unicode Technical 
+  Standard #22, “Unicode Character Mapping Markup Language” [<a href="../tr41/tr41-7.html#UTS22">UTS22</a>] for more information.</p>
+
+  <p><a name="UAX15-D2"></a><i><b>UAX15-D2.</b></i> Given a string S encoded in L and an invertible transcoding T for 
+  L, the <i>Normalization Form X of S under T</i> is defined to be the result of mapping to Unicode, 
+  normalizing to Unicode Normalization Form X, and mapping back to the legacy character encoding—for example,&nbsp;T<sup>-1</sup>(toNFx(T(S))). Where there is a single invertible transcoding for that character set in common use, one can simply speak of the 
+  Normalization Form X of S.</p>
+  <p>Legacy character sets are classified into three categories based on their normalization behavior with 
+  accepted transcoders.</p>
+  <ol>
+	<li><i>Prenormalized.</i> Any string in the character set is already in Normalization Form X.
+    <ul>
+		<li>For example, ISO 8859-1 is prenormalized in NFC.</li>
+	</ul></li>
+	<li><i>Normalizable.</i> Although the set is not prenormalized, any string in the set
+	<i>can</i> 
+    be normalized to Normalization Form X.
+    <ul>
+		<li>For example, ISO 2022 (with a mixture of ISO 5426 and ISO 8859-1) is normalizable.</li>
+	</ul></li>
+	<li><i>Unnormalizable.</i> Some strings in the character set cannot be normalized into 
+	Normalization Form X.
+    <ul>
+		<li>For example, ISO 5426 is unnormalizable in NFC under common transcoders, because it 
+      contains combining marks but not composites.</li>
+	</ul></li>
+	</ol>
+	
+  <h2 class="section"><a name="Detecting_Normalization_Forms"></a>9 Detecting Normalization Forms</h2>
+  
+  <p>The Unicode Character Database supplies properties that allow implementations to quickly 
+  determine whether a string x is in a particular Normalization Form—for example, isNFC(x). This is, in general, many times faster than normalizing and then comparing.</p>
+  <p>For each Normalization Form, the properties provide three possible values for each Unicode code 
+  point, as shown in <i>Table 9</i>.</p>
+  
+  <p class="caption"><a name="Quick_Check_Table"></a>Table 9. Description of Quick_Check Values</p>
+  <div class="center">
+  <table>
+    <tr>
+      <th>Values</th>
+      <th>Abbr</th>
+      <th>Description</th>
+    </tr>
+    <tr>
+      <td>NO</td>
+      <td>N</td>
+      <td>The code point cannot occur in that Normalization Form.</td>
+    </tr>
+    <tr>
+      <td>YES</td>
+      <td>Y</td>
+      <td>The code point is a starter 
+		and can occur in the Normalization Form.
+		In addition, for NFKC and NFC, 
+		the character may compose with a following character, but it <i>never</i> 
+		composes with a previous character.</td>
+    </tr>
+    <tr>
+      <td>MAYBE</td>
+      <td>M</td>
+      <td>The code point can occur, subject to canonical ordering, but with 
+		constraints. In particular, the text may not be in the specified 
+		Normalization Form depending on 
+		the context in which the character occurs.</td>
+    </tr>
+  </table>
+  </div>
+ <p>Code that uses this property can do a <i>very</i> fast first pass over a string to determine 
+  the Normalization Form. The result is also either NO, YES, or MAYBE. For NO or YES, the answer is 
+  definite. In the MAYBE case, a more thorough check must be made, typically by putting a copy of 
+  the string into the Normalization Form and checking for equality with the original.</p>
+  <ul>
+    <li>Even the slow case can be optimized, with a function that does not perform a complete 
+    normalization of the entire string, but instead works incrementally, only normalizing a limited 
+    area around the MAYBE character. See <i>Section 9.1, 
+	<a href="tr15-33.html#Stable_Code_Points">Stable Code Points</a></i>.</li>
+  </ul>
+  <p>This check is much faster than simply running the normalization algorithm, because it avoids 
+  any memory allocation and copying. The vast majority of strings will return a definitive YES or NO 
+  answer, leaving only a small percentage that require more work. The sample below is written in 
+  Java, although for accessibility it avoids the use of object-oriented techniques.</p>
+  <pre>public int quickCheck(String source) {
+    short lastCanonicalClass = 0;
+    int result = YES;
+    for (int i = 0; i &lt; source.length(); ++i) {
+        char ch = source.charAt(i);
+        short canonicalClass = getCanonicalClass(ch);
+        if (lastCanonicalClass &gt; canonicalClass &amp;&amp; canonicalClass != 0) {
+            return NO;        }
+        int check = isAllowed(ch);
+        if (check == NO) return NO;
+        if (check == MAYBE) result = MAYBE;
+        lastCanonicalClass = canonicalClass;
+    }
+    return result;
+}
+<br>public static final int NO = 0, YES = 1, MAYBE = -1;</pre>
+  <p>The <code>isAllowed()</code> call should access the data from Derived Normalization Properties 
+  file [<a href="../tr41/tr41-7.html#NormProps">NormProps</a>] for the 
+	Normalization Form in question.&nbsp; (For more 
+  information, see Unicode Standard Annex #44, "Unicode Character Database" 
+	[<a href="../tr41/tr41-7.html#UAX44">UAX44</a>].) For example, here is a 
+  segment of the data for NFC:</p>
+  <pre>...
+0338 ; NFC_QC; M # Mn COMBINING LONG SOLIDUS OVERLAY
+...
+
+F900..FA0D ; NFD_QC; N # Lo [270] CJK COMPATIBILITY IDEOGRAPH-F900..CJK COMPATIBILITY IDEOGRAPH-FA0D
+...</pre>
+  <p>These lines assign the value NFC_QC==MAYBE to the code point U+0338, and the value NFC_QC==NO to the 
+  code points in the range U+F900..U+FA0D. There are no MAYBE values for NFD and NFKD: 
+  the <code>quickCheck</code> function will always produce a definite result for these 
+	Normalization Forms. All characters that are not specifically mentioned in the file have the values YES.</p>
+  <p>The data for the implementation of the <code>isAllowed()</code> call can be accessed in memory 
+  with a hash table or a trie (see <i>Section 14, 
+  <a href="tr15-33.html#Implementation_Notes">Implementation Notes</a></i>); the latter will be the fastest.</p>
+	<p>There is also a Unicode 
+	Consortium stability policy that canonical mappings are always limited in 
+	all versions of Unicode, so that no string when decomposed with NFC expands 
+	to more than 3× in length (measured in code units). This is true whether the 
+	text is in UTF-8, UTF-16, or UTF-32. This guarantee also allows for certain 
+	optimizations in processing, especially in determining buffer sizes. See 
+	also <i>Section 13,
+	<a href="tr15-33.html#Stream_Safe_Text_Format">Stream-Safe Text Format</a></i>.</p>
+	
+  <h3 class="section">9.1 <a name="Stable_Code_Points">Stable Code Points</a></h3>
+  <p>It is sometimes useful to distinguish the set of code points that are <i>stable</i> under a 
+  particular Normalization Form. They are the set of code points never affected by that particular 
+  normalization process. This property is very useful for skipping over text that does not need to 
+  be considered at all, either when normalizing or when testing normalization.</p>
+	<p>Formally, each stable 
+  code point CP fulfills <i>all</i> of the following conditions:</p>
+  <ol>
+    <li>CP has canonical combining class 0.</li>
+    <li>CP is (as a single character) not changed by this Normalization Form.</li>
+  </ol>
+	<p>In case of NFC or NFKC, each stable code point CP fulfills <i>all</i> of the following 
+	additional conditions:</p>
+	<ol start="3">
+    <li>CP can never compose with a previous character.</li>
+	<li>CP can never compose with a following character.</li>
+	<li>CP can never change if another character is added.</li>
+  </ol>
+  <p><i><b>Example.</b></i> In NFC, <i>a-breve</i> satisfies all but (5), but if one adds an
+	<i>ogonek</i> it 
+  changes to <i>a-ogonek</i> plus<i> breve</i>. So <i>a-breve</i> is not stable in NFC. However, <i>a-ogonek</i> 
+  is stable in NFC, because it does satisfy (1–5).</p>
+	<p>Concatenation of normalized 
+	strings to produce a normalized result can be optimized using stable code 
+	points. An implementation can find the last stable code point L in the first 
+	string, and the first stable code point F in the second string. The 
+	implementation has to normalize only the range from (and including) L to the 
+	last code point before F. The result will then be normalized. This can be a 
+	very significant savings in performance when concatenating large strings.</p>
+	<p>Because characters with the 
+	Quick_Check=YES property value satisfy conditions 1–3, the optimization can 
+	also be performed using the Quick_Check property. In this case, the 
+	implementation finds the last code point L with Quick_Check=YES in the first 
+	string and the first code point F with Quick_Check=YES in the second string. 
+	It then normalizes the range of code points starting from (and including) L to the code point 
+	just before F.</p>
+	
+  <h2 class="section">10 <a name="Canonical_Equivalence">Respecting Canonical Equivalence</a></h2>
+  
+  <p>This section describes the relationship of normalization to respecting (or preserving) 
+  canonical equivalence. A process (or function) <i>respects</i> canonical equivalence when 
+  canonical-equivalent inputs always produce canonical-equivalent outputs. For a function that 
+  transforms one string into another, this may also be called <i>preserving</i> canonical 
+  equivalence. There are a number of important aspects to this concept:</p>
+  <ol>
+	<li>The outputs are <i>not</i> required to be identical, only canonically equivalent.</li>
+	<li><i>Not</i> all processes are required to respect canonical equivalence. For example:
+    <ul>
+		<li>A function that collects a set of the General_Category values present in a string will and 
+      should produce a different value for &lt;<i>angstrom sign, 
+      semicolon&gt;</i> than for &lt;<i>A, combining ring 
+      above, greek question mark&gt;</i>, even though they are canonically equivalent.</li>
+		<li>A function that does a binary comparison of strings will also find these two sequences 
+      different.</li>
+	</ul></li>
+	<li>Higher-level processes that transform or compare strings, or that perform other higher-level functions, must respect canonical equivalence or problems will result.</li>
+	</ol> 	
+  <p>The canonically equivalent inputs or outputs are not just limited to strings, but are also 
+  relevant to the <i>offsets</i> within strings, because those play a fundamental role in Unicode 
+  string processing.</p>
+  <blockquote>
+    <p>Offset P into string X is canonically equivalent to offset Q into string Y if and only if 
+    both of the following conditions are true:</p>
+    <ul class="nobullet">
+      <li>X[0, P] ≈ Y[0, Q], and</li>
+      <li>X[P, len(X)] ≈ Y[Q, len(Y)]</li>
+    </ul>
+  </blockquote>
+  <p>This can be written as P<sub>X</sub> ≈ Q<sub>Y</sub>. Note that whenever X and Y are 
+  canonically equivalent, it follows that 0<sub>X</sub> ≈ 0<sub>Y</sub> and len(X)<sub>X</sub> ≈ 
+  len(Y)<sub>Y</sub>.</p>
+  <p><i><b>Example 1.</b></i> Given X = &lt;<i>angstrom sign, semicolon&gt;</i> and Y = &lt;<i>A, 
+    combining ring above, greek question mark&gt;</i>,
+    </p>
+	<ul class="nobullet">
+		<li>0<sub>X</sub> ≈ 0<sub>Y</sub></li>
+		<li>1<sub>X</sub> ≈ 2<sub>Y</sub></li>
+		<li>2<sub>X</sub> ≈ 3<sub>Y</sub></li>
+		<li>1<sub>Y</sub> has no canonically equivalent offset in X</li>
+	</ul>
+	<p>The following are examples of processes that involve canonically equivalent strings 
+	<i>and/or</i> 
+  offsets.</p>
+	<p><i><b>Example 2.</b></i> When <code>isWordBreak(string, offset)</code> respects canonical equivalence, then
+    </p>
+	<ul class="nobullet">
+		<li><code>isWordBreak(</code>&lt;<i>A-ring, semicolon</i>&gt;, 1<code>)</code> = 
+		<code>isWordBreak(</code>&lt;<i>A, 
+      ring, semicolon</i>&gt;, 2<code>)</code></li>
+	</ul>
+	<p><i><b>Example 3.</b></i> When <code>nextWordBreak(string, offset)</code> respects canonical equivalence, then
+    </p>
+	<ul class="nobullet">
+		<li><code>nextWordBreak(</code>&lt;<i>A-ring, semicolon</i>&gt;, 0<code>)</code> = 1 if and only if
+      	<code>nextWordBreak(</code>&lt;<i>A, ring, semicolon</i>&gt;, 0<code>)</code> 
+		= 2</li>
+	</ul>
+  <p>Respecting canonical equivalence is related to, but different from, 
+	preserving a canonical Normalization Form NFx (where NFx means either NFD or 
+	NFC). In a process that preserves a Normalization Form, whenever any input 
+	string is normalized according to that Normalization Form, then every output 
+	string is also normalized according to that form. A process that preserves a 
+	canonical Normalization Form respects canonical equivalence, but the reverse 
+	is not necessarily true.</p>
+  <p>In building a system that as a whole respects canonical equivalence, there 
+	are two basic strategies, with some variations on the second strategy.</p>
+  <ol type="A">
+    <li>Ensure that each system component respects canonical equivalence.</li>
+    <li>Ensure that each system component preserves NFx, and one of the following:
+    <ol>
+      <li>Reject any non-NFx text on input to the whole system.</li>
+      <li>Reject any non-NFx text on input to each component.</li>
+      <li>Normalize to NFx all text on input to the whole system.</li>
+      <li>Normalize to NFx all text on input to each component.</li>
+      <li>All three of the following:
+      <ol type="a">
+        <li>Allow text to be marked as NFx when generated.</li>
+        <li>Normalize any unmarked text on input to each component to NFx.</li>
+        <li>Reject any marked text that is not NFx.</li>
+      </ol>
+      </li>
+    </ol>
+    </li>
+  </ol>
+  <p>There are trade-offs for each of these strategies. The best choice or mixture of strategies 
+  will depend on the structure of the components and their interrelations, and how fine-grained or 
+  low-level those components are. One key piece of information is that it is much faster to check 
+  that text is NFx than it is to convert it. This is especially true in the case of NFC. So even 
+  where it says “normalize” above, a good technique is to first check if normalization is required, 
+  and perform the extra processing only if necessary.</p>
+  <ul>
+    <li>Strategy A is the most robust, but may be less efficient.</li>
+    <li>Strategies B1 and B2 are the most efficient, but would reject some data, including that 
+    converted 1:1 from some legacy code pages.</li>
+    <li>Strategy B3 does not have the problem of rejecting data. It can be more efficient than A: 
+    because each component is assured that all of its input is in a particular 
+	Normalization Form, 
+    it does not need to normalize, except internally. But it is less robust: any component that 
+    fails can “leak” unnormalized text into the rest of the system.</li>
+    <li>Strategy B4 is more robust than B1 but less efficient, because there are multiple points 
+    where text needs to be checked.</li>
+    <li>Strategy B5 can be a reasonable compromise; it is robust but allows for all text input.</li>
+  </ul>
+  
+  <h2 class="section"><a name="Stability_Prior_to_Unicode41">11 Stability Prior to Unicode 4.1</a></h2>
+  
+  <p>For versions prior to Unicode 4.1 (that do not apply Corrigenda 
+	#2 through #5), slightly weaker stability policies are in effect. For information on these stability policies, especially regarding 
+  normalization, see the Unicode Character Encoding Stability 
+  Policy [<a href="../tr41/tr41-7.html#Policies">Policies</a>].</p>
+	<p>These policies still guaranteed, in 
+	particular, that:</p>
+  <blockquote>
+    <p><i>Once a character is encoded, its canonical combining class and decomposition mapping will 
+    not be changed in a way that will destabilize normalization.</i></p>
+  </blockquote>
+  <p>What this means is:</p>
+  <blockquote>
+    <p><i>If a string contains only characters from a given version of the Unicode Standard (for 
+    example, Unicode 3.1.1), and it is put into a normalized form in accordance with that 
+    version of Unicode, then it will be in normalized form according to any future version 
+    of Unicode.</i></p>
+  </blockquote>
+  <p>This guarantee has been in place for Unicode 3.1 and after. It has been necessary to correct 
+  the decompositions of a small number of characters since Unicode 3.1, as listed in the 
+  Normalization Corrections data file [<a href="../tr41/tr41-7.html#Corrections">Corrections</a>], but such corrections 
+  are in accordance with the above principles: all text normalized on old systems will test as 
+  normalized in future systems. All text normalized in future systems will test as normalized on 
+  past systems. Prior to Unicode 4.1, what may change for those few characters, is that <i>unnormalized</i> text may 
+  normalize differently on past and future systems.</p>
+
+  <h3 class="section">11.1 <a name="Stability_of_Normalized_Forms">Stability of Normalized 
+  Forms</a></h3>
+  
+	<p class="section">For all versions, even prior to 
+	Unicode 4.1, the following policy is followed:</p>
+  <p><i>A normalized string is guaranteed to be stable; that 
+  is, once normalized, a string is normalized according to all future versions of Unicode.</i></p>
+  <p>More precisely, if a string has been normalized according to a particular 
+	version of Unicode <i>and</i> contains only characters allocated in that version, it 
+  will qualify as normalized according to any future version of Unicode.</p>
+  
+  <h3 class="section">11.2 <a name="Stability_of_the_Normalization_Process">
+  Stability of the Normalization Process</a></h3>
+  <p>For all versions, even prior to Unicode 4.1, the <i>process</i> of producing a normalized string from an 
+  unnormalized string has the same results under each version of Unicode, except for certain edge 
+  cases addressed in the following corrigenda:</p>
+  <ul>
+    <li>Three corrigenda correct certain data mappings for a total of 
+    seven characters:<table border="1" cellpadding="2" cellspacing="0" style="margin:0.5em; border-collapse: collapse" id="AutoNumber1">
+      <tr>
+        <td width="100%">
+        Corrigendum #2, “<a href="http://www.unicode.org/versions/corrigendum2.html">U+FB1D 
+        Normalization</a>” [<a href="../tr41/tr41-7.html#Corrigendum2">Corrigendum2</a>]</td>
+      </tr>
+      <tr>
+        <td width="100%">
+        Corrigendum #3, “<a href="http://www.unicode.org/versions/corrigendum3.html">U+F951 
+        Normalization</a>” [<a href="../tr41/tr41-7.html#Corrigendum3">Corrigendum3</a>]</td>
+      </tr>
+      <tr>
+        <td width="100%">
+        Corrigendum #4, “<a href="http://www.unicode.org/versions/corrigendum4.html">Five Unihan 
+        Canonical Mapping Errors</a>” [<a href="../tr41/tr41-7.html#Corrigendum4">Corrigendum4</a>]</td>
+      </tr>
+    </table>
+    </li>
+    <li>
+    Corrigendum #5, “<a href="http://www.unicode.org/versions/corrigendum5.html">Normalization Idempotency</a>” 
+	[<a href="../tr41/tr41-7.html#Corrigendum5">Corrigendum5</a>], fixed a problem in the description of the 
+    normalization process for some instances of particular sequences. <i>Such instances never occur 
+    in meaningful text.</i></li>
+  </ul>
+  
+  <h3 class="section">11.3 <a name="Guaranteeing_Process_Stability">Guaranteeing Process 
+  Stability</a></h3>
+  <p>The Unicode Standard provides a 
+  mechanism for those implementations that require 
+  not only normalized strings, <i>but also the normalization process</i>, to be absolutely stable 
+  between two versions even prior to Unicode 4.1 (including the edge cases mentioned in <i>Section 11.2,
+	<a href="tr15-33.html#Stability_of_the_Normalization_Process"> 
+	Stability of the Normalization Process</a></i>). This, of course, 
+  is true only where the repertoire of characters is limited to those characters present in the 
+  earlier version of Unicode.</p>
+  <p>To have the newer implementation produce the same results as the 
+  older version (for characters defined as of the older version):</p>
+  <ol>
+    <li>Premap a maximum of seven (rare) characters according to whatever 
+    corrigenda came between the two versions (see [<a href="../tr41/tr41-7.html#Errata">Errata</a>]).<ul>
+      <li>For example, for a Unicode 4.0 implementation to produce the 
+      same results as Unicode 3.2, the five characters mentioned in
+      [<a href="../tr41/tr41-7.html#Corrigendum4">Corrigendum4</a>] are premapped 
+      to the <i>old</i> values given in version 4.0 of the UCD data file [<a href="../tr41/tr41-7.html#Corrections">Corrections</a>].</li></ul>
+    </li>
+    <li>Apply the later version of normalization.
+    <ul>
+    <li>Handle any code points that were not defined in the earlier version
+    as if they were unassigned: such code points will not decompose or compose,
+    and their Canonical_Combining_Class value will be zero.</li>
+    <li>The Derived_Age property in the Unicode Character Database can be used
+    to determine whether a code point is assigned for any particular version
+    of the standard.</li>
+    </ul>
+    </li>
+    <li>If the earlier version is before Unicode 4.1 and the later version 
+    is 4.1 or later and if the normalization is to forms
+    NFC or NFKC, perform the following steps:
+    <ul> 
+    <li>Reorder the sequences listed in <i>Table 10</i> of <i>Section 11.5,
+	<a href="tr15-33.html#Corrigendum_5_Sequences">Corrigendum 5 Sequences</a></i>, as follows:
+    <blockquote>
+      <table>
+        <tr>
+          <td><b>From:</b></td>
+          <td style="text-align: center">first_character</td>
+          <td style="text-align: center">intervening_character(s)</td>
+          <td style="text-align: center"><i>last_character</i></td>
+        </tr>
+        <tr>
+          <td><b>To:</b></td>
+          <td style="text-align: center">first_character</td>
+          <td style="text-align: center"><i>last_character</i></td>
+          <td style="text-align: center">intervening_character(s)</td>
+        </tr>
+      </table>
+    </blockquote>
+    </li>
+    <li>Replace the first_character and last_character sequence with the canonically
+    equivalent composed character, according to the Canonical Composition Algorithm.</li>
+    </ul>
+    </li>
+  </ol>
+  <blockquote>
+	<p><span class="note">Note:</span> For step 3, in most implementations it is actually more 
+  efficient (and much simpler) to parameterize the code to provide for both pre- and post-Unicode 
+  4.1 behavior. This typically takes only one additional conditional statement.</p>
+	</blockquote>
+  <p>Implementations of the Unicode Normalization Algorithm prior to
+  version 4.1 were not all consistent with each other. Some followed the letter of
+  the specification; because of the defect in the specification addressed by Corrigendum #5
+  [<a href="../tr41/tr41-7.html#Corrigendum5">Corrigendum5</a>], such implementations 
+  were not idempotent, and their normalization results for
+  the edge cases addressed by the corrigendum were not always well-defined. Other
+  implementations followed the intent of the specification and implemented
+  based on the normalization examples and reference code; those implementations behave <i>as if</i>
+  Corrigendum #5 had already been applied. When developing a current implementation
+  to guarantee process stability even for earlier versions of the standard, it
+  is important to know which type of earlier Unicode implementation of normalization
+  is being targeted. Step 3 outlined above only needs to be applied to guarantee
+  process stability for interoperating with early implementations that followed
+  the letter of the specification prior to version 4.1. Step 3 can be omitted when
+  interoperating with implementations that behaved as if Corrigendum #5 had already
+  been applied.</p>
+	
+  <h3 class="section">11.4 <a name="Forbidding_Characters">Forbidding Characters</a></h3>
+	<p>An alternative approach for certain protocols is to forbid characters 
+	that differ in normalization status across versions 
+	prior to Unicode 4.1. The characters and 
+	sequences affected are not in any practical use, so this may be viable for 
+	some implementations. For example, when upgrading from Unicode 3.2 to 
+	Unicode 5.0, there are three relevant corrigenda:</p>
+	<ul>
+		<li>
+		Corrigendum #3, “<a href="http://www.unicode.org/versions/corrigendum3.html">U+F951 
+        Normalization</a>” [<a href="../tr41/tr41-7.html#Corrigendum3">Corrigendum3</a>]</li>
+		<li>
+		Corrigendum #4, “<a href="http://www.unicode.org/versions/corrigendum4.html">Five Unihan 
+        Canonical Mapping Errors</a>” [<a href="../tr41/tr41-7.html#Corrigendum4">Corrigendum4</a>] <br>
+		The five characters are U+2F868, U+2F874, U+2F91F, U+2F95F, and U+2F9BF.</li>
+		<li>
+		Corrigendum #5, “<a href="http://www.unicode.org/versions/corrigendum5.html">Normalization Idempotency</a>” 
+		[<a href="../tr41/tr41-7.html#Corrigendum5">Corrigendum5</a>]</li>
+	</ul>
+	<blockquote>
+		<p>The characters in Corrigenda #3 and #4 are 
+		all extremely rare Han characters. They are compatibility characters
+		included only for compatibility with a single East Asian
+		character set standard each: U+F951 for a duplicate character
+		in KS X 1001, and the other five for CNS 11643-1992. That&#x2019;s
+ why
+		they have canonical decomposition mappings in the first place.</p>
+		<p>The duplicate character in KS X 1001 is a rare character in
+		Korean to begin with—in a South Korean standard, where the
+		use of Han characters at all is uncommon in actual data. And
+		this is a pronunciation duplicate, which even if it were used
+		would very likely be inconsistently and incorrectly used by
+		end users, because there is no visual way for them to make
+		the correct distinctions.</p>
+		<p>The five characters from CNS 11643-1992 have even less utility.
+		They are minor glyphic variants of unified characters—the
+		kinds of distinctions that are subsumed already within all
+		the unified Han ideographs in the Unicode Standard. They are from Planes 4–15 of
+		CNS 11643-1992, which never saw any commercial implementation
+		in Taiwan. The IT systems in Taiwan almost all implemented
+		Big Five instead, which was a slight variant on Planes 1 and 2
+		of CNS 11643-1986, and which included none of the five glyph
+		variants in question here.</p>
+		<p >As for Corrigendum #5, it is important to recognize that none of the 
+		affected sequences occur in any well-formed text in any language. See 
+		<i>Section 11.5,&nbsp;<a href="tr15-33.html#Corrigendum_5_Sequences">Corrigendum 
+		5 Sequences</a>.</i></p>
+	</blockquote>
+  <h3>11.5 <a name="Corrigendum_5_Sequences">Corrigendum 5 Sequences</a></h3>
+  <p><i>Table 10</i> shows all of the problem sequences relevant to Corrigendum 5. <i>It is important to emphasize that none of these sequences will occur in any 
+  meaningful text, because none of the intervening characters shown in the sequences occur in the 
+  contexts shown in the table.</i></p>
+	<div class="book-only">&nbsp;<p>&nbsp;</p>
+		<p>&nbsp;</p>
+		<p>&nbsp;</p>
+		<p>&nbsp;</p>
+		<p>&nbsp;</p>
+		<p>&nbsp;</p>
+		<p>&nbsp;</p>
+		<p>&nbsp;</p>
+		<p>&nbsp;</p></div>
+
+  <p class="caption"><a name="Problem_Sequence_Table"></a>Table 10. Problem Sequences</p>
+  <div class="center">
+ <table>
+    <tr>
+      <th align="left" width="38%">First Character
+      </th>
+      <th align="left" width="15%" nowrap>
+      Intervening<br>
+		Character(s) </th>
+      <th align="left" width="41%">Last Character</th>
+    </tr>
+    <tr>
+      <td>09C7<span class="name"> BENGALI VOWEL SIGN E</span></td>
+      <td rowspan="13" style="text-align: center; vertical-align:middle; border-bottom:hidden"><table class="noborder"><tr><td class="noborder">One or more characters 
+      with a non-zero
+      Canonical Combining Class property value—for example, an acute accent.</td></tr></table></td>
+      <td>09BE<span class="name"> BENGALI VOWEL SIGN AA<b> </b></span><b>or</b><span class="name"><br>
+      </span>09D7<span class="name"> BENGALI AU LENGTH MARK</span></td>
+    </tr>
+    <tr>
+      <td>0B47<span class="name"> ORIYA VOWEL SIGN E</span></td>
+      <td>0B3E<span class="name"> ORIYA VOWEL SIGN AA<b> </b></span><b>or</b><span class="name"><br>
+      </span>0B56<span class="name"> ORIYA AI LENGTH MARK<b> </b></span><b>or</b><span class="name"><br>
+      </span>0B57<span class="name"> ORIYA AU LENGTH MARK</span></td>
+    </tr>
+    <tr>
+      <td>0BC6<span class="name"> TAMIL VOWEL SIGN E</span></td>
+      <td>0BBE<span class="name"> TAMIL VOWEL SIGN AA<b> </b></span><b>or</b><span class="name"><br>
+      </span>0BD7<span class="name"> TAMIL AU LENGTH MARK</span></td>
+    </tr>
+    <tr>
+      <td>0BC7<span class="name"> TAMIL VOWEL SIGN EE </span> </td>
+      <td>0BBE<span class="name"> TAMIL VOWEL SIGN AA</span></td>
+    </tr>
+    <tr>
+      <td>0B92<span class="name"> TAMIL LETTER O</span></td>
+      <td>0BD7<span class="name"> TAMIL AU LENGTH MARK</span></td>
+    </tr>
+    <tr>
+      <td>0CC6<span class="name"> KANNADA VOWEL SIGN E</span></td>
+      <td>0CC2<span class="name"> KANNADA VOWEL SIGN UU<b> </b></span><b>or</b><span class="name"><br>
+      </span>0CD5<span class="name"> KANNADA LENGTH MARK<b> </b></span><b>or</b><span class="name"><br>
+      </span>0CD6<span class="name"> KANNADA AI LENGTH MARK</span></td>
+    </tr>
+    <tr>
+      <td>0CBF<span class="name"> KANNADA VOWEL SIGN I or<br>
+      </span>0CCA<span class="name"> KANNADA VOWEL SIGN O</span></td>
+      <td>0CD5<span class="name"> KANNADA LENGTH MARK</span></td>
+    </tr>
+    <tr>
+      <td>0D47<span class="name"> MALAYALAM VOWEL SIGN EE</span></td>
+      <td>0D3E<span class="name"> MALAYALAM VOWEL SIGN AA</span></td>
+    </tr>
+    <tr>
+      <td>0D46<span class="name"> MALAYALAM VOWEL SIGN E</span></td>
+      <td>0D3E<span class="name"> MALAYALAM VOWEL SIGN AA<b> </b></span><b>or</b><span class="name"><br>
+      </span>0D57<span class="name"> MALAYALAM AU LENGTH MARK</span></td>
+    </tr>
+    <tr>
+      <td>1025<span class="name"> MYANMAR LETTER U</span></td>
+      <td>102E<span class="name"> MYANMAR VOWEL SIGN II</span></td>
+    </tr>
+    <tr>
+      <td>0DD9<span class="name"> SINHALA VOWEL SIGN KOMBUVA</span></td>
+      <td>0DCF<span class="name"> SINHALA VOWEL SIGN AELA-PILLA<b> </b></span>
+		<b>or</b><span class="name"> </span>0DDF<span class="name"> SINHALA VOWEL SIGN GAYANUKITTA</span></td>
+    </tr>
+    <tr>
+      <td>[1100-1112]<span class="name"> HANGUL CHOSEONG KIYEOK..HIEUH
+		</span>(19 instances)</td>
+      <td>[1161-1175]<span class="name"> HANGUL JUNGSEONG A..I </span>(21 
+		instances)</td>
+    </tr>
+    <tr>
+      <td>[:HangulSyllableType=LV:]<a href="tr15-33.html#Problem_Sequences_Note">*</a></td>
+      <td>[11A8..11C2] <span class="name">HANGUL JONGSEONG KIYEOK..HIEUH </span>
+		(27 instances)</td>
+    </tr>
+  </table>
+  </div>
+  
+  <p><a name="Problem_Sequences_Note">*</a> This 
+	table is constructed on the premise that the text is being normalized 
+	and that the first character has already been 
+	composed if possible. If the table is used externally to normalization to 
+	assess whether any problem sequences occur, then the implementation must 
+	also catch cases that are canonical equivalents. That is only relevant to 
+	the case [:HangulSyllableType=LV:]; the equivalent sequences of &lt;x,y&gt; where 
+	x is in [1100..1112] and y is in [1161..1175] must also be detected.</p>
+	
+	<h2>12 <a name="Stabilized_Strings">Stabilized Strings</a></h2>
+	
+	<p>In certain protocols, there is a requirement 
+	for a normalization process for <i>stabilized</i> strings. The key concept 
+	is that for a given normalization form, once a Unicode string has been successfully normalized according to 
+	the process, it will <i>never</i> change if subsequently normalized again, 
+	in any version of Unicode, past or future. To meet this need, the <i>
+	Normalization Process for Stabilized Strings</i> (NPSS) is defined. NPSS adds to 
+	regular normalization the requirement that an implementation must abort with 
+	an error if it encounters any characters that are not in the current version 
+	of Unicode.</p>
+	
+	<h3>12.1 
+	<a name="Normalization_Process_for_Stabilized_Strings">Normalization Process 
+	for Stabilized Strings</a></h3>
+	<p>The Normalization Process for Stabilized 
+	Strings (NPSS) for a given normalization form (NFD, NFC, NFKD, or NFKC) is the same 
+	as the corresponding process for generating that form, except that:</p>
+	<ul>
+		<li>The process must be aborted with an error 
+		if the string contains any code point with the property value 
+		General_Category=Unassigned, according to the version of Unicode used 
+		for the normalization process.</li>
+	</ul>
+	  
+	  <span style="FONT-STYLE: italic">Examples:</span><br>
+&nbsp;<div align="center">
+	<table>
+		<tr>
+			<th rowspan="2" style="text-align: center">
+			<font size="2">Sample Characters</font></th>
+			<th colspan="4" style="text-align: center">
+			<font size="2">Required Behavior for 
+			Unicode Version</font></th>
+		</tr>
+		<tr>
+			<th style="text-align: center">
+			<font size="2">3.2</font></th>
+			<th style="text-align: center">
+			<font size="2">4.0</font></th>
+			<th style="text-align: center">
+			<font size="2">4.1</font></th>
+			<th style="text-align: center">
+			<font size="2">5.0</font></th>
+		</tr>
+		<tr>
+			<td><font size="2">
+			U+0234 (ȴ) LATIN SMALL LETTER L WITH CURL<br>
+			(added in Unicode 4.0)</font></td>
+			<td bgColor="#c0c0c0" style="text-align: center">
+			<font size="2">Abort</font>
+			</td>
+			<td style="text-align: center">
+			<font size="2">Accept</font>
+			</td>
+			<td style="text-align: center">
+			<font size="2">Accept</font>
+			</td>
+			<td style="text-align: center">
+			<font size="2">Accept</font>
+			</td>
+		</tr>
+		<tr>
+			<td><font size="2">
+			U+0237 (&#x0237;) LATIN 
+			SMALL LETTER DOTLESS J<br>
+			(added in Unicode 4.1)</font></td>
+			<td bgColor="#c0c0c0" style="text-align: center">
+			<font size="2">Abort</font>
+			</td>
+			<td bgColor="#c0c0c0" style="text-align: center">
+			<font size="2">Abort</font>
+			</td>
+			<td style="text-align: center">
+			<font size="2">Accept</font>
+			</td>
+			<td style="text-align: center">
+			<font size="2">Accept</font>
+			</td>
+		</tr>
+		<tr>
+			<td><font size="2">
+			U+0242 
+			(&#x0242;) LATIN SMALL LETTER GLOTTAL STOP<br>
+			(added in Unicode 5.0)</font></td>
+			<td bgColor="#c0c0c0" style="text-align: center">
+			<font size="2">Abort</font>
+			</td>
+			<td bgColor="#c0c0c0" style="text-align: center">
+			<font size="2">Abort</font>
+			</td>
+			<td bgColor="#c0c0c0" style="text-align: center">
+			<font size="2">Abort</font>
+			</td>
+			<td style="text-align: center">
+			<font size="2">Accept</font>
+			</td>
+		</tr>
+	</table>
+	</div>
+	&nbsp;<p>Once a string has been normalized by the 
+	NPSS for a particular normalization form, it will never change if 
+	renormalized for that same normalization form by an implementation that 
+	supports any version of Unicode, past or future. For example, if an 
+	implementation normalizes a string to NFC, following the constraints of NPSS 
+	(aborting with an error if it encounters any unassigned code point for the 
+	version of Unicode it supports), the resulting normalized string would be 
+	stable: it would remain completely unchanged if renormalized to NFC by any 
+	conformant Unicode normalization implementation supporting a prior or a 
+	future version of the standard.</p>
+	<p>Note that NPSS defines a process, not another 
+	normalization form. The resulting string is simply in a particular normalization form. If a 
+	different implementation applies the NPSS again to that string, then 
+	depending on the version of Unicode supported by the other implementation, 
+	either the same string will result, or an error will occur. Given a string 
+	that is purported to have been produced by the NPSS for a given 
+	normalization form, what an implementation can determine is one of the 
+	following three conditions:</p>
+	<ol>
+		<li>definitely produced by NPSS (it is 
+		normalized, and contains no unassigned characters)</li>
+		<li>definitely not produced by NPSS (it is not 
+		normalized)</li>
+		<li>may or may not have been produced by NPSS 
+		(it contains unassigned characters but is otherwise normalized)</li>
+	</ol>
+	<p>The additional data required for the stable 
+	normalization process can be easily implemented with a compact lookup table. 
+	Most libraries supplying normalization functions also supply the required 
+	property tests, and in those normalization functions it is straightforward 
+	for them to provide an additional parameter which invokes the stabilized process.</p>
+	<p>NPSS only applies to Unicode 4.1 and later, or 
+	to implementations that apply Corrigenda 
+	#2 through #5 to earlier versions: see <i>Section 11&nbsp;<a href="tr15-33.html#Stability_Prior_to_Unicode41">Stability 
+	Prior to Unicode 4.1</a></i>. A protocol that requires stability even 
+	across other versions is a <i>restricted</i> 
+	protocol. Such a protocol must define and use a <i>restricted</i> NPSS, a process that also aborts with an error if encounters 
+	any problematic characters or sequences, as discussed in <i>Section 11.4 <a href="tr15-33.html#Forbidding_Characters">Forbidding Characters</a></i>.</p>
+
+  <h2 class="section">13 <a name="Stream_Safe_Text_Format">Stream-Safe Text Format</a></h2>
+  
+	<p>There are certain protocols that would benefit from using normalization, but 
+	that have 
+	implementation constraints. For example, a protocol may require buffered serialization, 	
+	in which only a portion of a string may be available at a given time. Consider the 
+	extreme case of a string containing a <i>
+	digit
+	2</i> 
+	followed by 10,000 <i>umlauts</i> 
+	followed by one <i>dot-below</i>, 
+	then a <i>digit 3</i>. 
+	As part of normalization, the <i>
+	dot-below</i> 
+	at the end must be reordered to immediately after the <i>
+	digit
+	2</i>, 
+	which means that 10,003 characters need to be considered before 
+	the result can be output. </p>
+	<p>Such extremely long sequences of combining marks are not illegal, even 
+	though for all practical purposes they are not meaningful. However, the 
+	possibility of encountering such sequences 
+	forces a conformant, serializing implementation to provide large buffer 
+	capacity or to provide a special exception mechanism just for such degenerate 
+	cases. The Stream-Safe Text Format specification addresses this situation.</p>
+	
+	<p><a name="UAX15-D3"></a><i><b>UAX15-D3.</b></i>  <i>Stream-Safe Text Format:</i>  
+	A Unicode string is said to be 
+	in Stream-Safe Text Format 
+	if it would not contain any sequences of non-starters longer than 30 
+	characters in length when normalized to NFKD.</p>
+	<ul>
+		<li>Such a string can be normalized in buffered serialization with 	
+		a buffer size of 32 characters, which would require no more than 128 bytes 
+		in any Unicode Encoding Form.</li>
+		<li>Incorrect buffer handling can introduce subtle errors in the 
+		results. Any buffered implementation should be carefully checked against 
+		the normalization test data.</li>
+		<li>The value of 30 is chosen to 
+		be significantly beyond what is required for any linguistic or technical 
+		usage. While it would have been feasible to chose a smaller number, this 
+		value provides a very wide margin, yet is well within the buffer size 
+		limits of practical implementations.</li>
+		<li>NFKD was chosen for the definition because it produces the potentially longest sequences of non-starters from the same text.</li>
+	</ul>
+	
+	<p><a name="UAX15-D4"></a><i><b>UAX15-D4.</b></i> <i>
+	Stream-Safe Text Process</i> is the process of producing a 
+	Unicode string in Stream-Safe Text Format by processing that string from 
+	start to finish, inserting U+034F <span class="name">COMBINING GRAPHEME 
+	JOINER (CGJ)</span> within long sequences of non-starters. 
+	The exact position of the inserted CGJs are determined according to the 
+	following algorithm, which describes the generation of an output string from 
+	an input string:</p>
+	<ol>
+		<li>If the input string is 
+		empty, return an empty output string. </li>
+		<li>Set nonStarterCount to zero.
+		</li>
+		<li>For each code point C in the 
+		input string:<ol type="a">
+			<li>Produce the NFKD 
+			decomposition S.</li>
+			<li>If nonStarterCount plus 
+			the number of initial non-starters in S is greater than 30, append a 
+			CGJ to the output string and set the nonStarterCount to zero.</li>
+			<li>Append C to the output 
+			string. </li>
+			<li>If there are no starters in S, increment nonStarterCount by the 
+			number of code points in S; otherwise, set nonStarterCount to the number of trailing non-starters in S (which 
+			may be zero). 
+			</li>
+		</ol>
+		</li>
+		<li>Return the output string.
+		</li>
+	</ol>
+	<p>The Stream-Safe Text Process ensures not only that the resulting text is in Stream-Safe Text Format, 
+		but that any normalization of the result is also in Stream-Safe Text Format. 
+		This is true for any input string that does not contain unassigned code 
+		points. The Stream-Safe Text Process preserves all of the four 
+	normalization forms defined in this annex (NFC, NFD, NFKC, NFKD). However, normalization and 
+	the Stream-Safe Text Process do not commute. That is, normalizing an arbitrary text to NFC, 
+	followed by applying the Stream-Safe Text Process, is not guaranteed to produce the same result 
+	as applying the Stream-Safe Text Process to that arbitrary text, followed by normalization to 
+	NFC.</p>
+	<p>It is important to realize that if the Stream-Safe Text Process does modify 
+	the input text by insertion of CGJs, the result will <i>not</i> 
+	be canonically equivalent to the original. The Stream-Safe Text Format is designed for use in 
+	protocols and systems that accept the limitations on the text imposed by the 	format, 
+	just as they may impose their own limitations, such as removing certain control 
+	codes.</p>
+	<p>However, the Stream-Safe Text Format 
+	will not modify ordinary texts. Where it modifies an exceptional text, the 	resulting string would no 
+	longer be canonically equivalent to the original, but the modifications are 
+	minor and do not disturb any meaningful content. The modified text contains 
+	all of the content of the original, with the only difference being that 
+	reordering is blocked across long groups of non-starters. Any text in Stream-Safe Text Format can be normalized with very small buffers 	using any of the standard 
+	Normalization Forms.</p>
+	<p>Implementations can optimize this specification as long as they produce the same results. In particular, 
+	the information used in Step 3 can be precomputed: it does not require the 
+	actual normalization of the character. For efficient processing, the Stream-Safe Text Process can be 
+	implemented in the same implementation pass as normalization. In such a case, the choice of whether to 	apply the 
+	Stream-Safe Text Process can be controlled by an input parameter.</p>
+
+	<h3>13.1 <a name="Buffering_with_Unicode_Normalization">Buffering with Unicode Normalization</a></h3>
+
+		<p>Using buffers for normalization requires that characters be emptied from 
+		the buffer correctly. That is, as decompositions are appended to the 
+		buffer, periodically the end of the buffer will be reached. At that 
+		time, the characters in the buffer up to <i>but not including</i> the 
+		last character with the property value Quick_Check=Yes (QC=Y) must be 
+		canonically ordered (and if NFC and NFKC are being generated, must also 
+		be composed), and only then flushed. For more information on the 
+		Quick_Check property, see <i>Section 9&nbsp;<a href="tr15-33.html#Detecting_Normalization_Forms">Detecting Normalization Forms</a></i>.<p>
+		Consider the following example. Text is being normalized into NFC 
+		with a buffer size of 40. The buffer has been successively filled with 
+		decompositions, and has two remaining slots. The decomposition takes 
+		three characters, and wouldn&#39;t fit. The last character with QC=Y is the 
+		&quot;s&quot;, highlighted in color below.</p>
+		<p><b>Buffer</b></p>
+		<table style="BORDER-COLLAPSE: collapse" border="0">
+			<tr>
+				<td style="text-align: center" width="30">
+				<font size="5">T</font></td>
+				<td style="text-align: center" width="30">
+				<font size="5">h</font></td>
+				<td style="text-align: center" width="30">
+				<font size="5">e</font></td>
+				<td style="text-align: center" width="30">
+				&nbsp;</td>
+				<td style="text-align: center" width="30">
+				<font size="5">c</font></td>
+				<td style="text-align: center" width="30">
+				<font size="5">◌́</font></td>
+				<td style="text-align: center" width="30">
+				<font size="5">a</font></td>
+				<td style="text-align: center" width="60">
+				<font size="5">...</font></td>
+				<td style="text-align: center" width="30">
+				<font size="5">p</font></td>
+				<td style="text-align: center" width="30">
+				<font size="5">◌̃</font></td>
+				<td style="text-align: center" width="30">
+				<font size="5">q</font></td>
+				<td style="text-align: center" width="30">
+				<font size="5">r</font></td>
+				<td style="text-align: center" width="30">
+				<font size="5">◌́</font></td>
+				<td style="text-align: center" width="30" bgColor="#FF8060">
+				<font size="5">s</font></td>
+				<td style="text-align: center" width="30">
+				<font size="5">◌́</font></td>
+				<td style="text-align: center" width="30" bgColor="#c0c0c0">
+				&nbsp;</td>
+				<td style="text-align: center" width="30" bgColor="#c0c0c0">
+				&nbsp;</td>
+			</tr>
+			<tr>
+				<td style="text-align: center" width="30">
+				0</td>
+				<td style="text-align: center" width="30">
+				1</td>
+				<td style="text-align: center" width="30">
+				2</td>
+				<td style="text-align: center" width="30">
+				3</td>
+				<td style="text-align: center" width="30">
+				4</td>
+				<td style="text-align: center" width="30">
+				5</td>
+				<td style="text-align: center" width="30">
+				6</td>
+				<td style="text-align: center" width="60">
+				...</td>
+				<td style="text-align: center" width="30">
+				31</td>
+				<td style="text-align: center" width="30">
+				32</td>
+				<td style="text-align: center" width="30">
+				33</td>
+				<td style="text-align: center" width="30">
+				34</td>
+				<td style="text-align: center" width="30">
+				35</td>
+				<td style="text-align: center" width="30">
+				36</td>
+				<td style="text-align: center" width="30">
+				37</td>
+				<td style="text-align: center" width="30">
+				38</td>
+				<td style="text-align: center" width="30">
+				39</td>
+			</tr>
+		</table>
+		<p align="left"><b>Decomposition</b></p>
+		<table style="BORDER-COLLAPSE: collapse" border="0">
+						<tr>
+				<td style="text-align: center" width="30">
+				<font size="5">u</font></td>
+				<td style="text-align: center" width="30">
+				<font size="5">◌̃ </font></td>
+				<td style="text-align: center" width="30">
+				<font size="5">◌́</font></td>
+			</tr>
+			<tr>
+				<td style="text-align: center" width="30">
+				0</td>
+				<td style="text-align: center" width="30">
+				1</td>
+				<td style="text-align: center" width="30">
+				2</td>
+			</tr>
+		</table>
+		<p>Thus the buffer up to but not including &quot;s&quot; needs to be composed, and 
+		flushed. Once this is done, the decomposition can be appended, and the 
+		buffer is left in the following state:</p>
+		<table style="BORDER-COLLAPSE: collapse" border="0">
+			<tr>
+				<td style="text-align:center" width="30">
+				<font size="5">s</font></td>
+				<td style="text-align:center" width="30">
+				<font size="5">◌́</font></td>
+				<td style="text-align:center" width="30">
+				<font size="5">u</font></td>
+				<td style="text-align:center" width="30">
+				<font size="5">◌̃ </font></td>
+				<td style="text-align:center" width="30">
+				<font size="5">◌́</font></td>
+				<td style="text-align:center" width="30" bgColor="#c0c0c0">
+				&nbsp;</td>
+				<td style="text-align:center" width="30" bgColor="#c0c0c0">
+				&nbsp;</td>
+				<td style="text-align:center" width="60" bgColor="#c0c0c0">
+				<font size="5">...</font></td>
+				<td style="text-align:center" width="30" bgColor="#c0c0c0">
+				&nbsp;</td>
+				<td style="text-align:center" width="30" bgColor="#c0c0c0">
+				&nbsp;</td>
+				<td style="text-align:center" width="30" bgColor="#c0c0c0">
+				&nbsp;</td>
+				<td style="text-align:center" width="30" bgColor="#c0c0c0">
+				&nbsp;</td>
+				<td style="text-align:center" width="30" bgColor="#c0c0c0">
+				&nbsp;</td>
+				<td style="text-align:center" width="30" bgColor="#c0c0c0">
+				&nbsp;</td>
+				<td style="text-align:center" width="30" bgColor="#c0c0c0">
+				&nbsp;</td>
+				<td style="text-align:center" width="30" bgColor="#c0c0c0">
+				&nbsp;</td>
+				<td style="text-align:center" width="30" bgColor="#c0c0c0">
+				&nbsp;</td>
+			</tr>
+			<tr>
+				<td style="text-align:center" width="30">
+				0</td>
+				<td style="text-align:center" width="30">
+				1</td>
+				<td style="text-align:center" width="30">
+				2</td>
+				<td style="text-align:center" width="30">
+				3</td>
+				<td style="text-align:center" width="30">
+				4</td>
+				<td style="text-align:center" width="30">
+				5</td>
+				<td style="text-align:center" width="30">
+				6</td>
+				<td style="text-align:center" width="60">
+				...</td>
+				<td style="text-align:center" width="30">
+				31</td>
+				<td style="text-align:center" width="30">
+				32</td>
+				<td style="text-align:center" width="30">
+				33</td>
+				<td style="text-align:center" width="30">
+				34</td>
+				<td style="text-align:center" width="30">
+				35</td>
+				<td style="text-align:center" width="30">
+				36</td>
+				<td style="text-align:center" width="30">
+				37</td>
+				<td style="text-align:center" width="30">
+				38</td>
+				<td style="text-align:center" width="30">
+				39</td>
+			</tr>
+		</table>
+		<p>Implementations may also canonically order (and compose) the contents 
+		of the buffer as they go; the key requirement is that they cannot 
+		compose a sequence until a following character with the property QC=Y is 
+		encountered. For example, if that had been done in the above example, 
+		then during the course of filling the buffer, we would have had the 
+		following state, where &quot;c&quot; is the last character with QC=Y.</p>
+		<table style="BORDER-COLLAPSE: collapse" border="0">
+			<tr>
+				<td style="text-align:center" width="30">
+				<font size="5">T</font></td>
+				<td style="text-align:center" width="30">
+				<font size="5">h</font></td>
+				<td style="text-align:center" width="30">
+				<font size="5">e</font></td>
+				<td style="text-align:center" width="30">
+				&nbsp;</td>
+				<td style="text-align:center" width="30" bgColor="#FF8060">
+				<font size="5">c</font></td>
+				<td style="text-align:center" width="30">
+				<font size="5">◌́</font></td>
+				<td style="text-align:center" width="30" bgColor="#c0c0c0">
+				&nbsp;</td>
+				<td style="text-align:center" width="60" bgColor="#c0c0c0">
+				&nbsp;</td>
+				<td style="text-align:center" width="30" bgColor="#c0c0c0">
+				&nbsp;</td>
+				<td style="text-align:center" width="30" bgColor="#c0c0c0">
+				&nbsp;</td>
+				<td style="text-align:center" width="30" bgColor="#c0c0c0">
+				&nbsp;</td>
+				<td style="text-align:center" width="30" bgColor="#c0c0c0">
+				&nbsp;</td>
+				<td style="text-align:center" width="30" bgColor="#c0c0c0">
+				&nbsp;</td>
+				<td style="text-align:center" width="30" bgColor="#c0c0c0">
+				&nbsp;</td>
+				<td style="text-align:center" width="30" bgColor="#c0c0c0">
+				&nbsp;</td>
+				<td style="text-align:center" width="30" bgColor="#c0c0c0">
+				&nbsp;</td>
+				<td style="text-align:center" width="30" bgColor="#c0c0c0">
+				&nbsp;</td>
+			</tr>
+			<tr>
+				<td style="text-align:center" width="30">
+				0</td>
+				<td style="text-align:center" width="30">
+				1</td>
+				<td style="text-align:center" width="30">
+				2</td>
+				<td style="text-align:center" width="30">
+				3</td>
+				<td style="text-align:center" width="30">
+				4</td>
+				<td style="text-align:center" width="30">
+				5</td>
+				<td style="text-align:center" width="30">
+				6</td>
+				<td style="text-align:center" width="60">
+				...</td>
+				<td style="text-align:center" width="30">
+				31</td>
+				<td style="text-align:center" width="30">
+				32</td>
+				<td style="text-align:center" width="30">
+				33</td>
+				<td style="text-align:center" width="30">
+				34</td>
+				<td style="text-align:center" width="30">
+				35</td>
+				<td style="text-align:center" width="30">
+				36</td>
+				<td style="text-align:center" width="30">
+				37</td>
+				<td style="text-align:center" width="30">
+				38</td>
+				<td style="text-align:center" width="30">
+				39</td>
+			</tr>
+		</table>
+		<p>When the &quot;a&quot; (with QC=Y) is to be appended to the buffer, it is then 
+		safe to compose the &quot;c&quot; and all subsequent characters, and then enter in 
+		the &quot;a&quot;, marking it as the last character with QC=Y.</p>
+		<table style="BORDER-COLLAPSE: collapse" border="0">
+			<tr>
+				<td style="text-align:center" width="30">
+				<font size="5">T</font></td>
+				<td style="text-align:center" width="30">
+				<font size="5">h</font></td>
+				<td style="text-align:center" width="30">
+				<font size="5">e</font></td>
+				<td style="text-align:center" width="30">
+				&nbsp;</td>
+				<td style="text-align:center" width="30">
+				<font size="5">ć</font></td>
+				<td style="text-align:center" width="30" bgColor="#FF8060">
+				<font size="5">a</font></td>
+				<td style="text-align:center" width="30" bgColor="#c0c0c0">
+				&nbsp;</td>
+				<td style="text-align:center" width="60" bgColor="#c0c0c0">
+				&nbsp;</td>
+				<td style="text-align:center" width="30" bgColor="#c0c0c0">
+				&nbsp;</td>
+				<td style="text-align:center" width="30" bgColor="#c0c0c0">
+				&nbsp;</td>
+				<td style="text-align:center" width="30" bgColor="#c0c0c0">
+				&nbsp;</td>
+				<td style="text-align:center" width="30" bgColor="#c0c0c0">
+				&nbsp;</td>
+				<td style="text-align:center" width="30" bgColor="#c0c0c0">
+				&nbsp;</td>
+				<td style="text-align:center" width="30" bgColor="#c0c0c0">
+				&nbsp;</td>
+				<td style="text-align:center" width="30" bgColor="#c0c0c0">
+				&nbsp;</td>
+				<td style="text-align:center" width="30" bgColor="#c0c0c0">
+				&nbsp;</td>
+				<td style="text-align:center" width="30" bgColor="#c0c0c0">
+				&nbsp;</td>
+			</tr>
+			<tr>
+				<td style="text-align:center" width="30">
+				0</td>
+				<td style="text-align:center" width="30">
+				1</td>
+				<td style="text-align:center" width="30">
+				2</td>
+				<td style="text-align:center" width="30">
+				3</td>
+				<td style="text-align:center" width="30">
+				4</td>
+				<td style="text-align:center" width="30">
+				5</td>
+				<td style="text-align:center" width="30">
+				6</td>
+				<td style="text-align:center" width="60">
+				...</td>
+				<td style="text-align:center" width="30">
+				31</td>
+				<td style="text-align:center" width="30">
+				32</td>
+				<td style="text-align:center" width="30">
+				33</td>
+				<td style="text-align:center" width="30">
+				34</td>
+				<td style="text-align:center" width="30">
+				35</td>
+				<td style="text-align:center" width="30">
+				36</td>
+				<td style="text-align:center" width="30">
+				37</td>
+				<td style="text-align:center" width="30">
+				38</td>
+				<td style="text-align:center" width="30">
+				39</td>
+			</tr>
+		</table>
+		<p>&nbsp;</p>
+		
+  <h2 class="section"><a name="Implementation_Notes"></a>14 Implementation Notes</h2>
+  
+  <h3><a name="Optimization_Strategies"></a>14.1 Optimization Strategies</h3>
+  
+  <p dir="ltr">There are a number of optimizations that can be made in programs that produce 
+  Normalization Form C. Rather than first decomposing the text fully, a quick check can be made on 
+  each character. If it is already in the proper precomposed form, then no work has to be done. Only 
+  if the current character is combining or in <i>Section 5,
+  <a href="tr15-33.html#Primary_Exclusion_List_Table">Composition Exclusion Table</a></i>, does a slower code 
+  path need to be invoked. (This code path will need to look at previous characters, back to the 
+  last starter. See <i>Section 9,
+	<a href="tr15-33.html#Detecting_Normalization_Forms">Detecting Normalization Forms</a></i>, for more 
+  information.)</p>
+  <p>The majority of the cycles spent in doing composition are spent looking up the appropriate data. 
+  The data lookup for Normalization Form C can be very efficiently implemented, because it has 
+  to look up only pairs of characters, not arbitrary strings. First a multistage table (also known as <i>
+  trie;</i> see <a href="../tr41/tr41-7.html#Unicode">[Unicode]</a> <i>Chapter 5, Implementation Guidelines</i>)
+  is used to map a character <i>c</i> to a small integer <i>i</i> in a contiguous range from 
+  0 to <i>n.</i> The code for doing this looks like:</p>
+  <blockquote>
+    <pre>i = data[index[c &gt;&gt; BLOCKSHIFT] + (c &amp; BLOCKMASK)];</pre>
+  </blockquote>
+  <p>Then a pair of these small integers are simply mapped through a two-dimensional array to get a 
+  resulting value. This yields much better performance than a general-purpose string lookup in a 
+  hash table.</p>
+  <p>Because the Hangul compositions and decompositions are algorithmic, memory 
+	storage can be significantly reduced if the corresponding operations are 
+	done in code. See <i>Section 15,
+  <a href="tr15-33.html#Hangul">Hangul</a></i>, for more information.</p>
+  <blockquote>
+    <p><span class="note">Note:</span> Any such optimizations must be carefully checked to ensure that they still 
+    produce conformant results. In particular, the code must still be able to pass the 
+    the NormalizationTest.txt conformance
+	test [<a href="../tr41/tr41-7.html#Tests15">Tests15</a>].</p>
+  </blockquote>
+  <p>For more information on useful implementation techniques, see 
+	<i>Section 9,
+	<a href="tr15-33.html#Detecting_Normalization_Forms">Detecting Normalization Forms</a>,</i> and [<a href="../tr41/tr41-7.html#UTN5">UTN5</a>].</p>
+
+  <h3><a name="Code_Sample"></a>14.2 Code Samples</h3>
+  
+  <p>A code sample is available for each of the four Normalization Forms. For clarity, this sample 
+  is not optimized. The implementations for NFKC and NFC transform a string in two passes: pass 1 
+  decomposes, while pass 2 composes by successively composing each unblocked character with the last 
+  starter.</p>
+  <p>In some implementations, people may be working with streaming interfaces that read and write 
+  small amounts at a time. In those implementations, the text back to the last starter needs to be 
+  buffered. Whenever a second starter would be added to that buffer, the buffer can be flushed.</p>
+  <p>The sample is written in Java, although for accessibility it avoids the use of object-oriented 
+  techniques. For access to the code and for a live demonstration, see
+  Normalizer.html [<a href="../tr41/tr41-7.html#Sample">Sample</a>].</p>
+   
+  <p>Equivalent Perl code is available on the W3C site [<a href="../tr41/tr41-7.html#CharLint">CharLint</a>].</p>
+  
+  <h2 class="section"><a name="Hangul"></a>15 Hangul</h2>
+  <p>Because the Hangul compositions and decompositions are algorithmic, memory storage can be 
+  significantly reduced if the corresponding operations are done in code rather than by simply 
+  storing the data in the general-purpose tables. Here is sample code illustrating algorithmic 
+  Hangul canonical decomposition and composition done according to the specification in <i>Section 
+  3.12, Combining Jamo Behavior</i> in [<a href="../tr41/tr41-7.html#Unicode">Unicode</a>]. Although coded in Java, the 
+  same structure can be used in other programming languages.</p>
+  <p>The canonical Hangul decompositions specified here and in <i>Section 3.12, Combining Jamo 
+  Behavior</i> in [<a href="../tr41/tr41-7.html#Unicode">Unicode</a>] directly decompose precomposed Hangul 
+  syllable characters into two or three Hangul Jamo characters. This differs from all other 
+  canonical decompositions in two ways. First, they are arithmetically specified. 
+	Second, they directly map to more than two characters. The canonical decomposition <i>mapping</i> for 
+  all other characters maps each character to one or two others. A character may have a canonical <i>
+  decomposition</i> to more than two characters, but it is expressed as the recursive application of 
+  mappings to at most a pair of characters at a time.</p>
+  <p>Hangul decomposition could also be expressed this way. All LVT syllables decompose into 
+  an LV syllable plus a T jamo. The LV syllables themselves decompose into an L jamo plus a 
+	V jamo. 
+  Thus the Hangul canonical decompositions are fundamentally the same as the other canonical 
+  decompositions in terms of the way they decompose. This analysis can also be used to produce more 
+  compact code than what is given below.</p> 	<div class="book-only"><p>&nbsp;</p>
+		</div>
+  <h4><a name="common_constants">Common Constants</a></h4>
+  <pre>    static final int
+        SBase = 0xAC00, LBase = 0x1100, VBase = 0x1161, TBase = 0x11A7,
+        LCount = 19, VCount = 21, TCount = 28,
+        NCount = VCount * TCount,   // 588
+        SCount = LCount * NCount;   // 11172</pre>
+  <h4><a name="hangul_decomposition">Hangul Decomposition</a></h4>
+  <pre>    public static String decomposeHangul(char s) {
+        int SIndex = s - SBase;
+        if (SIndex &lt; 0 || SIndex &gt;= SCount) {
+            return String.valueOf(s);
+        }
+        StringBuffer result = new StringBuffer();
+        int L = LBase + SIndex / NCount;
+        int V = VBase + (SIndex % NCount) / TCount;
+        int T = TBase + SIndex % TCount;
+        result.append((char)L);
+        result.append((char)V);
+        if (T != TBase) result.append((char)T);
+        return result.toString();
+    }</pre>
+  <h4><a name="hangul_composition">Hangul Composition</a></h4>
+  <p>Notice an important feature of Hangul composition: whenever the source string is not in 
+  Normalization Form D or Normalization Form KD, one cannot just detect character sequences of the form &lt;L,&nbsp;V&gt; and 
+  &lt;L,&nbsp;V,&nbsp;T&gt;. It is also necessary to catch the sequences of the form &lt;LV,&nbsp;T&gt;. To 
+  guarantee uniqueness, these sequences must also be composed. This is illustrated in 
+	step 2.</p>
+  <pre>    public static String composeHangul(String source) {
+        int len = source.length();
+        if (len == 0) return &quot;&quot;;
+        StringBuffer result = new StringBuffer();
+        char last = source.charAt(0);            <span class="comment">// copy first char</span>
+        result.append(last);
+
+        for (int i = 1; i &lt; len; ++i) {
+            char ch = source.charAt(i);
+
+            <span class="comment">// 1. check to see if two current characters are L and V</span>
+
+            int LIndex = last - LBase;
+            if (0 &lt;= LIndex &amp;&amp; LIndex &lt; LCount) {
+                int VIndex = ch - VBase;
+                if (0 &lt;= VIndex &amp;&amp; VIndex &lt; VCount) {
+
+                    <span class="comment">// make syllable of form LV</span>
+
+                    last = (char)(SBase + (LIndex * VCount + VIndex) * TCount);
+
+<span class="comment">                    </span>result.setCharAt(result.length()-1, last); <span class="comment">// reset last</span>
+                    continue; <span class="comment">// discard ch</span>
+                }
+            }
+
+
+            <span class="comment">// 2. check to see if two current characters are LV and T</span>
+
+            int SIndex = last - SBase;
+            if (0 &lt;= SIndex &amp;&amp; SIndex &lt; SCount &amp;&amp; (SIndex % TCount) == 0) {
+                int TIndex = ch - TBase;
+                if (0 &lt; TIndex &amp;&amp; TIndex &lt; TCount) {
+
+                    <span class="comment">// make syllable of form LVT</span>
+
+                    last += TIndex;
+                    result.setCharAt(result.length()-1, last); <span class="comment">// reset last</span>
+                    continue; <span class="comment">// discard ch</span>
+                }
+            }
+            <span class="comment">// if neither case was true, just add the character</span>
+            last = ch;
+            result.append(ch);
+        }
+        return result.toString();
+    }</pre>
+  <p>Additional transformations can be performed on sequences of Hangul jamo for various purposes. 
+  For example, to regularize sequences of Hangul jamo into standard syllables, the <i>choseong</i> 
+  and <i>jungseong</i> fillers can be inserted, as described in 
+  <i>Chapter 3, Conformance</i> in <a href="../tr41/tr41-7.html#Unicode">[Unicode]</a>. 
+  For keyboard input, additional compositions may be performed. For example, the trailing consonants 
+  k<font size="-1"><sub>f</sub></font> + s<font size="-1"><sub>f</sub></font> may be combined into 
+  ks<font size="-1"><sub>f</sub></font>. In addition, some Hangul input methods do not require a 
+  distinction on input between initial and final consonants, and change between them on the basis of 
+  context. For example, in the keyboard sequence m<sub>i</sub> + e<sub>m</sub> + n<sub>i</sub> + s<sub>i</sub> 
+  + a<sub>m</sub>, the consonant n<sub>i</sub> would be reinterpreted as n<sub>f</sub>, because 
+  there is no possible syllable <i>nsa</i>. This results in the two syllables <i>men</i> and <i>sa.</i></p>
+  <p>However, none of these additional transformations are considered part of the Unicode 
+  Normalization Forms.</p>
+  <h4><a name="hangul_character_names">Hangul Character Names</a></h4>
+  <p>Hangul decomposition is also used to form the character names for the Hangul syllables. While 
+  the sample code that illustrates this process is not directly related to normalization, it is 
+  worth including because it is so similar to the decomposition code.</p>
+  <pre>    public static String getHangulName(char s) {
+        int SIndex = s - SBase;
+        if (0 &gt; SIndex || SIndex &gt;= SCount) {
+            throw new IllegalArgumentException(&quot;Not a Hangul Syllable: &quot; + s);
+        }
+        StringBuffer result = new StringBuffer();
+        int LIndex = SIndex / NCount;
+        int VIndex = (SIndex % NCount) / TCount;
+        int TIndex = SIndex % TCount;
+        return &quot;HANGUL SYLLABLE &quot; + JAMO_L_TABLE[LIndex]
+          + JAMO_V_TABLE[VIndex] + JAMO_T_TABLE[TIndex];
+    }
+
+    static private String[] JAMO_L_TABLE = {
+        &quot;G&quot;, &quot;GG&quot;, &quot;N&quot;, &quot;D&quot;, &quot;DD&quot;, &quot;R&quot;, &quot;M&quot;, &quot;B&quot;, &quot;BB&quot;,
+        &quot;S&quot;, &quot;SS&quot;, &quot;&quot;, &quot;J&quot;, &quot;JJ&quot;, &quot;C&quot;, &quot;K&quot;, &quot;T&quot;, &quot;P&quot;, &quot;H&quot;
+    };
+
+    static private String[] JAMO_V_TABLE = {
+        &quot;A&quot;, &quot;AE&quot;, &quot;YA&quot;, &quot;YAE&quot;, &quot;EO&quot;, &quot;E&quot;, &quot;YEO&quot;, &quot;YE&quot;, &quot;O&quot;,
+        &quot;WA&quot;, &quot;WAE&quot;, &quot;OE&quot;, &quot;YO&quot;, &quot;U&quot;, &quot;WEO&quot;, &quot;WE&quot;, &quot;WI&quot;,
+        &quot;YU&quot;, &quot;EU&quot;, &quot;YI&quot;, &quot;I&quot;
+    };
+
+    static private String[] JAMO_T_TABLE = {
+        &quot;&quot;, &quot;G&quot;, &quot;GG&quot;, &quot;GS&quot;, &quot;N&quot;, &quot;NJ&quot;, &quot;NH&quot;, &quot;D&quot;, &quot;L&quot;, &quot;LG&quot;, &quot;LM&quot;,
+        &quot;LB&quot;, &quot;LS&quot;, &quot;LT&quot;, &quot;LP&quot;, &quot;LH&quot;, &quot;M&quot;, &quot;B&quot;, &quot;BS&quot;,
+        &quot;S&quot;, &quot;SS&quot;, &quot;NG&quot;, &quot;J&quot;, &quot;C&quot;, &quot;K&quot;, &quot;T&quot;, &quot;P&quot;, &quot;H&quot;
+    };</pre>
+    
+  <h2 class="nonumber"><a name="Intellectual_Property_Annex"></a>Intellectual Property
+  Considerations</h2>
+  <blockquote>
+    <p align="center"><i>Transcript of letter regarding disclosure of IBM Technology<br>
+    (Hard copy is on file with the Chair of UTC and the Chair of NCITS/L2)<br>
+    Transcribed on 1999-03-10</i></p>
+    <p><i>February 26, 1999</i></p>
+    <p>&nbsp;</p>
+    <p><i>The Chair, Unicode Technical Committee</i></p>
+    <p><i>Subject: Disclosure of IBM Technology - Unicode Normalization Forms</i></p>
+    <p><i>The attached document entitled &ldquo;Unicode Normalization Forms&rdquo; does not require IBM 
+    technology, but may be implemented using IBM technology that has been filed for US Patent. 
+    However, IBM believes that the technology could be beneficial to the software community at 
+    large, especially with respect to usage on the Internet, allowing the community to derive the 
+    enormous benefits provided by Unicode.</i></p>
+    <p><i>This letter is to inform you that IBM is pleased to make the Unicode normalization 
+    technology that has been filed for patent freely available to anyone using them in implementing 
+    to the Unicode standard.</i></p>
+    <p><i>Sincerely,</i></p>
+    <p><i>&nbsp;</i></p>
+    <p><i>W. J. Sullivan,<br>
+    Acting Director of National Language Support<br>
+    and Information Development</i></p>
+  </blockquote>	  
+    
+    <h2 class="nonumber"><a name="Acknowledgments">Acknowledgments</a></h2>  
+	  <p>Mark Davis and Martin Dürst created the initial versions of this annex. 
+		Mark Davis and Ken Whistler have added to and 
+		maintain the text.</p>
+	<p>Thanks to Kent Karlsson, Marcin Kowalczyk, Rick Kunst, Per Mildner,
+	Sadahiro Tomoyuki, Markus   
+	  Scherer, Dick Sites, Sadahiro Tomoyuki, Ienup Sung, and 
+	Erik van der Poel for feedback on this annex, 
+	including earlier versions. Asmus Freytag extensively reformatted the text 
+	for publication as part of the Unicode 5.0 book.</p>  
+	<h2 class="nonumber"><a name="References">References</a></h2>
+	<p>For references for this annex, see Unicode Standard Annex #41, “<a href="../tr41/tr41-7.html">Common 
+	References for Unicode Standard Annexes</a>.”</p>  
+	<h2 class="nonumber"><a name="Modifications">Modifications</a></h2>
+    <div class="book-only">
+	<p>For details of the change history, see the online copy of this annex at http://www.unicode.org/reports/tr9/.</p></div>
+  	<!-- START WEB ONLY -->
+	<div class="web-only">
+  <p>The following summarizes modifications from previous revisions of this 
+	annex.</p>
+  <h3>Revision 33 [KW]</h3>
+  <ul>
+    <li><b>Reissued</b> for Version 6.0.0.</li>
+    <li>Removed obsolete empty sections, consolidated small sections, and
+    reordered and renumbered remaining sections for better clarity and document flow.</li>
+    <li>Corrected definitions of classes of characters in the Composition Exclusion Table.</li>
+    <li>Removed obsolete text in <a href="tr15-33.html#Stability_Prior_to_Unicode41">Section 11, Stability Prior to Unicode 4.1</a>.</li>
+    <li>Corrected statement of the algorithm for <a href="tr15-33.html#Guaranteeing_Process_Stability">Section 11.3, Guaranteeing Process
+    Stability</a>.</li>
+    <li>Updated formats and added anchors for definitions.</li>
+  </ul>
+	<p>Revision 32 being a proposed update, only changes between versions 33 and 
+	31 are noted here.</p>
+
+  <h3>Revision 31 [KW]</h3>
+  <ul>
+	<li><b>Reissued</b> for Version 5.2.0.</li>
+	<li>Moved formal specification of NFC and NFKC into Chapter 3.</li>
+	<li>Added general introduction to the document itself.</li>
+	<li>Gave additional substructure for the Introduction.</li>
+	<li>Updated UCDDoc references to UAX #44.</li>
+	<li>Updated dangling references to Section 13 to UAX #31.</li>
+	<li>Added note clarifying that Latin-1 text is already in NFC (and NFKC).</li>
+	<li>Modified title of Section 18.</li>
+	<li>Regularized table formats and added anchors for tables and figures.</li>
+	<li>Minor editing throughout.</li>
+  </ul>
+	<p>Revision 30 being a proposed update, only changes between versions 31 and 
+	29 are noted here.</p>
+  <h3>Revision 29</h3>
+  <ul>
+	<li>Updated to Version 5.1.0.</li>
+	<li>Ensured that NFx had consistent case; added to/is where necessary.</li>
+	<li>In response to the new strengthening of the 
+	Unicode Stability policies, made the following changes:
+	<ul>
+	<li>Renumbered former Section 19 as Section 18&nbsp;Canonical Equivalence</li>
+	<li>Moved former Sections 3.1-3.4, 18, and 20 to new
+	Section 19&nbsp;Stability Prior to Unicode 4.1</li>
+	<li>Tightened stability in Section 3 for Unicode 
+	4.1 and later; pointed to the new section for earlier stability policies and 
+	implementation techniques.</li>
+        </ul></li>
+	<li>Fixed typo: &quot;when decomposed with NFD expands to more than 3× in 
+	length&quot; should be NFC not NFD.</li>
+	<li>Renumbered D5 and D6 in Section 21 <a href="tr15-33.html#Stream_Safe_Text_Format"> Stream-Safe Text Format</a></li>
+	<li>Added note explaining why NFKD is used for the Stream-Safe Text Format.</li>
+	<li>Added note explaining that normalization and the Stream-Safe Text Process do not commute.</li>
+	<li>Clarified wording in <i>Compatibility Decomposition </i>and<i> 
+	Hangul Composition</i> sections</li>
+	<li>Added new Section 20 <a href="tr15-33.html#Stabilized_Strings">Stabilized Strings</a></li>
+	<li>Added R3. <i>
+	<a href="tr15-33.html#Normalization_Process_for_Stabilized_Strings">Normalization 
+	Process for Stabilized Strings</a></i></li>
+	<li>Added <a href="tr15-33.html#UAX15-C5">UAX15-C5</a></li>
+	<li>Added a number of clarifications, including:
+	<ul>
+		<li>A new Section 21.1
+		<a href="tr15-33.html#Buffering_with_Unicode_Normalization">Buffering with Unicode Normalization</a></li>
+		<li>A note at the bottom of Section 19.5&nbsp;<a href="tr15-33.html#Corrigendum_5_Sequences">Corrigendum 5 
+    Sequences</a> on the interpretation of the table</li>
+		<li>A note in Section 6&nbsp;<a href="tr15-33.html#Primary_Exclusion_List_Table">Composition Exclusion Table</a> 
+	on when characters are added to the table.</li>
+	</ul></li>
+  </ul>
+	<p>Revision 28 being a proposed update, only changes between versions 29 and 
+	27 are noted here.</p>
+  <h3>Revision 27</h3>
+  <ul>
+	<li>Replaced Figure 3 with 4 modified figures, added commentary, renumbered 
+	figures</li>
+	<li>Changed “document” to “annex” as appropriate</li>
+	<li>Changed Annexes to Sections and renumbered</li>
+	<li>Clarified the definition and use of the QuickTest property</li>
+	<li>Added Section 21, <i> <a href="tr15-33.html#Stream_Safe_Text_Format">Stream-Safe Text 
+	Format</a></i></li>
+	<li>Added examples of composition exclusions</li>
+	<li>Changed C1..C3 to UAX15-C1..UAX15-C1.</li>
+	<li>Added clarifications of stability:<ul>
+		<li><i>Section 3.1,
+		<a href="tr15-33.html#Stability_of_Normalized_Forms">Stability of Normalized Forms</a></i></li>
+		<li><i>Section 3.2,
+		<a href="tr15-33.html#Stability_of_the_Normalization_Process">Stability of the_Normalization Process</a></i></li>
+		<li><i>Section 3.3,
+		<a href="tr15-33.html#Guaranteeing_Process_Stability">Guaranteeing Process Stability</a></i></li>
+		<li><i>Section 20,
+		<a href="tr15-33.html#Corrigendum_5_Sequences">Corrigendum 5 
+      Sequences</a></i></li>
+	</ul></li>
+	<li>Major reformatting to better follow the style in The Unicode Standard</li>
+	<li>Extensive copy-editing and minor editing for clarity</li>
+  </ul>
+	<p>Revision 26 being a proposed update, only changes between versions 27 and 
+	25 are noted here.</p>
+  <h3>Revision 25</h3>
+  <ul>
+    <li>Minor editing</li>
+    <li>Added note in Section 18, <i> <a href="tr15-33.html#Stability_Prior_to_Unicode41">Corrigenda</a></i> about PRI #29</li>
+    <li>Changed “Tracking Number” to Revision</li>
+    <li>Added note that D2 is only to be applied to strings that are already canonically decomposed.</li>
+  </ul>
+  <h3>Revision 24</h3>
+  <ul>
+    <li>As per <a href="http://www.unicode.org/review/pr-29.html">PRI-29,</a><ul>
+      <li>changed D2 to add “or higher”</li>
+      <li>Changed Goal 1 to clarify that it is a conformance requirement.</li>
+    </ul>
+    </li>
+    <li>Added to section 10 to explain Hangul decomposition mappings.</li>
+    <li>Numerous editorial changes</li>
+  </ul>
+  <h3>Revision <a name="TrackingNumber23">23</a></h3>
+  <ul>
+    <li>Updated <a href="tr15-33.html#References">References</a>.</li>
+    <li>Added description of <a href="tr15-33.html#Stable_Code_Points">Stable Code Points</a>.</li>
+    <li>Described notation toNFC(x) and isNFC(x), in <a href="tr15-33.html#Notation">Notation</a>.</li>
+    <li>Clarified the section on <a href="tr15-33.html#Concatenation">Concatenation</a>.</li>
+    <li>Copied reference to charts in the <a href="tr15-33.html#Introduction">Introduction</a>.</li>
+    <li>Added pointer to <a href="../../notes/tn5.1">UTN #5 Canonical Equivalences in 
+    Applications</a> in <a href="tr15-33.html#Implementation_Notes">Implementation Notes</a>.</li>
+    <li>Rewrote Section 18, <i> <a href="tr15-33.html#Stability_Prior_to_Unicode41">Corrigenda</a></i> for clarity, and to describe the use 
+    of Normalization Corrections.</li>
+    <li>Added Section 19, <a href="tr15-33.html#Canonical_Equivalence">Canonical Equivalence</a>.</li>
+    <li>Added <a href="tr15-33.html#Acknowledgments">Acknowledgments</a>.
+    <ul>
+      <li>Note: this does not include people who contributed feedback to previous versions.</li>
+    </ul>
+    </li>
+    <li>Minor editing</li>
+  </ul>
+  <h3>Revision <a name="TrackingNumber22">22</a></h3>
+  <ul>
+    <li>Added reference to <i>Corrigendum #3, “U+F951 Normalization,</i>” changing the title of
+    <a href="tr15-33.html#Stability_Prior_to_Unicode41">Section 18</a></li>
+    <li>Changed references to Unicode 3.1</li>
+    <li>Cleaned up links to versioned files</li>
+  </ul>
+  </div>
+  <div class="web-only">
+  <hr width="50%">
+  <p class="copyright">Copyright © 1998-2010 Unicode, Inc. All 
+  Rights Reserved. The Unicode Consortium makes no expressed or implied warranty of any kind, and 
+  assumes no liability for errors or omissions. No liability is assumed for incidental and 
+  consequential damages in connection with or arising out of the use of the information or programs 
+  contained or accompanying this technical report. The Unicode
+  <a href="http://www.unicode.org/copyright.html">Terms of Use</a> apply.</p>
+  <p class="copyright">Unicode and the Unicode logo are trademarks of Unicode, Inc., and are 
+  registered in some jurisdictions.
+  </div> <!-- WEB ONLY -->
+  </div> <!-- BODY -->
+  </div> <!-- BOOK -->
+</body>
+</html>

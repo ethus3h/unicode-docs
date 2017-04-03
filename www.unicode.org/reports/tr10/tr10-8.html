@@ -1,0 +1,2617 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
+
+       "http://www.w3.org/TR/REC-html40/loose.dtd"> 
+
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta http-equiv="Content-Language" content="en-us">
+<meta name="GENERATOR" content="Microsoft FrontPage 4.0">
+<meta name="ProgId" content="FrontPage.Editor.Document">
+<title>UTR #10: Unicode Collation Algorithm</title>
+<link rel="stylesheet" href="http://www.unicode.org/unicode.css" type="text/css">
+</head>
+
+<body bgcolor="#ffffff">
+
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+  <tbody>
+    <tr>
+      <td>
+        <table border="0" cellpadding="0" cellspacing="0" width="100%">
+          <tbody>
+            <tr>
+              <td class="icon"><a href="http://www.unicode.org"><img
+                align="middle" alt="[Unicode]" border="0"
+                src="../../webscripts/logo60s2.gif" width="34"
+                height="33"></a>&nbsp;&nbsp;<a class="bar"
+                href="http://www.unicode.org/unicode/reports">Technical Reports</a></td>   
+            </tr>   
+          </tbody>   
+        </table>   
+      </td>   
+    </tr>   
+    <tr>   
+      <td class="gray">&nbsp;</td>   
+    </tr>   
+  </tbody>   
+</table>   
+<h2 align="center">Unicode Technical Standard #10</h2>   
+<h1>Unicode Collation Algorithm</h1>   
+<table border="1" width="100%" cellspacing="2" cellpadding="2">   
+  <tr>   
+    <td width="120" valign="top">Version</td>   
+    <td valign="top">8.0&nbsp;</td>  
+  </tr>  
+  <tr>  
+    <td width="120" valign="top">Authors</td>  
+    <td valign="top">Mark Davis (<a href="mailto:mark.davis@us.ibm.com">mark.davis@us.ibm.com</a>),   
+      Ken Whistler (<a href="mailto:ken@unicode.org">ken@unicode.org</a>)</td>  
+  </tr>  
+  <tr>  
+    <td width="120">Date</td>  
+    <td>2001-03-23</td>  
+  </tr>  
+  <tr>  
+    <td width="120" valign="top">This Version</td>  
+    <td valign="top"><a  
+      href="http://www.unicode.org/unicode/reports/tr10/tr10-8.html">http://www.unicode.org/unicode/reports/tr10/tr10-8.html</a></td>  
+  </tr>  
+  <tr>  
+    <td width="120" valign="top">Previous Version</td>  
+    <td valign="top"><a 
+      href="http://www.unicode.org/unicode/reports/tr10/tr10-6.html">http://www.unicode.org/unicode/reports/tr10/tr10-6.html</a></td> 
+  </tr> 
+  <tr> 
+    <td width="120" valign="top">Latest Version</td> 
+    <td valign="top"><a href="http://www.unicode.org/unicode/reports/tr10/">http://www.unicode.org/unicode/reports/tr10/</a></td> 
+  </tr> 
+  <tr> 
+    <td width="120" valign="top">Base Unicode Version</td> 
+    <td valign="top"><a 
+      href="http://www.unicode.org/unicode/standard/versions/enumeratedversions.html#Unicode 3.1.0">Unicode  
+      3.1.0</a></td> 
+  </tr> 
+</table> 
+&nbsp; 
+<h3><i>Summary</i></h3> 
+<p><i>This report provides the specification of the Unicode Collation Algorithm,  
+which provides a specification for how to compare two Unicode strings while  
+remaining conformant to the requirements of The Unicode Standard, Version 3.0.</i></p> 
+<h3><i>Status</i></h3> 
+<p><i>This document has been reviewed by Unicode members and other interested  
+parties, and has been approved by the Unicode Technical Committee as a <b>Unicode  
+Technical Standard</b>. It is a stable document and may be used as reference  
+material or cited as a normative reference from another document.</i></p> 
+<blockquote> 
+  <p><i><b>A Unicode Technical Standard (UTS)</b> is an independent  
+  specification. Conformance to the Unicode Standard does not imply conformance  
+  to any UTS. Each UTS specifies a base version of the Unicode Standard.  
+  Conformance to the UTS requires conformance to that version or higher.</i></p> 
+</blockquote> 
+<p><i>A list of current Unicode Technical Reports is found on <a 
+href="http://www.unicode.org/unicode/reports/">http://www.unicode.org/unicode/reports/</a>.  
+For more information about versions of the Unicode Standard, see <a 
+href="http://www.unicode.org/unicode/standard/versions/">http://www.unicode.org/unicode/standard/versions/</a>.</i></p> 
+<p><i>Please mail corrigenda and other comments to the author(s).</i></p> 
+<h3><i>Contents</i></h3> 
+<ul> 
+  <li><a href="tr10-8.html#Scope">1 Scope</a> 
+    <ul> 
+      <li><a href="tr10-8.html#Goals">1.1 Goals</a></li> 
+      <li><a href="tr10-8.html#Non-Goals">1.2 Non-Goals</a></li> 
+      <li><a href="tr10-8.html#Summary">1.3 Summary</a></li> 
+    </ul> 
+  </li> 
+  <li><a href="tr10-8.html#Conformance">2 Conformance</a></li> 
+  <li><a href="tr10-8.html#Data_Table_Format">3 Collation Element Table</a> 
+    <ul> 
+      <li><a href="tr10-8.html#Linguistic_Features">3.1 Linguistic Features</a> 
+        <ul> 
+          <li><a href="tr10-8.html#Multiple_Mappings">3.1.1 Multiple Mappings</a> 
+            <ul> 
+              <li><a href="tr10-8.html#Expansions">3.1.1.1 Expansions</a></li> 
+              <li><a href="tr10-8.html#Contractions">3.1.1.2 Contractions</a></li> 
+              <li><a href="tr10-8.html#Other_Multiple_Mappings">3.1.1.3 Other Multiple  
+                Mappings</a></li> 
+            </ul> 
+          </li> 
+          <li><a href="tr10-8.html#French_Accents">3.1.2 French Accents</a></li> 
+          <li><a href="tr10-8.html#Rearrangement">3.1.3 Rearrangement</a></li> 
+          <li><a href="tr10-8.html#Default_Values">3.1.4 Default Values</a></li> 
+          <li><a href="tr10-8.html#Collation_Graphemes">3.1.5 Collation Graphemes</a></li> 
+        </ul> 
+      </li> 
+      <li><a href="tr10-8.html#Default_Unicode_Collation_Element_Table">3.2 Default Unicode  
+        Collation Element Table</a> 
+        <ul> 
+          <li><a href="tr10-8.html#File_Format">3.2.1 File Format</a></li> 
+          <li><a href="tr10-8.html#Alternate_Weighting">3.2.2 Alternate Weighting</a></li> 
+        </ul> 
+      </li> 
+    </ul> 
+  </li> 
+  <li><a href="tr10-8.html#Main_Algorithm">4 Main Algorithm</a> 
+    <ul> 
+      <li><a href="tr10-8.html#Step_1">4.1 Step 1: Normalize</a></li> 
+      <li><a href="tr10-8.html#Step_2">4.2 Step 2: Produce Array</a></li> 
+      <li><a href="tr10-8.html#Step_3">4.3 Step 3: Form Sort Key</a></li> 
+      <li><a href="tr10-8.html#Step_4">4.4 Step 4: Compare</a></li> 
+    </ul> 
+  </li> 
+  <li><a href="tr10-8.html#Tailoring">5 Tailoring</a> 
+    <ul> 
+      <li><a href="tr10-8.html#Preprocessing">5.1 Preprocessing</a></li> 
+    </ul> 
+  </li> 
+  <li><a href="tr10-8.html#implementationNotes">6 Implementation Notes</a> 
+    <ul> 
+      <li> 
+        <p align="left"><a href="tr10-8.html#Reducing_Sort_Key_Lengths">6.1 Reducing Sort  
+        Key Lengths</a> 
+        <ul> 
+          <li> 
+            <p align="left"><a href="tr10-8.html#Eliminating_level_separators">6.1.1  
+            Eliminating level separators</a></li> 
+          <li> 
+            <p align="left"><a href="tr10-8.html#L2/L3_in_8_bits">6.1.2 L2/L3 in 8 bits</a></li> 
+          <li> 
+            <p align="left"><a href="tr10-8.html#Machine_Words">6.1.3 Machine Words</a></li> 
+          <li> 
+            <p align="left"><a href="tr10-8.html#Run-length_Compression">6.1.4 Run-length  
+            Compression</a></li> 
+        </ul> 
+      </li> 
+      <li> 
+        <p align="left"><a href="tr10-8.html#Large_Weight_Values">6.2 Large Weight Values</a></li> 
+      <li> 
+        <p align="left"><a href="tr10-8.html#Reducing_Table_Sizes">6.3 Reducing Table Sizes</a> 
+        <ul> 
+          <li> 
+            <p align="left"><a href="tr10-8.html#Contiguous_weight_ranges">6.3.1 Contiguous  
+            Weight Ranges</a></li> 
+          <li> 
+            <p align="left"><a href="tr10-8.html#Escape_hatch">6.3.2 Escape Hatch</a></li> 
+          <li> 
+            <p align="left"><a href="tr10-8.html#Leveraging_Unicode_tables">6.3.3  
+            Leveraging Unicode tables</a></li> 
+          <li> 
+            <p align="left"><a href="tr10-8.html#Reducing_the_Repertoire">6.3.4 Reducing  
+            the Repertoire</a></li> 
+          <li> 
+            <p align="left"><a href="tr10-8.html#Memory_Table_Size">6.3.5 Memory Table Size</a></li> 
+        </ul> 
+      </li> 
+      <li> 
+        <p align="left"><a href="tr10-8.html#Avoiding_Zero_Bytes">6.4 Avoiding Zero Bytes</a></li> 
+      <li> 
+        <p align="left"><a href="tr10-8.html#Avoiding_Normalization">6.5 Avoiding  
+        Normalization</a></li> 
+      <li> 
+        <p align="left"><a href="tr10-8.html#Case_Comparisons">6.6 Case Comparisons</a></li> 
+      <li> 
+        <p align="left"><a href="tr10-8.html#Incremental_Comparison">6.7 Incremental  
+        Comparison</a></li> 
+      <li> 
+        <p align="left"><a href="tr10-8.html#Searching">6.8 Searching</a></li> 
+      <li> 
+        <p align="left"><a href="tr10-8.html#Catching_Mismatches">6.9 Catching Mismatches</a></li> 
+      <li> 
+        <p align="left"><a href="tr10-8.html#Comparison_to_Java">6.10 Tailoring Example:  
+        Java</a></li> 
+      <li> 
+        <p align="left"><a href="tr10-8.html#Flat_File_Example">6.11 Flat File Example</a> 
+        <ul> 
+          <li> 
+            <p align="left"><a href="tr10-8.html#Collation_Element_Format">6.11.1 Collation  
+            Element Format</a></li> 
+          <li> 
+            <p align="left"><a href="tr10-8.html#Sample_Code">6.11.2 Sample Code</a></li> 
+        </ul> 
+      </li> 
+    </ul> 
+  </li> 
+  <li><a href="tr10-8.html#Weight_Dervation">7 Weight Derivation</a> 
+    <ul> 
+      <li><a href="tr10-8.html#Implicit_Weights">7.1 Derived Collation Elements</a> 
+        <ul> 
+          <li><a href="tr10-8.html#IllegalCodePoints">7.1.1 Illegal code points</a></li> 
+          <li><a href="tr10-8.html#LegalCodePoints">7.1.2 Legal code points</a></li> 
+        </ul> 
+      </li> 
+      <li><a href="tr10-8.html#Canonical_Decompositions">7.2 Canonical Decompositions</a></li> 
+      <li><a href="tr10-8.html#Compatibility_Decompositions">7.3 </a><a 
+        href="tr10-8.html#Compatibility_Decompositions">Compatibility Decompositions</a> 
+        <ul> 
+          <li><a href="tr10-8.html#Tertiary_Weight_Table">7.3.1 Tertiary Weight Table</a></li> 
+        </ul> 
+      </li> 
+    </ul> 
+  </li> 
+  <li><a href="tr10-8.html#Acknowledgements">Acknowledgements</a></li> 
+  <li><a href="tr10-8.html#References">References</a></li> 
+  <li><a href="tr10-8.html#Modifications">Modifications</a></li> 
+</ul> 
+<h2><a name="Scope"></a>1 Scope</h2>   
+<p>The Unicode Collation Algorithm provides a specification for how to compare    
+two Unicode strings while remaining conformant to the requirements of <i>The    
+Unicode Standard, Version 3.0 </i>(see<i> Section 5.17 Sorting and Searching, </i>which    
+is <i>Section 5.15 </i>in Version 2.0). Readers should be familiar with that    
+section before proceeding with the rest of this document. It also supplies the    
+Default Unicode Collation Element Table as the data specifying the default    
+collation order.</p>   
+<blockquote>   
+  <p><b>Note: </b>the Default Unicode Collation Element Table is currently    
+  limited to the Unicode 3.0 repertoire. However, the algorithm is well defined    
+  over <i>all</i> Unicode code points. See <a href="tr10-8.html#LegalCodePoints">§7.1.2    
+  Legal code points</a>.</p>   
+  <p>When the table is updated to the Unicode 3.1 repertoire the ordering of a    
+  few Unicode 3.0 characters will change for consistency with <a   
+  href="http://www.unicode.org/unicode/reports/tr15/">UAX #15: Unicode    
+  Normalization Forms</a>.</p>   
+</blockquote>   
+<h4>1.1 <a name="Goals">Goals</a></h4>   
+<p>The algorithm is designed to satisfy the following goals:</p>   
+<ol>   
+  <li>A complete, unambiguous, specified ordering for all characters in Unicode.   
+  <li>A complete resolution of the handling of canonical and compatibility    
+    equivalences as relates to the default ordering.   
+  <li>A complete specification of the meaning and assignment of collation    
+    levels, including whether a character is ignorable by default in collation.   
+  <li>A complete specification of the rules for using the level weights to    
+    determine the default collation order of strings of arbitrary length.   
+  <li>Allowance for override mechanisms (<i>tailoring</i>) for creating    
+    language-specific orderings. Tailoring can be provided by any well-defined    
+    syntax that takes the default ordering and produces another well-formed    
+    ordering.   
+  <li>An algorithm that can be efficiently implemented, both in terms of    
+    performance and in terms of memory requirements.   
+</ol>   
+<p>Given the standard ordering and the tailoring for any particular country, any    
+two companies or individuals — with their own proprietary implementations —    
+could take any arbitrary Unicode input and produce exactly the same sorted    
+output. In addition, when given a tailoring specifying French accents this    
+algorithm passes the Canadian and ISO FDIS 14651 benchmarks ([<a href="tr10-8.html#CanStd">CanStd</a>],    
+[<a href="tr10-8.html#SoStd">SoStd</a>]).</p>   
+<h4>1.2 <a name="Non-Goals">Non-Goals</a></h4>   
+<p>The Default Unicode Collation Element Table explicitly does not provide for    
+the following features:</p>   
+<ol>   
+  <li><i>reversibility: </i>from a Collation Element you are not guaranteed that    
+    you can recover the original character.   
+  <li><i>numeric formatting:</i> numbers composed of a string of digits or other    
+    numerics will not necessarily sort in <i>numerical order.</i>   
+  <li><i>API:</i> no particular API is specified or required for the algorithm.   
+  <li><i>title sorting:</i> for example, removing articles such as <i>a</i> and <i>the    
+    </i>during bibliographic sorting is not provided.   
+</ol>   
+<h4>1.3 <a name="Summary">Summary</a></h4>   
+<p>Briefly stated, the Unicode Collation Algorithm takes an input Unicode string    
+and a Collation Element Table, containing mapping data for characters. It    
+produces a sort key, which is an array of unsigned 16-bit integers. Two or more    
+sort keys so produced can then be binary-compared to give the correct comparison    
+between the strings for which they were generated.</p>   
+<p>The Unicode Collation Algorithm assumes multiple-level key weighting, along    
+the lines widely implemented in IBM technology, and as described in the Canadian    
+sorting standard [<a href="tr10-8.html#CanStd">CanStd</a>] and the proposed International    
+String Ordering standard [<a href="tr10-8.html#SoStd">SoStd</a>].</p>   
+<p>By default, the algorithm makes use of three fully-customizable levels. For    
+the Latin script, these levels correspond roughly to:</p>   
+<ol>   
+  <li>alphabetic ordering   
+  <li>diacritic ordering   
+  <li>case ordering.   
+</ol>   
+<p>A fourth level may be used for tie-breaking between strings not distinguished    
+at the first three levels.</p>   
+<p>This design allows implementations to produce culturally acceptable    
+collation, while putting the least burden on implementations in terms of memory    
+requirements and performance. In particular, Collation Element Tables only    
+require storage of 32 bits of collation data per significant character.</p>   
+<p>However, implementations of the Unicode Collation Algorithm are not limited    
+to supporting only 3 levels. They are free to support a fully customizable 4th    
+level (or more levels), as long as they can produce the same results as the    
+basic algorithm, given the right Collation Element Tables. For example, an    
+application which uses the algorithm, but which must treat some collection of    
+special characters as ignorable at the first 3 levels <i>and</i> must have those    
+specials collate in non-Unicode order (as, for example to emulate an existing    
+EBCDIC-based collation), may choose to have a fully customizable 4th level. The    
+downside of this choice is that such an application will require more storage,    
+both for the Collation Element Table and in constructed sort keys.</p>   
+<p>The Collation Element Table may be tailored to produce particular culturally    
+required orderings for different languages or locales. As in the algorithm    
+itself, the tailoring can provide full customization for three (or more) levels.</p>   
+<h2><a name="Conformance"></a>2 Conformance</h2>   
+<p>There are many different ways to compare strings, and the Unicode Standard    
+does not restrict the ways in which implementations can do this. However, any    
+Unicode-conformant implementation that purports to implement the Unicode    
+Collation Algorithm must do so as described in this document.</p>   
+<p>The algorithm is a <i>logical</i> specification, designed to be    
+straightforward to describe. Actual implementations of the algorithm are free to    
+change any part of the algorithm so long as any two strings compared by the    
+implementation are ordered the same as they would be by the algorithm. They are    
+also free to use a different format for the data in the Collation Element Table.    
+The sort key is also a <i>logical</i> intermediate object: so long as an    
+implementation produces the same results in comparison of strings, the sort keys    
+can differ in format from what is specified here. (See <a   
+href="tr10-8.html#implementationNotes">§6 Implementation Notes</a>.)</p>   
+<p>The requirements for conformance on implementations of the Unicode Collation    
+Algorithm are as follows:</p>   
+<table border="0" cellspacing="2" cellpadding="2" width="100%">   
+  <tr>   
+    <td valign="TOP"><b>C1&nbsp;</b></td>   
+    <td valign="TOP">   
+      <p><i>Given a well-formed Unicode Collation Element Table, a conformant    
+      implementation shall replicate the same comparisons of Unicode strings as    
+      those produced by <a href="tr10-8.html#Main_Algorithm">§4 Main Algorithm</a>.</i></p>   
+      <p>In particular, a conformant implementation must be able to compare any    
+      two canonical equivalent strings as being equal, for all Unicode    
+      characters supported by that implementation.</td>   
+  </tr>   
+</table>   
+<table width="100%" border="0" cellspacing="2" cellpadding="2">   
+  <tr>   
+    <td valign="TOP" width="1%"><b>C2&nbsp;</b></td>   
+    <td valign="TOP">   
+      <p><i>A conformant implementation shall support at least three levels of    
+      collation.</i></p>   
+      <p>A conformant implementation is only required to implement three levels.    
+      However, it may implement four (or more) levels if desired.</td>   
+  </tr>   
+</table>   
+<table width="100%" border="0" cellspacing="2" cellpadding="2">   
+  <tr>   
+    <td valign="TOP" width="1%"><b>C3&nbsp;</b></td>   
+    <td valign="TOP">   
+      <p><i>A conformant implementation that supports backward levels, alternate    
+      weighting or rearrangement shall do so in accordance with this    
+      specification.</i></p>   
+      <p>A conformant implementation is not required to support these features;    
+      however, if it does so, it must interpret them properly. Unless they are    
+      functioning in a very restricted domain, it is strongly recommended that    
+      implementations support a backwards secondary level, since this is    
+      required for French.</td>   
+  </tr>   
+</table>   
+<h2><a name="Data_Table_Format"></a>3 Collation Element Table</h2>   
+<p>A Collation Element Table contains a mapping from one (or more) characters to    
+one (or more) <i>collation elements</i>. A collation element is an ordered list    
+of three 16-bit weights. (Implementations can produce the same result without    
+using 16-bit weights — see <a href="tr10-8.html#implementationNotes">§6 Implementation    
+Notes</a>.)</p>   
+<p>The first weight is called the <i>Level 1</i> weight (or <i>primary</i>    
+weight), the second is called the <i>Level 2</i> weight (<i>secondary</i>    
+weight), and the third is called the <i>Level 3</i> weight (<i>tertiary</i>    
+weight). For a collation element X, these can be abbreviated as X<sub>1</sub>, X<sub>2</sub>,    
+and X<sub>3</sub>.Given two collation elements X and Y, we will use the    
+following notation:</p>   
+<div align="center">   
+  <center>   
+  <table border="1" cellspacing="2" cellpadding="2">   
+    <caption><b>Equals Notation</b></caption>   
+    <tr>   
+      <th valign="TOP" height="28" align="LEFT">   
+        <p align="center">Notation</th>   
+      <th valign="TOP" align="LEFT">   
+        <p align="center">Reading</th>   
+      <th valign="TOP" align="LEFT">   
+        <p align="center">Meaning</th>   
+    </tr>   
+    <tr>   
+      <td valign="TOP" height="30">   
+        <p align="center">X =<sub>1</sub> Y</p>   
+      </td>   
+      <td valign="TOP">   
+        <p align="center"><i>X is primary equal to Y</i></p>   
+      </td>   
+      <td valign="TOP">   
+        <p align="center">X<sub>1</sub> = Y<sub>1</sub></p>   
+      </td>   
+    </tr>   
+    <tr>   
+      <td valign="TOP" height="30">   
+        <p align="center">X =<sub>2</sub> Y</p>   
+      </td>   
+      <td valign="TOP">   
+        <p align="center"><i>X is secondary equal to Y</i></p>   
+      </td>   
+      <td valign="TOP">   
+        <p align="center">X =<sub>1</sub> Y and X<sub>2</sub> = Y<sub>2</sub></p>   
+      </td>   
+    </tr>   
+    <tr>   
+      <td valign="TOP" height="30">   
+        <p align="center">X =<sub>3</sub> Y</p>   
+      </td>   
+      <td valign="TOP">   
+        <p align="center"><i>X is tertiary equal to Y</i></p>   
+      </td>   
+      <td valign="TOP">   
+        <p align="center">X =<sub>2</sub> Y and X<sub>3</sub> = Y<sub>3</sub></p>   
+      </td>   
+    </tr>   
+    <tr>   
+      <td valign="TOP" height="30">   
+        <p align="center">X =<sub>4</sub> Y</p>   
+      </td>   
+      <td valign="TOP">   
+        <p align="center"><i>X is quarternary equal to Y</i></p>   
+      </td>   
+      <td valign="TOP">   
+        <p align="center">X =<sub>3</sub> Y and X<sub>4</sub> = Y<sub>4</sub></p>   
+      </td>   
+    </tr>   
+  </table>   
+  </center>   
+</div>   
+<p align="center"><b>&nbsp;Less Than Notation</b>   
+<div align="center">   
+  <center>   
+  <table border="1" cellspacing="2" cellpadding="2">   
+    <tr>   
+      <th valign="TOP" height="28" align="LEFT">   
+        <p align="center">Notation</th>   
+      <th valign="TOP" align="LEFT">   
+        <p align="center">Reading</th>   
+      <th valign="TOP" align="LEFT">   
+        <p align="center">Meaning</th>   
+    </tr>   
+    <tr>   
+      <td valign="top" height="30">   
+        <p align="center">X &lt;<sub>1</sub> Y</p>   
+      </td>   
+      <td valign="top">   
+        <p align="center"><i>X is primary less than Y</i></p>   
+      </td>   
+      <td valign="top">   
+        <p align="center">X<sub>1</sub> &lt; Y<sub>1</sub></p>   
+      </td>   
+    </tr>   
+    <tr>   
+      <td valign="top" height="30">   
+        <p align="center">X &lt;<sub>2</sub> Y</p>   
+      </td>   
+      <td valign="top">   
+        <p align="center"><i>X is secondary less than Y</i></p>   
+      </td>   
+      <td valign="top">   
+        <p align="center">X &lt;<sub>1</sub> Y or (X =<sub>1</sub> Y and X<sub>2</sub>    
+        &lt; Y<sub>2</sub>)</p>   
+      </td>   
+    </tr>   
+    <tr>   
+      <td valign="top" height="30">   
+        <p align="center">X &lt;<sub>3</sub> Y</p>   
+      </td>   
+      <td valign="top">   
+        <p align="center"><i>X is tertiary less than Y</i></p>   
+      </td>   
+      <td valign="top">   
+        <p align="center">X &lt;<sub>2</sub> Y or (X =<sub>2</sub> Y and X<sub>3</sub>    
+        &lt; Y<sub>3</sub>)</p>   
+      </td>   
+    </tr>   
+    <tr>   
+      <td valign="top" height="30">   
+        <p align="center">X &lt;<sub>4</sub> Y</p>   
+      </td>   
+      <td valign="top">   
+        <p align="center"><i>X is quarternary less than Y</i></p>   
+      </td>   
+      <td valign="top">   
+        <p align="center">X &lt;<sub>3</sub> Y or (X =<sub>3</sub> Y and X<sub>4</sub>    
+        &lt; Y<sub>4</sub>)</p>   
+      </td>   
+    </tr>   
+  </table>   
+  </center>   
+</div>   
+<p>Other operations are given their customary definitions in terms of these.    
+That is:   
+<ul>   
+  <li>X <font size="3">≤</font><sub>n</sub> Y if and only if X &lt;<sub>n</sub>    
+    Y or X =<sub>n</sub> Y</li>   
+  <li>X &gt;<sub>n</sub> Y if and only if Y &lt;<sub>n</sub> X</li>   
+  <li>X <font size="3">≥</font><sub>n</sub> Y if and only if Y <font size="3">≥</font><sub>n</sub>    
+    X</li>   
+</ul>   
+<table border="1" width="33%" align="right">   
+  <tr>   
+    <td width="100%"><b>Note: </b>Where only plain text ASCII characters are    
+      available the following fallback notation can be used:   
+      <div align="center">   
+        <center>   
+        <table cellspacing="4">   
+          <tr>   
+            <th>Notation</th>   
+            <th>Fallback</th>   
+          </tr>   
+          <tr>   
+            <td>X &lt;<sub>n</sub> Y</td>   
+            <td>X &lt;[n] Y</td>   
+          </tr>   
+          <tr>   
+            <td>X<sub>n</sub></td>   
+            <td>X[n]</td>   
+          </tr>   
+          <tr>   
+            <td>X <font size="3">≤</font><sub>n</sub> Y</td>   
+            <td>X &lt;=[n] Y</td>   
+          </tr>   
+          <tr>   
+            <td>A <font size="3">≡</font> B</td>   
+            <td>A <font size="3">==</font> B</td>   
+          </tr>   
+        </table>   
+        </center>   
+      </div>   
+    </td>   
+  </tr>   
+</table>   
+<p>The collation algorithm results in a similar ordering among characters and    
+strings, so that for two strings A and B we can write A &lt;<sub>2</sub> B,    
+meaning that A is less than B and there is a primary or secondary difference    
+between them. If A &lt;<sub>2</sub> B but A=<sub>1</sub> B, we say that there is    
+<i>only</i> a secondary difference between them. If two strings are equivalent    
+(equal at all levels) according to a given Collation Table, we write A = B. If    
+they are bit-for-bit identical, we write A <font size="3">≡</font> B.</p>   
+<p>If a weight is 0000, then that collation element is <i>ignorable</i> at that    
+level: the weight at that level is not taken into account in sorting. A    
+collation element that is ignorable at Level 1, but not at Level 2 is called a <i>Level    
+1 ignorable</i>; similarly, a <i>Level 2 ignorable</i> is ignorable at Levels 1    
+and 2, but not Level 3; a <i>Level 3 ignorable</i> is ignorable at Levels 1, 2,    
+and 3 but not Level 4; and so on. A collation element that is not ignorable at    
+Level 1 is called a <i>non-ignorable</i>. A collation element with zeros at    
+every level is called <i>completely ignorable.</i></p>   
+<blockquote>   
+  <p><a name="ill-formed_definition"></a>Except in special cases, no collation    
+  element can have a zero weight at Level N and a non-zero weight at Level N-1.    
+  Any collation elements that violate this rule are called <i>ill-formed</i>.    
+  The reason for this will be explained under Step 4 of the main algorithm.</p>   
+</blockquote>   
+<p>For a given Collation Element Table, <i>MIN<sub>n</sub></i> is the least    
+weight in any collation element at level <i>n</i>, and <i>MAX<sub>n</sub></i> is    
+the maximum weight in any collation element at level <i>n</i>.</p>   
+<p>The following are sample collation elements that are used in the examples    
+illustrating the algorithm. Unless otherwise noted, all weights are in    
+hexadecimal format.</p>   
+<table width="100%" border="1" cellspacing="2" cellpadding="1">   
+  <caption><i>Sample Table:</i></caption>   
+  <tr>   
+    <th valign="TOP" align="LEFT" height="17" width="15%">   
+      <p align="LEFT">Character</th>   
+    <th valign="TOP" align="LEFT" width="30%">   
+      <p align="LEFT">Collation Element</th>   
+    <th valign="TOP" align="LEFT">   
+      <p align="LEFT">Name</th>   
+  </tr>   
+  <tr>   
+    <td height="17" valign="TOP"><code>0300 &quot;`&quot;</code></td>   
+    <td valign="TOP"><code>[0000.0021.0002]</code></td>   
+    <td valign="TOP"><code>COMBINING GRAVE ACCENT</code></td>   
+  </tr>   
+  <tr>   
+    <td valign="TOP" height="17"><code>0061 &quot;a&quot;</code></td>   
+    <td valign="TOP"><code>[06D9.0020.0002]</code></td>   
+    <td valign="TOP"><code>LATIN SMALL LETTER A</code></td>   
+  </tr>   
+  <tr>   
+    <td valign="TOP" height="16"><code>0062 &quot;b&quot;</code></td>   
+    <td valign="TOP"><code>[06EE.0020.0002]</code></td>   
+    <td valign="TOP"><code>LATIN SMALL LETTER B</code></td>   
+  </tr>   
+  <tr>   
+    <td height="17" valign="TOP"><code>0063 &quot;c&quot;</code></td>   
+    <td valign="TOP"><code>[0706.0020.0002]</code></td>   
+    <td valign="TOP"><code>LATIN SMALL LETTER C</code></td>   
+  </tr>   
+  <tr>   
+    <td height="16" valign="TOP"><code>0043 &quot;C&quot;</code></td>   
+    <td valign="TOP"><code>[0706.0020.0008]</code></td>   
+    <td valign="TOP"><code>LATIN CAPITAL LETTER C</code></td>   
+  </tr>   
+  <tr>   
+    <td height="17" valign="TOP"><code>0064 &quot;d&quot;</code></td>   
+    <td valign="TOP"><code>[0712.0020.0002]</code></td>   
+    <td valign="TOP"><code>LATIN SMALL LETTER D</code></td>   
+  </tr>   
+</table>   
+<blockquote>   
+  <p><i>Weights in all examples are illustrative, and may not match what is in    
+  the latest Default Unicode Collation Element Table.</i></p>   
+</blockquote>   
+<h3>3.1 <a name="Linguistic_Features">Linguistic Features</a></h3>   
+<p>Linguistic requirements of collation are covered in more detail in <i>The    
+Unicode Standard, Version 3.0, Section 5.17 Sorting and Searching</i>.</p>   
+<h4>3.1.1 <a name="Multiple_Mappings">Multiple Mappings</a></h4>   
+<p>The mapping from characters to collation elements may not be a simple mapping    
+from one character to one collation element: in general, it may map from one to    
+many, from many to one, or from many to many. For example:</p>   
+<h5>3.1.1.1 <a name="Expansions">Expansions</a></h5>   
+<p>The Latin letter <i>æ</i> is treated as an independent letter by default.    
+Collations such as English, which may require treating it as equivalent to an <i>&lt;a    
+e&gt;</i> sequence, can tailor the letter to map to a sequence of more than one    
+collation elements, such as in the following example:</p>   
+<p>&nbsp;   
+<table width="100%" border="1" cellspacing="2" cellpadding="1">   
+  <tr>   
+    <th valign="TOP" align="LEFT" height="17" width="15%">   
+      <p align="LEFT">Character</th>   
+    <th valign="TOP" align="LEFT" width="30%">   
+      <p align="LEFT">Collation Element</th>   
+    <th valign="TOP" align="LEFT">   
+      <p align="LEFT">Name</th>   
+  </tr>   
+  <tr>   
+    <td height="17" valign="TOP"><code>00E6</code></td>   
+    <td valign="TOP"><code>[06D9.0020.0002], [073A.0020.0002]</code></td>   
+    <td valign="TOP"><code>LATIN SMALL LETTER AE; &quot;æ&quot;</code></td>   
+  </tr>   
+</table>   
+<p>In this example, the collation element <tt>[06D9.0020.0002]</tt> gives the    
+weight values for <i>a</i>, and the collation element <tt>[073A.0020.0002]</tt>    
+gives the weight values for <i>e</i>.</p>   
+<h5>3.1.1.2 <a name="Contractions">Contractions</a></h5>   
+<p>Similarly, where <i>ch</i> is treated as a single letter as in traditional    
+Spanish, it is represented as a mapping from two characters to a single    
+Collation Element, such as in the following example</p>   
+<table width="100%" border="1" cellspacing="2" cellpadding="1">   
+  <tr>   
+    <th valign="TOP" align="LEFT" height="17" width="15%">   
+      <p align="LEFT">Character</th>   
+    <th valign="TOP" align="LEFT" width="30%">   
+      <p align="LEFT">Collation Element</th>   
+    <th valign="TOP" align="LEFT">   
+      <p align="LEFT">Name</th>   
+  </tr>   
+  <tr>   
+    <td height="17" valign="TOP"><code>0063<br>   
+      0068</code></td>   
+    <td valign="TOP"><code>[0707.0020.0002]</code></td>   
+    <td valign="TOP"><code>LATIN SMALL LETTER C,<br>   
+      LATIN SMALL LETTER H; &quot;ch&quot;</code></td>   
+  </tr>   
+</table>   
+<p>In this example, the collation element <tt>[0707.0020.0002]</tt> has a    
+primary value one greater than the primary value for the letter <i>c</i> by    
+itself, so that the sequence <i>ch</i> will collate after <i>c</i> and before <i>d</i>.    
+The above example shows the result of a tailoring of collation elements to    
+weight sequences of letters as a single unit.</p>   
+<p>Any character (such as <i>soft hyphen</i>) between two characters of a    
+contraction will cause them to sort as separate characters.</p>   
+<blockquote>   
+  <p><b>Note: </b>The Unicode Collation Algorithm can handle surrogate pairs as    
+  contractions. It thus provides the same level of capability for those    
+  characters as for non-surrogates.</p>   
+</blockquote>   
+<h5>3.1.1.3 <a name="Other_Multiple_Mappings">Other Multiple Mappings</a></h5>   
+<p>Certain characters may both expand and contract: see <i>Section 5.17 Sorting    
+and Searching.</i></p>   
+<h4><a name="French_Accents"></a>3.1.2 French Accents</h4>   
+<p>In some languages (notably French), accents are sorted from the back of the    
+string to the front of the string. This behavior is not marked in the Default    
+Unicode Collation Element Table, but may occur in tailored tables. In such a    
+case, the collation elements for the accents and their base characters are    
+marked as being <i>backwards</i> at Level 2.</p>   
+<h4><a name="Rearrangement"></a>3.1.3 Rearrangement</h4>   
+<p>Certain characters are not coded in logical order. In Unicode 3.0, these are    
+the Thai vowels <tt>0E40</tt> through <tt>0E44</tt> and the Lao vowels <tt>0EC0</tt>    
+through <tt>0EC4</tt> (this list may be extended in the future, and so is    
+included in the Default Unicode Collation Element Table). For collation, they    
+are rearranged by swapping with the following character before further    
+processing, since logically they belong afterwards. For example, here is a    
+string processed by rearrangement:</p>   
+<table width="100%" border="1" cellspacing="2" cellpadding="1">   
+  <tr>   
+    <td valign="TOP" width="15%">input string:</td>   
+    <td valign="TOP"><tt>0E01 <b>0E40</b> 0E02 0E03</tt></td>   
+  </tr>   
+  <tr>   
+    <td valign="TOP">normalized string:</td>   
+    <td valign="TOP"><tt>0E01 0E02 <b>0E40</b> 0E03</tt></td>   
+  </tr>   
+</table>   
+<h4><a name="Default_Values"></a>3.1.4 Default Values</h4>   
+<p>Both in the Default Unicode Collation Element Table and in typical tailorings,    
+most unaccented letters differ in the primary weights, but have secondary    
+weights (such as <i>a<sub>1</sub></i>) equal to <i>MIN<sub>2</sub></i>. The    
+primary ignorables will have secondary weights greater than <i>MIN<sub>2</sub></i>.    
+Characters that are compatibility or case variants will have equal primary and    
+secondary weights (e.g. <i>a<sub>1</sub> = A<sub>1</sub></i> and <i>a<sub>2</sub>    
+= A<sub>2</sub></i>), but have different tertiary weights (e.g. <i>a<sub>3</sub>    
+&lt; A<sub>2</sub></i>). The unmarked characters will have tertiary weights    
+(such as <i>a<sub>3</sub></i>) equal to <i>MIN<sub>3</sub>.</i></p>   
+<p>However, a well-formed Unicode Collation Element Table <i>does not</i>    
+guarantee that the meaning of a secondary or tertiary weight is uniform across    
+tables. For example, a <i>capital A</i> and <i>katakana ta</i> could both have a    
+tertiary weight of 3.</p>   
+<h4>3.1.5 <a name="Collation_Graphemes">Collation Graphemes</a></h4>   
+<p>A collation ordering determines a <i>collation grapheme</i> (also known as a    
+collation character), which is a sequence of characters that is treated as a    
+primary unit by the ordering. For example, <i>ch</i> is a collation grapheme for    
+a traditional Spanish ordering. These are generally contractions, but may    
+include additional ignorable characters. To determine the boundaries for a    
+collation grapheme starting at a given position, use the following process.</p>   
+<ol>   
+  <li>Set <code>oldPosition</code> to be equal to <code>position</code>.</li>   
+  <li>If <code>position</code> is at the end of the string, return it.</li>   
+  <li>Fetch the next collation element(s) mapped to by the character(s) at <code>position</code>.</li>   
+  <li>If the collation element(s) contain a non-ignorable and <code>position</code>    
+    is not equal to <code>oldPosition</code>, return <code>position</code>.</li>   
+  <li>Otherwise set <code>position</code> to be the end of the characters    
+    mapped.</li>   
+  <li>Loop back to step 2.</li>   
+</ol>   
+<p>For information on the use of collation graphemes, see <a   
+href="http://www.unicode.org/unicode/reports/tr18/">UTR #18: Unicode Regular    
+Expression Guidelines</a>.</p>   
+<h3>3.2 <a name="Default_Unicode_Collation_Element_Table">Default Unicode    
+Collation Element Table</a></h3>   
+<p>The Default Unicode Collation Element Table is provided in the following data    
+file:</p>   
+<ul>   
+  <li>   
+    <p align="left"><a   
+    href="http://www.unicode.org/unicode/reports/tr10/allkeys.txt">http://www.unicode.org/unicode/reports/tr10/allkeys.txt</a></li>   
+</ul>   
+This table provides a mapping from characters to collation elements for all the    
+explicitly weighted characters. The mapping lists characters in the order that    
+they would be weighted. Any code points that are not explicitly mentioned in    
+this table are given a derived collation element, as described in <a   
+href="tr10-8.html#Weight Dervation">§7 Weight Derivation</a>. There are three types    
+mappings:   
+<ul>   
+  <li><b>Normal. </b>One Unicode character maps to a one collation element.</li>   
+  <li><b>Expansions.</b> One Unicode character maps to a sequence of collation    
+    elements.</li>   
+  <li><b>Contractions.</b> A sequence of Unicode characters maps to a sequence    
+    of (one or more) collation elements.   
+    <ul>   
+      <li>These are provided for those instances where a precomposed character    
+        had to be given a distinct primary weight in the main weight table,    
+        which implied that the canonically equivalent combining character    
+        sequences should also be given the same weights. These currently include    
+        Indic two-part vowels and with some Cyrillic accented characters, to    
+        match the expected collating behavior for those scripts.</li>   
+    </ul>   
+  </li>   
+</ul>   
+<p>This table is constructed to be consistent with the Unicode Canonical    
+Equivalence algorithm, and to respect the Unicode character properties. It is    
+not, however, merely algorithmically derivable from those data, since the    
+assignment of levels does take into account characteristics of particular    
+scripts. For example, in general the combining marks are Level 1 ignorables;    
+however, the Indic combining vowels are given non-zero Level 1 weights, since    
+they are as significant in sorting as the consonants.</p>   
+<p>Any character may have variant forms or applied accents which affect    
+collation. Thus, for <tt>FULL STOP</tt> there are three compatibility variants,    
+a fullwidth form, a compatibility form, and a small form. These get different    
+tertiary weights, accordingly. For more information on how the table was    
+constructed, see <a href="tr10-8.html#Weight_Dervation">§7 Weight Derivation</a>.</p>   
+<p>For many languages, some degree of tailoring is required to match user    
+expectations.</p>   
+<blockquote>   
+  <p><b>Note: </b>The precise values of the collation elements for the    
+  characters may change over time as new characters are added to the Unicode    
+  Standard. If a reference to the precise values is required, the version number    
+  <b>must</b> be referenced.</p>   
+  <p>In particular, there are several characters whose values are known to be in    
+  error, and will change in the next version of the table. In addition, some    
+  changes will be necessary when the data is updated to include Unicode 3.1    
+  characters.</p>   
+</blockquote>   
+<h4>3.2.1 <a name="File_Format">File Format</a></h4>   
+<p>Each of the files consists of a version line followed by an optional    
+alternative-weight line, optional rearrangement lines, optional backwards lines,    
+and a series of entries, all separated by newlines. A '#' and any following    
+characters on a line are comments. Whitespace between literals is ignored. The    
+following is an extended BNF description of the format, where &quot;<i>x</i>+&quot;    
+indicates one or more <i>x</i>'s, &quot;<i>x</i>*&quot; indicates zero or more <i>x</i>'s,    
+&quot;<i>x?</i>&quot; indicates zero or one <i>x</i>, and &lt;char&gt; is a    
+hexadecimal Unicode code value.</p>   
+<pre>&lt;collationElementTable&gt; := &lt;version&gt; 
+
+                           &lt;alternate&gt;?
+
+                           &lt;backwards&gt;*
+
+                           &lt;rearrangement&gt;*
+
+                           &lt;entry&gt;+</pre>   
+<p>The version line is of the form:</p>   
+<pre>@&lt;version&gt; := &lt;major&gt;.&lt;minor&gt;.&lt;variant&gt; &lt;eol&gt;</pre>   
+<p>The rearrangement line is of the following form. It specifies the characters    
+that are to be rearranged in collation, as discussed above in <a   
+href="tr10-8.html#Rearrangement">§3.1.3 Rearrangement</a>.</p>   
+<pre>&lt;rearrangement&gt; := '@rearrange' &lt;charList&gt; &lt;eol&gt;
+
+&lt;charList&gt;      := &lt;item&gt; (&quot;,&quot; &lt;item&gt; )*</pre>   
+<p>In general, the rearrangement lines are determined by the version of the    
+Unicode Standard, since these are properties always associated with certain    
+characters. For Unicode 3.0, they are the following:</p>   
+<pre>@rearrange 0E40,0E41,0E42,0E43,0E44
+
+@rearrange 0EC0,0EC1,0EC2,0EC3, 0EC4</pre>   
+<p>The alternate-weight line has three possible values that may change the    
+weights of collation elements in processing (see <a   
+href="tr10-8.html#§3.2.2 Variable Collation Elements">§3.2.2 Alternate Collation Elements</a>).    
+The default is <code>shifted</code>.</p>   
+<pre>&lt;alternate&gt;       := '@alternate ' &lt;alternateChoice&gt; &lt;eol&gt;
+
+&lt;alternateChoice&gt; := 'blanked' | 'non-ignorable' | 'shifted'</pre>   
+<p>A backwards line lists a level that is to be processed in reverse order. A    
+forwards line does the reverse. The default is for lines to be forwards.</p>   
+<pre>&lt;backwards&gt; := ('@backwards ' | '@forwards ') &lt;levelNumber&gt; &lt;eol&gt;</pre>   
+<p>Each entry is a mapping from character(s) to collation element(s), and is of    
+the following form:</p>   
+<pre>&lt;entry&gt;       := &lt;charList&gt; ';' &lt;collElement&gt;+ &lt;eol&gt;
+
+&lt;collElement&gt; := &quot;[&quot; &lt;alt&gt; &lt;char&gt; &quot;.&quot; &lt;char&gt; &quot;.&quot; &lt;char&gt; (&quot;.&quot; &lt;char&gt;)* &quot;]&quot;
+
+&lt;alt&gt;         := &quot;*&quot; | &quot;.&quot;</pre>   
+<p>In the Default Unicode Collation Element Table, the comment may contain    
+informative tags: CANONSEQ usually indicates a canonical equivalence, and    
+COMPATSEQ usually indicates a compatibility equivalence. (There are cases where    
+characters do not actually have the associated equivalences, but behave as if    
+they do.)</p>   
+<p>Here are some selected entries:</p>   
+<pre>0020 ; [*0209.0020.0002.0020] % SPACE
+
+02DA ; [*0209.002B.0002.02DA] % RING ABOVE; COMPATSEQ
+
+0041 ; [.06D9.0020.0008.0041] % LATIN CAPITAL LETTER A
+
+3373 ; [.06D9.0020.0017.0041] [.08C0.0020.0017.0055] % SQUARE AU; COMPATSEQ
+
+00C5 ; [.06D9.002B.0008.00C5] % LATIN CAPITAL LETTER A WITH RING ABOVE; CANONSEQ
+
+212B ; [.06D9.002B.0008.212B] % ANGSTROM SIGN; CANONSEQ
+
+0042 ; [.06EE.0020.0008.0042] % LATIN CAPITAL LETTER B
+
+0043 ; [.0706.0020.0008.0043] % LATIN CAPITAL LETTER C
+
+0106 ; [.0706.0022.0008.0106] % LATIN CAPITAL LETTER C WITH ACUTE; CANONSEQ
+
+0044 ; [.0712.0020.0008.0044] % LATIN CAPITAL LETTER D</pre>   
+<p>The entries in each file are ordered by collation element, not by character.    
+This makes it easy to see the order in which characters would be collated.    
+Although this document describes collation elements as three levels, the file    
+contains a fourth level (as in <tt>[.0712.0020.0008.<b>0044</b>]</tt>) which is    
+computable. For more information on that, see <a href="tr10-8.html#Weight_Dervation">§7    
+Weight Derivation</a>.</p>   
+<p>Implementations can also add more customizable levels, as discussed above    
+under conformance. For example, an implementation might want to be capable not    
+only of handling the standard Unicode Collation, but also capable of emulating    
+an EBCDIC multi-level ordering (having a fourth-level EBCDIC binary order).</p>   
+<h4><a name="§3.2.2_Variable_Collation_Elements"></a>3.2.2 <a   
+name="Alternate Weighting">Alternate Weighting</a></h4>   
+<p>Collation elements that are marked with an asterisk in a Unicode Collation    
+Element Table are known as <i>variable collation elements.</i></p>   
+<table width="100%" border="1" cellspacing="2" cellpadding="1">   
+  <tr>   
+    <th valign="TOP" align="LEFT" height="17" width="15%">   
+      <p align="LEFT">Character</th>   
+    <th valign="TOP" align="LEFT" width="30%">   
+      <p align="LEFT">Collation Element</th>   
+    <th valign="TOP" align="LEFT">   
+      <p align="LEFT">Name</th>   
+  </tr>   
+  <tr>   
+    <td height="17" valign="TOP"><tt>0020 &quot; &quot;</tt></td>   
+    <td valign="TOP"><tt>[*0209.0020.0002]</tt></td>   
+    <td valign="TOP">SPACE</td>   
+  </tr>   
+</table>   
+<p>Based on the setting of the alternate weighting tag, collation elements can    
+be reweighted in the following ways, with the default being <i><b>Shifted</b>:</i></p>   
+<ul>   
+  <li><b>Blanked:</b> Variable collation elements are reset to ignorable at    
+    levels one through three. For example,   
+    <ul>   
+      <li><i>SPACE</i> would have the value <tt>[.0000.0000.0000]</tt>   
+      <li><i>Capital A</i> would be unchanged, with the value <tt>[.06D9.0020.0008]</tt>   
+    </ul>   
+  <li><b>Non-ignorable: </b>Variable collation elements are not reset to    
+    ignorable, and get the weights explicitly mentioned in the file.   
+    <ul>   
+      <li><i>SPACE </i>would have the value <tt>[.0209.0020.0002]</tt>   
+      <li><i>Capital A</i> would be unchanged, with the value <tt>[.06D9.0020.0008]</tt>   
+    </ul>   
+  <li><b>Shifted:</b> Variable collation elements are set to ignorable at levels    
+    one through three. In addition, a new final-level weight is appended, whose    
+    value depends on the type:   
+    <div align="center">   
+      <center>   
+      <table border="1">   
+        <tr>   
+          <th width="33%">Type</th>   
+          <th width="33%">L4</th>   
+          <th width="34%">Examples</th>   
+        </tr>   
+        <tr>   
+          <td width="33%"><i>Completely Ignorable</i></td>   
+          <td width="33%">0000</td>   
+          <td width="34%"><i>NULL</i><tt><br>   
+            [.0000.0000.0000.0000]&nbsp;</tt></td>   
+        </tr>   
+        <tr>   
+          <td width="33%"><i>Variable</i></td>   
+          <td width="33%">old L1</td>   
+          <td width="34%"><i>SPACE</i><tt><br>   
+            [.0000.0000.0000.0209]</tt></td>   
+        </tr>   
+        <tr>   
+          <td width="33%"><i>Neither</i></td>   
+          <td width="33%">FFFF</td>   
+          <td width="34%"><i>Capital A<br>   
+            </i><tt>[.06D9.0020.0008.FFFF]</tt></td>   
+        </tr>   
+      </table>   
+      </center>   
+    </div>   
+  <li><b>Shift-Trimmed:</b> the same as <b>Shifted</b>, except that all trailing    
+    FFFFs are trimmed from the sort key. This option is designed to emulate    
+    POSIX behavior.   
+</ul>   
+<blockquote>   
+  <p><b>Note: </b>The <i>shifted</i> option provides for improved orderings when    
+  the variable collation elements are ignorable, while still using only    
+  requiring three fields to be stored in memory for each collation element. It    
+  does result in somewhat longer sort keys, although they can be compressed (see    
+  <a href="tr10-8.html#Reducing_Sort_Key_Lengths">§6.1 Reducing Sort Key Lengths</a> and <a   
+  href="tr10-8.html#Reducing Table Sizes">§6.3 Reducing Table Sizes)</a>.</p>   
+</blockquote>   
+<p align="left">The following gives an example of the differences between    
+orderings using the different options for variable collation elements. In this    
+example, sample strings differ by the third character: a letter, <i>space,</i>    
+'-'&nbsp;<i>hyphen-minus (002D)</i>, or '-'&nbsp;<i>hyphen (2010);</i> followed    
+by an uppercase/lowercase distinction. In the first column below, the words with    
+<i>hyphen-minus</i> and <i>hyphen</i> are separated by <i>deluge,</i> since an <i>l</i>    
+comes between them in Unicode code order. In the second column, they are grouped    
+together but before all letters in the third position. This is because they are    
+no longer ignorable, and have primary values that differ from the letters. In    
+the third column, the <i>hyphen-minus</i> and <i>hyphen</i> are grouped    
+together, and their differences are less significant than between the deluge. In    
+this case, it is because they are ignorable, but their fourth level differences    
+are according to the original primary order, which is more intuitive than    
+Unicode order.</p>   
+<div align="center">   
+  <center>   
+  <table border="1" cellpadding="2" cellspacing="2">   
+    <tr>   
+      <th valign="top">   
+        <p align="left">Blanked</p>   
+      </th>   
+      <th valign="top">   
+        <p align="left">Non-<br>   
+        ignorable</p>   
+      </th>   
+      <th valign="top">   
+        <p align="left">Shift</p>   
+      </th>   
+      <th valign="top">   
+        <p align="left">Shift-<br>   
+        Trimmed</p>   
+      </th>   
+    </tr>   
+    <tr>   
+      <td align="left" valign="top">   
+        <p align="left">death<br>   
+        <font color="#0000FF">de luge<br>   
+        de-luge</font><br>   
+        deluge<br>   
+        <font color="#0000FF">de-luge<br>   
+        de Luge<br>   
+        de-Luge</font><br>   
+        deLuge<br>   
+        <font color="#0000FF">de-Luge</font><br>   
+        demark</p>   
+      </td>   
+      <td align="left" valign="top">   
+        <p align="left"><font color="#0000FF">de luge<br>   
+        de Luge<br>   
+        de-luge<br>   
+        de-Luge<br>   
+        de-luge<br>   
+        de-Luge</font><br>   
+        death<br>   
+        deluge<br>   
+        deLuge<br>   
+        demark</p>   
+      </td>   
+      <td align="left" valign="top">   
+        <p align="left">death<br>   
+        <font color="#0000FF">de luge<br>   
+        de-luge<br>   
+        de-luge</font><br>   
+        deluge<br>   
+        <font color="#0000FF">de Luge<br>   
+        de-Luge<br>   
+        de-Luge<br>   
+        deLuge</font><br>   
+        demark</p>   
+      </td>   
+      <td align="left" valign="top">   
+        <p align="left">death<br>   
+        deluge<br>   
+        <font color="#0000FF">de luge<br>   
+        de-luge<br>   
+        de-luge</font><br>   
+        deLuge<br>   
+        <font color="#0000FF">de Luge<br>   
+        de-Luge<br>   
+        de-Luge</font><br>   
+        demark</p>   
+      </td>   
+    </tr>   
+  </table>   
+  </center>   
+</div>   
+<p>Implementations that support alternate weighting do not have to support <i>interleaved</i>    
+primary weights. That is, an implementation can assume that</p>   
+<blockquote>   
+  <p>For any two collation elements V and N, where A has is variable and N is    
+  not:</p>   
+  <ul>   
+    <li>V<sub>1</sub> &gt; 0</li>   
+    <li>if N<sub>1</sub> ≠ 0, then N<sub>1</sub> &gt; V<sub>1</sub></li>   
+  </ul>   
+</blockquote>   
+<p>This allows for more compact storage of memory tables. Rather than using a    
+bit per collation element to determine whether the collation element is    
+variable, the implementation only needs to store the maximum primary value for    
+all the variable elements. All collation elements with primary weights from 1 to    
+that maximum are variables; all other collation elements are not.</p>   
+<h2><a name="Main_Algorithm"></a>4 Main Algorithm</h2>   
+<p>The main algorithm has four steps. First is to normalize each input string,    
+second is to produce an array of collation elements for each string, and third    
+is to produce a sort key for each string from the collation elements. Two sort    
+keys can then be compared with a binary comparison; the result is the ordering    
+for the original strings.</p>   
+<h3><a name="Step_1"></a>4.1 Normalize each input string</h3>   
+<p><b>Step 1. </b>Produce a normalized form of each input string, applying the    
+following two steps:</p>   
+<p><b>1.1. </b>Use the Unicode canonical algorithm to decompose characters    
+according to the canonical mappings. That is, put the string into Normalization    
+Form D (see <a href="http://www.unicode.org/unicode/reports/tr15/">UTR #15:    
+Unicode Normalization Forms</a>).</p>   
+<ul>   
+  <li>Conformant implementations may skip this step in certain circumstances:    
+    see <a href="tr10-8.html#Weight_Dervation">§7 Weight Derivation</a> for more    
+    information.</li>   
+</ul>   
+<b>1.2. </b>If any character is marked as <i>rearranging</i> (see <a   
+href="tr10-8.html#Rearrangement">§3.1.3 Rearrangement</a>), swap it and the succeeding    
+character (if there is one). In practice, rearranging characters should never    
+appear adjacent to one another. If for some reason they do, then successive    
+pairs in the sequence will be swapped.   
+<blockquote>   
+  <p>For example, if digits 1-4 were <i>rearranging</i>, then    
+  &quot;1x...12...123y&quot; would result in&nbsp; &quot;x1...21...21y3&quot;</p>   
+</blockquote>   
+<table width="100%" border="1" cellspacing="2" cellpadding="1">   
+  <caption><i>Example:</i></caption>   
+  <tr>   
+    <td valign="TOP" width="15%">   
+      <p align="left">input string:</p>   
+    </td>   
+    <td valign="TOP">   
+      <p align="left">cáb</p>   
+    </td>   
+  </tr>   
+  <tr>   
+    <td valign="TOP">   
+      <p align="left">normalized string:</p>   
+    </td>   
+    <td valign="TOP">   
+      <p align="left">ca´b</p>   
+    </td>   
+  </tr>   
+</table>   
+<h3><a name="Step_2"></a>4.2 Produce an array of collation elements for each    
+string</h3>   
+<p><b>Step 2. </b>First we define a combining mark in a string to be <i>blocked</i>    
+if there is another combining mark of the same canonical combining class or zero    
+between it and its base character.</p>   
+<p>The collation element array is built by sequencing through the normalized    
+form as follows:</p>   
+<b>2.1. </b>Find the longest initial substring S at each point that has a match    
+in the table.   
+<blockquote>   
+  <p><b>2.1.1. </b>If there are any combining marks following S, process each    
+  combining mark C.</p>   
+  <p><b>2.1.2. </b>If C is not blocked, find if S + C has a match in the table.</p>   
+  <p><b>2.1.3. </b>If there is a match, replace S by S + C, and remove C.</p>   
+</blockquote>   
+<p><b>2.4.</b> Fetch the corresponding collation element(s) from the table if    
+there is a match. If there is no match, synthesize a weight as described in <a   
+href="tr10-8.html#Implicit Weights">§7.1 Derived Collation Elements</a></p>   
+<p><b>2.5. </b>Process collation elements according to the alternative-weight    
+setting, as described in <a href="tr10-8.html#§3.2.2_Variable_Collation_Elements">§3.2.2    
+Alternate Weighting</a>.</p>   
+<p><b>2.6.</b> Append the collation element(s) to the collation element array.</p>   
+<p><b>2.7. </b>Proceed to the next point in the string (past S).</p>   
+<p><b>2.8. </b>Loop until the end of the string is reached.</p>   
+<p><i>Conformant implementations may skip steps 2.1.1 through 2.1.3 if their    
+repertoire of supported character sequences does not require this level of    
+processing.</i></p>   
+<blockquote>   
+  <p><b>Note: </b>The reason for considering the extra combining marks C is that    
+  otherwise irrelevant characters could interfere with matches in the table. For    
+  example, suppose that the contraction <i>&lt;a, combining_ring&gt;</i> (=&nbsp;<i>å</i>)    
+  is ordered after <i>z</i>. If a string consists of the three characters <i>&lt;a,    
+  combining_ring, combining_cedilla&gt;</i>, then the normalized form is <i>&lt;a,    
+  combining_cedilla, combining_ring&gt;</i>, which separates the <i>a</i> from    
+  the <i>combining_ring</i>. If we didn't have the step of considering the extra    
+  combining marks, this string would compare incorrectly as after <i>a</i> and    
+  not after <i>z</i>.</p>   
+  <p>If the desired ordering treats <i>&lt;a, combining_cedilla&gt;</i> as a    
+  contraction which should take precedence over <i>&lt;a, combining_ring&gt;,</i>    
+  then an additional mapping for the combination <i>&lt;a, combining_ring,    
+  combining_cedilla&gt;</i> can be introduced to produce this effect.</p>   
+  <p><b>Note: </b><font color="#000000">For conformance to Unicode canonical    
+  equivalence, only unblocked combining marks are matched. For example, <i>&lt;a,    
+  combining_macron, combining_ring&gt;</i> would compare as after <i>a-macron</i>,    
+  and not after <i>z</i>. As in the previous note, additional mappings can be    
+  added to customize behavior.</font></p>   
+</blockquote>   
+<table width="100%" border="1" cellspacing="2" cellpadding="1">   
+  <caption><i>Example:</i></caption>   
+  <tr>   
+    <td valign="TOP" width="15%"><font color="#000000">normalized string:</font></td>   
+    <td valign="TOP"><font color="#000000">ca</font>´<font color="#000000">b</font></td>   
+  </tr>   
+  <tr>   
+    <td valign="TOP"><font color="#000000">collation element array:</font></td>   
+    <td valign="TOP"><tt><font color="#000000" size="-1">[0706.0020.0002],    
+      [06D9.0020.0002], [0000.0021.0002], [06EE.0020.0002]</font></tt></td>   
+  </tr>   
+</table>   
+<h3><a name="Step_3"></a>4.3 Form a sort key for each string</h3>   
+<p><b>Step 3. </b>The sort key is formed by successively appending weights from    
+the collation element array. The weights are appended from each level in turn,    
+from 1 to 3. (Backwards weights are inserted in reverse order.)</p>   
+<p>An implementation may allow the <i>maximum level</i> to be set to a smaller    
+level than the available levels in the collation element array. For example, if    
+the maximum level is set to 2, then level 3 and higher weights are not appended    
+to the sort key. Thus any differences at levels 3 and higher will be ignored,    
+leveling any such differences in string comparison.</p>   
+<p>Here is a more detailed statement of the algorithm:</p>   
+<b>3.1. </b>For each weight level L from 1 to the maximum level in the collation    
+element array,   
+<blockquote>   
+  <p><b>3.2. </b>If L is not 1, append a <i>level separator</i></p>   
+  <p><b>3.3. </b>If the collation element table is forwards at level L,</p>   
+  <blockquote>   
+    <p><b>3.4. </b>For each collation element CE in the array</p>   
+    <blockquote>   
+      <p><b>3.5. </b>Append CE<sub>L</sub> to the sort key if CE<sub>L</sub> is    
+      non-zero.</p>   
+    </blockquote>   
+  </blockquote>   
+  <p><b>3.6. </b>Else the collation table is backwards at level L, so</p>   
+  <blockquote>   
+    <p><b>3.7. </b>Form a list of all the non-zero CE<sub>L</sub> values.</p>   
+    <p><b>3.8. </b>Reverse that list</p>   
+    <p><b>3.9. </b>Append the CE<sub>L</sub> values from that list to the sort    
+    key.</p>   
+  </blockquote>   
+  <p><b>Note: </b>The level separator is zero (0000), which is guaranteed to be    
+  lower than any weight in the resulting sort key. This guarantees that when two    
+  strings of unequal length are compared, where the shorter string is a prefix    
+  of the longer string, the longer string is always sorted after the shorter (in    
+  the absence of special features like contractions). For example:</p>   
+  <p align="center">&quot;abc&quot; &lt; &quot;abcX&quot; where &quot;X&quot;    
+  can be any character(s)</p>   
+</blockquote>   
+<table width="100%" border="1" cellspacing="2" cellpadding="1">   
+  <caption><i>Example:</i></caption>   
+  <tr>   
+    <td valign="TOP" height="30" width="15%">collation element array:</td>   
+    <td valign="TOP"><tt>[0706.0020.0002], [06D9.0020.0002], [0000.0021.0002],    
+      [06EE.0020.0002]</tt></td>   
+  </tr>   
+  <tr>   
+    <td valign="TOP" height="28">sort key:</td>   
+    <td valign="TOP"><tt>0706 06D9 06EE 0000 0020 0020 0021 0020 0000 0002 0002    
+      0002 0002</tt></td>   
+  </tr>   
+</table>   
+<h3><a name="Step_4"></a>4.4 Compare the sort keys</h3>   
+<p><b>Step 4. </b>Compare the sort keys for each of the input strings, using a    
+binary comparison. This means that:</p>   
+<ul>   
+  <li>Level 3 differences are ignored if there are any Level 1 or 2 differences   
+  <li>Level 2 differences are ignored if there are any Level 1 differences   
+  <li>Level 1 differences are never ignored.   
+</ul>   
+<table width="100%" border="1" cellspacing="2" cellpadding="1">   
+  <caption><i>Example:</i></caption>   
+  <tr>   
+    <th valign="TOP" align="LEFT" height="26">   
+      <p align="LEFT">String</th>   
+    <th valign="TOP" align="LEFT">   
+      <p align="LEFT">Sort Key</th>   
+  </tr>   
+  <tr>   
+    <td valign="TOP" height="28"><font color="#000000">cab</font></td>   
+    <td valign="TOP"><tt><u><b><font color="#ff9c05">0706</font></b></u> 06D9    
+      06EE 0000 0020 0020 <u><b><font color="#00ba00">0020</font></b></u> 0000 <u><b><font   
+      color="#0099ff">0002</font></b></u> 0002 0002</tt></td>   
+  </tr>   
+  <tr>   
+    <td height="30">Cab</td>   
+    <td><tt><u><b><font color="#ff9c05">0706</font></b></u> 06D9 06EE 0000 0020    
+      0020 <u><b><font color="#00ba00">0020</font></b></u> 0000 <u><b><font   
+      color="#0099ff">0008</font></b></u> 0002 0002</tt></td>   
+  </tr>   
+  <tr>   
+    <td valign="TOP" height="14">cáb</td>   
+    <td valign="TOP"><tt><u><b><font color="#ff9c05">0706</font></b></u> 06D9    
+      06EE 0000 0020 0020 <u><b><font color="#00ba00">0021</font></b></u> 0020    
+      0000 0002 0002 0002 0002</tt></td>   
+  </tr>   
+  <tr>   
+    <td height="28">dab</td>   
+    <td><tt><u><b><font color="#ff9c05">0712</font></b></u> 06D9 06EE 0000 0020    
+      0020 0020 0000 0002 0002 0002</tt></td>   
+  </tr>   
+</table>   
+<p>In this example, &quot;cab&quot; &lt;<sub>3</sub> &quot;Cab&quot; &lt;<sub>2</sub>    
+&quot;cáb&quot; &lt;<sub>1</sub> &quot;dab&quot;. The differences that produce    
+the ordering are shown by the <u><b>bold underlined</b></u> items:</p>   
+<ul>   
+  <li>For the first two strings, the first difference is in <b><tt><font   
+    color="#0099ff">0002</font></tt></b> vs. <b><tt><font color="#0099ff">0008</font></tt></b>    
+    (Level&nbsp;3)   
+  <li>For the middle two strings the first difference is in <b><tt><font   
+    color="#00ba00">0020</font></tt></b> vs. <b><tt><font color="#00ba00">0021</font></tt></b>    
+    (Level&nbsp;2)   
+  <li>For the last two strings, the first difference is in <b><tt><font   
+    color="#ff9c05">0706</font></tt></b> vs. <b><tt><font color="#ff9c05">0712</font></tt></b>    
+    (Level&nbsp;1).   
+</ul>   
+<blockquote>   
+  <p><b>Note: </b><a name="ill-formed_reason"></a>At this point we can explain    
+  the reason for disallowing <a href="tr10-8.html#ill-formed_definition">ill-formed weights</a>.    
+  If ill-formed weights were allowed, the ordering of elements can be    
+  incorrectly reflected in the sort key. For example, suppose the secondary    
+  weights of the Latin characters were zero (ignorable) and that (as normal) the    
+  primary weights of case-variants are equal: that is, <i>a<sub>1</sub> = A<sub>1</sub>.</i>    
+  Then the following incorrect keys would be generated:</p>   
+  <ol>   
+    <li><i>&quot;áe&quot; = &lt;a, acute, e&gt; =&gt; [a<sub>1</sub> e<sub>1</sub>    
+      0000 acute<sub>2</sub> 0000 <u><b>a<sub>3</sub></b></u> acute<sub>3</sub>    
+      e<sub>3</sub>...]</i>   
+    <li><i>&quot;Aé&quot; = &lt;A, e, acute&gt; =&gt; [a<sub>1</sub> e<sub>1</sub>    
+      0000 acute<sub>2</sub> 0000 <u><b>A<sub>3</sub></b></u> acute<sub>3</sub>    
+      e<sub>3</sub>...]</i>   
+  </ol>   
+  <p>Since the secondary weights for <i>a, A, </i>and<i> e</i> are lost in    
+  forming the sort key, the relative order of the acute is also lost, resulting    
+  in an incorrect ordering based solely on the case of <i>A</i> vs <i>a</i>.    
+  With well-formed weights, this does not happen, and you get the following    
+  correct ordering:</p>   
+  <ol>   
+    <li><i>&quot;Aé&quot; = &lt;A, e, acute&gt; =&gt; [a<sub>1</sub> e<sub>1</sub>    
+      0000 a<sub>2</sub> <u><b>e<sub>2</sub></b></u> acute<sub>2</sub> 0000 a<sub>3</sub>    
+      acute<sub>3</sub> e<sub>3</sub>...]</i>   
+    <li><i>&quot;áe&quot; = &lt;a, acute, e&gt; =&gt; [a<sub>1</sub> e<sub>1</sub>    
+      0000 a<sub>2</sub> <u><b>acute<sub>2</sub></b></u> e<sub>2</sub> 0000 A<sub>3</sub>    
+      acute<sub>3</sub> e<sub>3</sub>...]</i>   
+  </ol>   
+  <p>However, there are circumstances--typically in expansions--where    
+  higher-level weights in collation elements can be zeroed (resulting in    
+  ill-formed collation elements) without consequence (see <a   
+  href="tr10-8.html#Large Weight Values">§6.2 Large Weight Values</a>). Implementations    
+  are free to do this as long as they produce the same result as with    
+  well-formed tables.</p>   
+</blockquote>   
+<h2 align="left"><a name="Tailoring"></a>5 Tailoring</h2>   
+<p align="left">Tailoring is any well-defined syntax that takes the Default    
+Unicode Collation Element Table and produces another well-formed Unicode    
+Collation Element Table. Such syntax will usually allow for the following    
+capabilities:</p>   
+<ol>   
+  <li>   
+    <p align="left">Reordering any character (or contraction) with respect to    
+    others in the standard ordering. Such a reordering can represent a Level 1    
+    difference, Level 2 difference, Level 3 difference, or identity (in levels 1    
+    to 3). Since such reordering includes sequences, arbitrary multiple mappings    
+    can be specified.   
+  <li>   
+    <p align="left">Setting levels to be backwards (French) or forwards    
+    (normal). Typically this is only needed for the secondary level.   
+  <li>   
+    <p align="left">Set alternate weighting options.   
+  <li>   
+    <p align="left">Customizing the exact list of rearranging characters.   
+  <li>   
+    <p align="left">Customizing the exact list of variable collation elements.   
+</ol>   
+<h3 align="left"><a name="Preprocessing"></a>5.1 Preprocessing</h3>   
+<p align="left">In addition to tailoring, some implementation may choose to    
+preprocess the text for special purposes. Once such preprocessing is done, the    
+standard algorithm can be applied.</p>   
+<p align="left">Examples include:</p>   
+<ul>   
+  <li>   
+    <p align="left">mapping &quot;McBeth&quot; to &quot;MacBeth&quot;   
+  <li>   
+    <p align="left">mapping &quot;St.&quot; to &quot;Street&quot; or    
+    &quot;Saint&quot;, depending on the context   
+  <li>   
+    <p align="left">padding digits with zeros to approximate numeric order   
+  <li>   
+    <p align="left">dropping articles, such as <i>a</i> or <i>the</i>   
+  <li>   
+    <p align="left">using extra information, such as pronunciation data for Han    
+    characters   
+</ul>   
+<p align="left">Such preprocessing is outside of the scope of this document.</p>   
+<h2 align="left"><a name="implementationNotes"></a>6 Implementation Notes</h2>   
+<p align="left">As noted above for efficiency, implementations may vary from    
+this logical algorithm so long as they produce the same result. The following    
+items discuss various techniques that can be used for reducing sort key length,    
+reducing table sizes, customizing for additional environments, searching, and    
+other topics.</p>   
+<h3 align="left"><a name="Reducing_Sort_Key_Lengths"></a>6.1 Reducing Sort Key    
+Lengths</h3>   
+<p align="left">The following discuss methods of reducing sort key lengths. If    
+these methods are applied to all of the sort keys produced by an implementation,    
+they can result in significantly shorter and more efficient sort keys while    
+retaining the same ordering.</p>   
+<h4>6.1.1 <a name="Eliminating_level_separators">Eliminating level separators</a></h4>   
+<p>Level separators are not needed between two levels in the sort key, if the    
+weights are properly chosen. For example, if all L3 weights are less than all L2    
+weights, then no level separator is needed between them. If there is a fourth    
+level, then the separator before it needs to be retained.</p>   
+<p>For example, here is a sort key with these level separators removed.</p>   
+<table width="90%" border="1" cellspacing="2" cellpadding="1">   
+  <tr>   
+    <th valign="TOP" align="LEFT" height="17">   
+      <p align="LEFT">String</th>   
+    <th valign="TOP" align="LEFT">   
+      <p align="LEFT">Sort Key</th>   
+  </tr>   
+  <tr>   
+    <td valign="TOP" height="27" width="15%">càb (0)</td>   
+    <td valign="TOP"><tt>0706 06D9 06EE <b>0000</b> 0020 0020 0021 0020 <b>0000</b>    
+      0002 0002 0002 0002</tt></td>   
+  </tr>   
+  <tr>   
+    <td valign="TOP" height="27">càb (1)</td>   
+    <td valign="TOP"><tt>0706 06D9 06EE 0020 0020 0021 0020 0002 0002 0002 0002</tt></td>   
+  </tr>   
+</table>   
+<p>While this technique is relatively easy to implement, it can interfere with    
+other compression methods.</p>   
+<h4>6.1.2 <a name="L2/L3_in_8_bits">L2/L3 in 8 bits</a></h4>   
+<p>The L2 and L3 weights commonly are small values. Where that condition occurs    
+for all possible values, they can then be represented as single 8-bit    
+quantities.</p>   
+<p>Here is the above example with both these changes (and grouping by bytes).    
+Note that the separator has to remain after the primary weight when combining    
+these techniques. If any separators are retained (such as before the fourth    
+level), they need to have the same width as the previous level.</p>   
+<table border="1" cellspacing="2" cellpadding="1" width="90%">   
+  <tr>   
+    <th valign="TOP" align="LEFT" height="17">   
+      <p align="LEFT">String</th>   
+    <th valign="TOP" align="LEFT">   
+      <p align="LEFT">Sort Key</th>   
+  </tr>   
+  <tr>   
+    <td valign="TOP" height="29" width="15%">càb (0)</td>   
+    <td valign="TOP"><tt>07 06 06 D9 06 EE <b>00 00</b> 00 20 00 20 00 21 00 20    
+      00 00 00 02 00 02 00 02 00 02</tt></td>   
+  </tr>   
+  <tr>   
+    <td valign="TOP" height="27">càb (1,2)</td>   
+    <td valign="TOP"><tt>07 06 06 D9 06 EE <b>00 00</b> 20 20 21 20 02 02 02 02</tt></td>   
+  </tr>   
+</table>   
+<h4>6.1.3 <a name="Machine_Words">Machine Words</a></h4>   
+<p>The sort key can be represented as an array of different quantities depending    
+on the machine architecture. For example, comparisons as arrays of 32-bit    
+quantities may be much faster on some machines. If this is done, the original is    
+to be padded with trailing (not leading) zeros as necessary.</p>   
+<table width="90%" border="1" cellspacing="2" cellpadding="1">   
+  <tr>   
+    <th valign="TOP" align="LEFT" height="19">   
+      <p align="LEFT">String</th>   
+    <th valign="TOP" align="LEFT">   
+      <p align="LEFT">Sort Key</th>   
+  </tr>   
+  <tr>   
+    <td valign="TOP" height="31" width="15%">càb (1,2)</td>   
+    <td valign="TOP"><tt>07 06 06 D9 06 EE 00 00 20 20 21 20 02 02 02 02</tt></td>   
+  </tr>   
+  <tr>   
+    <td valign="TOP" height="15">càb (1,2,3)</td>   
+    <td valign="TOP"><tt>070606D9 06EE0000 20202120 02020202</tt></td>   
+  </tr>   
+</table>   
+<h4>6.1.4 <a name="Run-length_Compression">Run-length Compression</a></h4>   
+<p>Generally sort keys don't differ much in the secondary or tertiary weights,    
+so you tend to end up with keys with a lot of repetition. This also occurs with    
+quarternary weights generated with the shifted parameter. By the structure of    
+the collation element tables, there are also many weights that are never    
+assigned at a given level in the sort key. You can take advantage of these    
+regularities in these sequences to compact the length — while retaining the    
+same sort sequence — by using the following technique. (There are other    
+techniques that can also be used.)</p>   
+<p>This is a logical statement of the process: the actual implementation can be    
+much faster and performed as the sort key is being generated.</p>   
+<ul>   
+  <li>For each level <b><i>n, </i></b>find the most common value COMMON produced    
+    at that level by the collation element table for typical strings. For    
+    example, for the Default Unicode Collation Element Table, this is:   
+    <ul>   
+      <li>0020 for the secondaries (corresponding to unaccented characters)   
+      <li>0002 for tertiaries (corresponding to lowercase or unmarked letters)   
+      <li>FFFF for quaternaries (corresponding to non-ignorables with the    
+        shifted parameter)   
+    </ul>   
+  <li>Reassign the weights in the collation element table at level <b><i>n</i></b>    
+    to create a gap of size GAP above COMMON. Typically for secondaries or    
+    tertiaries this is done after the values have been reduced to a byte range    
+    by the above methods. Here is a mapping that moves weights up or down to    
+    create a gap in a byte range.<br>   
+    <tt>w -&gt; w + 01 - MIN, for MIN &lt;= w &lt; COMMON<br>   
+    w -&gt; w + FF - MAX, for COMMON &lt; w &lt;= MAX</tt>   
+  <li>At this point, weights go from 1 to MINTOP, and from MAXBOTTOM to MAX.    
+    You'll use these new unassigned values to run-length encode sequences of    
+    COMMON weights.   
+  <li>When generating a sort key, look for maximal sequences of <b>m</b> COMMON    
+    values in a row. Let W be the weight right after the sequence.   
+    <ul>   
+      <li>If W &lt; COMMON (or there is no W), replace the sequence by a    
+        synthetic low weight equal to (MINTOP&nbsp;+&nbsp;m).   
+      <li>If W &gt; COMMON, replace the sequence by a synthetic high weight    
+        equal to (MAXBOTTOM&nbsp;-&nbsp;m).   
+    </ul>   
+    <p>In the following example, the low weights are 01, 02; the high weights    
+    are FE, FF; and the common weight is 77.   
+</ul>   
+<p align="center"><i>Examples</i></p>   
+<div align="center">   
+  <center>   
+  <table border="1" cellspacing="2" cellpadding="2">   
+    <tr>   
+      <th valign="TOP" align="LEFT" width="50%">   
+        <p align="center">Original Weights</th>   
+      <th valign="TOP" align="LEFT" width="50%">   
+        <p align="center">Compressed Weights</th>   
+    </tr>   
+    <tr>   
+      <td valign="top" width="50%">   
+        <pre>01
+
+02
+
+77 01
+
+77 02
+
+77 77 01
+
+77 77 02
+
+77 77 77 01
+
+77 77 77 02
+
+...
+
+77 77 77 FE
+
+77 77 77 FF
+
+77 77 FE
+
+77 77 FF
+
+77 FE
+
+77 FF
+
+FE
+
+FF</pre>   
+      </td>   
+      <td valign="top" width="50%">   
+        <pre>01
+
+02
+
+03 01
+
+03 02
+
+04 01
+
+04 02
+
+05 01
+
+05 02
+
+...
+
+FB FE
+
+FB FF
+
+FC FE
+
+FC FF
+
+FD FE
+
+FD FF
+
+FE
+
+FF</pre>   
+      </td>   
+    </tr>   
+  </table>   
+  </center>   
+</div>   
+<ul>   
+  <li>The last step is a bit too simple, since we have to keep the synthetic    
+    weights from colliding with other values with long strings of COMMON    
+    weights. This is done by using a sequence of synthetic weights, absorbing as    
+    much length into each one as possible: define a value BOUND between MINTOP    
+    and MAXBOTTOM (the exact value can be chosen based on the expected frequency    
+    of synthetic low weights vs. high weights for the particular collation    
+    element table).   
+    <ul>   
+      <li>If a synthetic low weight would not be less than BOUND, use a sequence    
+        of low weights of the form (BOUND-1)..(BOUND-1)(MINTOP&nbsp;+&nbsp;remainder)    
+        to express the length of the sequence.   
+      <li>Similarly, if a synthetic high weight would be less than BOUND, use a    
+        sequence of high weights of the form (BOUND)..(BOUND)(MAXBOTTOM&nbsp;-&nbsp;remainder).   
+    </ul>   
+</ul>   
+<p>The result of this process are keys that are never greater than the original,    
+are generally much shorter, and result in the same comparisons.</p>   
+<h3><a name="Large_Weight_Values"></a>6.2 Large Weight Values</h3>   
+<p><a name="ill-formed_example"></a>If a collation sequence requires more than    
+65,535 weight values (or 65,024 values where zero bytes are avoided), this can    
+still be accommodated by using multiple collation elements for a single    
+character. For example, suppose that 50,000 UTF-16 (surrogate) private use    
+characters are assigned in a particular implementation, and that these are to be    
+sorted after X. Simply assign them all dual collation elements of the form</p>   
+<blockquote>   
+  <code>[X<sub>1</sub>+1).0000.0000], [yyyy.zzzz.wwww]</code>   
+</blockquote>   
+<p>They will then sort properly with respect to each other and to the rest of    
+the characters. (The first collation element is one of the instances where    
+ill-formed collation elements are allowed. Since the second collation element is    
+well-formed and the first element will only occur in combination, ordering is    
+preserved.)</p>   
+<h3><a name="Reducing_Table_Sizes"></a>6.3 Reducing Table Sizes</h3>   
+<p>The data tables required for full Unicode sorting can be quite sizable. This    
+section discusses ways to significantly reduce the table size in memory. These    
+have very important implications for implementations.</p>   
+<h4>6.3.1 <a name="Contiguous_weight_ranges">Contiguous Weight Ranges</a></h4>   
+<p>The Default Unicode Collation Element Table has secondary weights that are    
+greater than 00FF. This is the result of the derivation described in <a   
+href="tr10-8.html#Weight Dervation">§7 Weight Derivation</a>. However, these values can be    
+compacted to a range of values that don't exceed 00FF. Whenever collation    
+elements have different primary weights, the ordering of their secondary weights    
+is immaterial. Thus all of the secondaries that share a single primary can be    
+renumbered to a contiguous range without affecting the resulting order.    
+Composite characters still need to be handled correctly if normalization is    
+avoided as discussed in <a href="tr10-8.html#Weight_Dervation">§7 Weight Derivation</a>.</p>   
+<p>For example, for the primary value 0820 (for the letter O), there are 31    
+distinct secondary values ranging from 0020 to 012D. These can be renumbered to    
+the contiguous range from 0020 to 003F, which is less than 00FF.</p>   
+<h4>6.3.2 <a name="Escape_hatch">Escape Hatch</a></h4>   
+<p>Although the secondary and tertiary weights for the Default Unicode Collation    
+Element Table can both fit within one byte, of course, any particular tailored    
+table could conceivably end up with secondary or tertiary weights that exceed    
+what can be contained in a single byte. However, the same technique used for    
+large weight values can also be used for implementations that do not want to    
+handle more than 00FF values for a particular weight.</p>   
+<p>For example, the Java collation implementation only stores 8-bit quantities    
+in level 2 and level 3. However, characters can be given L2 or L3 weights with    
+greater values by using a series of two collation elements. For example, with    
+characters requiring 2000 weights at L2, then 248 characters can be given single    
+keys, while 1792 are given 2 collation keys of the form [yyyy.00zz.00ww]    
+[0000.00nn.0000]. (The 248 can be chosen to be the higher frequency characters!)</p>   
+<h4>6.3.3 <a name="Leveraging_Unicode_tables">Leveraging Unicode Tables</a></h4>   
+<p>Since all canonically decomposable characters are decomposed in Step 1.1, no    
+collation elements need to be supplied for them. This includes a very large    
+number of characters, not only a large number of Latin and Greek characters, but    
+also the very large number of Hangul Syllables.</p>   
+<p>Since most compatibility decomposable characters in the default table can be    
+algorithmically generated from the decomposition, no collation elements need to    
+be stored for those decomposable characters: the collation elements can be    
+generated on the fly with only a few exceptions entered in the table. The    
+collation elements for the Han characters (unless tailored) are algorithmically    
+derived; no collation elements need to be stored for them either. For more    
+information, see <a href="tr10-8.html#Weight_Dervation">§7 Weight Derivation</a>.</p>   
+<p>This means that only a fraction of the total number of Unicode characters    
+needs to have an explicit collation element associated with them. This can cut    
+down the memory storage considerably.</p>   
+<h4>6.3.4 <a name="Reducing_the_Repertoire">Reducing the Repertoire</a></h4>   
+<p>If characters are not fully supported by an implementation, then their code    
+points can be treated as if they were unassigned. This allows them to be    
+algorithmically constructed from code point values instead of including them in    
+a table. This can significantly reduce the size of the required tables. See <a   
+href="tr10-8.html#Implicit Weights">§7.1 Derived Collation Elements</a> for more    
+information.</p>   
+<h4>6.3.5 <a name="Memory_Table_Size">Memory Table Size</a></h4>   
+<p>Applying the above techniques, an implementation can thus safely pack all of    
+the data for a collation element into a single 32-bit quantity: 16 for the    
+primary, 8 for the secondary and 8 for the tertiary. Then applying techniques    
+such as the Two-Stage table approach described in Section 5.7 of The Unicode    
+Standard, Version 2.0, the mapping table from characters to collation elements    
+can both fast and small. For an example of how this can be done, see <a   
+href="tr10-8.html#Flat File Example">§6.11 Flat File Example</a>.</p>   
+<h3><a name="Avoiding_Zero_Bytes"></a>6.4 Avoiding Zero Bytes</h3>   
+<p>If the resulting sort key is to be a C-string, then zero bytes must be    
+avoided. This can be done by:</p>   
+<ul>   
+  <li>using the value 0101<sub>16</sub> for the level separator instead of 0000.   
+  <li>preprocessing the weight values to avoid zero bytes, such as remapping as    
+    follows:   
+    <ul>   
+      <li>x =&gt; 0101<sub>16</sub> + (x / 255)*256 + (x % 255)   
+    </ul>   
+  <li>Where the values are limited to 8-bit quantities (as discussed above),    
+    zero bytes are even more easily avoided by just using 01 as the level    
+    separator (where one is necessary), and mapping weights by   
+    <ul>   
+      <li>x =&gt; 01 + x.   
+    </ul>   
+</ul>   
+<h3><a name="Avoiding_Normalization"></a>6.5 Avoiding Normalization</h3>   
+<p><a name="noCombining"></a>Implementations that do not handle separate    
+combining marks can map precomposed characters (such as &quot;à&quot;) to    
+single collation elements with different Level 2 weights for the different    
+accents. For more information, see <a href="tr10-8.html#Weight_Dervation">§7 Weight    
+Derivation</a>. However, this does required including the mappings for these    
+characters in the collation table, which will increase the size substantially    
+unless the collation elements for the Hangul Syllables are computed    
+algorithmically.</p>   
+<h3><a name="Case_Comparisons"></a>6.6 Case Comparisons</h3>   
+<p>In some languages, it is common to sort lowercase before uppercase; in other    
+languages this is reversed. Often this is more dependent on the individual    
+concerned, and is not standard across a single language. It is strongly    
+recommended that implementations provide parameterization that allow uppercase    
+to be sorted before lowercase, and provide information as to the standard (if    
+any) for particular countries. This can easily be done to the Default Unicode    
+Collation Element Table before tailoring by remapping the L3 weights (see <a   
+href="tr10-8.html#Weight Dervation">§7 Weight Derivation</a>). It can be done after    
+tailoring by finding the case pairs and swapping the collation elements.</p>   
+<h3><a name="Incremental_Comparison"></a>6.7 Incremental Comparison</h3>   
+<p>Implementations do not actually have to produce full sort keys. Collation    
+elements can be incrementally generated as needed from two strings, and compared    
+with an algorithm that produces the same results as sort keys would have. The    
+choice of which algorithm to use depends on the number of comparisons between    
+the same strings.</p>   
+<ul>   
+  <li>Generally incremental comparison is <i>more</i> efficient than producing    
+    full sort keys if strings are only to be be compared once and if they are    
+    generally dissimilar, since differences are caught in the first few    
+    characters without having to process the entire string.   
+  <li>Generally incremental comparison is <i>less</i> efficient than producing    
+    full sort keys if items are to be compared multiple times.   
+</ul>   
+<p>However, it is very tricky to produce an incremental comparison that produces    
+correct results. For example, some implementations have not even been    
+transitive! Be sure to test any code for incremental comparison thoroughly.</p>   
+<h3><a name="Searching"></a>6.8 Searching</h3>   
+<p>The collation elements can also be used for searching, so that a proper    
+native-language match is produced. For example, &quot;ß&quot; will properly    
+match against &quot;ss&quot;. (Note that the lengths of the matching strings may    
+differ!) Users of search algorithms should be allowed to modify the comparison    
+strength, thus excluding differences at less significant levels. This is    
+especially useful for searching, but can also apply to comparison.</p>   
+<p>Excluding differences at Level 3 has the effect of ignoring case and    
+compatibility format distinctions between letters when searching. Excluding    
+differences at Level 2 has the effect of ignoring accentual distinctions when    
+searching.</p>   
+<h3><a name="Catching_Mismatches"></a>6.9 Catching Mismatches</h3>   
+<p>Sort keys from two different tailored collations cannot be compared, since    
+the weights may end up being rearranged arbitrarily. To catch this case,    
+implementations can produce a hash value from the collation data, and prepend it    
+to the sort key. Except in extremely rare circumstances, this will distinguish    
+the sort keys. The implementation then has the opportunity to signal an error.</p>   
+<h3><a name="Comparison_to_Java"></a>6.10 Tailoring Example: Java</h3>   
+<p>Java 2 implements a number of the tailoring features described in this    
+document. The following summarizes these features (for more information, see    
+Collator on <a href="http://java.sun.com/products/jdk/1.2/docs/api/">http://java.sun.com/products/jdk/1.2/docs/api/</a>).</p>   
+1. Java doesn't use a default table in the Unicode Collation Element format:    
+instead it always uses a tailoring syntax. Here is a description of the entries:   
+<p>&nbsp;   
+<table border="1" cellspacing="2" cellpadding="1" width="90%">   
+  <tr>   
+    <th valign="TOP" height="26">Syntax</th>   
+    <th valign="TOP">Description</th>   
+  </tr>   
+  <tr>   
+    <td height="28" valign="TOP">&nbsp;&amp; y &lt; x</td>   
+    <td valign="TOP">Make x primary-greater than y</td>   
+  </tr>   
+  <tr>   
+    <td height="25" valign="TOP">&nbsp;&amp; y ; x</td>   
+    <td valign="TOP">Make x secondary-greater than y</td>   
+  </tr>   
+  <tr>   
+    <td height="26" valign="TOP">&nbsp;&amp; y , x</td>   
+    <td valign="TOP">Make x tertiary-greater than y</td>   
+  </tr>   
+  <tr>   
+    <td height="26" valign="TOP">&nbsp;&amp; y = x</td>   
+    <td valign="TOP">Make x equal to y</td>   
+  </tr>   
+</table>   
+<br>   
+Either x or y can be more than one character, to handle contractions and    
+expansions. NULL is completely ignorable, so by using the above operations,    
+various levels of ignorable characters can be specified.   
+<p>2. Entries can be abbreviated in a number of ways:   
+<ul>   
+  <li>They do not need to be separated by newlines.</li>   
+  <li>Characters can be specified directly, instead of using their hexadecimal    
+    Unicode values.</li>   
+  <li>Wherever you have rules of the form &quot;x &lt; y &amp; y &lt; z&quot;,    
+    you can omit &quot;&amp; y&quot;, leaving just &quot;x &lt; y &lt; z&quot;.</li>   
+</ul>   
+<p>These can be done successively, so the following are equivalent in ordering.</p>   
+<p>&nbsp;   
+<table border="1" cellspacing="2" cellpadding="1">   
+  <tr>   
+    <th valign="TOP" align="LEFT">   
+      <p align="LEFT">Java</th>   
+    <th height="16" valign="TOP" align="LEFT">   
+      <p align="LEFT">Unicode Collation Element Table</th>   
+  </tr>   
+  <tr>   
+    <td valign="TOP">&nbsp;a, A ; à, À &lt; b, B</td>   
+    <td height="68" valign="TOP">   
+      <pre>0061 ; [.0001.0001.0001] % a
+
+0040 ; [.0001.0001.0002] % A
+
+00E0 ; [.0001.0002.0001] % à
+
+00C0 ; [.0001.0002.0002] % à
+
+0042 ; [.0002.0001.0001] % b
+
+0062 ; [.0002.0001.0002] % B</pre>   
+    </td>   
+  </tr>   
+</table>   
+<h3>6.11 <a name="Flat_File_Example">Flat File Example</a></h3>   
+<p>The following is a sample flat-file binary layout and sample code for    
+collation data. It is included only for illustration. The table is used to    
+generate collation elements from characters, either going forwards or backwards,    
+and detect the start of a contraction. The backwards generation is for searching    
+backwards or Boyer-Moore-style searching; the contraction detection is for    
+random access.</p>   
+<p>In the file representation, ints are 32 bit values, shorts are 16, bytes are    
+8 bits. Negatives (not that we have any) are two's-complement. For alignment,    
+the ends of all arrays are padded out to multiples of 32 bits. The signature    
+determines endianness. The locale uses an ASCII representation for the Java    
+locale: a 2 byte ISO language code, optionally followed by '_' and 2 byte ISO    
+country code, followed optionally by a series of variant tags separated by '_';    
+any unused bytes are zero.</p>   
+<table border="1">   
+  <tr>   
+    <th><font size="2">Data</font></th>   
+    <th colspan="2"><font size="2">Comment</font></th>   
+  </tr>   
+  <tr>   
+    <td valign="top" bgcolor="#FFFFCC"><font size="2">int signature;</font></td>   
+    <td colspan="2" valign="top" bgcolor="#FFFFCC"><font size="2">Constant <code>0x636F6C74</code>,    
+      used also for big-endian detection</font></td>   
+  </tr>   
+  <tr>   
+    <td valign="top" bgcolor="#FFFFCC"><font size="2">int tableVersion;</font></td>   
+    <td colspan="2" valign="top" bgcolor="#FFFFCC"><font size="2">Version of the    
+      table format</font></td>   
+  </tr>   
+  <tr>   
+    <td valign="top" bgcolor="#FFFFCC"><font size="2">int dataVersion;</font></td>   
+    <td colspan="2" valign="top" bgcolor="#FFFFCC"><font size="2">Version of the    
+      table data</font></td>   
+  </tr>   
+  <tr>   
+    <td valign="top" bgcolor="#FFFFCC"><font size="2">byte[32] locale;</font></td>   
+    <td colspan="2" valign="top" bgcolor="#FFFFCC"><font size="2">Target locale    
+      (if any)</font></td>   
+  </tr>   
+  <tr>   
+    <td valign="top"><font size="2">int flags;</font></td>   
+    <td colspan="2" valign="top"><font size="2"><code>Bit01</code> = 1 if French    
+      secondary<br>   
+      Others are reserved</font></td>   
+  </tr>   
+  <tr>   
+    <td valign="top"><font size="2">int limitVariable;</font></td>   
+    <td colspan="2" valign="top"><font size="2">Every ce below this value that    
+      has a non-zero primary is variable. Since variables are not interleaved,    
+      this does not need to be stored on a per-character basis.</font></td>   
+  </tr>   
+  <tr>   
+    <td valign="top"><font size="2">int maxCharsPerCE;</font></td>   
+    <td colspan="2" valign="top"><font size="2">Maximum number of characters    
+      that are part of a contraction</font></td>   
+  </tr>   
+  <tr>   
+    <td valign="top"><font size="2">int maxCEsPerChar;</font></td>   
+    <td colspan="2" valign="top"><font size="2">Maximum number of collation    
+      elements that are generated by an expansion</font></td>   
+  </tr>   
+  <tr>   
+    <td valign="top" bgcolor="#FFFFCC"><font size="2">int indexOffset;</font></td>   
+    <td colspan="2" valign="top" bgcolor="#FFFFCC"><font size="2">Offset to    
+      index table</font></td>   
+  </tr>   
+  <tr>   
+    <td valign="top" bgcolor="#FFFFCC"><font size="2">int&nbsp;collationElementsOffset;</font></td>   
+    <td colspan="2" valign="top" bgcolor="#FFFFCC"><font size="2">Offset to main    
+      data table</font></td>   
+  </tr>   
+  <tr>   
+    <td valign="top" bgcolor="#FFFFCC"><font size="2">int expansionsOffset;</font></td>   
+    <td colspan="2" valign="top" bgcolor="#FFFFCC"><font size="2">Offset to    
+      expansion table</font></td>   
+  </tr>   
+  <tr>   
+    <td valign="top" bgcolor="#FFFFCC"><font size="2">int&nbsp;contractionMatchOffset;</font></td>   
+    <td colspan="2" valign="top" bgcolor="#FFFFCC"><font size="2">Offset to    
+      contraction match table</font></td>   
+  </tr>   
+  <tr>   
+    <td valign="top" bgcolor="#FFFFCC"><font size="2">int&nbsp;contractionResultOffset;</font></td>   
+    <td colspan="2" valign="top" bgcolor="#FFFFCC"><font size="2">Offset to    
+      contraction values table</font></td>   
+  </tr>   
+  <tr>   
+    <td valign="top" bgcolor="#FFFFCC"><font size="2">int nonInitialsOffset;</font></td>   
+    <td colspan="2" valign="top" bgcolor="#FFFFCC"><font size="2">Offset to    
+      non-initials table. These are used for random access.</font></td>   
+  </tr>   
+  <tr>   
+    <td valign="top" bgcolor="#FFFFCC"><font size="2">int[10] reserved;</font></td>   
+    <td colspan="2" valign="top" bgcolor="#FFFFCC"><font size="2">Reserved</font></td>   
+  </tr>   
+  <tr>   
+    <td valign="top"><font size="2">int indexLength;</font></td>   
+    <td colspan="2" valign="top"><font size="2">Length of following table</font></td>   
+  </tr>   
+  <tr>   
+    <td valign="top"><font size="2">int[] index;</font></td>   
+    <td colspan="2" valign="top"><font size="2">Index for high-byte (trie)    
+      table. Contains offsets into Collation Elements. Data is accessed by:<br>   
+      <code>ce = collationElements[index[char&gt;&gt;8]+char&amp;0xFF]</code></font></td>   
+  </tr>   
+  <tr>   
+    <td valign="top" bgcolor="#FFFFCC"><font size="2">int    
+      collationElementsLength;</font></td>   
+    <td colspan="2" valign="top" bgcolor="#FFFFCC"><font size="2">Length of    
+      following table</font></td>   
+  </tr>   
+  <tr>   
+    <td valign="top" bgcolor="#FFFFCC"><font size="2">int[] collationElements;</font></td>   
+    <td colspan="2" valign="top" bgcolor="#FFFFCC"><font size="2">Each element    
+      is either a real collation element, an expansionsOffset, or an    
+      contractionsOffset. See below for more information.</font></td>   
+  </tr>   
+  <tr>   
+    <td valign="top"><font size="2">int expansionsLength;</font></td>   
+    <td colspan="2" valign="top"><font size="2">Length of following table</font></td>   
+  </tr>   
+  <tr>   
+    <td valign="top"><font size="2">int[] expansions;</font></td>   
+    <td colspan="2" valign="top"><font size="2">The expansionOffsets in the    
+      collationElements table point into sublists in this table. Each list is    
+      terminated by FFFFFFFF.</font></td>   
+  </tr>   
+  <tr>   
+    <td valign="top" bgcolor="#FFFFCC"><font size="2">int&nbsp;contractionMatchesLength;</font></td>   
+    <td colspan="2" valign="top" bgcolor="#FFFFCC"><font size="2">Length of    
+      following table</font></td>   
+  </tr>   
+  <tr>   
+    <td rowspan="4" valign="top" bgcolor="#FFFFCC"><font size="2">short[]    
+      contractionMatches;</font></td>   
+    <td colspan="2" valign="top" bgcolor="#FFFFCC"><font size="2">The    
+      contractionOffsets in the collationElements table point into sublists in    
+      this table. Each sublist is of the following format:</font></td>   
+  </tr>   
+  <tr>   
+    <td valign="top" bgcolor="#FFFFCC"><font size="2">short&nbsp;backwardsOffset;</font></td>   
+    <td valign="top" bgcolor="#FFFFCC"><font size="2">In case we are going    
+      backwards, offset to true contractions table.</font></td>   
+  </tr>   
+  <tr>   
+    <td valign="top" bgcolor="#FFFFCC"><font size="2">short length;</font></td>   
+    <td valign="top" bgcolor="#FFFFCC"><font size="2">Number of chars in list to    
+      search</font></td>   
+  </tr>   
+  <tr>   
+    <td valign="top" bgcolor="#FFFFCC"><font size="2">short[] charsToMatch;</font></td>   
+    <td valign="top" bgcolor="#FFFFCC"><font size="2">characters in sorted    
+      order.</font></td>   
+  </tr>   
+  <tr>   
+    <td valign="top"><font size="2">int contractionCEsLength;</font></td>   
+    <td colspan="2" valign="top"><font size="2">Length of following table</font></td>   
+  </tr>   
+  <tr>   
+    <td valign="top"><font size="2">int[] contractionCEs;</font></td>   
+    <td colspan="2" valign="top"><font size="2">List of CEs. Each corresponds to    
+      a position in the contractionChars table. The one corresponding to the    
+      length in a sublist is the <i>bail-out;</i> what to do if a match is not    
+      found.</font></td>   
+  </tr>   
+  <tr>   
+    <td valign="top" bgcolor="#FFFFCC"><font size="2">int nonInitialsLength;</font></td>   
+    <td colspan="2" valign="top" bgcolor="#FFFFCC"><font size="2">Length of    
+      following table</font></td>   
+  </tr>   
+  <tr>   
+    <td valign="top" bgcolor="#FFFFCC"><font size="2">short[] nonInitials;</font></td>   
+    <td colspan="2" valign="top" bgcolor="#FFFFCC"><font size="2">List of    
+      characters (in sorted order) that can be non-initials in contractions.    
+      That is, if &quot;ch&quot; is a contraction, then &quot;h&quot; is in this    
+      list. If &quot;abcd&quot; is a contraction, then &quot;b&quot;,    
+      &quot;c&quot;, and &quot;d&quot; are in the list.</font></td>   
+  </tr>   
+</table>   
+<h4>6.11.1 <a name="Collation_Element_Format">Collation Element Format</a></h4>   
+<ul>   
+  <li>'real' collationElement   
+    <ul>   
+      <li>16 bits primary (FFE0..FFFF not allowed)</li>   
+      <li>8 bits secondary</li>   
+      <li>8 bits tertiary</li>   
+    </ul>   
+  </li>   
+  <li>expansionsOffset   
+    <ul>   
+      <li>12 bits = FFF</li>   
+      <li>20 bits = offset (allows for 1,048,576 items)</li>   
+    </ul>   
+  </li>   
+  <li>contractionsOffset   
+    <ul>   
+      <li>12 bits = FFE</li>   
+      <li>20 bits = offset (allows for 1,048,576 items)</li>   
+    </ul>   
+  </li>   
+</ul>   
+<p>An alternative structure would be to have the offsets be not indexes into the    
+arrays, but byte offsets from the start of the table. That would limit the size    
+of the table, but use fewer machine instructions.</p>   
+<h3>6.11.2 <a name="Sample_Code">Sample Code</a></h3>   
+<p>The following is a pseudo code using this table for the required operations.    
+Although using Java syntax in general, the code example uses arrays so as to be    
+more familiar to users of C and C++. The code is presented for illustration    
+only, and has not been tested.</p>   
+<blockquote>   
+  <p>There is also sample Java code and a demonstration applet available at <a   
+  href="http://www.unicode.org/unicode/reports/tr10/Sample/">http://www.unicode.org/unicode/reports/tr10/Sample/</a>.    
+  That code is not designed to use a flat-file format.</p>   
+</blockquote>   
+<pre>char[] input;   // input buffer (i)
+
+int inputPos;   // position in input buffer (io)
+
+int[] output;   // output buffer (o)
+
+int outputPos;  // position in output buffer (io)
+
+boolean forwards;   // 0 for forwards, 1 for backwards (i)
+
+    
+
+<span class="codeComment">/**
+
+* Reads characters from input, writes collation elements in output
+
+*/
+
+</span>void getCollationElements() {
+
+    char c = input[inputPos++];
+
+    int ce = collationElements[index[c&gt;&gt;8] + c&amp;0xFF];
+
+    processCE(ce);
+
+}
+
+    
+
+<span class="codeComment">/**
+
+* Normally just returns ce. However, special forms indicate that
+
+* the ce is actually an expansion, or that we have to search
+
+* to see if the character was part of a contraction.
+
+* Expansions use 
+
+*/
+
+</span>void processCE(int ce) {
+
+    if (ce &lt; 0xFFF00000) {
+
+        output[outputPos++] = ce;
+
+    } else if (ce &gt;= 0xFFE00000) {
+
+        copyExpansions(ce &amp; 0x7FFFFF);
+
+    } else {
+
+        searchContractions(ce &amp; 0x7FFFFF);
+
+    }
+
+}
+
+    
+
+<span class="codeComment">/**
+
+* Search through a contraction sublist to see if there is a match.
+
+* Since the list is sorted, we can exit if our value is too high.&lt;p&gt;
+
+* Since we have a length, we could implement this as a
+
+* binary search, although we don't right now.&lt;p&gt;
+
+* If we do find a match, we need to recurse. That's how &quot;abc&quot; would
+
+* be handled.&lt;p&gt;
+
+* If we fail, we return the non-matching case. That can be an expansion
+
+* itself (it would never be a contraction).
+
+*/
+
+</span>void searchContractions(int offset) {
+
+    if (forwards) inputPos++;
+
+    else offset += input[inputPos++];
+
+    short goal = (short)input[inputPos++];
+
+    int limit = offset + contractionMatches[offset];
+
+    for (int i = offset; i &lt; limit; ++i) {
+
+        short cc = contractionMatches[i];
+
+        if (cc &gt; goal) { <span class="codeComment">// definitely failed</span>
+
+            processCE(contractionCEs[offset]);
+
+            break;
+
+        } else if (cc == goal) { // found match
+
+            processCE(contractionCEs[i]);
+
+            break;
+
+        }
+
+    }
+
+}
+
+    
+
+<span class="codeComment">/**
+
+* Copy the expansion collation elements up to the terminator.
+
+* Don't use 00000000 as a terminator, since that may be a valid CE.
+
+* These elements don't recurse.
+
+*/
+
+</span>void copyExpansions (int offset) {
+
+    int ce = expansions[offset++];
+
+    while (ce != 0xFFFFFFFF) {
+
+        output[outputPos++] = ce;
+
+        ce = expansions[offset++];
+
+    }
+
+}
+
+    
+
+<span class="codeComment">/**
+
+* For random access, gets the start of a collation element.
+
+* Any non-initial characters are in a sorted list, so
+
+* we just check that list.&lt;p&gt;
+
+* Since we have a length, we could implement this as a
+
+* binary search, although we don't right now.
+
+*/
+
+</span>int getCollationElementStart(char[] buffer, int offset) {
+
+    int i;
+
+    main:
+
+    for (i = offset; i &gt; 0; --i) {
+
+        char c = buffer[i];
+
+        for (int j = 0; j &lt; nonInitialsLength; ++j) {
+
+            char n = nonInitials[j];
+
+            if (c == n) continue main;
+
+            if (c &gt; n) break main;
+
+        }
+
+        break;
+
+    }
+
+    return i;
+
+}</pre>   
+<h2><a name="Weight_Dervation"></a>7 Weight Derivation</h2>   
+<p>This section describes the generation of the Unicode Default Unicode    
+Collation Element Table, and the assignment of weights to code points that are    
+not explicitly mentioned in a Collation Element Table. This uses information    
+from the Unicode Character Database on <a   
+href="http://www.unicode.org/Public/UNIDATA/UnicodeData.txt">http://www.unicode.org/Public/UNIDATA/UnicodeData.txt</a>    
+(and documented in <a   
+href="http://www.unicode.org/Public/UNIDATA/UnicodeData.html">http://www.unicode.org/Public/UNIDATA/UnicodeData.html</a>).</p>   
+<h3>7.1 <a name="Implicit_Weights">Derived Collation Elements</a></h3>   
+<p>CJK Ideographs and Hangul Syllables are not explicitly mentioned in the    
+default table. CJK ideographs are mapped to collation elements that are derived    
+from their Unicode code point value. The primary weight is equal to their    
+Unicode character value. Their secondary and tertiary values are the respective    
+minimal values for those levels: in the Default Unicode Collation Element Table,    
+these are 0020 and 0002 respectively. All other levels, if any, are <b>0001</b>.    
+(Since all distinct codepoints have different primary weights, the exact values    
+don't matter as long as they are non-zero.)</p>   
+<p>The collation algorithm requires that Hangul Syllables be decomposed.    
+However, if the table is tailored so that the primary weights for Hangul Jamo    
+(and all related characters) are adjusted, then the Hangul Syllables can be left    
+precomposed and treated in the same way as CJK ideographs. That will provide a    
+collation which is approximately the same as UCA, and may be sufficient in    
+environments where individual jamo are not expected.</p>   
+<p>The adjustment is to move each initial jamo (and related characters) to have    
+a primary weights corresponding to the first syllables starting with that jamo,    
+and make all non-initial jamo (and related characters) be ignorable at a primary    
+level.</p>   
+<h4><a name="lllegalCodePoints">7.1.1 lllegal code points</a></h4>   
+<p>Certain codepoints are illegal in a data stream. These include non-characters    
+(codepoints with hex values ending in FFFF or FFFE), unpaired surrogates    
+(codepoints between D800 and DFFF), and out-of-range values (&lt; 0 or &gt;    
+10FFFF). Implementations may also choose to treat these as error conditions and    
+respond appropriately, such as by throwing an exception.</p>   
+<p>If they are not treated as an error condition, they must be mapped to    
+[.0000.0000.0000.], and thus ignored.</p>   
+<h4><a name="LegalCodePoints">7.1.2 Legal code points</a></h4>   
+<p>A legal codepoint that is not explicitly mentioned in the table is mapped a    
+sequence of two collation elements in the following way. The result of this    
+process are collation elements that are sorted in codepoint order, that do not    
+collide with any explicit values in the table, and that can be placed anywhere    
+(e.g. at UNDEFINED) with respect to the explicit collation element mappings (by    
+default, they go after all explicit collation elements).</p>   
+<p>To derive the collation elements, the codepoint CP is separated into two    
+parts, chosen for the right numerical properties. First, separate off the top 6    
+bits of the codepoint. Since codepoints can go from 0 to 10FFFF, this will have    
+values from 0 to 21<sub>16</sub> (= 33<sub>10</sub>). Add this to the special    
+value UNDEFINED.</p>   
+<blockquote>   
+  <pre>AAAA = UNDEFINED + (CP &gt;&gt; 15);</pre>   
+</blockquote>   
+<p>Now take the bottom 15 bits of the code point. Turn the top bit on, so that    
+the value is non-zero.</p>   
+<blockquote>   
+  <pre>BBBB = (CP &amp; 0x7FFF) | 0x8000;</pre>   
+</blockquote>   
+<p>The mapping given to CP is then given by:</p>   
+<blockquote>   
+  <pre>CP =&gt; [.AAAA.0001.0001.][.BBBB.0000.0000.]</pre>   
+</blockquote>   
+<p>If a fourth or higher weights are used, then the same pattern is used: they    
+are set to <b>0001</b>, etc. in the first collation element and <b>0000</b> in    
+the second. (Since all distinct codepoints have different <b>AAAA/BBBB</b>    
+combination, the exact values don't matter as long as they are non-zero in the    
+first collation element.)</p>   
+<p>The value for UNDEFINED for the Default <a   
+href="tr10-8.html#Default Unicode Collation Element Table">Default Unicode Collation    
+Element Table</a> is FF80. This is larger than any explicit primary weight, and    
+thus will not collide with explicit weights. It is not generally necessary to    
+tailor this value to be within the range of explicit weights. However if this is    
+done, the explicit primary weights must be shifted so that none are between    
+UNDEFINED and UNDEFINED&nbsp;+&nbsp;34.</p>   
+<h3>7.2 <a name="Canonical_Decompositions">Canonical Decompositions</a></h3>   
+<p>Characters with canonical decompositions do not require mappings to collation    
+elements, because Step 1.1 maps them to collation elements based upon their    
+decompositions. However, they may be given mappings to collation elements    
+anyway. The weights in those collation elements must be computed in such a way    
+they will sort in the same relative location as if the characters were    
+decomposed using Normalization Form D. By including these mappings, this allows    
+an implementation handling a restricted repertoire of supported characters to    
+compare strings correctly without performing the normalization in Step 1.1 of    
+the algorithm.</p>   
+<p>A combining character sequence is called <i>impeding</i> if it contains any    
+conjoining Jamo, or if it contains an L1-ignorable combining mark and there is    
+some character that canonically decomposes to a sequence containing the same    
+base character. For example, the sequence &lt;a,cedilla&gt; is an impediment,    
+since <i>cedilla</i> is an L1-ignorable character, and there is some character,    
+e.g. <i>a-grave</i>, that decomposes to a sequence containing the same base    
+letter <i>a.</i> Note that although strings in Normalization Form C generally    
+don't contain impeding sequences, there is nothing prohibiting them from    
+containing them.</p>   
+<blockquote>   
+  <p><i>Conformant implementations that do not support impeding character    
+  sequences as part of their repertoire can avoid performing Normalization Form    
+  D processing as part of collation.</i></p>   
+</blockquote>   
+<p>The computed weights for canonically decomposible characters are derived in    
+the following way:</p>   
+<ul>   
+  <li>Find all the sequences of one or more non-spacing marks that occur in the    
+    canonical decomposition of some Unicode character.   
+  <li>Order these sequences of non-spacing marks by their collation elements in    
+    the Collation Element Table.   
+  <li>Assign each sequence a derived weight based on its ordinal value in this    
+    ordering, starting at MIN<sub>2</sub>.   
+</ul>   
+<p>If French reordering is available, then an alternate second-level weight    
+needs to be computed for any sequence of non-spacing marks. This alternate    
+weight effectively reverses the order of the non-spacing marks. This can be done    
+at run-time with a small lookup table.</p>   
+<p>Here is an example of how this works with the Default Unicode Collation    
+Element Table. The following strings have the given ordering:</p>   
+<blockquote>   
+  <pre>a &lt; a-acute &lt; a-grave &lt; a-acute+a</pre>   
+</blockquote>   
+<p>This is based on the following sort keys:</p>   
+<blockquote>   
+  <pre>0061 =&gt; 06CF.0000.0020.0000...
+
+00E1 =&gt; 06CF.0000.0020.0032.0000...
+
+00E0 =&gt; 06CF.0000.0020.0035.0000...
+
+00E1,0061 =&gt; 06CF.06CF.0000.0020.0032.0020.0000...</pre>   
+</blockquote>   
+<p>If an implementation requires that all input strings are in Form C and do not    
+contain impeding sequences, then the Normalization of Step 1.1 is can be    
+skipped. The following sort keys result. Although the keys are different, the    
+resulting ordering is the same.</p>   
+<blockquote>   
+  <pre>0061 =&gt; 06CF.0000.0020.0000...
+
+00E1 =&gt; 06CF.0000.0032.0000...
+
+00E0 =&gt; 06CF.0000.0035.0000...
+
+00E1,0061 =&gt; 06CF.06CF.0000.0020.0032.0000...</pre>   
+</blockquote>   
+<h3>7.3 <a name="Compatibility_Decompositions">Compatibility Decompositions</a></h3>   
+<p>As remarked above, most characters with compatibility decompositions can have    
+collation elements computed at runtime to save space, duplicating the work that    
+was done to compute the Default Unicode Collation Element Table. This can be an    
+important savings in memory space. The process works as follows.</p>   
+<p><b>1. </b>Derive the decomposition. e.g.</p>   
+<blockquote>   
+  <pre>2475 PARENTHESIZED DIGIT TWO =&gt; 0028, 0032, 0029</pre>   
+</blockquote>   
+<p><b>2. </b>Get the CE for each character in the decomposition.</p>   
+<blockquote>   
+  <pre>0028 [*023D.0020.0002.0028] % LEFT PARENTHESIS
+
+0032 [.06C8.0020.0002.0032] % DIGIT TWO
+
+0029 [*023E.0020.0002.0029] % RIGHT PARENTHESIS</pre>   
+</blockquote>   
+<p><b>3. </b>Set L4 in each CE to the original character.</p>   
+<blockquote>   
+  <pre>0028 [*023D.0020.0002.2475] % LEFT PARENTHESIS
+
+0032 [.06C8.0020.0002.2475] % DIGIT TWO
+
+0029 [*023E.0020.0002.2475] % RIGHT PARENTHESIS</pre>   
+</blockquote>   
+<p><b>4. </b>Set L3 in each CE to lookup(L3), where the lookup uses the table in    
+<a href="tr10-8.html#Tertiary_Weight_Table">§7.3.1 Tertiary Weight Table</a>.</p>   
+<blockquote>   
+  <pre>0028 [*023D.0020.0004.2475] % LEFT PARENTHESIS
+
+0032 [.06C8.0020.0004.2475] % DIGIT TWO
+
+0029 [*023E.0020.0004.2475] % RIGHT PARENTHESIS</pre>   
+</blockquote>   
+<p>5. Concatenate the result to produce the sequence of collation elements that    
+the character maps to.</p>   
+<blockquote>   
+  <pre>2475 [*023D.0020.0004.2475] [.06C8.0020.0004.2475] [*023E.0020.0004.2475] </pre>   
+</blockquote>   
+<p>Some characters cannot be computed in this way. They must be filtered out of    
+the default table and given specific values. An example is:</p>   
+<blockquote>   
+  <pre>017F ; [.085D.00FD.0004.017F] % LATIN SMALL LETTER LONG S; COMPAT</pre>   
+</blockquote>   
+<h4 align="left"><b><a name="Tertiary_Weight_Table"></a>7.3.1 Tertiary Weight    
+Table</b></h4>   
+<p align="left">Characters without decompositions are given tertiary weights    
+according to their General Category in the Unicode Character Database, as one of    
+the following values</p>   
+<div align="center">   
+  <center>   
+  <table border="1" cellpadding="2">   
+    <tr>   
+      <th valign="TOP" align="LEFT">   
+        <p align="center"><font color="#000000">General Category</font></th>   
+      <th valign="TOP" align="LEFT">   
+        <p align="center">Weight</th>   
+    </tr>   
+    <tr>   
+      <td>   
+        <p align="center">Lu (uppercase Letter)</p>   
+      </td>   
+      <td>   
+        <p align="center">0008</p>   
+      </td>   
+    </tr>   
+    <tr>   
+      <td>   
+        <p align="center">anything else</p>   
+      </td>   
+      <td>   
+        <p align="center">0002</p>   
+      </td>   
+    </tr>   
+  </table>   
+  </center>   
+</div>   
+<p>These are the original L3 weights in the decomposition. These are mapped to    
+the following values in computing the lookup mentioned above.</p>   
+<div align="center">   
+  <center>   
+  <table border="1" cellpadding="2">   
+    <tr>   
+      <th valign="top">Original Weight</th>   
+      <th valign="top">Compability Tag</th>   
+      <th valign="top">Applicable Ranges</th>   
+      <th valign="top">Resulting Weight</th>   
+    </tr>   
+    <tr>   
+      <td rowspan="22">   
+        <p align="center"><tt>&nbsp;<b>0002</b></tt></p>   
+      </td>   
+      <td align="center"><code>&nbsp;NONE</code></td>   
+      <td align="center">&nbsp;</td>   
+      <td><code>&nbsp;0002</code></td>   
+    </tr>   
+    <tr>   
+      <td align="center"><code>&nbsp;&lt;wide&gt;</code></td>   
+      <td align="center">&nbsp;</td>   
+      <td><code>&nbsp;0003</code></td>   
+    </tr>   
+    <tr>   
+      <td align="center"><code>&nbsp;&lt;compat&gt;</code></td>   
+      <td align="center">&nbsp;</td>   
+      <td><code>&nbsp;0004</code></td>   
+    </tr>   
+    <tr>   
+      <td align="center"><code>&nbsp;&lt;font&gt;</code></td>   
+      <td align="center">&nbsp;</td>   
+      <td><code>&nbsp;0005</code></td>   
+    </tr>   
+    <tr>   
+      <td align="center"><code>&nbsp;&lt;circle&gt;</code></td>   
+      <td align="center">&nbsp;</td>   
+      <td><code>&nbsp;0006</code></td>   
+    </tr>   
+    <tr>   
+      <td align="center"><code>&nbsp;&lt;small&gt;</code></td>   
+      <td align="center">small hiragana (3041,&nbsp;3043,...</td>   
+      <td><code>&nbsp;000D</code></td>   
+    </tr>   
+    <tr>   
+      <td align="center"><code>&nbsp;NONE</code></td>   
+      <td align="center">normal hiragana (3042,&nbsp;3044, ...)</td>   
+      <td><code>&nbsp;000E</code></td>   
+    </tr>   
+    <tr>   
+      <td align="center"><code>&nbsp;&lt;small&gt;</code></td>   
+      <td align="center">small katakana (30A1,&nbsp;30A3,...)</td>   
+      <td><code>&nbsp;000F</code></td>   
+    </tr>   
+    <tr>   
+      <td align="center"><code>&nbsp;&lt;narrow&gt;</code></td>   
+      <td align="center">small narrow katakana (FF67..FF6F)</td>   
+      <td><code>&nbsp;0010</code></td>   
+    </tr>   
+    <tr>   
+      <td align="center"><code>&nbsp;NONE</code></td>   
+      <td align="center">normal katakana (30A2,&nbsp;30A4, ...)</td>   
+      <td><code>&nbsp;0011</code></td>   
+    </tr>   
+    <tr>   
+      <td align="center"><code>&nbsp;&lt;narrow&gt;</code></td>   
+      <td align="center">narrow katakana (FF71..FF9D),<br>   
+        narrow hangul (FFA0..FFDF)</td>   
+      <td><code>&nbsp;0012</code></td>   
+    </tr>   
+    <tr>   
+      <td align="center"><code>&nbsp;&lt;circle&gt;</code></td>   
+      <td align="center">circled katakana (32D0..32FE)</td>   
+      <td><code>&nbsp;0013</code></td>   
+    </tr>   
+    <tr>   
+      <td align="center"><code>&nbsp;&lt;super&gt;</code></td>   
+      <td align="center">&nbsp;</td>   
+      <td><code>&nbsp;0014</code></td>   
+    </tr>   
+    <tr>   
+      <td align="center"><code>&nbsp;&lt;sub&gt;</code></td>   
+      <td align="center">&nbsp;</td>   
+      <td><code>&nbsp;0015</code></td>   
+    </tr>   
+    <tr>   
+      <td align="center"><code>&nbsp;&lt;vertical&gt;</code></td>   
+      <td align="center">&nbsp;</td>   
+      <td><code>&nbsp;0016</code></td>   
+    </tr>   
+    <tr>   
+      <td align="center"><code>&nbsp;&lt;initial&gt;</code></td>   
+      <td align="center">&nbsp;</td>   
+      <td><code>&nbsp;0017</code></td>   
+    </tr>   
+    <tr>   
+      <td align="center"><code>&nbsp;&lt;medial&gt;</code></td>   
+      <td align="center">&nbsp;</td>   
+      <td><code>&nbsp;0018</code></td>   
+    </tr>   
+    <tr>   
+      <td align="center"><code>&nbsp;&lt;final&gt;</code></td>   
+      <td align="center">&nbsp;</td>   
+      <td><code>&nbsp;0019</code></td>   
+    </tr>   
+    <tr>   
+      <td align="center"><code>&nbsp;&lt;isolated&gt;</code></td>   
+      <td align="center">&nbsp;</td>   
+      <td><code>&nbsp;001A</code></td>   
+    </tr>   
+    <tr>   
+      <td align="center"><code>&nbsp;&lt;noBreak&gt;</code></td>   
+      <td align="center">&nbsp;</td>   
+      <td><code>&nbsp;001B</code></td>   
+    </tr>   
+    <tr>   
+      <td align="center"><code>&nbsp;&lt;square&gt;</code></td>   
+      <td align="center">&nbsp;</td>   
+      <td><code>&nbsp;001C</code></td>   
+    </tr>   
+    <tr>   
+      <td align="center"><code>&nbsp;&lt;fraction&gt;</code></td>   
+      <td align="center">&nbsp;</td>   
+      <td><code>&nbsp;001E</code></td>   
+    </tr>   
+    <tr>   
+      <td rowspan="6">   
+        <p align="center"><tt><b>0008</b></tt></p>   
+      </td>   
+      <td align="center"><code>&nbsp;NONE</code></td>   
+      <td align="center">&nbsp;</td>   
+      <td><code>&nbsp;0008</code></td>   
+    </tr>   
+    <tr>   
+      <td align="center"><code>&nbsp;&lt;wide&gt;</code></td>   
+      <td align="center">&nbsp;</td>   
+      <td><code>&nbsp;0009</code></td>   
+    </tr>   
+    <tr>   
+      <td align="center"><code>&nbsp;&lt;compat&gt;</code></td>   
+      <td align="center">&nbsp;</td>   
+      <td><code>&nbsp;000A</code></td>   
+    </tr>   
+    <tr>   
+      <td align="center"><code>&nbsp;&lt;font&gt;</code></td>   
+      <td align="center">&nbsp;</td>   
+      <td><code>&nbsp;000B</code></td>   
+    </tr>   
+    <tr>   
+      <td align="center"><code>&nbsp;&lt;circle&gt;</code></td>   
+      <td align="center">&nbsp;</td>   
+      <td><code>&nbsp;000C</code></td>   
+    </tr>   
+    <tr>   
+      <td align="center"><code>&nbsp;&lt;square&gt;</code></td>   
+      <td align="center">&nbsp;</td>   
+      <td><code>&nbsp;001D</code></td>   
+    </tr>   
+  </table>   
+  </center>   
+</div>   
+<p align="center"><i>(For historical reasons, the value 0007 is never mapped    
+to.)</i></p>   
+<h2><a name="Acknowledgements">Acknowledgements</a></h2>   
+<p>Thanks to Karlsson Kent and Richard Gillam for their feedback on this    
+document.</p>   
+<h2><a name="References">References</a></h2>   
+<table border="0" width="100%" cellspacing="12" cellpadding="0">   
+  <tr>   
+    <td valign="top" width="1">[<a name="CanStd">CanStd</a>]</td>   
+    <td valign="top">CAN/CSA 2243.4.1</td>   
+  </tr>   
+  <tr>   
+    <td valign="top" width="1">[<a name="SoStd">SoStd</a>]</td>   
+    <td valign="top">ISO/IEC 14651 FDIS</td>   
+  </tr>   
+</table>   
+<br>   
+<h2><a name="Modifications">Modifications</a></h2>   
+<p>The following summarizes modifications from the previous version of this   
+document.</p>  
+<table border="0" width="100%" cellspacing="4">  
+  <tr>  
+    <td valign="top" width="1"><a name="TrackingNumber20">20</a></td> 
+    <td valign="top"> 
+      <ul> 
+        <li>Changed reference to new combined data tables, in 3.2 Default  
+          Unicode Collation Element Table. Modified text accordingly.</li> 
+        <li>Changed references in several places in the document from Unicode  
+          2.1 to 3.0.</li> 
+        <li>Removed a dangling reference to &quot;(including the normalized  
+          Unicode string)&quot; in 4.3 Step 3: Form Sort Key.</li> 
+        <li>Corrected minor omissions in 7.3.1 Tertiary Weight Table</li> 
+        <li>Corrected typo in note under 4.4 Step 4: Compare</li>  
+        <li>Minor editing</li> 
+      </ul> 
+    </td> 
+  </tr> 
+</table> 
+<br> 
+<hr align="LEFT"> 
+<p><font size="-1">Copyright © 1998-2001 Unicode, Inc. All Rights Reserved. The    
+Unicode Consortium makes no expressed or implied warranty of any kind, and    
+assumes no liability for errors or omissions. No liability is assumed for    
+incidental and consequential damages in connection with or arising out of the    
+use of the information or programs contained or accompanying this technical    
+report.</font></p>   
+<p><font size="-1">Unicode and the Unicode logo are trademarks of Unicode, Inc.,    
+and are registered in some jurisdictions.</font></p>   
+   
+</body>   
+   
+</html>   

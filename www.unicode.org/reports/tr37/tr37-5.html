@@ -1,0 +1,791 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+      <link rel="stylesheet" type="text/css"
+            href="../../unicode/reports/reports.css"/>
+      <title>UTS #37: Unicode Ideographic Variation Database</title>
+   </head>
+   <body style="background-color:#ffffff">
+      <table class="header" cellpadding="0" cellspacing="0" width="100%">
+         <tbody>
+            <tr>
+               <td class="icon">
+                  <a href="http://www.unicode.org/">
+                     <img style="vertical-align:middle;border:0" alt="[Unicode]"
+                          src="../../webscripts/logo60s2.gif"
+                          height="33"
+                          width="34"/>
+                  </a>  <a class="bar" href="../index.html">Technical Reports</a>
+               </td>
+            </tr>
+            <tr>
+               <td class="gray"> </td>
+            </tr>
+         </tbody>
+      </table>
+      <div class="body">
+         <h2 style="text-align:center">
+            <span/> Unicode Technical Standard #37</h2>
+         <h1 style="text-align:center">Unicode Ideographic Variation Database</h1>
+         <table xmlns="" class="wide" border="1" cellpadding="2">
+            <tbody>
+               <tr>
+                  <td valign="top">Version</td>
+                  <td valign="top">
+                     <span>2.0</span>
+                  </td>
+               </tr>
+               <tr>
+                  <td valign="top">Authors</td>
+                  <td valign="top">Hideki Hiura<br/>Eric Muller (<a href="mailto:emuller@adobe.com">emuller@adobe.com</a>)<br/>
+                  </td>
+               </tr>
+               <tr>
+                  <td valign="top">Date</td>
+                  <td valign="top">
+                     <span>2009-08-20</span>
+                  </td>
+               </tr>
+               <tr>
+                  <td valign="top">This Version</td>
+                  <td valign="top">
+                     <span>
+                        <a href="tr37-5.html">http://www.unicode.org/reports/tr37/tr37-5.html</a>
+                     </span>
+                  </td>
+               </tr>
+               <tr>
+                  <td valign="top">Previous Version</td>
+                  <td valign="top">
+                     <span>
+                        <a href="tr37-3.html">http://www.unicode.org/reports/tr37/tr37-3.html</a>
+                     </span>
+                  </td>
+               </tr>
+               <tr>
+                  <td valign="top">Latest Version</td>
+                  <td valign="top">
+                     <a href="index.html">http://www.unicode.org/reports/tr37/</a>
+                  </td>
+               </tr>
+               <tr>
+                  <td valign="top">Database</td>
+                  <td valign="top">
+                     <a href="http://www.unicode.org/ivd">http://www.unicode.org/ivd</a>
+                  </td>
+               </tr>
+               <tr>
+                  <td valign="top">Revision</td>
+                  <td valign="top">
+                     <a href="tr37-5.html#modifications">
+                        <span>5</span>
+                     </a>
+                  </td>
+               </tr>
+            </tbody>
+         </table>
+         <h4 style="margin-top: 1em;">Summary</h4>
+         <p xmlns="">
+            <i>This document describes the organization of the Ideographic
+    Variation Database, and the procedure to add sequences to that
+    database.</i>
+         </p>
+         <h4 xmlns="">
+            <i>Status</i>
+         </h4>
+         <p xmlns="">
+            <i>This document has been reviewed by Unicode members and
+      other interested parties, and has been approved for publication
+      by the Unicode Consortium. This is a stable document and may be
+      used as reference material or cited as a normative reference by
+      other specifications.</i>
+         </p>
+         <blockquote xmlns="">
+            <p>
+               <i>
+                  <b>A Unicode Technical Standard (UTS)</b> is an
+	independent specification. Conformance to the Unicode Standard
+	does not imply conformance to any UTS.</i>
+            </p>
+         </blockquote>
+         <p xmlns="">
+            <i>Please submit corrigenda and other comments with the
+      online reporting form [<a href="tr37-5.html#biblio_feedback">Feedback</a>]. Related information that
+      is useful in understanding this document is found in <a href="tr37-5.html#references">References</a>.  For the latest version of
+      the Unicode Standard see [<a href="tr37-5.html#biblio_unicode">Unicode</a>]. For a list of current
+      Unicode Technical Reports see [<a href="tr37-5.html#biblio_reports">Reports</a>]. For more information about
+      versions of the Unicode Standard, see [<a href="tr37-5.html#biblio_versions">Versions</a>].</i>
+         </p>
+         <h4 xmlns="">Contents</h4>
+         <ul xmlns="" class="toc">
+            <li>1     <a href="tr37-5.html#w1aab7b1">Introduction</a>
+            </li>
+            <li>2     <a href="tr37-5.html#w1aab9b1">Description</a>
+            </li>
+            <li>3     <a href="tr37-5.html#w1aac11b1">Format of the Ideographic Variation Database</a>
+            </li>
+            <li>4     <a href="tr37-5.html#w1aac13b1">Registration Procedure</a>
+               <ul class="toc">
+                  <li>4.1     <a href="tr37-5.html#w1aac13b5b1">Registration of a Collection</a>
+                  </li>
+                  <li>4.2     <a href="tr37-5.html#w1aac13b7b1">Registration of Sequences in a Collection</a>
+                  </li>
+                  <li>4.3     <a href="tr37-5.html#w1aac13b9b1">Registration Authority and Registrar</a>
+                  </li>
+                  <li>4.4     <a href="tr37-5.html#w1aac13c11b1">Registration Fees</a>
+                  </li>
+               </ul>
+            </li>
+            <li>Appendix A.  <a href="tr37-5.html#registration_form">Registration Form for Collections</a>
+            </li>
+            <li>Appendix B.  <a href="tr37-5.html#w1aac17b1">Hypothetical Example</a>
+               <ul class="toc">
+                  <li>1     <a href="tr37-5.html#w1aac17b5b1">The Situation</a>
+                  </li>
+                  <li>2     <a href="tr37-5.html#w1aac17b7b1">Describing the Collection and its Content</a>
+                  </li>
+                  <li>3     <a href="tr37-5.html#w1aac17b9b1">The IVD</a>
+                  </li>
+                  <li>4     <a href="tr37-5.html#w1aac17c11b1">Using the IVS</a>
+                  </li>
+               </ul>
+            </li>
+            <li>Appendix C.  <a href="tr37-5.html#w1aac19b1">Acknowledgments</a>
+            </li>
+            <li>
+               <a href="tr37-5.html#references">References</a>
+            </li>
+            <li>
+               <a href="tr37-5.html#modifications">Modifications</a>
+            </li>
+         </ul>
+         <hr/>
+         <h2 xmlns="">
+            <a name="w1aab7b1">1 Introduction</a>
+         </h2>
+
+         <p xmlns="">Characters in the Unicode Standard can be represented by a
+    wide variety of glyphs. Occasionally the need arises in text
+    processing to restrict or change the set of glyphs that are to be
+    used to display a character. In special circumstances, this
+    restriction needs to be expressed in plain text rather than by
+    font selection or some other rich text mechanism. The Unicode
+    Standard accommodates those circumstances with variation selectors:
+    the code point of a graphic character can be followed by the code
+    point of a variation selector to identify a restriction on the
+    graphic character. The combination of a graphic character and a
+    variation selector is known as a variation sequence (See
+    <i>Section 15.6, Variation Selectors</i> of
+    <i>[<a href="tr37-5.html#biblio_unicode">Unicode</a>]</i>).</p>
+
+
+         <p xmlns="">In the case of Han ideographs, it is impossible to build a
+    single collection of variation sequences that can satisfy all the
+    needs of the users. The requirements from scholars, governments
+    and publishers are too different to be accommodated by a single
+    collection. Instead they can be met by having multiple independent
+    collections. The Ideographic Variation database ensures that a
+    given variation sequence is used in at most one collection, to
+    make interchange of text using such variation sequences
+    reliable.</p>
+  
+         <h2 xmlns="">
+            <a name="w1aab9b1">2 Description</a>
+         </h2>
+
+         <p xmlns="">An <i>Ideographic Variation Sequence (IVS)</i>
+    is a sequence of two coded characters, the first being a character
+    with the Unified_Ideograph property, the second being a variation
+    selector character in the range U+E0100 to U+E01EF.</p>
+
+         <p xmlns="">A <i>glyphic subset</i> for a given character
+    is a subset of the glyphs that are appropriate for displaying that
+    character.</p>
+
+         <p xmlns="">The purpose of the <i>Ideographic Variation Database
+    (IVD)</i> is to associate an IVS with a unique glyphic
+    subset. An IVS which is present in the database is a
+    <i>registered IVS;</i> one can determine reliably
+    the intent of such IVSes when they occur in text by consulting the
+    database, thus those IVSes are suitable for use in text
+    interchange.</p>
+
+         <p xmlns="">IVSes are subject to the usual rules for variation
+    sequences: unregistered IVSes (which are not in the database)
+    should not be used in text interchange, and registered IVSes
+    should be used only to restrict the rendering of their unified
+    ideograph to the glyphic subset associated with the IVS in the
+    database. Furthermore, variation selectors are default
+    ignorable. This implies that registrants are expected to ensure
+    that the glyphic subset associated with an IVS is indeed a subset
+    of the glyphs which are acceptable for the base character
+    alone. Stated another way, the shapes in the glyphic subset of an
+    IVS should be unifiable with the base character of that IVS. One
+    possible way to determine this is to consider the unification
+    rules for Han ideographs; see <i>[<a href="tr37-5.html#biblio_unicode">Unicode</a>]</i>,
+    section 12.1 Han, and <i>[<a href="tr37-5.html#biblio_10646">ISO 10646</a>]</i>, annex
+    S.</p>
+
+         <p xmlns="">To guarantee the stability of texts using registered IVSes,
+    the association between an IVS and a glyphic subset is permanent:
+    an IVS is never reassigned to another glyphic subset.</p>
+
+         <p xmlns="">While the IVD guarantees that a registered IVS corresponds
+    to a single glyphic subset, and that this association is permanent,
+    it does not guarantee that two different IVSes on the same unified
+    ideograph have non-overlapping or even distinct glyphic
+    subsets.</p>
+
+         <p xmlns="">There is no guarantee that two IVSes using the same
+    variation selector but on different unified ideographs have any
+    relationship, nor will a variation selector be designated for a
+    purpose independently of any base. For example, if some IVS using U+E0100
+    captures a restriction on the display of left component of its
+    base ideograph, some other IVS also using U+E0100 could capture a
+    restriction on the display of the right component of its base
+    ideograph; and therefore, the effect of U+E0100 does not need to
+    be uniform in all the IVSes it is part of.</p>
+
+         <p xmlns="">Should there be a requirement to register more than 240
+    IVSes involving the same unified ideograph, the Unicode Consortium
+    will begin the process of encoding additional variation selectors,
+    and make those available for registration of Ideographic Variation
+    Sequences.</p>
+
+         <p xmlns="">To facilitate the organization and use of the IVD,
+    registered IVSes are grouped in collections. This facilitates
+    tracking the glyphic subset associated with an IVS, which is
+    identified as an entry in a collection. It is also expected that
+    the glyphic subsets in a given collection have been selected so
+    that as an aggregate, they satisfy the requirements of a given
+    user community.</p>
+
+         <p xmlns="">Registration of a collection does not imply suitability for
+    any purpose. The usefulness of a given variation sequence and the
+    usefulness of a collection as a whole depend to a large extent on
+    their use. Registrants are encouraged to describe the intent of
+    their collections, and users are encouraged to evaluate
+    whether a collection is useful for their purpose.</p>
+
+         <p xmlns="">While the registration process requires that variation
+    sequences be described at the time they are registered, and it
+    strongly encourages the registrant to continue providing public
+    access to that description for as long as possible, it cannot
+    guarantee that this will be case. Users of registered sequences
+    should carefully evaluate whether the continuing public
+    availability of the description is necessary for their purpose,
+    and whether the registrant of the relevant sequences can provide
+    it.</p>
+  
+         <h2 xmlns="">
+            <a name="w1aac11b1">3 Format of the Ideographic Variation Database</a>
+         </h2>
+
+         <p xmlns="">The Ideographic Variation Database consists of two data
+    files. The first, IVD_Collections.txt records the registered
+    collections. The second, IVD_Sequences.txt records the registered
+    sequences.</p>
+
+         <p xmlns="">In each file, lines starting with a '#' character and empty
+    lines are comment lines. The other lines are organized into
+    fields, separated by a semicolon; initial and trailing white space
+    in those fields is not significant. Both files are encoded in
+    UTF-8, using U+000A as the line separator. Both files must end
+    with a comment line “# EOF”.</p>
+
+         <p xmlns="">In IVD_Collections.txt, each line corresponds to an Ideographic
+    Variation Collection, and there are three fields per line:</p>
+
+         <ul xmlns="">
+            <li>
+	              <p>field 1: the identifier of a collection</p>
+            </li>
+            <li>
+	              <p>field 2: a regular expression for the identifiers within
+	the collection; all such identifiers must match that
+	regular expression. Over time,
+	this regular expression may be extended, as new identifiers
+	are used in the collection.</p>
+            </li>
+            <li>
+	              <p>field 3: the URL of a site describing the collection</p>
+            </li>
+         </ul>
+
+         <p xmlns="">In IVD_Sequences.txt, each line corresponds to an Ideographic
+    Variation Sequence and there are three fields per line:</p>
+
+         <ul xmlns="">
+            <li>
+	              <p>field 1: the code points of the base character and the
+	variation selector, separated by a space</p>
+            </li>
+            <li>
+	              <p>field 2: the identifier of the collection under which the
+	sequence is registered</p>
+            </li>
+            <li>
+	              <p>field 3: the identifier of the sequence, provided by the
+	registrant; this identifier must match the regular expression
+	for the collection</p>
+            </li>
+         </ul>
+
+         <p xmlns="">The identifiers for collections and sequences are character
+    strings starting with one of 'A'..'Z', 'a'..'z', and continuing
+    with one of 'A'..'Z', 'a'..'z', '0'..'9', '_'. The regular
+    expressions for identifiers conform to Perl 5.8 regular
+    expressions <i>[<a href="tr37-5.html#biblio_perl">Perl</a>]</i>.</p>
+  
+         <h2 xmlns="">
+            <a name="w1aac13b1">4 Registration Procedure</a>
+         </h2>
+
+         <p xmlns="">The Ideographic Variation Database is populated by
+    submitting registration requests to a registration authority. The
+    first step is to register a collection. After this is done,
+    individual glyphic subsets can be registered in the context of
+    that collection.</p>
+
+    
+         <h3 xmlns="">
+            <a name="w1aac13b5b1">4.1 Registration of a Collection</a>
+         </h3>
+
+         <p xmlns="">The registrant must first create a web page describing the
+      intent of the collection, its principles, and any other data
+      that may be useful for users of the collection.</p>
+
+         <p xmlns="">Once the appropriate page is online, the intent to
+      register the collection must be announced publicly in a manner
+      designated by the registrar and sent to the general
+      Unicode e-mail distribution list <i>[<a href="tr37-5.html#biblio_distlist">DistList</a>]</i>. This announcement must include the
+      URL of the page(s) describing the proposed collection. This
+      starts a review period of at least 90 days, during which
+      comments and questions about the collection can be submitted to
+      the registrant. The registrant should respond to these comments
+      and questions.</p>
+
+         <p xmlns="">At the end of the review period, the registrant can submit
+      the registration form in <a href="tr37-5.html#registration_form">Appendix
+      A</a>, together with a written and signed statement that:</p>
+
+         <ul xmlns="">
+	           <li>
+	              <p>the registrant will make reasonable efforts to
+	  maintain the stability of that URL and the site it points
+	  to</p>
+	           </li>
+
+	           <li>
+	              <p>the variation sequences that will be registered in
+	  that collection can be used freely, without any limitation,
+	  fee or other requirement</p>
+	           </li>
+
+	           <li>
+	              <p>all the comments and questions received during the
+	  review period have been addressed</p>
+	           </li>
+         </ul>
+
+         <p xmlns="">Upon receipt of a complete application and the applicable
+      fee if any, the registrar will assign a collection identifier
+      (respecting as much as possible the suggested identifier), and
+      add the collection to the Ideographic Variation Database.</p>
+
+         <p xmlns="">Owners of collections can change the designated
+      representative at any time by notifying the registrar. They can
+      also change the URL of the web site they maintain by notifying
+      the registrar. Ownership of a collection can be transferred to
+      another party by notifying the registrar.</p>
+
+         <p xmlns="">The registration of sequences in that collection can be
+      started concurrently with the registration of the collection
+      itself.</p>
+    
+
+    
+         <h3 xmlns="">
+            <a name="w1aac13b7b1">4.2 Registration of Sequences in a Collection</a>
+         </h3>
+
+         <p xmlns="">The registrant must first include the proposed sequences
+      in the web page describing the collection (or some page pointing
+      from it). Ideally, this description should include
+      representative glyphs for proposed sequences.</p>
+
+         <p xmlns="">Once the page is online, the intent to register the
+      sequences must be announced publicly in a manner designated by
+      the registrar and sent to the general Unicode e-mail
+      distribution list <i>[<a href="tr37-5.html#biblio_distlist">DistList</a>]</i>. This
+      announcement must include the URL of the page(s) describing the
+      proposed sequences. This starts a review period of at least 90
+      days, during which comments and questions about the sequences
+      can be submitted to the registrant.  The registrant should
+      respond to these comments and questions.</p>
+
+         <p xmlns="">At the end of the review period, the registrant can submit
+      the application for those sequences. This takes the form of a
+      file in the format of IVD_Sequences.txt, except that the first
+      field must contain only the code point of the base
+      character. The registrant is
+      responsible for ensuring that sequence identifiers are unique
+      <i>within</i> the collection, including sequences
+      previously registered in that collection, and that they match
+      the regular expression for sequence identifiers in the
+      collection. An application that does not respect these rules
+      will be rejected.</p>
+
+         <p xmlns="">Upon receipt of a complete application and the applicable
+      fee if any, the registrar will assign a variation selector for
+      each variation sequence, and add the sequences to the
+      Ideographic Variation Database.</p>
+    
+
+    
+         <h3 xmlns="">
+            <a name="w1aac13b9b1">4.3 Registration Authority and Registrar</a>
+         </h3>
+
+         <p xmlns="">Unicode Inc. will be the registration authority for this
+      database. It will appoint a registrar to handle requests for
+      registration.</p>
+    
+
+    
+         <h3 xmlns="">
+            <a name="w1aac13c11b1">4.4 Registration Fees</a>
+         </h3>
+
+         <p xmlns="">The registration authority may impose a non-refundable
+      processing fee for the registration of collections and
+      sequences. If a registration application is incomplete, the
+      registrar will inform the registrant and accept one corrected
+      application at no fee. Further corrections to the application
+      may require an additional fee.</p>
+
+         <p xmlns="">The Unicode Consortium may register collections or
+      sequences at any time without any processing fee.</p>
+    
+  
+         <h2 xmlns="">
+            <a name="registration_form">Appendix A. Registration Form for Collections</a>
+         </h2>
+
+         <p xmlns="">Application for registration of an Ideographic Variation Sequence
+    Collection</p>
+
+         <p xmlns="">Name and address of the registrant:</p>
+
+         <p xmlns="">Name and email address of the representative:</p>
+
+         <p xmlns="">URL of the web site describing the collection:</p>
+
+         <p xmlns="">Suggested identifier for the collection:</p>
+
+         <p xmlns="">Pattern for the sequence identifiers:</p>
+  
+         <h2 xmlns="">
+            <a name="w1aac17b1">Appendix B. Hypothetical Example</a>
+         </h2>
+
+         <p xmlns="">This appendix presents an hypothetical example, where it is
+    desirable to express in plain text that the display of a character
+    occurrence should be restricted.</p>
+
+    
+         <h2 xmlns="">
+            <a name="w1aac17b5b1">1 The Situation</a>
+         </h2>
+
+         <p xmlns="">Consider the unified ideograph U+82A6
+      <i>ashi;</i> this character can be appropriately
+      rendered by a number of different glyphs:</p>
+
+         <center xmlns="">
+	
+	           <img src="u82a6.png" alt="Four different glyphs for U+82A6"/>
+	  
+         </center>
+      
+         <p xmlns="">In the following Japanese sentence (which means roughly
+      “Ms. Ashida is a young lady from Ashiya”), this
+      character occurs twice. The first occurrence could be displayed
+      with any of those four glyphs, and it is therefore not necessary
+      to express any restriction in plain text; the character U+82A6
+      alone is enough, and usual font selection mechanisms can take
+      care of selecting a glyph appropriate for the context (typically
+      3 in modern Japanese). On the other hand, the second occurrence
+      is in the name of the town Ashiya, and it is customarily
+      displayed with an older form (4) of the character.</p>
+
+         <center xmlns="">
+	
+	           <img src="sentence.png" alt="芦田さんは芦屋のお嬢様だ"/>
+	  
+         </center>
+    
+
+    
+         <h2 xmlns="">
+            <a name="w1aac17b7b1">2 Describing the Collection and its Content</a>
+         </h2>
+
+         <p xmlns="">Assuming that some party “Example” wishes to
+      express the restriction above in plain text, they would create a
+      collection for this kind of situation. This collection could be
+      targeted at the representation of person and place names, for
+      example. They would put a description of this collection on
+      their web site, at “http://www.example.com/names”,
+      which could look like this:</p>
+
+         <blockquote xmlns="">
+	           <p>This collection of glyphic subsets is intended for the
+	representation of person and place names in Japanese. Elements
+	in this collection are identified by an integer (i.e. match
+	the regular expression “[0-9]+”).</p>
+
+	           <p>It currently contains a single glyphic subset:</p>
+
+	           <p>Base Unified Ideograph: U+82A6</p>
+	           <p>Identifier in this collection: 23</p>
+	           <p>Glyphic subset: there is a single horizontal stroke in
+	the radical; the top stroke below the radical is attached and
+	slanting up. Thus <img src="u82a6-in.png" alt="glyph 4 for U+82A6"/> is in
+	the glyphic subset, and
+	<img src="u82a6-out.png" alt="glyphs 1 through 3 for U+82A6"/> are
+	not</p>
+         </blockquote>
+
+    
+
+    
+         <h2 xmlns="">
+            <a name="w1aac17b9b1">3 The IVD</a>
+         </h2>
+
+         <p xmlns="">Assuming a successful registration, the collection could
+      be assigned a name like “Example_names”; the
+      glyphic subset 23 in that collection could be associated with the
+      IVS &lt;82A6 E0134&gt;. This would be reflected in the IVD as
+      follows:</p>
+
+
+         <p xmlns="">IVD_collections.txt would contain one entry for this
+      collection:</p>
+
+         <blockquote xmlns="">Example_names;[0-9]+;http://www.example.com/names</blockquote>
+
+         <p xmlns="">IVD_sequences.txt would contain one entry for this
+      particular glyphic subset:</p>
+
+         <blockquote xmlns="">82A6 E0134; Example_names; 23</blockquote>
+
+         <p xmlns="">Using these entries, the IVS &lt;82A6, E0134&gt; can be
+      traced to entity 23 in the collection
+      “Example_names”, and that collection can be traced
+      to the web site “http://www.example.com/names”,
+      and therefore to the description of the collection and its
+      glyphic subsets.</p>
+    
+
+    
+         <h2 xmlns="">
+            <a name="w1aac17c11b1">4 Using the IVS</a>
+         </h2>
+
+         <p xmlns="">Now that the IVS is registered, it can be used in plain
+      text interchange. The example sentence could be represented by
+      the character sequence &lt;82A6, 7530, .., 82A6, E0134,
+      ...&gt;. The first occurrence of U+82A6 is not adorned with a
+      variation selector, because there is no need to express any
+      glyphic restriction. The second occurrence uses the registered
+      variation sequence, and can be interpreted unambiguously using
+      the IVD.</p>
+    
+
+  
+         <h2 xmlns="">
+            <a name="w1aac19b1">Appendix C. Acknowledgments</a>
+         </h2>
+    
+         <p xmlns="">Thanks to Mark Davis, Deborah Goldsmith, Tatsuo Kobayashi,
+    Ken Lunde, Rick McGowan, Chie Oshima, Michel Suignard and Ken
+    Whistler for their help developing the registry and their feedback
+    on this document.</p>
+         <h2 xmlns="">
+            <a name="references">References</a>
+         </h2>
+         <table xmlns="" class="nbwide" cellpadding="0" cellspacing="12">
+            <tbody>
+               <tr>
+                  <td width="99" class="nb" valign="top">[<a name="biblio_distlist">DistList</a>]</td>
+                  <td class="nb" valign="top">
+                     <a href="http://www.unicode.org/consortium/distlist.html">http://www.unicode.org/consortium/distlist.html</a>
+                  </td>
+               </tr>
+
+               <tr>
+                  <td width="99" class="nb" valign="top">[<a name="biblio_errata">Errata</a>]</td>
+                  <td class="nb" valign="top">Updates and Errata<br/>
+                     <a href="http://www.unicode.org/errata">http://www.unicode.org/errata</a>
+                  </td>
+               </tr>
+
+               <tr>
+                  <td width="99" class="nb" valign="top">[<a name="biblio_feedback">Feedback</a>]</td>
+                  <td class="nb" valign="top">
+                     <a href="http://www.unicode.org/reporting.html">http://www.unicode.org/reporting.html</a>
+                     <br/>
+                     <i>
+	For reporting errors and requesting information online.
+      </i>
+                  </td>
+               </tr>
+    
+               <tr>
+                  <td width="99" class="nb" valign="top">[<a name="biblio_10646">ISO 10646</a>]</td>
+                  <td class="nb" valign="top">International Organization for Standardization.  Information Technology&#151;Universal Multiple-Octet Coded Character Set (UCS).  (ISO/IEC 10646:2003).<br/>
+                     <i>
+        For availability, see: <a href="http://www.iso.org">http://www/iso.org</a>
+                     </i>
+                  </td>
+               </tr>
+
+               <tr>
+                  <td width="99" class="nb" valign="top">[<a name="biblio_perl">Perl</a>]</td>
+                  <td class="nb" valign="top">Perl regular expressions<br/>
+                     <a href="http://search.cpan.org/dist/perl/pod/perlre.pod">http://search.cpan.org/dist/perl/pod/perlre.pod</a>
+                  </td>
+               </tr>
+
+               <tr>
+                  <td width="99" class="nb" valign="top">[<a name="biblio_reports">Reports</a>]</td>
+                  <td class="nb" valign="top">Unicode Technical Reports<br/>
+                     <a href="../index.html">http://www.unicode.org/reports/</a>
+                     <br/>
+                     <i>
+	For information on the status and development process for
+	technical reports, and for a list of technical reports.
+      </i>
+                  </td>
+               </tr>
+    
+               <tr>
+                  <td width="99" class="nb" valign="top">[<a name="biblio_unicode">Unicode</a>]</td>
+                  <td class="nb" valign="top">
+                     <i>The Unicode Standard, Version 5.1.0</i>,
+      defined by: <i>The Unicode Standard, Version
+      5.0</i> (Boston, MA, Addison-Wesley, 2007. ISBN
+      0-321-48091-0), as amended by <i>Unicode 5.1.0</i>
+      (<a href="http://www.unicode.org/versions/Unicode5.1.0">http://www.unicode.org/versions/Unicode5.1.0</a>).</td>
+               </tr>
+    
+               <tr>
+                  <td width="99" class="nb" valign="top">[<a name="biblio_versions">Versions</a>]</td>
+                  <td class="nb" valign="top">Versions of the Unicode Standard<br/>
+                     <a href="http://www.unicode.org/versions/">http://www.unicode.org/versions/</a>
+                     <br/>
+                     <i>
+	For details on the precise contents of each version of the
+	Unicode Standard, and how to cite them.
+      </i>
+                  </td>
+               </tr>
+            </tbody>
+         </table>
+         <h2>
+            <a name="modifications">Modifications</a>
+         </h2>
+         <p>This section indicates the changes introduced by each
+	revision.</p>
+         <div xmlns="">
+            <p>
+               <b>Revision 5</b>
+            </p>
+            <p>
+               <i>Revision 4 being a Proposed Update, changes between Revisions 3 and 5 are listed here.</i>
+            </p>
+            <ul>
+               <li>
+                  <p>Clarify that glyphic subsets are constrained by the Han ideograph unification rules.</p>
+               </li>
+               <li>
+                  <p>Change the title from "Ideographic Variation Database" to "Unicode Ideographic Variation Database".</p>
+               </li>
+            </ul>
+        </div>
+
+      
+
+         <div xmlns="">
+            <p>
+               <b>Revision 3</b>
+            </p>
+	           <ul>
+	              <li>
+                  <p>Clarify how an VS is not tied to a function</p>
+               </li>
+	              <li>
+                  <p>Clarify that the regular expression for a collection can change over time</p>
+               </li>
+	              <li>
+                  <p>Minor editorial changes</p>
+               </li>
+	           </ul>
+	        </div>
+
+         <div xmlns="">
+            <p>
+               <b>Revision 2</b>
+            </p>
+	           <ul>
+	              <li>
+                  <p>Clarify IVS, glyphic subset and the role of the IVD in associating the two.</p>
+               </li>
+	              <li>
+                  <p>Describe the purpose of collections</p>
+               </li>
+	              <li>
+                  <p>Clarify the purpose of the regular expression for collection identifiers</p>
+               </li>
+
+	              <li>
+                  <p>Clarify registration authority vs. registrar.</p>
+               </li>
+	              <li>
+                  <p>Warn that the description of a registered sequence can disappear at any time</p>
+               </li>
+	              <li>
+                  <p>Added Appendix B, “Hypothetical example”</p>
+               </li>
+	           </ul>
+	        </div>
+
+         <div xmlns="">
+            <p>
+               <b>Revision 1</b>
+            </p>
+	           <ul>
+	              <li>
+                  <p>First version</p>
+               </li>
+	           </ul>
+	        </div>
+         <hr/>
+         <p xmlns="" class="copyright">Copyright © 2005-2009 Unicode, Inc. All Rights Reserved. The
+  Unicode Consortium makes no expressed or implied warranty of any
+  kind, and assumes no liability for errors or omissions. No liability
+  is assumed for incidental and consequential damages in connection
+  with or arising out of the use of the information or programs
+  contained or accompanying this technical report. The Unicode <a href="http://www.unicode.org/copyright.html">Terms of Use</a>
+  apply.</p>
+         <p xmlns="" class="copyright">Unicode and the Unicode logo are trademarks of
+  Unicode, Inc., and are registered in some jurisdictions.</p>
+      </div>
+   </body>
+</html>

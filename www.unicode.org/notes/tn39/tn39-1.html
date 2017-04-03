@@ -1,0 +1,974 @@
+<!doctype HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"> 
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta http-equiv="Content-Language" content="en-us">
+<meta name="GENERATOR" content="Microsoft FrontPage 12.0">
+<meta name="ProgId" content="FrontPage.Editor.Document">
+<link rel="stylesheet" href="../../unicode/reports/reports.css" 
+type="text/css">
+<title>UTN #39: Bidi Brackets for Dummies</title>
+</head>
+
+<body bgcolor="#ffffff">
+
+<table class="header">
+  <tr>
+    <td class="icon"><a href="http://www.unicode.org"><img align="middle" 
+    alt="[Unicode]" border="0" 
+    src="../../webscripts/logo60s2.gif" width="34" height="33"></a>&nbsp;&nbsp;
+    <font size="3"><a class="bar" href="../index.html">Technical 
+    Notes</a></font></td>
+  </tr>
+  <tr>
+    <td class="gray">&nbsp;</td>
+  </tr>
+</table>
+<div style="margin: 2em">
+  <h2 align="center">Unicode Technical Note #39</h2>
+  <h1 align="center">Bidi Brackets for Dummies</h1>
+  <table class="wide">
+    <tr>
+      <td>Version</td>
+      <td><a href="tn39-1.html#TrackingNumber1">1</a></td>
+    </tr>
+    <tr>
+      <td>Authors</td>
+      <td>Ken Whistler</td>
+    </tr>
+    <tr>
+      <td>Date</td>
+      <td>2014-04-01</td>
+    </tr>
+    <tr>
+      <td>This Version</td>
+      <td><a href="tn39-1.html">
+      http://www.unicode.org/notes/tn39/tn39-1.html</a></td>
+    </tr>
+    <tr>
+      <td>Previous Version</td>
+      <td>n/a</td>
+    </tr>
+    <tr>
+      <td>Latest Version</td>
+      <td><a href="index.html">http://www.unicode.org/notes/tn39/</a></td>
+    </tr>
+  </table>
+  <p><br>
+  </p>
+  <h3><i>Summary</i></h3>
+  <p><i>This document is the Bidi Brackets for Dummies course.</i></p>
+  <h3><i>Status</i></h3>
+  <p><i>This document is a <b>Unicode Technical Note</b>. Sole responsibility for 
+  its contents rests with the author(s). Publication does not imply any endorsement by the 
+  Unicode Consortium. This document is not subject to the 
+	<a href="http://www.unicode.org/policies/patent_policy.html">Unicode Patent Policy</a>.</i></p>
+
+<p>For information on Unicode Technical Notes including criteria for acceptance, see
+<a href="../index.html">http://www.unicode.org/notes/</a>.</p>
+  <h3><i>Contents</i></h3>
+  <ul>
+    <li><a href="tn39-1.html#Introduction">Introduction</a></li>
+    <li><a href="tn39-1.html#Chapter1">Chapter 1. Brackets: What are they?</a></li>
+    <li><a href="tn39-1.html#Chapter2">Chapter 2. Brackets: What are pairs?</a></li>
+    <li><a href="tn39-1.html#Chapter3">Chapter 3. Brackets: The syntax of pairing</a></li>
+    <li><a href="tn39-1.html#Chapter4">Chapter 4. Brackets: Trial Runs</a></li>
+    <li><a href="tn39-1.html#Chapter5">Chapter 5. Brackets: Parsing and Multiple Brackets</a></li>
+    <li><a href="tn39-1.html#ReviewModule">Review Module</a></li>
+    <li><a href="tn39-1.html#References">References</a></li>
+    <li><a href="tn39-1.html#Modifications">Modifications</a></li>
+  </ul>
+
+
+<h2><a name="Introduction"></a>Introduction</h2>
+
+<p>This is the <i>Bidi Brackets for Dummies</i> course.
+When you finish this course, you will be able to identify
+bracket pairs according to the Unicode Bidirectional
+Algorithm (UBA for short). You will also be able to
+add to your resume that you have completed the BFD course.</p>
+
+<p>There are no real prerequisites for this course. You don't
+even have to understand the concept of bidirectional text,
+or why the UBA even exists. We'll just focus on what you need
+to know to match up bracket pairs for rule N0 in the UBA.
+(And no, that is not en oh "NO" &#x2014; it is en zero "N0".)</p>
+
+<h2><a name="Chapter1"></a>Chapter 1. Brackets: What are they?</h2>
+
+<p>So what is a "bracket", anyway?</p>
+
+<p>&#x2014; Um, a "["?</p>
+
+<p>Yes, correct. But actually, in the UBA, many other things
+are also identified as "brackets". So a parenthesis "(" is
+considered a bracket, and a curly brace "{" is also considered
+a bracket. The "[" bracket is called a square bracket, so
+we can tell it apart from all the other "brackets".</p>
+
+<p>Basically, any of the punctuation marks that come in pairs,
+and which are used to enclose stuff in text, to set it off
+from other stuff outside the marks, are considered brackets.
+There are many others, besides the ones people typically
+recognize on their keyboard, including such oddities as
+U+29FC &#x29FC; LEFT-POINTING CURVED ANGLE BRACKET and U+2E26 &#x2E26; LEFT SIDEWAYS U BRACKET.
+There are even brackets in Unicode that aren't even called
+brackets or parentheses or braces &#x2014; characters like
+U+29DA &#x29DA; LEFT DOUBLE WIGGLY FENCE and U+27C5 &#x27C5; LEFT S-SHAPED BAG DELIMITER.
+Don't ask me why &#x2014; they are all just a
+bunch of weird squigglies used in pairs as punctuation.</p>
+
+<p>&#x2014; I don't see any weird squigglies there. That's just a bunch of boxes!</p>
+
+<p>Get yourself some better fonts.</p>
+
+<p>&#x2014; So is the Arabic U+FDE3 &#xFDE3; ORNATE LEFT PARENTHESIS a bracket, too?</p>
+
+<p>No.</p>
+
+<p>&#x2014; Why not?</p>
+
+<p>Because I said so.</p>
+
+<p>&#x2014; How about quotation marks? They come in pairs and enclose stuff
+inside, separating it from all the stuff outside. Some of them, like
+that French thingie &#x2039; even look like brackets.</p>
+
+<p>No, they aren't "brackets", either.</p>
+
+<p>&#x2014; Why not?</p>
+
+<p>Because I said so.</p>
+
+<p>&#x2014; How about U+300C &#x300C; LEFT CORNER BRACKET? Is that a "bracket"?</p>
+
+<p>Yes, that is a bracket.</p>
+
+<p>&#x2014; But I thought that was a Japanese quotation mark. How come it
+is a bracket, but the other quotation marks aren't?</p>
+
+<p>Because I said so. Oh, and U+230A &#x230A; LEFT FLOOR is a "bracket", too.</p>
+
+<p>&#x2014; But that doesn't make any sense. What does "FLOOR" have to do
+with brackets?</p>
+
+<p>It's probably something to do with maths, but it's a "bracket", anyway. Besides, if
+you were a decent carpenter, you would know what a 
+<a href="http://www.stadiumseatdepot.com/images/products/detail/SBrackets.jpg">floor bracket</a> was.</p>
+
+<p>&#x2014; How about the left angle bracket "&lt;"? Is that at least a "bracket"?</p>
+
+<p>No.</p>
+
+<p>&#x2014; Why not?</p>
+
+<p>Because it's a LESS-THAN SIGN. And enough with all these silly "Why?" and
+"Why not?" questions.</p>
+
+<h3>Homework</h3>
+
+<p>Your homework is to memorize the list of
+code points and character names in
+BidiBrackets.txt [<a href="tn39-1.html#BidiBrackets">Brackets</a>]. That list defines all the brackets for UBA.
+And it doesn't matter what else you might think is a "bracket".
+That's the list and that's just the way it is.</p>
+
+<h2><a name="Chapter2"></a>Chapter 2. Brackets: What are pairs?</h2>
+
+<p>If you were paying attention in the Chapter 1 lesson, you may
+have noticed that all the "brackets" had "LEFT" in their names.
+It turns out, not too surprisingly, that there are also
+corresponding "brackets" with "RIGHT" in their names.</p>
+
+<p>The left and right versions of brackets form pairs with each
+other. So "[" is the left version of "]", and vice versa.
+They form a pair. And usually they are graphical mirrors of
+each other. The left of the pair points right, and the right
+of the pair points left.</p>
+
+<p>&#x2014; Wait! That's too confusing.</p>
+
+<p>O.k., think of it this way. The left of the pair occurs to
+the left side of the text it encloses, and the right of the
+pair occurs to the right side of the text it encloses. Is
+that clearer?</p>
+
+<p>&#x2014; Yes, much!</p>
+
+<p>Only, sometimes in bidirectional text, it is just the opposite.</p>
+
+<p>&#x2014; What?!</p>
+
+<p>Well, don't worry about that now. Remember, you don't need to
+understand bidirectional text to understand the identification
+of bracket pairs. So forget I even mentioned that. The important
+thing is to know that the "LEFT" ones pair with the "RIGHT"
+ones, and it doesn't really matter, in the end, which way
+they point or where the text they enclose actually is, o.k.?</p>
+
+<p>&#x2014; Now wait a minute. I <i>did</i> my homework, and there was something
+in that list called TIBETAN MARK GUG RTAGS GYON. That doesn't
+have "LEFT" in its name. What's up with that?</p>
+
+<p>Well, "GYON" <i>means</i> left in Tibetan. Same difference.</p>
+
+<p>&#x2014; You can't fool me though &#x2014; I didn't see "LEFT" in OGHAM
+FEATHER MARK, either. And you can't convince me that "FEATHER"
+means left.</p>
+
+<p>That one forms a pair with the OGHAM <i>REVERSED</i> FEATHER MARK. And you
+know what they say about foolish consistency, right?</p>
+
+<p>Anyway, the point is that all of the "brackets" come in pairs.
+And even if they don't all actually have "LEFT" or "RIGHT" in
+their names, you can always tell which one is paired with which
+other one. If this isn't always obvious, then the way to figure
+it out is to go back to BidiBrackets.txt. The <i>second</i> number
+in each line of that file is the character that forms the pair.
+So you look at a line like:</p>
+
+<pre>005B; 005D; o # LEFT SQUARE BRACKET</pre>
+
+<p>And that tells you that U+005D is the pair for U+005B LEFT SQUARE BRACKET.</p>
+
+<p>The next line in the file is:</p>
+
+<pre>005D; 005B; c # RIGHT SQUARE BRACKET</pre>
+
+<p>And that tells you that U+005B is the pair for U+005D RIGHT SQUARE BRACKET.</p>
+
+<p>&#x2014; But isn't that redundant? Why use two lines to tell me the same
+thing?</p>
+
+<p>Yes. And because if I tell you something two times, it is true.</p>
+
+<p>&#x2014; Where did the "U+" come from? I don't see that in BidiBrackets.txt.</p>
+
+<p>Go back to the <i>Unicode for Dummies</i> course.</p>
+
+<p>So, for those of you who are still following along, the next thing
+to know about is that the "LEFT" brackets in the pairs are also
+known as "opening" and the "RIGHT" brackets in the pairs are also
+known as "closing". The mysterious "o" and "c" that you see on
+each line of BidiBrackets.txt stand for "o"pening and for "c"losing.
+The "o" or "c" values are how you tell which one of a pair is
+which, even if the characters don't actually have "LEFT" or
+"RIGHT" in their names. It is really, really important, it turns
+out, to know which is the opening one and which is the closing one,
+because figuring out which particular bracket can pair up with which
+particular other bracket in a long line of text depends 
+on being able to find all the opening ones and all the closing ones.</p>
+
+<p>But there is another complication here. It turns out that some
+brackets are canonical equivalents of other brackets, and those
+count as pairs, too.</p>
+
+<p>&#x2014; Come again?</p>
+
+<p>Well, according to the Unicode Normalization Algorithm, a few of
+the angle brackets are canonically equivalent to other angle
+brackets, and because canonical equivalents cannot really be
+distinguished in most text processing, it isn't a good idea to
+separate them when it comes to identifying bracket pairs.</p>
+
+<p>&#x2014; Wait, I thought angle brackets weren't actually "brackets"!</p>
+
+<p>Whatever. I'm not talking about "angle brackets" &#x2014; I'm talking
+about U+2329 &#x2329; LEFT-POINTING ANGLE BRACKET and
+U+3008 &#x3008; LEFT ANGLE BRACKET, which are the same as each
+other, but which aren't the "&lt;" angle bracket you are thinking
+about.</p>
+
+<p>&#x2014; Ugh. I hated the <i>Unicode Normalization for Dummies</i> course &#x2014;
+it was so confusing.</p>
+
+<p>Well, you are right about that, at least! For now, just memorize
+that U+3008 pairs with U+3009 and U+2329 pairs with U+232A,
+but that U+3008 <i>also</i> pairs with U+232A and U+3009
+<i>also</i> pairs with U+2329. It is just like having to know
+that "pair" is also spelled "pear" &#x2014; only that the pairs we
+are talking about here aren't pears, but angle brackets,
+even though they aren't "angle brackets".</p>
+
+<h3>Homework</h3>
+
+<p>Your homework for this chapter is to go back to BidiBrackets.txt
+[<a href="tn39-1.html#BidiBrackets">Brackets</a>]
+and memorize all the "o" and "c" values in the list, so you
+know which character in each pair is the opening or the closing one.</p>
+
+<p>&#x2014; Will that be on the midterm?</p>
+
+<p>Yes.</p>
+
+<h2><a name="Chapter3"></a>Chapter 3. Brackets: The syntax of pairing</h2>
+
+<p>In Chapter 2 we learned all about which brackets pair with
+which brackets. But it turns out that so far that information is all
+abstract. We can think of that as the "semantics"
+of bracket pairs, because it is the truth of their meaning,
+independent of any use of them in text. An "opening bracket" is
+opening, just because of what it is and what it means. It
+doesn't matter where it occurs in text.</p>
+
+<p>But determining which bracket pairs with which other bracket
+is more complicated than just having memorized all the
+information in BidiBrackets.txt and knowing which ones
+are opening and which ones are closing.</p>
+
+<p>So what am I talking about? Let's start by looking at
+a few examples. In the following short text:</p>
+
+<p>Voltage equals current multiplied by resistance (Ohm's Law)</p>
+
+<p>The opening "(" is paired with the closing ")". And we
+then interpret the text "Ohm's Law" as being "inside
+the parentheses" &#x2014; or, more generally as "inside the
+brackets", since we are talking generically about bracket
+pairs here. Our concern is not the Chicago Manual of Style [<a href="http://www.unicode.org/notes/tn39/CMS">CMS</a>],
+or exactly <i>which</i> brackets should be used where, but rather
+just figuring out which <i>opening</i> bracket goes with which
+<i>closing</i> bracket. It doesn't matter whether they are the right 
+(or, um, "correct") ones or not. So for our purposes, it would 
+be equally valid to consider:</p>
+
+<p>Voltage equals current multiplied by resistance [Ohm's Law]</p>
+
+<p>And see that the opening "[" is paired with the closing "]".</p>
+
+<p>It is crucial, however, to note the exact order in which these
+pairs occur. If the text is changed to:</p>
+
+<p>Voltage equals current multiplied by resistance ]Ohm's Law[</p>
+
+<p>We would no longer consider that particular "]" to be paired 
+with that particular "[". They are in the wrong order here.
+In principle, the closing "]" might pair with some opening "["
+off the to the left of the line, but not visible here. And
+the "[" might pair with some other "]" from somewhere continuing
+on ahead in the text. But these two do not pair <i>with each other</i>,
+because they appear here in the wrong order to be considered
+a matching pair.</p>
+
+<p>&#x2014; Wait! In this case, can't I just redefine "]" as opening
+and "[" as closing? I kinda like the way "]Ohm's Law[" looks!</p>
+
+<p>No. Well, maybe you could in an alternative universe, I suppose, but not
+with the UBA we have. Remember, I told you to <i>memorize</i> the
+opening and closing values in BidiBrackets.txt &#x2014; not to
+<i>question</i> them.</p>
+
+<p>At any rate, the point here is that for any <i>particular</i> bracket
+in any <i>particular</i> text, it totally matters which order
+you encounter them in. "(^.^)" contains a bracket pair &#x2014; well, it
+might also contain an emoticon, but that is the topic for another course.
+")^.^(", on the other hand, does <i>not</i> contain a bracket pair
+(but might contain an Anpanman).</p>
+
+<p>Also, if I have two lefts, as in "(^.^(", those two brackets
+(well, <i>parentheses</i>, but whatever!) also do not
+pair with each other. They <i>might</i> pair up with some closing
+parentheses much later on in your text, but not with each other in
+just the text as we have it there. Remember, the general principle
+here is that two lefts do not make a right and two rights do
+not make a left. :-) :-)</p>
+
+<h3>Homework</h3>
+
+<p>Your homework for this chapter is to meditate on the epistemological
+implications of missing text and on <i>The Order of Things</i>.</p>
+
+<h2><a name="Chapter4"></a>Chapter 4. Brackets: Trial Runs</h2>
+
+<p>Now that we have comes to grips with the fact that the order
+of brackets matters, we need to move on to dealing with the
+implications of more than two brackets occurring together.
+When people use  multiple brackets altogether in a line,
+whether they are individually matching pairs or not, how
+do we figure out which <i>particular</i> bracket pairs up with
+which <i>particular</i> other bracket?</p>
+
+<p>In the case of just two brackets, this is pretty simple to
+determine. But once the brackets start multiplying (with
+or without multiplication signs), the situation gets exponentially
+more complicated.</p>
+
+<p>I'll start the discussion first using just sets of three
+brackets, which I like to call "trials" &#x2014; because, after
+all, they are sets of three, kinda like triads. But also because
+we have to try various combinations to figure them out, and
+because it is a trial to explain all this to you.</p>
+
+<p>And before I go further, there is something <i>else</i> you need
+to know. All of this work to match up brackets only counts
+if you are inside a bidirectional "isolating run sequence". Those
+are kinda like long distance training runs, only different.
+If you don't know what they are, don't worry &#x2014; you can always
+buy my two-part course, <i>Unicode Bidirectional Runs for Dummies</i>
+and the sequel, <i>Unicode Bidirectional Isolating Run Sequences for
+Dummies VI.III: The X10 Also Rises</i>.
+For now, we'll just consider that somebody has already figured
+out what they are, and all the examples here are inside a
+single one of them, whatever they are.</p>
+
+<p>So let's look at some examples. We'll stay simple
+to start with and use brackets all of the same kind &#x2014; just square 
+brackets.</p>
+
+<p>Bud [Gus [Hank [Xerxes</p>
+
+<p>O.k., there are three opening brackets in that line, but no
+closing brackets. So there are no bracket pairs, which require
+an opening bracket and a closing bracket in the correct order.
+How about:</p>
+
+<p>Bud ]Gus [Hank [Xerxes</p>
+
+<p>Still three brackets, but now one is closing and two are opening.
+They are still in the wrong order to make any pairs, however.
+But look at:</p>
+
+<p>Bud [Gus ]Hank [Xerxes</p>
+
+<p>Now the first two brackets are opening and closing in the correct
+order, so we can figure out that "[Gus ]" contains a bracket pair,
+which, in turn encloses the text "Gus ", including the space.
+The last opening bracket has no closing bracket to match with.
+Similarly:</p>
+
+<p>Bud ]Gus [Hank ]Xerxes</p>
+
+<p>Now the first closing bracket has nothing to match, but "[Hank ]"
+contains a bracket pair, enclosing the text "Hank ". Where things
+start to get interesting is in the following:</p>
+
+<p>Bud [Gus [Hank ]Xerxes</p>
+
+<p>In this case "[Hank ]" still contains a bracket pair. The first
+opening bracket on the line doesn't match the closing bracket,
+because there is an opening bracket after it which is closer
+to the closer. So the closer opener wins... wait, now I'm
+confusing myself! In any case, the outside brackets in
+"[Gus [Hank ]" don't match for a bracket pair &#x2014; only the
+inside ones do.</p>
+
+<p>Bud [Gus ]Hank ]Xerxes</p>
+
+<p>That example is similar to the last one, only this time the
+bracket pair is in "[Gus ]", and the second closing bracket
+doesn't match any opening bracket.</p>
+
+<p>Now let's throw a curveball in here &#x2014; in particular, a curly
+brace. This changes things, and if you just swing away
+without keeping your eye on the ball, you are going to miss
+how things work:</p>
+
+<p>Bud [Gus {Hank ]Xerxes</p>
+
+<p>That example has the same pattern of opening-opening-closing,
+but now the second opening bracket (the left curly brace)
+no longer can match the closing bracket, because it is a
+different kind of bracket. So in this case, the <i>outer</i>
+pair matches, and we find a bracket pair in "[Gus {Hank ]",
+enclosing the text "Gus {Hank ", including the left curly
+brace, as well as the spaces.</p>
+
+<p>As we'll see in the next chapter, the effect on that
+curly brace is pretty drastic, because the bracket pair
+(of square brackets) has taken square aim at and effectively 
+snuffed the curly brace they enclose. That curly brace can't match 
+any other curly brace which might have come later, because it 
+has been enclosed already [in a {-coffin, as it were].</p>
+
+<p>Be that as it may, remember that this behavior isn't
+inherent to square brackets and curly braces. It isn't as if
+square brackets are inherently "stronger" than curly braces
+and always win when they come into contention for matching.
+If the situation were reversed, the curly braces could turn
+the tables and ice the bracket, instead:</p>
+
+<p>Bud {Gus [Hank }Xerxes</p>
+
+<p>In this case there is a "bracket" pair in "{Gus [Hank }",
+enclosing the text "Gus [Hank ", including the left square
+bracket, as well as the spaces. So here the curly braces
+bury the single opening square bracket &#x2014; along
+with Gus and Hank.</p>
+
+<p>So as far as finding bracket pairs go, no single type of
+"bracket" has priority over any other. They are all equals.
+The important thing is which one comes first and then in what
+order all the rest occur on the line.</p>
+
+<h3>Homework</h3>
+
+<p>Your homework is to try to dig up more triads with square brackets
+and curly braces. If you find any "little problems" I have forgotten
+about, it doesn't matter.</p>
+
+<h2><a name="Chapter5"></a>Chapter 5. Brackets: Parsing and Multiple Brackets</h2>
+
+<p>O.k., in the last chapter we move on to the most difficult
+part of matching bracket pairs for UBA: what to do for
+long sequences of multiple brackets of different types.
+If you haven't washed out of the course by now, you might
+have what it takes to join Unicode Bracket Club.</p>
+
+<p>So what is the first rule of Unicode Bracket Club?</p>
+
+<p>&#x2014; Um..., don't talk about brackets?</p>
+
+<p>No. The first rule of Unicode Bracket Club is: Matching
+bracket pairs for UBA is not expression evaluation.</p>
+
+<p>&#x2014; Huh?</p>
+
+<p>Well, yes. Most people's notion of how multiple parenthesis
+matching works comes from their high school algebra class.
+Remember those equations:</p>
+
+<p align="center">((a + b) * (b + 9a)) + ((2a &#x2013; 1) * (2b + 17)) = &#x2013;1</p>
+
+<p>You had to go through and evaluate all the expressions
+and combine the inner expressions by applying the
+operators to form other expressions, and so on.</p>
+
+<p>And what happened if you were missing a balancing parenthesis?</p>
+
+<p>&#x2014; Uh, the algebra teacher hit us with a ruler.</p>
+
+<p>Right, and the equations didn't work, because they had what
+is called an expression error. If you use parentheses
+(or brackets for matrices, and so forth), they <i>have</i> to
+balance, or the expression has a syntax error, and it cannot
+be evaluated.</p>
+
+<p>But in Unicode Bracket Club, if a "balancing parenthesis" is
+missing, meh! It just changes what "bracket" matches what
+other "bracket" in the line. And a missing match isn't an
+error &#x2014; it's just "interesting".</p>
+
+<p>So if you're all ready with your BNF for brackets and have
+an LL-grammar ready and want to get busy with an LALR
+parsing strategy for bidirectional brackets, you're probably
+in the wrong class. Maybe <i>Compilers for Dummies</i> is what
+you wanted.</p>
+
+<p>Instead, in Unicode Bracket Club, we need to be able to
+figure out what to do with:</p>
+
+<pre><b>(((a[(])b</b></pre>
+
+<p>We need to identify the matching bracket pairs and the brackets that
+don't match, but always come out smiling. Because there are
+no errors, and everyone is a winner in Unicode Bracket Club!</p>
+
+<p>So how do we find matching bracket pairs? You already have
+some clues from Chapter 4 and the earlier chapters:</p>
+
+<p>1. An opener for a match has to come before its closer.</p>
+
+<p>2. An opener for a match has to be the same <i>kind</i> of
+bracket as its closer.</p>
+
+<p>3. If an unmatched opener or closer ends up inside a
+different matched pair, then it is erased from contention
+and stays unmatched.</p>
+
+<p>So let's extend the examples for bracket trials and move into
+full-blown bracket matches. How can we describe the moves
+which will lead to a good match?</p>
+
+<p>First of all, always start from the left and move systematically
+to the right. This is known as the logical order for a match.
+(Members of Unicode Bracket Club living in the Middle East
+tend to think of this as always starting from the right and
+moving systematically to the left, but they are still using
+the same logical order &#x2014; it just looks different when you
+watch their matches. Think of it as watching from the
+other side of the ring.)</p>
+
+<p>Then take the following steps:</p>
+
+<p>1. If you encounter a closer before you have any opener
+to match it, just discard it. That is known as a feint.</p>
+
+<p>2. If you encounter an opener, remember it. Those count
+for scoring. Also remember what kind of opener it was and
+exactly where you encountered it.</p>
+
+<p>3. Move on.</p>
+
+<p>4. If the next bracket you encounter is a closer, check
+to see if it matches one of the openers you remembered.
+You start from the most recently encountered opener and
+think back to the first opener that is of the same type.
+If you find one, congratulations, you have identified
+a bracket pair. Mark it down for keeping. This is
+known as a combination. And by the way, if you identified
+a bracket pair, but while you were remembering back to
+it, you passed over any brackets of <i>different</i> types,
+whether opening or closing, you can now forget about
+them. Those are all known as misses.</p>
+
+<p>5. However, if the next bracket you encounter is <i>another</i>
+opener, just remember it, too, and where you found it.
+Those are known as keepers.</p>
+
+<p>6. If the next character you encounter is not a bracket
+at all, just skip on by. That is known as fancy footwork.</p>
+
+<p>7. Now check if you have moved all the way systematically
+in logical order to the end. If so, you are done, and it is time
+for scoring. But if you aren't at the end, then go back
+to step 3 and move on again. Remember to keep bobbing
+and weaving as you continue the match.</p>
+
+<p>Once the match is done, it is time for scoring. Bring all the
+combinations you found to the scoring table and lay them
+out for the judges to examine. The judges will then
+reorder all the combinations by the positions they occurred
+in. The number of combinations you found, reordered in
+neat ascending order by position, constitute your score.
+Congratulations!</p>
+
+<p>O.k., let's watch the progress of a particular match closely,
+to see all the moves one-by-one. The contender is:</p>
+
+<pre><b>(((a[(])b
+123456789</b></pre>
+
+<p>Note that the positions are labeled, starting at 1, beneath
+each character. We are going to work our way through,
+systematically, in logical order, from 1 until we get all
+the way to the end at 9.</p>
+
+<p>Position 1: Found an opener "(". Remember it: "(" at 1.</p>
+
+<p>Position 2: Found an opener "(". Remember it: "(" at 2.</p>
+
+<p>Position 3: Found an opener "(". Remember it: "(" at 3.</p>
+
+<p>Position 4: Not a bracket. Skip on by.</p>
+
+<p>Position 5: Found an opener "[". Remember it: "[" at 5.</p>
+
+<p>Position 6: Found an opener "(". Remember it: "(" at 6.</p>
+
+<p>Position 7: Found a closer (finally!) "]". Think back to the first
+matching opener before. That would be "[" at 5. Save
+the combination: "[" at 5 and "]" at 7. And since we
+passed over an unmatched opener "(" at 6, just forget
+that one now. It is a miss.</p>
+
+<p>Position 8: Found a closer ")". Think back to the first matching
+opener before. Since we already forgot about "(" at 6,
+the correct match will be "(" at 3. Save the combination:
+"(" at 3 and ")" at 8.</p>
+
+<p>Position 9: Not a bracket. Skip on by. But hey, we are at the end, so we're
+done with this match.</p>
+
+<p>Scoring:</p>
+
+<p>Lay out the combinations you found:</p>
+
+<p>"[" at 5 and "]" at 7<br>
+"(" at 3 and ")" at 8</p>
+
+<p>The judges rearrange those to:</p>
+
+<p>"(" at 3 and ")" at 8<br>
+"[" at 5 and "]" at 7</p>
+
+<p>And count up your matches: your score is 2!</p>
+
+<p>All the other brackets you found during the match don't count
+for matching bracket pairs. They can be ignored from now on,
+because you have your neatly arranged and scored list of
+actual matched bracket pairs.</p>
+
+<p>So lets go back to the start. The contender was:</p>
+
+<pre><b>(((a[(])b</b></pre>
+
+<p>And we have discovered that the <i>first</i> bracket pair in it
+is "(a[(])", which encloses the text "a[(]".</p>
+
+<p>But that enclosed text itself contains the <i>second</i> bracket
+pair: "[(]", which encloses the text "(", itself an unmatched
+"bracket".</p>
+
+<p>And the two parentheses at the very start are also unmatched
+"brackets".</p>
+
+<p>So matched bracket pairs can be inside other matched bracket
+pairs. We just have to be very careful in finding them, because
+they aren't always immediately obvious. In particular, for
+a different contender:</p>
+
+<pre><b>[(])</b></pre>
+
+<p>The "[(]" contains a matching bracket pair, but "(])" does not.</p>
+
+<p>&#x2014; Well, I guess I understand sorta. But I've suffered all the way
+through these explanations and I still don't know <i>what</i> a
+matching bracket pair is when I see one. You've given me
+instructions for how to join Unicode Bracket Club and then
+find combinations that count as matched bracket pairs as I
+step through all the moves to deal with a contender. Why
+can't you just <i>define</i> what a goldarn matching bracket pair
+<i>is</i>, instead of sending me through all this Bracket Club
+folderol to try to find them??</p>
+
+<p>Fair enough. I suppose we could try it that way.
+First add a few definitions:</p>
+
+<p><b>BD14.</b> An opening paired bracket is a character whose 
+    Bidi_Paired_Bracket_Type property value is Open.</p>
+
+<p><b>BD15.</b> A closing paired bracket is a character whose 
+    Bidi_Paired_Bracket_Type property value is Close.</p>
+
+<p><b>BD16a.</b>  A bracket pair is a pair of an opening paired bracket and a closing
+    paired bracket character such that the Bidi_Paired_Bracket property 
+    value of the former character or its canonical equivalent equals 
+    the latter character or its canonical equivalent.</p>
+
+<p>Note that you already memorized the list of those for your homework
+for Chapter 2.</p>
+
+<p><b>BD16b.</b>  A resolved bracket pair is a bracket pair that has been
+    been selected from among possible bracket pairs in an isolating run
+    sequence.</p>
+
+<p>Now we've already agreed to ignore the fact that we don't
+know exactly how to find an "isolating run sequence". And this
+new term "resolved bracket pair" is just another way of saying
+"a bracket pair which has been resolved by some selection
+process to be a pair that matches". In other words, it means
+a "matching bracket pair" in a syntactic context.</p>
+
+<p>&#x2014; But that just gets me back to where I was before. I
+know what "matching bracket pair" <i>means</i> &#x2014; I just don't
+know how to find the darn things! Now you're just saying
+they are "selected from among possible bracket pairs". How
+do I find them?</p>
+
+<p>Relax, relax. The answer to that is coming. We'll just define
+a rule to select them:</p>
+
+<p><b>Rx.</b>  For each isolating run sequence, bracket characters are selected
+    into resolved bracket pairs as follows:</p>
+<blockquote>
+<p>Starting at the beginning of the run sequence, when a closing
+    bracket character is encountered, find the nearest preceding
+    opening character that forms a bracket pair, but is not already
+    part of a resolved bracket pair, and not ignored for bracket pair
+    selection.</p>
+
+<p>If one exists, resolve the pair, and mark any enclosed
+    opening brackets of any kind as not part of a bracket pair and
+    ignored for further bracket pair selection. Otherwise, if no pair
+    can be selected, mark the closing bracket as not part of a pair
+    and ignored for further pair selection.</p>
+</blockquote>
+<p>&#x2014; Gah! That's it?! How is that any clearer than the rules for
+Unicode Bracket Club matches? Can you show me how that works?</p>
+
+<p>Sure. Let's go back to our original contender:</p>
+
+<pre><b>(((a[(])b
+123456789</b></pre>
+
+<p>Let's use Rule Rx and select all the resolved bracket pairs.</p>
+
+<p>1. Scan forward to the first closing bracket character.
+That is "]" at 7.</p>
+
+<p>2. Scan backwards to the nearest opening bracket character that
+forms a bracket pair. That is "[" at 5.</p>
+
+<p>3. Is "[" at 5 already part of a resolved bracket pair?
+(Oops! Reminder to self: remember to first scan through and
+set all brackets to "not-in-resolved-bracket-pair" before
+starting to apply Rx.) Let's go with the answer: No.</p>
+
+<p>4. Is "[" at 5 not ignored for bracket pair selection?
+(Oops! Reminder to self: remember to first scan through and
+set all brackets to "not-ignored-for-bracket-selection" before
+starting to apply Rx.) Let's go with the answer: No.</p>
+
+<p>5. O.k., we've determined that "[" at 5 meets the criterion,
+so we now have our first resolved bracket pair. Set "[" at 5
+and "]" at 7 to "in-resolved-bracket-pair".</p>
+
+<p>6. Find any enclosed opening bracket in the resolved bracket
+pair. That means scanning between 5 and 7. We find "(" at 6.
+Mark that as "not-in-resolved-bracket-pair" and
+"ignored-for-bracket-selection".</p>
+
+<p>7. Go back to where we left off at step #1 and scan forward
+to the next closing bracket character. That is ")" at 8.</p>
+
+<p>8. Scan backwards to the nearest opening bracket character
+that forms a bracket pair. That is "(" at 6.</p>
+
+<p>9. Is "(" at 6 part of a resolved bracket pair? No.</p>
+
+<p>10. Is "(" at 6 ignored for bracket pair selection? Yes.
+O.k., then we need to keep scanning back.</p>
+
+<p>11. Scan backwards to the next nearest opening bracket character
+that forms a bracket pair. That is "(" at 3.</p>
+
+<p>12. Is "(" at 3 part of a resolved bracket pair? No.</p>
+
+<p>13. Is "(" at 3 ignored for bracket pair selection? No.</p>
+
+<p>14. O.k., we've determined that "(" at 3 meets the criterion,
+so we now have our second resolved bracket pair. Set "(" at 3
+and ")" at 8 to "in-resolved-bracket-pair".</p>
+
+<p>15. Find any enclosed opening bracket in the resolved bracket
+pair. That means scanning between 3 and 8. We find "[" at 5 and (" at 6.
+Mark them as "not-in-resolved-bracket-pair" and as
+"ignored-for-bracket-selection". (Oops! Reminder to self: Update
+rule Rx, because we really didn't want to change "[" at 5
+to "not-in-resolved-bracket-pair" and "ignored-for-bracket-selection".
+For now, we'll just pretend the rule is already patched up.)</p>
+
+<p>16. Go back to where we left off at step #7 and scan forward
+to the next closing bracket character. O.k., there aren't any.
+We are done.</p>
+
+<p>Now we can go on to scoring.</p>
+
+<p>What are all the brackets identified as "in-resolved-bracket-pair"?
+Those would be:</p>
+
+<p>"(" at 3, "[" at 5, "]" at 7, and ")" at 8</p>
+
+<p>But what are the actual resolved pairs? Oops! We forgot to keep track.
+Reminder to self: Add requirement in rule to keep exact list of
+each resolved bracket pair as it is identified, for later reference.</p>
+
+<p>O.k., let's go back and keep track as we resolve them, and we get:</p>
+
+<p>"[" at 5 and "]" at 7<br>
+"(" at 3 and ")" at 8</p>
+
+<p>That's two resolved bracket pairs, so our final score is 2!</p>
+
+<p>We're done, right? Oops! We forgot to reorder the list in ascending
+order by position, rather than in order of selection by rule Rx.
+Reminder to self: Add requirement in rule to do post-selection
+reordering by position of the first character in each resolved
+bracket pair in the list.</p>
+
+<p>Well, there were a few things that needed patching up here and there, but
+the process of selection is ever so much clearer expressed this
+way, right? We don't have to "remember" a stack of openers.
+All we have to "remember" is the process status of all the
+brackets, where we left off to restart the forward scan,
+the spans we have to check (and recheck) each time we identify
+a new resolved bracket pair, and the list of resolved bracket
+pairs as we select them.</p>
+
+<h3>Homework</h3>
+
+<p>Find the bracket pairs in this new contender: </p>
+
+<pre><b>({([{([){()([])]}}[{(X)})[)])})}}{([])[]})</b></pre>
+
+<p>For extra credit do the exercise twice, once with each method
+described here, and compare and contrast your results.</p>
+
+<h2><a name="ReviewModule"></a>Review Module for Bidi Brackets for Dummies</h2>
+
+<p>"[" is a bracket.</p>
+
+<p>"(" is a "bracket", too.</p>
+
+<p>"[" is opening, and pairs with "]", which is closing.</p>
+
+<p>"{..}" contains a bracket pair. "}..{" does not.</p>
+
+<p>"(..[)..]" &#x2192; (..[), but neither "[" nor "]" is part of a pair.</p>
+
+<p>"[(]x[)]" &#x2192; [(] and [)], but neither "(" nor ")" is part of a pair.</p>
+
+<p>
+  
+  <h2><a name="References"></a>References</h2>
+  <table class="noborder" style="border-collapse: collapse" cellpadding="8" 
+  cellspacing="0">
+    <tr>
+      <td width="1" class="noborder">[<a name="BidiBrackets">Brackets</a>]</td>
+      <td class="noborder">BidiBrackets.txt<br>
+      <a href="http://www.unicode.org/Public/UCD/latest/ucd/BidiBrackets.txt">
+      http://www.unicode.org/Public/UCD/latest/ucd/BidiBrackets.txt</a></td>
+    </tr>
+    <tr>
+      <td width="1" class="noborder">[<a name="CMS">CMS</a>]</td>
+      <td class="noborder">The Chicago Manual of Style:<br>
+      The Essential Guide for Writers, Editors, and Publishers (14th Edition)<br>
+      University of Chicago Press (Trd); ISBN: 0226103897<br>
+      <i>Also see their FAQ at<br>
+      </i><a href="http://www.press.uchicago.edu/Misc/Chicago/cmosfaq.html">
+      http://www.press.uchicago.edu/Misc/Chicago/cmosfaq.html</a></td>
+    </tr>
+    <tr>
+      <td width="1" class="noborder">[<a name="FAQ">FAQ</a>]</td>
+      <td class="noborder">Unicode Frequently Asked Questions<br>
+      <a href="http://www.unicode.org/faq/">http://www.unicode.org/faq/<br>
+      </a><i>For answers to common questions on technical issues.</i></td>
+    </tr>
+    <tr>
+      <td width="1" class="noborder">[<a name="Glossary">Glossary</a>]</td>
+      <td class="noborder">Unicode Glossary<a 
+      href="http://www.unicode.org/glossary/"><br>
+      http://www.unicode.org/glossary/<br>
+      </a><i>For explanations of terminology used in this and other documents.</i></td>
+    </tr>
+    <tr>
+      <td width="1" class="noborder">[<a name="Reports">Reports</a>]</td>
+      <td class="noborder">Unicode Technical Reports<br>
+      <a href="../../reports/index.html">http://www.unicode.org/reports/<br>
+      </a><i>For information on the status and development process for technical 
+      reports, and for a list of technical reports.</i></td>
+    </tr>
+    <tr>
+      <td width="1" class="noborder">[<a name="Versions">Versions</a>]</td>
+      <td class="noborder">Versions of the Unicode Standard<br>
+      <a href="http://www.unicode.org/versions/">http://www.unicode.org/versions/</a><br>
+      <i>For details on the precise contents of each version of the Unicode 
+      Standard, and how to cite them.</i></td>
+    </tr>
+  </table>
+  <p><br>
+  </p>
+  <h2><a name="Modifications"></a>Modifications</h2>
+  <p>The following summarizes modifications from the previous version of this 
+  document.</p>
+  <table class="noborder" style="border-collapse: collapse" cellpadding="8" 
+  cellspacing="0">
+    <tr>
+      <td width="1" class="noborder"><a name="TrackingNumber1">1</a></td>
+      <td class="noborder">First version</td>
+    </tr>
+  </table>
+  <p class="copyright">Copyright © 2014 Ken Whistler and Unicode, Inc. All Rights Reserved. The 
+  Unicode Consortium and the authors make no expressed or implied warranty of any 
+  kind, and assume no liability for errors or omissions. No liability is assumed 
+  for incidental and consequential damages in connection with or arising out of 
+  the use of the information or programs contained or accompanying this 
+  technical note. The Unicode <a href="http://www.unicode.org/copyright.html">
+  Terms of Use</a> apply.</p>
+  <p class="copyright">Unicode and the Unicode logo are trademarks of Unicode, 
+  Inc., and are registered in some jurisdictions.</div>
+
+</body>
+
+</html>

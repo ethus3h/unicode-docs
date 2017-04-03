@@ -1,0 +1,1254 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
+                      "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html">
+  <meta name="ProgId" content="FrontPage.Editor.Document">
+  <style type="text/css">.unicode     { font-style: italic }
+.unicode:link { color: #FF0000; background-color: #FFFFFF }
+.unicode:visited { color: #808080; background-color: #FFFFFF }
+.unicode:active { color: #0000FF; background-color: #FFFFFF }
+em.unicode   { font-style: normal }</style>
+  <title>Unicode in XML and other Markup Languages</title>
+  <link rel="stylesheet" type="text/css"
+  href="http://www.w3.org/StyleSheets/TR/W3C-WD">
+</head>
+
+<body>
+<p><a href="http://www.w3.org/"><img align="middle" height="48" width="72"
+border="0" alt="W3C" src="http://www.w3.org/Icons/WWW/w3c_home"></a> <a
+href="http://www.unicode.org/"><img align="middle" height="72" width="72"
+border="0" alt="Unicode"
+src="../../img/unilogo-72.gif"></a></p>
+
+<h1>Unicode in XML and other Markup Languages</h1>
+
+<h2 class="unicode">DRAFT Unicode Technical Report #20</h2>
+
+<h2>W3C Working Draft 23-June-2000</h2>
+<dl>
+  <dt class="unicode">Revision (Unicode):</dt>
+    <dd>4</dd>
+  <dt>This version:</dt>
+    <dd class="unicode"><a class="unicode"
+      href="http://www.unicode.org/unicode/reports/tr20/tr20-4.html">http://www.unicode.org/unicode/reports/tr20/tr20-4.html</a></dd>
+    <dd><a
+      href="http://www.w3.org/TR/2000/WD-unicode-xml-20000623/">http://www.w3.org/TR/2000/WD-unicode-xml-20000623/</a></dd>
+  <dt>Latest version:</dt>
+    <dd class="unicode"><a class="unicode"
+      href="http://www.unicode.org/unicode/reports/tr20/">http://www.unicode.org/unicode/reports/tr20/</a></dd>
+    <dd><a
+      href="http://www.w3.org/TR/unicode-xml/">http://www.w3.org/TR/unicode-xml/</a></dd>
+  <dt>Previous version:</dt>
+    <dd class="unicode"><a class="unicode"
+      href="http://www.unicode.org/unicode/reports/tr20/tr20-3.html">http://www.unicode.org/unicode/reports/tr20/tr20-3.html</a></dd>
+    <dd><a
+      href="http://www.w3.org/TR/1999/WD-unicode-xml-19990928/">http://www.w3.org/TR/1999/WD-unicode-xml-19990928/</a></dd>
+  <dt>Date (Unicode):</dt>
+    <dd>2000-06-23</dd>
+  <dt>Authors:</dt>
+    <dd>Martin Dürst (<a href="mailto:duerst@w3.org">duerst@w3.org</a>) and
+      Asmus Freytag (<a class="unicode"
+      href="mailto:asmus@unicode.org">asmus@unicode.org</a>)</dd>
+</dl>
+
+<h4>Summary</h4>
+
+<p>This document contains guidelines on the use of the Unicode Standard
+Version 3.0 in conjunction with markup languages such as XML.</p>
+
+<h4 class="unicode">Status of this document (Unicode Consortium)</h4>
+
+<p class="unicode">This draft is published for review purposes. This draft has
+been considered by the Unicode Technical Committee and approved as draft for
+public review. At its next meeting, the Unicode Technical Committee may
+approve, reject, or further amend this document. <em class="unicode">This
+document is a joint Unicode - W3C document.</em></p>
+
+<p class="unicode">The content of technical reports must be understood in the
+context of the latest version of the Unicode Standard. See <a class="unicode"
+href="http://www.unicode.org/unicode/standard/versions/">http://www.unicode.org/unicode/standard/versions/</a>
+for more information.</p>
+
+<p class="unicode">This document does not, at this time, imply any endorsement
+by the Consortium's staff or member organizations. Please mail comments to <a
+class="unicode" href="mailto:unicore@unicode.org">unicore@unicode.org</a>.</p>
+
+<h4>Status of this document (W3C)</h4>
+
+<p>This is a W3C Working Draft worked on jointly by the <a
+href="http://www.w3.org/International/Group/">W3C Internationalization Working
+Group/Interest Group</a> (<a
+href="http://cgi.w3.org/MemberAccess/AccessRequest">Members only</a>) in the
+context of the <a href="http://www.w3.org/International/Activity">W3C
+Internationalization Activity</a> and by the Unicode Technical Committee. For
+public discussion of this working draft, please use the mailing lists
+www-international@w3.org and unicode@unicode.org (please cross post to both
+lists). In order to post to unicode@unicode.org, you must join the list by
+following the simple instructions on <a
+href="http://www.unicode.org/unicode/consortium/distlist.html">http://www.unicode.org/unicode/consortium/distlist.html</a>.
+For internal discussions, please use the relevant mailing list (again with
+cross posting). Please send editorial comments to the authors.</p>
+
+<p>The material in this draft now covers all affected characters in the
+Unicode Standard, Version 3.0. Some of the detailed recommendations need
+additional discussion, and the descriptions may need additional clarification
+in some instances. It is not exactly clear yet how this document will be
+related to other W3C specifications. One potential way to proceed is to work
+towards publishing this document as a Note, and to reference it, normatively
+or otherwise, from the <a href="http://www.w3.org/TR/charmod/">Character
+Model</a> [<a href="tr20-4.html#Charmod">CharMod</a>] document.</p>
+
+<p>Publication as a Working Draft does not imply endorsement by the W3C
+membership. This is a draft document and may be updated, replaced or obsoleted
+by other documents at any time. It is inappropriate to cite W3C Drafts as
+other than "work in progress". A list of current W3C working drafts can be
+found at <a href="http://www.w3.org/TR/">http://www.w3.org/TR/</a>.</p>
+
+<h2>Table of Contents</h2>
+<ol>
+  <li><a href="tr20-4.html#Introduction">Introduction</a></li>
+  <li><a href="tr20-4.html#General">General Considerations</a></li>
+  <li><a href="tr20-4.html#Charlist">List of Characters</a></li>
+  <li><a href="tr20-4.html#Compatibility">Characters with compatibility mappings</a></li>
+  <li><a href="tr20-4.html#Versioning">Versioning</a></li>
+  <li><a href="tr20-4.html#Conformance">Conformance</a></li>
+  <li><a href="tr20-4.html#References">References</a></li>
+  <li><a href="tr20-4.html#Acknowledgements">Acknowledgements</a></li>
+  <li><a href="tr20-4.html#ChangeHistory">Change History</a></li>
+  <li><a href="tr20-4.html#Copyright">Copyright</a></li>
+</ol>
+
+<h2><a name="Introduction">1. Introduction</a></h2>
+
+<p>The Unicode Standard  [<a href="tr20-4.html#Unicode">Unicode</a>] is the universal
+character set. Its primary goal is to provide an unambiguous encoding of the
+content of plain text, ultimately covering all languages in the world.
+Currently in its third major version, Unicode contains a large number of
+characters covering most of the currently used scripts in the world. It also
+contains additional characters for interoperability with older character
+encodings, and characters with control-like functions included primarily for
+reasons of providing unambiguous interpretation of plain text. Unicode
+provides specifications for use of all of these characters.</p>
+
+<p>For document and data interchange, the Internet and the World Wide Web are
+more and more making use of marked-up text such as <a href="tr20-4.html#html40">HTML</a>
+and <a href="tr20-4.html#xml10">XML</a>. In many instances, markup provides the same, or
+essentially similar features to those provided by format characters in the
+Unicode Standard for use in plain text. Another special character category
+provided by Unicode are compatibility characters. While there may be valid
+reasons to support these characters and their specifications in plain text,
+their use in marked-up text can conflict with the rules of the markup
+language. Formatting characters are discussed in chapters <a
+href="tr20-4.html#General">2</a> and <a href="tr20-4.html#Charlist">3</a>, compatibility characters
+in chapter <a href="tr20-4.html#Compatibility">4</a>.</p>
+
+<p>The issues of using Unicode characters with marked-up text depend to some
+degree on the rules of the markup language in question and the set of elements
+it contains. In a narrow sense, this document concerns itself only with XML,
+and to some extent HTML. However, much of the general information presented
+here should be useful in a broader context, including some page layout
+languages.</p>
+
+<h3>1.1 Notation</h3>
+
+<p>This report uses XML [<a href="tr20-4.html#xml10">XML</a>] as a prominent and general
+example of markup. The XML namespace notation [<a
+href="tr20-4.html#Namespace">Namespace</a>] is used to indicate that a certain element is
+taken from a specific markup language. As an example, the prefix 'html:'
+indicates that this element is taken from [<a href="tr20-4.html#XHTML">XHTML</a>]. This
+means that the examples containing the namespace prefix 'html:' are assumed to
+include a namespace declaration of xmlns:html="..." </p>
+
+<p>Characters are denoted using the notation used in the Unicode Standard,
+i.e. U+ followed by their hexadecimal number, using at least 4 digits, such as
+"U+1234" or "U+10FFFD". In XML or HTML this could be expressed as
+"&amp;#x1234;" or "&amp;#x10FFFD;". </p>
+
+<h2><a name="General">2. General Considerations</a></h2>
+
+<p>There are several general points to consider when looking at the
+interaction between character encoding and markup. </p>
+<ul>
+  <li>Linearity of text vs. hierarchy of markup structure</li>
+  <li>Overlap of control codes and markup semantics</li>
+  <li>Coincidence of semantic markup and functions </li>
+  <li>Extensibility of markup</li>
+  <li>Markup <i> vs.</i> Styling</li>
+</ul>
+
+<h3 align="left">2.1 Linearity versus Structure</h3>
+
+<p align="left">Encoding text as a sequence of characters without further
+information leads to a linear sequence, commonly called plain text. Character
+follows character, without any particular structure. Markup, on the other
+hand, defines a hierarchical structure for the text or data. In the case of
+XML and most other, similar markup languages, the markup defines a tree
+structure. While this tree structure is linearized for transmission in the XML
+document, once the document has been parsed, the tree is available
+directly.</p>
+
+<p align="left">Operations that are easy to perform on trees are often
+difficult to perform on linear sequences and vice versa. By separating
+functionality between character encoding and markup appropriately, the
+architecture becomes simpler, more powerful and longer-lasting.</p>
+
+<p align="left">In particular, operations on hierarchical structures can
+easily make sure that information is kept in context. Attributes assigned to
+parts of a document are moved together with the associated part of the
+document. Assigning an attribute to a part of a document limits the scope of
+the attribute to that part of the document. Performing the same operations on
+linear sequences of characters using control codes to set attributes and to
+delimit their scope requires much more work and is error prone. Locating the
+start or end of a span of text of the same attribute requires scanning
+backwards and forwards for the embedded delimiter or control code. Moving or
+editing text often results in mismatched control codes, so that an attribute
+might suddenly apply to text it was not intended for.</p>
+
+<h3 align="left">2.2 Overlap of Control Code and Markup Semantics</h3>
+
+<p align="left">When markup is not available, plain text may require control
+characters. This is usually the case where plain text must contain some
+scoping or attribute information in order to be legible, <i>i.e.</i> to be
+able to transmit the same content between originator and receiver. Many of
+these control characters have direct equivalents in particular markup
+languages, since markup handles these concerns efficiently. If both characters
+and their markup equivalents may be present in the same text, the question of
+priority is raised: Which of the settings has priority and in which case?
+Therefore it is important to identify and resolve these ambiguities at the
+time markup is first applied.</p>
+
+<h3 align="left">2.3 Markup and Styling</h3>
+
+<p align="left">Besides the basic character encoding and text markup there is
+a third contributor to text functionality, namely styling. Markup is concerned
+with the logical structure of the text or data, <i>e.g. </i>to indicate
+sections, subsections, and headers in a document, or to indicate the various
+fields of an address record. Styling is used to present the information in
+various ways, <i>e.g.</i> in different fonts, different type styles (italic,
+bold), different colors, <i>etc.. </i>Some character codes do not encode a
+generic character, but a styled character. Where these characters are used,
+styling information is frozen, <i>i.e.</i> it is no longer possible to alter
+the appearance of the text by applying style information. However, there are
+many examples where a historically free stylistic variation has over time
+become a semantic distinction that is properly encoded as plain text. In such
+instances, altering the appearance of the text by styling information would
+irreparably alter the content of the text.</p>
+
+<h3 align="left">2.4 Coincidence of Markup and Functions</h3>
+
+<p align="left">Dealing with various functionalities on the markup level has
+the additional advantage that in most cases, text portions that need some
+particular attribute (or styling) are actually those text portions identified
+by markup. A paragraph may be in French, a citation may need a bidi embedding,
+a keyword may be in italics, a list number may be circled, <i>etc.</i>. This
+makes it very efficient to associate those attributes with markup.</p>
+
+<h3 align="left">2.5 Extensibility of Markup</h3>
+
+<p align="left">Character encoding works with a range of integers used as
+character codes. This is extremely efficient, but has some limitations. Markup
+on the other hand, is much more extensible. Using technologies such as [<a
+href="tr20-4.html#Namespace">Namespace</a>] various vocabularies can be mixed. This is
+important for functionality that depends on complex context.</p>
+
+<h3 align="left">2.6 Local Context</h3>
+
+<p align="left">Where local, or point like context is required, markup is not
+very efficient and its main benefit, easy manipulation of scope, is not
+required. On the contrary, the intrusion of markup in the middle of words can
+make search or sort operations more difficult. For these cases expressing the
+information as character codes is not only a viable, but often the preferred
+alternative, which needs to be considered in the design of markup
+languages.</p>
+
+<h2><a name="Charlist">3. List of Characters</a></h2>
+
+<h3>3. 1 List of discouraged characters</h3>
+
+<p>There are characters whose use in the context of markup in XML/HTML should
+be considered discouraged, because one or more of the following conditions
+apply:</p>
+<ul>
+  <li>They are deprecated in the Unicode Standard.</li>
+  <li>They are unsupportable without additional information.</li>
+  <li>They are undesirable because of conflict with equivalent markup.</li>
+</ul>
+
+<p>The following table contains the characters currently considered <b> not
+suitable</b> for use with markup in XML/HTML, and may also be unsuitable for
+other markup or page layout languages. </p>
+
+<p align="center"><b>Table 3.1 Characters not suitable for use with markup<br>
+</b></p>
+
+<table border="1" cellpadding="2" cellspacing="0" width="844">
+  <tbody>
+    <tr>
+      <th align="left" bgcolor="#ccffcc" width="210"><p
+        align="left">Codepoints</p>
+      </th>
+      <th align="left" bgcolor="#ccffcc" width="273"><p
+        align="left">Names/Description</p>
+      </th>
+      <th align="left" bgcolor="#ccffcc" width="341"><p align="left">Short
+        Comment</p>
+      </th>
+    </tr>
+    <tr>
+      <td width="210">U+2028 .. U+2029</td>
+      <td width="273">Line and paragraph separator</td>
+      <td width="341">use &lt;html:br />, &lt;html:p>&lt;/html:p>, or
+        equivalent</td>
+    </tr>
+    <tr>
+      <td width="210">U+202A .. U+202E</td>
+      <td width="273">BIDI embedding controls <br>
+        (LRE, RLE, LRO, RLO, PDF)</td>
+      <td width="341">Strongly discouraged in [<a href="tr20-4.html#html40">HTML
+        4.0</a>];</td>
+    </tr>
+    <tr>
+      <td width="210">U+206A .. U+206B</td>
+      <td width="273">Activate/Inhibit Symmetric swapping</td>
+      <td width="341">Deprecated  in Unicode 3.0</td>
+    </tr>
+    <tr>
+      <td width="210">U+206C .. U+206D</td>
+      <td width="273">Activate/Inhibit Arabic form shaping</td>
+      <td width="341">Deprecated in Unicode 3.0</td>
+    </tr>
+    <tr>
+      <td width="210">U+206E .. U+206F</td>
+      <td width="273">Activate/Inhibit National digit shapes</td>
+      <td width="341">Deprecated in Unicode 3.0</td>
+    </tr>
+    <tr>
+      <td width="210">U+FFF9 .. U+FFFB</td>
+      <td width="273">Interlinear annotation characters</td>
+      <td width="341">Use ruby markup [<a href="tr20-4.html#Ruby">Ruby</a>]</td>
+    </tr>
+    <tr>
+      <td width="210">U+FFFC</td>
+      <td width="273">Object replacement character</td>
+      <td width="341">Use markup, e.g. HTML &lt;object> or HTML &lt;img></td>
+    </tr>
+    <tr>
+      <td width="210">U+E0000 .. U+E007F</td>
+      <td width="273">Language Tag codepoints <br>
+        (not part of Unicode 3.0)</td>
+      <td width="341">Use html:lang or xml:lang</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>Sections 3.3 through 3.7 discuss in more detail the following points for
+the characters in table 3.1:</p>
+<ul>
+  <li>Short description of semantics</li>
+  <li>Reason for inclusion in Unicode</li>
+  <li>Specific problems when used with markup</li>
+  <li>Other areas where problems may occur (e.g. plain text)</li>
+  <li>What kind of markup to use in place</li>
+  <li>What to if detected in a particular context</li>
+</ul>
+
+<p>Except for Line and Paragraph Separator and the characters in table 3.2 it
+is <i>always</i> acceptable for user agents to ignore the presence of
+discouraged characters in HTML or XML. It is up to authoring tools to ensure
+proper conversion between these characters and equivalent markup where it
+exists. The recommendations use markup available in HTML. For XML, the
+character can be replaced if the DTD permits.</p>
+
+<h3>3.2 List of format characters suitable for use with markup</h3>
+
+<p>The following table contains characters that despite their apparent
+relation to characters in table 3.1 are currently considered <b>suitable</b>
+for use with markup. </p>
+
+<p align="center"><b>Table 3.2: Some characters that affect text format but
+are suitable for use with markup<br>
+</b></p>
+
+<table border="1" cellpadding="2" cellspacing="0" width="860">
+  <tbody>
+    <tr>
+      <th align="left" bgcolor="#ccffcc" width="198"><p align="left">Code
+        points</p>
+      </th>
+      <th align="left" bgcolor="#ccffcc" width="362"><p
+        align="left">Names/Description</p>
+      </th>
+      <th align="left" bgcolor="#ccffcc" width="280"><p align="left">Short
+        Comment</p>
+      </th>
+    </tr>
+    <tr>
+      <td width="198">U+00A0</td>
+      <td width="362">No-break space</td>
+      <td width="280">In Latin-1</td>
+    </tr>
+    <tr>
+      <td width="198">U+00AD</td>
+      <td width="362">Soft Hyphen</td>
+      <td width="280">In Latin-1</td>
+    </tr>
+    <tr>
+      <td width="198">U+070C</td>
+      <td width="362">Syriac Abbreviation Mark (SAM)</td>
+      <td width="280"> </td>
+    </tr>
+    <tr>
+      <td width="198">U+0F0C</td>
+      <td width="362">Tibetan tsheg mark</td>
+      <td width="280"> </td>
+    </tr>
+    <tr>
+      <td width="198">U+180B..U+180E</td>
+      <td width="362">Mongolian Variant Selectors(FVS1.. FVS3, MVS)</td>
+      <td width="280">Required for Mongolian</td>
+    </tr>
+    <tr>
+      <td width="198">U+200C..U+200D</td>
+      <td width="362">Zero-width Joiners (ZWJ and ZWNJ)</td>
+      <td width="280">Required for Persian</td>
+    </tr>
+    <tr>
+      <td width="198">U+200E..U+200F</td>
+      <td width="362">Implicit directional marks (LRM and RLM)</td>
+      <td width="280">LRM and RLM are allowed</td>
+    </tr>
+    <tr>
+      <td width="198">U+2011</td>
+      <td width="362">Non breaking Hyphen</td>
+      <td width="280"> </td>
+    </tr>
+    <tr>
+      <td width="198">U+202F</td>
+      <td width="362">Narrow No-break Space</td>
+      <td width="280"> </td>
+    </tr>
+    <tr>
+      <td width="198">U+2FF0..U+2FFB</td>
+      <td width="362">Ideographic character description</td>
+      <td width="280">graphic characters (not controls)</td>
+    </tr>
+    <tr>
+      <td width="198">U+303E</td>
+      <td width="362">Ideographic variation indicator</td>
+      <td width="280">graphic character (not a control)</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3>3.3 Line and Paragraph Separator, U+2028..U+2029</h3>
+
+<p><em>Short description</em>: The line and paragraph separator provide
+unambiguous means to denote hard line breaks and paragraph delimiters in plain
+text.</p>
+
+<p><em>Reason for inclusion</em>: These characters were introduced into the
+Unicode Standard to overcome the ambiguous and widely divergent use of control
+codes for this purpose. See Unicode Technical Report #13, Unicode Newline
+Guidelines <a href="tr20-4.html#UTR9">[UTR13]</a>.</p>
+
+<p><em>Problems when used in markup</em>: Including these characters in markup
+text does not work because it would duplicate the existing markup commands for
+delimiting paragraphs and lines.</p>
+
+<p><em>Problems with other uses</em>: The separator characters can also
+problematic when used in plain text, because legacy data is usually converted
+code point for code point into Unicode and all receivers of Unicode plain text
+have to effectively be able to interpret the existing use of control codes for
+this purpose.</p>
+
+<p><em>Replacement markup</em>: Use &lt;html:br /> instead of U+2028 and
+surround paragraphs by &lt;html:p> and &lt;/html:p> instead of separating them
+with U+2029.</p>
+
+<p><em>What to do if detected</em>: In a browser context, treat as whitespace.
+When received in an editing context, replace the character by the
+corresponding markup. </p>
+
+<h3>3.4 BIDI embedding controls (LRE, RLE, LRO, RLO, PDF), U+202A ..
+U+202E</h3>
+
+<p><em>Short description</em>: The BIDI embedding controls are required to
+supplement the Unicode Bidirectional Algorithm in plain text</p>
+
+<p><em>Reason for inclusion</em>: The Unicode Bidirectional algorithm
+unambiguously resolves the display direction for bidirectional text. It does
+so, by assigning all characters directional categories and then resolving
+these in context. In a small number of circumstances this <i>implicit </i>
+method does not produce satisfactory results and embedding controls are needed
+to ensure that sender and receiver agree on the display direction for a given
+text. See Unicode Technical Report # 9, The Bidirectional Algorithm <a
+href="tr20-4.html#UTR9">[UTR 9]</a>.</p>
+
+<p><em>Problems when used in markup</em>: These characters duplicate available
+markup, which is better suited to handle the stateful nature of their
+effect. </p>
+
+<p><em>Problems with other uses</em>: The embedding controls introduce a state
+into the plain text, which must be maintained editing or displaying the text.
+Processes that are modifying the text without being aware of this state may
+inadvertently affect the rendering of large portions of the text, for example
+by removing a PDF.</p>
+
+<p><em>Replacement markup</em>: The following table gives the replacement
+markup:<br>
+</p>
+
+<blockquote>
+
+  <table border="1" cellspacing="0">
+    <tbody>
+      <tr>
+        <td bgcolor="#CCFFCC" width="15"><b>Unicode</b></td>
+        <td bgcolor="#CCFFCC" width="30%"><b>Equivalent markup</b></td>
+        <td bgcolor="#CCFFCC" width="55%"><b>Comment</b></td>
+      </tr>
+      <tr>
+        <td width="15"><p>RLO</p>
+        </td>
+        <td width="30%">&lt;BDO dir = "RTL"></td>
+        <td width="55%"> </td>
+      </tr>
+      <tr>
+        <td width="15"><p>LRO</p>
+        </td>
+        <td width="30%">&lt;BDO dir = "LTR"></td>
+        <td width="55%"> </td>
+      </tr>
+      <tr>
+        <td width="15">PDF</td>
+        <td width="30%">&lt;/BDO></td>
+        <td width="55%">when used to terminate RLO or LRO only, otherwise
+          ignore</td>
+      </tr>
+      <tr>
+        <td width="15">RLE</td>
+        <td width="30%">dir = "rtl"</td>
+        <td width="55%">attribute on block or inline element</td>
+      </tr>
+      <tr>
+        <td width="15">LRE</td>
+        <td width="30%">dir = "ltr"</td>
+        <td width="55%">attribute on block or inline element</td>
+      </tr>
+    </tbody>
+  </table>
+</blockquote>
+
+<p>For details on bidi markup, please see Section 8.2 of HTML [<a
+href="tr20-4.html#HTML4.0-8.2">HMTL 4.0-8.2</a>]. The text of HTML 4.0 gives this
+recommendation: </p>
+
+<blockquote>
+  <p><em><strong>Using HTML directionality markup with Unicode
+  characters.</strong> Authors and designers of authoring software should be
+  aware that conflicts can arise if the <a
+  href="http://www.w3.org/TR/html401/struct/dirlang.html#adef-dir"
+  class="noxref"><samp class="ainst">dir</samp></a> attribute is used on
+  inline elements (including <a
+  href="http://www.w3.org/TR/html401/struct/dirlang.html#edef-BDO"
+  class="noxref"><samp class="einst">BDO</samp></a>) concurrently with the
+  corresponding<a rel="biblioentry" href="tr20-4.html#Unicode" class="normref">
+  [UNICODE]</a> formatting characters. Preferably one or the other should be
+  used exclusively. The markup method offers a better guarantee of document
+  structural integrity and alleviates some problems when editing bidirectional
+  HTML text with a simple text editor, but some software may be more apt at
+  using the<a rel="biblioentry" href="tr20-4.html#Unicode" class="normref"> [UNICODE]</a>
+  characters. If both methods are used, great care should be exercised to
+  insure proper nesting of markup and directional embedding or override,
+  otherwise, rendering results are undefined.</em></p>
+</blockquote>
+
+<p>This document goes beyond HTML and recommends that <i>only</i> the markup
+should be used.</p>
+
+<p><em>What to do if detected</em>: In a browser context, ignore. When
+received in an editing context, replace the characters by the appropriate
+markup. </p>
+
+<h3>3.5<em> </em>Deprecated Formatting Characters, U+206A..U+206F</h3>
+
+<p><em>Short description</em>: These characters are deprecated. They were
+originally intended to allow explicit activation of contextual shaping,
+numeric digit rendering and symmetric swapping.</p>
+
+<p><em>Reason for inclusion</em>: These characters were retained from draft
+versions of ISO 10646.</p>
+
+<p><em>Problems when used in markup</em>: The processing model for these
+characters is not supported in markup.</p>
+
+<p><em>Problems with other uses</em>: The Unicode Standard requires that
+symmetric swapping, contextual shaping and alternate digit shapes are enabled
+by default and no longer supports inhibiting any of them by use of these
+character codes. The most likely effect of their occurrence in generated text
+would be that of a 'garbage' character.</p>
+
+<p><em>Conversion for use with markup</em>: Apply the appropriate conversion
+to bring the data stream in line with the Unicode text model for bidirectional
+text and cursively connected scripts.</p>
+
+<p><em>What to do if detected</em>: When received by a browser as part of
+marked up text, they may be ignored. When received in an editing context, they
+may be removed, possibly with a warning. Alternatively, an appropriate
+conversion from the legacy text model may be provided. This will most likely
+be limited to applications directly interfacing with and knowledgeable of the
+particular legacy implementation that inspired these characters.</p>
+
+<h3>3.6 Interlinear Annotation Characters, U+FFF9-U+FFFB</h3>
+
+<p><em>Short description</em>: The interlinear annotation characters are used
+to delimit interlinear annotations in certain circumstances. They are intended
+to provide text anchors and delimiters for interlinear annotation for
+in-process use and are not intended for interchange.</p>
+
+<p><em>Reason for inclusion</em>: The interlinear annotation characters were
+included in Unicode only in order to reserve code points for very frequent
+application-internal use. The interlinear annotation characters are used to
+delimit interlinear annotations in contexts where other delimiters are not
+available, and where non-textual means exist to carry formatting information.
+Many text-processing applications store the text and the associated markup (or
+in some cases styling information) of a document in separate structures. The
+actual text is kept in a single linear structure; additional information is
+kept separately with pointers to the appropriate text positions. This is
+called out-of-band information. The overall implementation makes sure that
+these two structures are kept in sync. If the text contains interlinear
+annotations, it is extremely helpful for implementations to have delimiters in
+the text itself; even though delimiters are not otherwise used for style
+markup. With this method, and unlike the case of the object replacement
+character, all textual information can remain in the standard text stream, but
+any additional formatting information is kept separately. In addition, the
+Interlinear Annotation Anchor serves as a placeholder for formatting
+information for the whole annotation object, the same way a paragraph mark can
+be a placeholder to attach paragraph formatting information.</p>
+
+<p><em>Problems when used in markup</em>: Including interlinear annotation
+characters in markup text does not work because the additional formatting
+information (how to position the annotation,...) is not available.</p>
+
+<p><em>Problems with other uses</em>: The interlinear annotation characters
+are also problematic when used in plain text, and are not intended for that
+purpose. In particular, on older display systems that simply ignore or replace
+the Interlinear Annotation Characters, the meaning of the text may be
+changed.</p>
+
+<p><em>Replacement markup</em>: The markup to be used in place of the
+Interlinear Annotation Characters depends on the formatting and nature of the
+interlinear annotation in question. For ruby, please see [<a
+href="tr20-4.html#Ruby">Ruby</a>].</p>
+
+<p><em>What to do if detected</em>:  When received by a browser as part of
+marked up text, they may be ignored. When receiving plain text in an editing
+environment, editor may take one or more of several actions: remove U+FFF9
+together with removing all characters between U+FFFA and following U+FFFB, 
+ignore U+FFF9 and turn  U+FFFA and  U+FFFB  to "[" and "]" respectively, issue
+a warning to the user, or tentatively convert into appropriate ruby markup for
+further editing and formatting by the user.</p>
+
+<h3>3.7 Object Replacement Character, U+FFFC</h3>
+
+<p><em>Short description</em>: The object replacement character is used to
+stand in place of an object (e.g. an image) included in a text.</p>
+
+<p><em>Reason for inclusion</em>: The object replacement character was
+included in Unicode only in order to reserve a codepoint for a very frequent
+application-internal use. Many text-processing applications store the text and
+the associated markup (or in some cases styling information) of a document in
+separate structures. The actual text is kept in a single linear structure;
+additional information is kept separately with pointers to the appropriate
+text positions. The overall implementation makes sure that these two
+structures are kept in sync. If the text contains objects such as images, it
+is extremely helpful for implementations to have a sentinel in the text
+itself; any additional information is kept separately.</p>
+
+<p><em>Problems when used in markup</em>: Including an object replacement
+character in markup text does not work because the additional information
+(what object to include,...) is not available.</p>
+
+<p><em>Problems with other uses</em>: The object replacement character is also
+problematic when used in plain text, because there is no way in plain text to
+provide the actual object information or a reference to it.</p>
+
+<p><em>Replacement markup</em>: The markup to be used in place of the Object
+Replacement Character depends on the object in question and the markup context
+it is used in. Typical cases are &lt;html:img src'...' />, &lt;html:object
+...>, or &lt;html:applet ...>. These constructs allow providing all additional
+information needed to identify and use the object in question.</p>
+
+<p><em>What to do if detected</em>: Browsers may ignore this character. When
+received in an editing context, if the actual object is accessible, editors
+may either replace the character by the appropriate markup for that object, or
+otherwise remove it, ideally providing a warning.</p>
+
+<h3>3.8 Language Tag Characters</h3>
+
+<p><em>Short description</em>: A series of characters from U+E0000 .. U+E007F
+that can be used to express language tags, based on existing standards for
+language tags using the rules in [<a href="tr20-4.html#UTR7">UTR7</a>].</p>
+
+<p><em>Reason for inclusion</em>: These characters allow in-band language
+tagging in situations where full markup is not available, while allowing easy
+filtering by applications that do not support them. They were specifically
+included for the benefit of Internet protocols such as ACAP, which require a
+standard mechanism for marking language in UTF-8 strings and to avoid the use
+of other schemes that relied on specific details of the encoding form
+used.</p>
+
+<p><em>Problems when used in markup</em>: These characters duplicate
+information that can be expressed in markup.</p>
+
+<p><em>Problems with other uses</em>: Their special code range allows them to
+be easily filtered, but applications that don't expect them will treat them as
+garbage characters.</p>
+
+<p><em>Replacement markup</em>: Replace with equivalent language markup
+&lt;html:lang></p>
+
+<p><em>What to do if detected</em>: Browsers may ignore these characters. When
+received in an editing context, editors may remove and/or replace them by
+equivalent markup.</p>
+
+<h2><a name="Compatibility">4. Characters with compatibility mappings</a></h2>
+
+<p>The Unicode Standard provides compatibility mappings for a number of
+characters. Compatibility mappings indicate a relationship to another
+character, but the exact nature of the relationship varies. In some cases the
+relationship means "is based on" in some other cases it denotes a property.
+When plain text is marked up, it may make sense to map some of these
+characters to their compatibility equivalents <em>and</em> suitable markup. It
+is important to understand the nature of the distinctions between characters
+and their compatibility equivalents and the context in where these
+distinctions matter. It is never advisable to apply compatibility mappings
+indiscriminately. This section provides guidance on when and how to apply
+compatibility mappings. It is organized by the "compatibility tag" associated
+with each compatibility mapping.</p>
+
+<h3>4.1 Overview</h3>
+
+<p>The following table gives an overview of the various compatibility
+characters, organized by "compatibility tag". The first column contains the
+tag value of the "compatibility tag" from the Unicode database. Although these
+tags use "&lt;" and ">", they should not be confused with XML tags. <em>Code
+range</em> indicates which code points the entry applies to. <em>Substitute
+</em>indicates whether the codes can be substituted using the compatibility
+equivalent according to Normalization Form KC of [<a href="tr20-4.html#UTR15">UTR
+15</a>]. <em>Markup</em> indicates the available markup. For some cases,
+instead of or in addition to markup, style information [<a
+href="tr20-4.html#css2">CSS2</a>] is needed. </p>
+
+<p align="center"><b>Table 4.1 Characters not suitable for use with markup<br>
+</b></p>
+
+<table border="1" cellpadding="2" cellspacing="0" width="858">
+  <tbody>
+    <tr>
+      <th align="left" bgcolor="#CCFFCC" width="80">Tag value</th>
+      <th align="left" bgcolor="#CCFFCC" width="97">Code range</th>
+      <th align="left" bgcolor="#CCFFCC" width="83">Action</th>
+      <th align="left" bgcolor="#CCFFCC">Description  and usage</th>
+    </tr>
+    <tr>
+      <td width="80">&lt;circled></td>
+      <td width="97">all</td>
+      <td width="83">retain</td>
+      <td width="572">Circled letters and digits used for bullets</td>
+    </tr>
+    <tr>
+      <td width="80">&lt;compat></td>
+      <td width="97">2100-2101</td>
+      <td width="83">retain</td>
+      <td width="572">Variant letter forms that are used as symbols</td>
+    </tr>
+    <tr>
+      <td width="80">&lt;compat></td>
+      <td width="97">2105-2106</td>
+      <td width="83">retain</td>
+      <td width="572">Variant letter forms that are used as symbols</td>
+    </tr>
+    <tr>
+      <td width="80">&lt;compat></td>
+      <td width="97">2121</td>
+      <td width="83">retain**</td>
+      <td width="572">For use as single code point in vertical layout</td>
+    </tr>
+    <tr>
+      <td width="80">&lt;compat></td>
+      <td width="97">2160-2175</td>
+      <td width="83">retain**</td>
+      <td width="572">For use as single code point in vertical layout</td>
+    </tr>
+    <tr>
+      <td width="80">&lt;compat></td>
+      <td width="97">3131-318E</td>
+      <td width="83">retain</td>
+      <td width="572">Compatibility Hangul Jamo. These do not-conjoin</td>
+    </tr>
+    <tr>
+      <td width="80">&lt;compat></td>
+      <td width="97">2002-200A</td>
+      <td width="83">retain</td>
+      <td width="572">Fixed width spaces</td>
+    </tr>
+    <tr>
+      <td width="80">&lt;compat></td>
+      <td width="97">3200-3229</td>
+      <td width="83">use bullet style</td>
+      <td width="572">Parenthesized characters used as bullets</td>
+    </tr>
+    <tr>
+      <td width="80">&lt;compat></td>
+      <td width="97">322A-3243</td>
+      <td width="83">retain**</td>
+      <td width="572">Parenthesized characters used as symbols in vertical
+        layout</td>
+    </tr>
+    <tr>
+      <td width="80">&lt;compat></td>
+      <td width="97">2474-249B</td>
+      <td width="83">use bullet style</td>
+      <td width="572">Parenthesized or dotted number used as bullet</td>
+    </tr>
+    <tr>
+      <td width="80">&lt;compat></td>
+      <td width="97">249C-24B5</td>
+      <td width="83">use bullet style, normalize*</td>
+      <td width="572">Parenthesized letters used as bullets</td>
+    </tr>
+    <tr>
+      <td width="80">&lt;compat></td>
+      <td width="97">32C0-32CB</td>
+      <td width="83">retain**</td>
+      <td width="572">String used as single code point in vertical layout</td>
+    </tr>
+    <tr>
+      <td width="80">&lt;compat></td>
+      <td>all other</td>
+      <td width="83">retain</td>
+      <td width="572">Maintain, semantic distinctions apply</td>
+    </tr>
+    <tr>
+      <td width="80">&lt;final></td>
+      <td width="97">all</td>
+      <td width="83">normalize*</td>
+      <td width="572">Arabic Presentation forms</td>
+    </tr>
+    <tr>
+      <td width="80">&lt;font></td>
+      <td width="97">all</td>
+      <td width="83">retain</td>
+      <td width="572">Variant letter forms that are used as symbols</td>
+    </tr>
+    <tr>
+      <td width="80">&lt;fraction></td>
+      <td width="97">all</td>
+      <td width="83">decompose</td>
+      <td width="572">As long as fraction slash is supported!</td>
+    </tr>
+    <tr>
+      <td width="80">&lt;initial></td>
+      <td width="97">all</td>
+      <td width="83">normalize*</td>
+      <td width="572">Arabic Presentation forms</td>
+    </tr>
+    <tr>
+      <td width="80">&lt;isolated></td>
+      <td width="97">all</td>
+      <td width="83">normalize*</td>
+      <td width="572">Arabic Presentation forms</td>
+    </tr>
+    <tr>
+      <td width="80">&lt;medial></td>
+      <td width="97">all</td>
+      <td width="83">normalize*</td>
+      <td width="572">Arabic Presentation forms</td>
+    </tr>
+    <tr>
+      <td width="80">&lt;narrow></td>
+      <td width="97">all</td>
+      <td width="83">retain</td>
+      <td width="572">Half-width characters</td>
+    </tr>
+    <tr>
+      <td width="80">&lt;no-break></td>
+      <td width="97">all</td>
+      <td width="83">retain</td>
+      <td width="572">The compatibility mapping is merely a way to indicate
+        the equivalent character that is not non-breaking. The distinction
+        must be preserved</td>
+    </tr>
+    <tr>
+      <td width="80">&lt;small></td>
+      <td width="97">all</td>
+      <td width="83">retain</td>
+      <td width="572">Precise usage unknown. Maintain, but don't generate</td>
+    </tr>
+    <tr>
+      <td width="80">&lt;square></td>
+      <td width="97">3300-3357</td>
+      <td width="83">retain***</td>
+      <td width="572">Single display cell cluster containing multiple lines of
+        kana for vertical layout</td>
+    </tr>
+    <tr>
+      <td width="80">&lt;square></td>
+      <td width="97">3358-337D</td>
+      <td width="83">retain***</td>
+      <td width="572">For use as single code point in vertical layout</td>
+    </tr>
+    <tr>
+      <td width="80">&lt;square></td>
+      <td width="97">33E0-33FE</td>
+      <td width="83">retain***</td>
+      <td width="572">For use as single code point in vertical layout</td>
+    </tr>
+    <tr>
+      <td width="80">&lt;square></td>
+      <td width="97">all other</td>
+      <td width="83">retain***</td>
+      <td width="572">Variant letter form used as symbol in vertical
+      layout</td>
+    </tr>
+    <tr>
+      <td width="80">&lt;super></td>
+      <td width="97">all</td>
+      <td width="83">&lt;sup></td>
+      <td width="572">Superscripted characters</td>
+    </tr>
+    <tr>
+      <td width="80">&lt;sub></td>
+      <td width="97">all</td>
+      <td width="83">&lt;sub></td>
+      <td width="572">Subscripted characters</td>
+    </tr>
+    <tr>
+      <td width="80">&lt;vertical></td>
+      <td width="97">all</td>
+      <td width="83">normalize*</td>
+      <td width="572">East Asian Presentation forms</td>
+    </tr>
+    <tr>
+      <td width="80">&lt;wide></td>
+      <td width="97">all</td>
+      <td width="83">retain</td>
+      <td width="572">Full-width characters</td>
+    </tr>
+  </tbody>
+</table>
+
+<p><b>Notes:</b></p>
+
+<blockquote>
+  <p>*) Use normalization form KC for these particular characters. <br>
+  **) Some symbols used in vertical layout may also become accessible via
+  bullet style(s).<br>
+  ***) At the time of this writing there is no appropriate markup for squared
+  kana clusters or horizontal in vertical symbols.</p>
+</blockquote>
+
+<h3>4.2 Generating characters</h3>
+
+<p>Presentation forms and characters for which adequate representation exists
+as marked up text should never be generated for new data. However, many of the
+characters with &lt;font> tag are suitable for new data, as long as they are
+used in the manner they are intended, that is as symbols, with definite
+semantic differentiation between the different forms. They must not be used to
+create styled text. On the other hand, styled text should not be used to carry
+the essential semantic distinction needed for example for mathematics.</p>
+
+<h3>4.3 Bullets</h3>
+
+<p><em>Short description</em>: Characters with a &lt;circled> tag or
+characters with &lt;compat> tag and compatibility mapping to a parenthesized
+string.</p>
+
+<p><em>Reason for inclusion</em>: They are most frequently used for enumerated
+bullets, but the characters with a &lt;circled> tag often occur as dingbats or
+footnote markers in tables.</p>
+
+<p><em>Problems when used in markup</em>: These characters do not cause undue
+interaction with markup</p>
+
+<p><em>Problems with other uses</em>: None</p>
+
+<p><em>Replacement markup</em>: (bullet style) When generating marked up text
+these characters occur only internal to the user agent when bullet styles are
+rendered. When marking up plain text data they could be converted to suitable
+bullet styles, if such use can be properly inferred. However, it is often
+necessary to refer to numbered or lettered bullets in the text.</p>
+
+<p>Compatibility mappings of the form (<em>n</em>) or (<em>n</em>.) can be
+kept as single characters, or replaced by bullet styles. A conversion to
+bullet styles allows a simple extension of the set to arbitrary numbers. This
+is in contrast to circled characters: Very few browsers can properly generate
+arbitrary circled numbers, therefore conversion to bullet styles does not
+easily allow an extension of the set of accessible circled numbers.</p>
+
+<p><em>What to do if detected</em>: No action needs to be taken by browsers.
+When received in an editing context, substitution of a bullet style may be
+appropriate. However, the same characters are very often used as dingbat-like
+symbols in tables, so the user should have the choice of whether to
+replace.</p>
+
+<h3>4.4 Fractions</h3>
+
+<p><em>Short description</em>: Single character fractions such as ½ or ¼.</p>
+
+<p><em>Reason for inclusion</em>: Subsets of these occur in practically all
+legacy character sets.</p>
+
+<p><em>Problems when used in markup</em>: The repertoire is limited to a few
+common fractions. When used with more general methods of generating fractions
+such as MathML[<a href="tr20-4.html#MathML">MathML</a>] the usual problem of dual
+representation arises.</p>
+
+<p><em>Problems with other uses</em>: Other than normalization issues, these
+characters present no undue problems in plain text. Where fraction slash is
+supported, these can be expressed by substituting their compatibility
+mappings.</p>
+
+<p><em>Replacement markup</em>: MathML.</p>
+
+<p><em>What to do if detected</em>: No action needs to be taken by browsers or
+editors.</p>
+
+<h3>4.5 Squared or horizontal</h3>
+
+<p><em>Short description</em>: Characters that are symbols composed of groups
+of typically kana or Latin letters, digits plus slash for use in a single
+display cell in vertical display of text. </p>
+
+<p><em>Reason for inclusion</em>: Many existing character sets contain these
+as precomposed characters since for simple implementations this is the only
+way to support the common use of providing metric units and other
+abbreviations in a single character cell for vertical text layout. </p>
+
+<p><em>Problems when used in markup</em>: Proposed markup, including CSS
+styling, would be able express an unbounded set of these abbreviations,
+obviating the need of cataloguing these in the character encoding standard and
+making them more directly accessible to text based processing, for example
+searching.</p>
+
+<p><em>Problems with other uses</em>: The repertoire of these legacy
+characters is limited; many more combinations are in actual use than are
+accounted for in character sets. Pre-composed symbols do not make their text
+content available to search engines. They also require re-encoding for text
+laid out horizontally.</p>
+
+<p><em>Replacement markup</em>: not available at this time.</p>
+
+<p><em>What to do if detected</em>: No action required.</p>
+
+<h3>4.6 Superscripts and subscripts</h3>
+
+<p><em>Short description</em>:</p>
+
+<p><em>Reason for inclusion</em>: Super and subscript characters occur in many
+legacy character sets, including Latin-1. Their use in pure plain text is
+common for databases, e.g. including metric units for part descriptions  (viz.
+cm<sup>2</sup>) or (usually simplified) formulae as occur in titles of
+scientific publications.</p>
+
+<p><em>Problems when used in markup</em>: Using these characters directly in
+markup provides an alternate representation compared to marked up text,
+leading to different treatment by search engines.</p>
+
+<p><em>Problems with other uses</em>: none</p>
+
+<p><em>Replacement markup</em>:&lt;xhtml:sup> and &lt;xhtml:sub></p>
+
+<p><em>What to do if detected</em>: No action required by browsers. When
+received in an editing context, substitute the corresponding markup.</p>
+
+<h2><a name="Versioning">5. Versioning</a></h2>
+
+<p>This technical report covers all relevant characters in the Unicode
+Standard, Version 3.0.</p>
+
+<p>As the Unicode standard is updated and new characters get added, new
+characters that are not suitable for markup may also be added. However, the
+Unicode Technical Committee only introduces such characters where there is a
+strong requirement by industry or users of a script. As markup becomes more
+prevalent, the need for such characters may diminish. </p>
+
+<p>This report will be updated by the Unicode Technical Committee in
+cooperation with the W3C i18n WG whenever the tables of characters need to be
+updated either as result of such changes in Unicode, as result of a revised
+determination of the suitability of a given character for use with markup, or
+when additional background information or recommendations will become
+available.</p>
+
+<p>Each report carries a revision number, which may be used to refer to a
+specific version of the report. Older versions of the report will remain
+available. Each version of this report will also specify the underlying
+version of the Unicode Standard.</p>
+
+<p>For more information on the Unicode Standard and its versions, see:</p>
+<ul class="unicode">
+  <li>Versions of the Unicode Standard <a class="unicode"
+    href="http://www.unicode.org/unicode/standard/versions/">(http://www.unicode.org/unicode/standard/versions)</a></li>
+  <li>Unicode Character Database Format (<a class="unicode"
+    href="ftp://ftp.unicode.org/Public/UNIDATA/UnicodeData.html">ftp://ftp.unicode.org/Public/UNIDATA/UnicodeData.htm</a>l)</li>
+  <li>Unicode Character Database  (<a class="unicode"
+    href="ftp://ftp.unicode.org/Public/UNIDATA/UnicodeData.txt">ftp://ftp.unicode.org/Public/Public/UNIDATA/UnicodeData.txt</a>)</li>
+</ul>
+
+<h2><a name="Conformance">6. Conformance</a></h2>
+
+<p>In the context of the Unicode Standard, the material in this technical
+report is <em>informative. </em>However, other documents, particularly markup
+language specifications, may specify conformance including normative
+references to this document.</p>
+
+<h2><a name="References">7. References</a></h2>
+<dl>
+  <dt><a name="Charmod">[Charmod]</a></dt>
+    <dd>Martin J. Dürst, François Yergeau, <cite>Character Model for the World
+      Wide Web</cite>, W3C Working Draft 29-Nov-1999, &lt;<a
+      href="http://www.w3.org/TR/charmod/">http://www.w3.org/TR/charmod</a>>.</dd>
+  <dt><a name="CharReq">[CharReq]</a></dt>
+    <dd>Martin J. Dürst, <cite>Requirements for String Identity and Character
+      Indexing Definitions for the WWW</cite>, W3C Working Draft 10-July-1998,
+      &lt;<a
+      href="http://www.w3.org/TR/WD-charreq">http://www.w3.org/TR/WD-charreq</a>>.</dd>
+  <dt><a name="css2">[CSS2]</a></dt>
+    <dd>Bert Bos, Håkon Wium Lie, Chris Lilley, Ian Jacobs, Eds.,
+      <cite>Cascading Style Sheets, level 2</cite> (CSS2 Specification), W3C
+      Recommendation 12-May-1998, &lt;<a
+      href="http://www.w3.org/TR/REC-CSS2/">http://www.w3.org/TR/REC-CSS2/</a>>.</dd>
+  <dt><a name="html40">[HTML 4.0]</a></dt>
+    <dd>Dave Raggett, Arnaud Le Hors, Ian Jacobs, Eds., <cite>HTML 4.01
+      Specification</cite>, W3C Recommendation 18-Dec-1997 (revised on
+      24-Dec-1999), &lt;<a
+      href="http://www.w3.org/TR/REC-html40/">http://www.w3.org/TR/REC-html40/</a>>.</dd>
+  <dt><a name="HTML4.0-8.2">[HTML 4.0 - 8.2]</a></dt>
+    <dd>Section 8.2 of [HTML4.0] <i>Specifying the direction of text and
+      tables: the dir attribute</i> &lt;<a
+      href="http://www.w3.org/TR/html40/struct/dirlang.html#h-8.2">http://www.w3.org/TR/html40/struct/dirlang.html#h-8.2</a>></dd>
+  <dt><a name="MathML">[MathML]</a></dt>
+    <dd>Patrick Ion, Robert Miner, Eds., <i>Mathematical Markup Language
+      (MathML&trade;) 1.01 Specification</i></dd>
+    <dd>&lt;<a
+      href="http://www.w3.org/TR/REC-MathML/">http://www.w3.org/TR/REC-MathML/</a>></dd>
+  <dt><a name="Namespace">[Namespace]</a></dt>
+    <dd>Tim Bray, Dave Hollander, Andrew Layman, <cite>Namespaces in
+      XML</cite>, W3C Recommendation 14-Jan-1999, &lt;<a
+      href="http://www.w3.org/TR/REC-xml-names/">http://www.w3.org/TR/REC-xml-names/</a>>.</dd>
+  <dt><a name="Ruby">[Ruby]</a></dt>
+    <dd>Marcin Sawicki, Michel Suignard, Masayasu Ishikawa, Martin Dürst,
+      Eds., <cite>Ruby</cite>, W3C Working Draft 17-Dec-1999, &lt;<a
+      href="http://www.w3.org/TR/ruby/">http://www.w3.org/TR/ruby/</a>>.</dd>
+  <dt><a name="Unicode">[Unicode]</a></dt>
+    <dd><cite><a
+      href="http://www.unicode.org/unicode/standard/standard.html">The Unicode
+      Standard</a>, <a
+      href="http://www.unicode.org/unicode/standard/versions/Unicode3.0.html">Version
+      3.0</a></cite>, Addison Wesley, Reading MA, 2000, ISBN:
+    0-201-61633-5.</dd>
+  <dt><a name="UTR7">[UTR 7]</a></dt>
+    <dd>Ken Whistler, Glenn Adams, <cite>Unicode Technical Report #7<i>,
+      </i></cite><i>Plane 14 Characters for Language Tags,</i> &lt;<a
+      href="http://www.unicode.org/unicode/reports/tr7/">http://www.unicode.org/unicode/reports/tr7/</a>>.</dd>
+  <dt><a name="UTR9">[UTR 9]</a></dt>
+    <dd>Mark Davis, <cite>Unicode Technical Report #9, The Bidirectional
+      Algorithm</cite>, &lt;<a
+      href="http://www.unicode.org/unicode/reports/tr9/">http://www.unicode.org/unicode/reports/tr9/</a>>.</dd>
+  <dt><a name="UTR13">[UTR 13]</a></dt>
+    <dd>Mark Davis, <cite>Unicode Technical Report #13, Unicode Newline
+      Guidelines</cite>, &lt;<a
+      href="http://www.unicode.org/unicode/reports/tr13/">http://www.unicode.org/unicode/reports/tr13/</a>>.</dd>
+  <dt><a name="UTR15">[UTR 15]</a></dt>
+    <dd>Mark Davis, Martin Dürst, <cite>Unicode Technical Report #15, Unicode
+      Normalization Forms</cite>, &lt;<a
+      href="http://www.unicode.org/unicode/reports/tr15/">http://www.unicode.org/unicode/reports/tr15/</a>>.</dd>
+  <dt><a name="XHTML">[XHTML]</a></dt>
+    <dd>Steven Pemberton, et al.,
+      <cite>XHTML</cite><i><cite>&trade;</cite></i><cite>1.0: The Extensible
+      HyperText Markup Language - A Reformulation of HTML 4.0 in XML
+      1.0</cite>, W3C Recommendation, &lt;<a
+      href="http://www.w3.org/TR/xhtml1/">http://www.w3.org/TR/xhtml1/</a>>.</dd>
+  <dt><a name="xml10">[XML 1.0]</a></dt>
+    <dd>Tim Bray, Jean Paoli, C. M. Sperberg-McQueen, Eds., <cite>Extensible
+      Markup Language (XML) 1.0</cite>, W3C Recommendation 10-February-1998,
+      &lt;<a
+    href="http://www.w3.org/TR/xml">http://www.w3.org/TR/xml</a>>.</dd>
+</dl>
+
+<h2><a name="Acknowledgements">8. Acknowledgements</a></h2>
+
+<p>Mark Davis (<a
+href="mailto:mark.davis@us.ibm.com">mark.davis@us.ibm.com</a>), and Hideki
+Hiura (<a href="mailto:hideki.hiura@eng.sun.com">hideki.hiura@eng.sun.com</a>)
+contributed to the early drafts.</p>
+
+<h2><a name="ChangeHistory">9. Change History (last changes first)</a></h2>
+
+<p>Changes from  <a class="unicode"
+href="http://www.unicode.org/unicode/reports/tr20/tr20-3.html">http://www.unicode.org/unicode/reports/tr20/tr20-3.html</a>:
+Minor editorial changes to the introduction, fixed some references, links, and
+dates, plus a few typos. (AF/MJD)</p>
+
+<p>Changes from <a class="unicode"
+href="http://www.unicode.org/unicode/reports/tr20/tr20-2.html">http://www.unicode.org/unicode/reports/tr20/tr20-2.html</a>:
+Added sections 2.1-2.6 (MJD), sections 3.1-3.5, and 3.8, as well as sections
+4.4-4.6 and 8 (AF). Edited text for publication as DRAFT Unicode Technical
+Report. (AF)</p>
+
+<p>Changes from <a class="unicode"
+href="http://www.unicode.org/unicode/reports/tr20/tr20-1.html">http://www.unicode.org/unicode/reports/tr20/tr20-1.html</a>:
+Completed references, linked TOC. Various wording changes. Added W3C WD
+stylesheet, logo, copyright, status of this document. Streamlined authors'
+section. (MJD)</p>
+
+<p>Added material on compatibility characters. (AF)</p>
+
+<p>Changes from the initial draft: Fixed the header. Fixed the numbering.
+Fixed the title. Put references to final version of data files based on naming
+conventions. Minor wording changes. Added proposed language on annotation
+characters to match example on FFFC. Posted for internal review by UTC and
+W3C. (AF)</p>
+
+<h2><a name="Copyright">10. Copyright</a></h2>
+
+<p>Copyright © 1999-2000 jointly held by Unicode, Inc. and <a
+href="http://www.w3.org/">W3C</a><sup>®</sup> (<a
+href="http://www.lcs.mit.edu/">MIT</a>, <a
+href="http://www.inria.fr/">INRIA</a>, <a
+href="http://www.keio.ac.jp/">Keio</a>), All Rights Reserved.</p>
+
+<p>W3C <a
+href="http://www.w3.org/Consortium/Legal/ipr-notice#Copyright">Copyright</a>,
+<a
+href="http://www.w3.org/Consortium/Legal/ipr-notice#Legal_Disclaimer">liability</a>,
+<a
+href="http://www.w3.org/Consortium/Legal/ipr-notice#W3C_Trademarks">trademark</a>,
+<a
+href="http://www.w3.org/Consortium/Legal/copyright-documents-19990405">document
+use</a> and <a
+href="http://www.w3.org/Consortium/Legal/copyright-software-19980720">software
+licensing</a> rules apply.</p>
+
+<p class="unicode">The Unicode Consortium makes no expressed or implied
+warranty of any kind, and assumes no liability for errors or omissions. No
+liability is assumed for incidental and consequential damages in connection
+with or arising out of the use of the information or programs contained or
+accompanying this technical report.</p>
+
+<p class="unicode">Unicode and the Unicode logo are trademarks of Unicode,
+Inc., and are registered in some jurisdictions.</p>
+
+<p class="unicode"> </p>
+<hr style="width: 50%">
+
+
+<p>Unicode Home Page: <a class="unicode"
+href="http://www.unicode.org/">http://www.unicode.org</a></p>
+
+<p>Unicode Technical Reports: <a class="unicode"
+href="http://www.unicode.org/unicode/reports/">http://www.unicode.org/unicode/reports/</a></p>
+</body>
+</html>

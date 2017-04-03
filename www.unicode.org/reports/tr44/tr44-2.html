@@ -1,0 +1,328 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
+
+       "http://www.w3.org/TR/REC-html40/loose.dtd"> 
+
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta http-equiv="Content-Language" content="en-us">
+<title>UAX #44: Unicode Character Database</title>
+
+<!-- WEB ONLY -->
+<link rel="stylesheet" type="text/css" href="../reports-web.css">
+<!-- BOOK ONLY 
+<link rel="stylesheet" type="text/css" href="../reports-book.css"> -->
+
+
+</head>
+<body><div class="book"><!-- WEB ONLY--><div class="web-only">
+<table class="header" cellspacing="0" cellpadding="0" width="100%">
+  <tr>
+    <td class="icon"><a href="http://www.unicode.org">
+    <img align="middle" alt="[Unicode]" border="0" src="../logo60s2.gif" width="34" height="33"></a>&nbsp;&nbsp;
+    <a class="bar" href="../index.html">Technical Reports</a></td>
+  </tr>
+  <tr>
+    <td class="gray">&nbsp;</td>
+  </tr>
+</table>
+</div> 
+<!-- END WEB ONLY -->
+<div class="body">
+<!--
+  <h2 class="uaxtitle"><span class="changedspan">Proposed Draft</span></h2>
+-->
+	<h2 class="uaxtitle">Unicode Standard Annex&nbsp;#44</h2>
+  <h1>Unicode Character Database</h1>
+  <!-- START WEB ONLY -->
+  <div class="web-only">
+  <table border="1" cellpadding="2" width="90%">
+    <tr>
+      <td valign="top" width="20%">Version</td>
+      <td valign="top">Unicode 5.1</td>
+    </tr>
+    <tr>
+      <td valign="top">Authors</td>
+      <td valign="top">Mark Davis (<a href="mailto:markdavis@google.com">markdavis@google.com</a>) 
+		and Ken Whistler (<a href="mailto:ken@unicode.org">ken@unicode.org</a>)</td>
+    </tr>
+    <tr>
+      <td valign="top">Date</td>
+      <td valign="top">2008-3-18</td>
+    </tr>
+    <tr>
+      <td valign="top">This Version</td>
+      <td valign="top">
+      
+		<a href="tr44-2.html">http://www.unicode.org/reports/tr44/tr44-2.html</a></td>
+    </tr>
+    <tr>
+      <td valign="top">Previous Version</td>
+      <td valign="top">n/a</td>
+    </tr>
+    <tr>
+      <td valign="top">Latest Version</td>
+      <td valign="top"><a href="index.html">http://www.unicode.org/reports/tr44/</a></td>
+    </tr>
+    <tr>
+      <td valign="top">Revision</td>
+      <td valign="top"><a href="tr44-2.html#Modifications">2</a></td>
+    </tr>
+  </table>
+  </div>
+  <!-- END WEB ONLY -->
+ <h4 class="summary">Summary</h4>
+  <blockquote>
+    <p><i>This annex consolidates information documenting the Unicode Character 
+    Database.</i></p>
+  </blockquote>
+  <!-- WEB ONLY -->
+  <div class="web-only">
+  
+  <h4 class="status">Status</h4>
+	   <!-- NOT YET APPROVED 
+	  <p><i>This is a<b><font color="#ff3333"> draft </font></b>document which 
+      may be updated, replaced, or superseded by other documents at any time. 
+      Publication does not imply endorsement by the Unicode Consortium. This is 
+      not a stable document; it is inappropriate to cite this document as other 
+      than a work in progress.</i></p>
+       END NOT YET APPROVED -->
+	  <!-- APPROVED -->
+      <p><i>This document has been reviewed by Unicode members and other interested 
+	parties, and has been approved for publication by the Unicode Consortium. 
+	This is a stable document and may be used as reference material or cited as 
+	a normative reference by other specifications.</i></p>
+     <!-- END APPROVED -->
+  <blockquote>
+    <p><i><b>A Unicode Standard Annex (UAX)</b> forms an integral part of the 
+	Unicode Standard, but is published online as a separate document. The 
+	Unicode Standard may require conformance to normative content in a Unicode 
+	Standard Annex, if so specified in the Conformance chapter of that version 
+	of the Unicode Standard. The version number of a UAX document corresponds to 
+	the version of the Unicode Standard of which it forms a part.</i></p>
+  </blockquote>
+  <p><i>Please submit corrigenda and other comments with the online reporting form [<a href="../tr41/tr41-3.html#Feedback">Feedback</a>]. 
+  Related information that is useful in understanding this annex is found in
+  Unicode Standard Annex #41, “<a href="../tr41/tr41-3.html">Common References for Unicode Standard Annexes</a>.” For the latest version of the Unicode Standard, see [<a href="../tr41/tr41-3.html#Unicode">Unicode</a>]. 
+  For a list of current Unicode Technical Reports, see [<a href="../tr41/tr41-3.html#Reports">Reports</a>]. For more 
+  information about versions of the Unicode Standard, see [<a href="../tr41/tr41-3.html#Versions">Versions</a>].</i></p>
+  </div>
+  <!-- END WEB ONLY -->
+  <h4 class="contents">Contents</h4>
+  <ul class="toc">
+	<li>1. <a href="tr44-2.html#Introduction">Introduction</a></li>
+	<li>2. <a href="tr44-2.html#Conformance">Conformance</a>
+	<ul class="toc">
+		<li>2.1 <a href="tr44-2.html#Simple_Derived_html">Simple and Derived Properties</a></li>
+	</ul></li>
+	<li>3. <a href="tr44-2.html#Documentation_Files">Documentation Files</a>
+	<ul class="toc">
+		<li>3.1 <a href="tr44-2.html#UCD_html">UCD.html</a></li>
+		<li>3.2 <a href="tr44-2.html#NamesList_html">NamesList.html</a></li>
+		<li>3.3 <a href="tr44-2.html#Unihan_html">Unihan.html</a></li>
+		<li>3.4 <a href="tr44-2.html#StandardizedVariants_html">StandardizedVariants.html</a></li>
+		<li>3.5 <a href="tr44-2.html#Data_File_Comments">Data File Comments</a></li>
+	</ul></li>
+	<li>4. <a href="tr44-2.html#Test_Files">Test Files</a>
+	<ul class="toc">
+		<li>4.1 <a href="tr44-2.html#NormalizationTest_txt">NormalizationTest.txt</a></li>
+		<li>4.2 <a href= "tr44-2.html#LineBreakTest_txt">LineBreakTest.txt</a></li>
+		<li>4.3 <a href= "tr44-2.html#Segmentation_Test_Files">Segmentation Test Files</a></li>
+		</ul></li>
+	<li>5. <a href="tr44-2.html#UCD_in_XML">UCD in XML</a></li>
+	<li><a href="tr44-2.html#Acknowledgments">Acknowledgments</a></li>
+	<li><a href="tr44-2.html#References">References</a></li>
+	<li><a href="tr44-2.html#Modifications">Modifications</a></li>
+	</ul>
+  <hr><div class="book-only"><p>&nbsp;</p></div>
+  <blockquote>
+    <p><i><b>Warning: </b>the information in this file does not completely describe the use and 
+    interpretation of Unicode character properties and behavior. It must be used in conjunction with 
+    the data in the other files in the Unicode Character Database, and relies on the notation and 
+    definitions supplied in <a href="http://www.unicode.org/standard/standard.html">The Unicode 
+    Standard</a>. All chapter references are to Version 5.0.0 of the standard unless otherwise 
+    indicated.</i></p>
+  </blockquote>
+  <h2>1 <a name="Introduction">Introduction</a></h2>
+  <p>The Unicode Character Database (UCD) is a collection of data files which contain the Unicode character code points and character names and which define the Unicode character properties and mappings between Unicode characters (such as case mappings).
+  </p>
+  <p>This annex describes the UCD and provides a guide to the various documentation files associated with it.
+  </p>
+  <p>The current version of the UCD is always located on the Unicode Web site at:
+  </p>
+  <p>
+<a href="http://www.unicode.org/Public/UNIDATA/">http://www.unicode.org/Public/UNIDATA/</a>
+  </p>
+  <p>The specific files for the UCD associated with this version of the Unicode Standard (5.1.0) are located at:
+  </p>
+  <p>
+<a href="http://www.unicode.org/Public/5.1.0/">http://www.unicode.org/Public/5.1.0/</a>
+  </p>
+  <p>Stable, archived versions of the UCD associated with all earlier versions of the Unicode Standard can be accessed from: </p>
+  <p>
+    <a href="http://www.unicode.org/ucd/">http://www.unicode.org/ucd/</a> </p>
+  <p>See Section 4.1, "Unicode Character Database", in [<a href="../tr41/tr41-3.html#Unicode">Unicode</a>] for a general discussion of the UCD and its use in defining properties.
+  </p>
+ <h2>2 <a name="Conformance">Conformance</a></h2>
+ <p>The Unicode Character Database is an integral part of the Unicode Standard.</p>
+<p>The UCD contains normative property and mapping information required for implementation of various Unicode algorithms such as the Unicode Bidirectional Algorithm, Unicode Normalization, and Unicode Casefolding. The data files also contain additional informative and provisional character property information.</p>
+<p>Each specification of a Unicode algorithm, whether specified in the text of [<a href="../tr41/tr41-3.html#Unicode">Unicode</a>] or in one of the Unicode Standard Annexes, designates which data file(s) in the UCD are required for providing normative property information required by that algorithm.</p>
+<p>For information on the meaning and application of the terms&nbsp; <i>normative, informative</i>, and 
+<i>provisional</i>, see Section 3.5, &quot;Properties" in [<a href="../tr41/tr41-3.html#Unicode">Unicode</a>].</p>
+<h3>2.1 <a name="Simple_Derived_html">Simple and Derived Properties</a></h3>
+<p>Some character properties in the UCD are simple properties.
+This status has no bearing on whether or not the properties are
+normative, but merely indicates that their values
+are not derived from some combination of other properties.</p>
+
+<p>Other character properties are derived. This means that
+their values are derived by rule from some other
+combination of properties. Generally such rules are
+stated as set operations, and may or may not include
+explicit exception lists for individual characters.</p>
+
+<p>Sometimes simple properties are defined merely
+to make the statement of the rule defining a derived
+property more compact or general. Such properties are
+known as <i>contributory properties</i> and typically
+have their names prefixed by "Other_". Sometimes
+these contributory properties are defined to
+encapsulate the messiness inherent in exception
+lists. At other times, a contributory property may
+be defined to help stabilize the definition of
+an important derived property which is subject to stability
+guarantees.</p>
+
+<p>Derived character properties are not considered
+second-class citizens among Unicode character properties.
+They are defined to make implementation of important
+algorithms easier to state. Included among the
+first-class derived properties important for such
+implementations are: Uppercase, Lowercase, XID_Start,
+XID_Continue, Math, and Default_Ignorable_Code_Point, all
+defined in DerivedCoreProperties.txt, and derived
+properties for optimization of normalization, defined
+in DerivedNormalizationProps.txt.</p>
+
+<p>Implementations should simply use the derived properties,
+and should not try to rederive them from lists of simple
+properties and collections of rules, because of the
+chances for error and divergence when doing so.</p>
+
+<p>If there are any cases of mismatches
+between the definition of a derived property as
+listed in DerivedCoreProperties.txt or similar data
+files in the UCD, and the definition of a derived
+property as a set definition rule, the explicit
+listing in the data file should <i>always</i> be taken
+as the normative definition of the property.</p>
+
+<p>Definitions of property derivations are provided
+for information only, typically in comment fields
+in the data files. Such definitions may be refactored,
+refined, or corrected over time. To ensure
+that there is never any ambiguity between versions
+of the standard, even if the definition of a derivation
+is changed at some point in time, the exact property
+listing in the data files for any given version
+of the standard is always the truth for that property
+value for that version&#x2014;and will itself never change
+for that version.</p>
+
+<h2>3 <a name="Documentation_Files">Documentation Files</a></h2>The UCD also contains a number of documentation files, which provide information about the UCD as a whole, and about file formats, status, derivation of derived properties, and various other information. 
+<h3>3.1 <a name="UCD_html">UCD.html</a></h3>
+<p>UCD.html is the most important of the documentation files. It provides a complete listing of the UCD data files and character properties. It indicates which properties are normative and where they are defined. It provides further information required for the proper interpretation of some of the Unicode character properties.</p>
+<p>UCD.html also records the modification history for the data files in the UCD, noting changes from version to version of the standard.</p>
+<h3>3.2 <a name="NamesList_html">NamesList.html</a></h3>
+<p>NamesList.html formally describes (in BNF) the format of the NamesList.txt data file, the file which is used to drive the printing of the Unicode code charts and names list. See also Section 17.1, "Character Names List", in [<a href="../tr41/tr41-3.html#Unicode">Unicode</a>] for a detailed discussion of the conventions used in the names list.</p>
+<h3>3.3 <a name="Unihan_html">Unihan.html and UAX #38</a></h3>
+<p>Unihan.html describes the format and content of Unihan.txt, the data file which collects together all property information for CJK Unified Ideographs. As of Version 5.1.0 of the Unicode Standard, the content of Unihan.html has been incorporated into the new [<a href="../tr41/tr41-3.html#UAX38">UAX38</a>], which is intended to supersede Unihan.html.</p>
+<h3>3.4 <a name="StandardizedVariants_html">StandardizedVariants.html</a></h3>
+<p>StandardizedVariants.html documents standardized variants, showing a representative glyph for each. It is closely tied to the data file, StandardizedVariants.txt , which  defines those sequences normatively.</p>
+<h3>3.5. <a name="Data_File_Comments">Data File Comments</a></h3>
+<p>In addition to the specific documentation files for the UCD, individual data 
+files often contain extensive header comments describing their content and any 
+special conventions used in the data. In some instances, individual property 
+definition sections are also commented with information about how the property 
+may be derived.</p>
+  <h2>4 <a name="Test_Files">Test Files</a></h2>
+  <p>The UCD also contains a number of test data files, 
+which specify, in standard formats, data which can be used to test 
+implementation of Unicode algorithms. </p> 
+  <h3>4.1. <a name= "NormalizationTest_txt"> NormalizationTest.txt </a></h3> 
+  <p>This file contains data which can be used to test an implementation of the 
+  Unicode Normalization Algorithm. (See [<a href="../tr41/tr41-3.html#UAX15">UAX15</a>].) </p>
+<h3>4.2. <a name= "LineBreakTest_txt">LineBreakTest.txt</a></h3>
+<p>This file, located in the auxiliary directory of the UCD, contains data which can be used 
+to test an implementation of the Unicode Linebreaking Algorithm. (See [<a href="../tr41/tr41-3.html#LineBreak">UAX14</a>].) 
+  </p>
+<p>There is an associated documentation file, LineBreakTest.html, which displays 
+the results of the Linebreaking Algorithm in an interactive chart form, with a 
+documented listing of the rules. </p>
+<h3>4.3. <a name= "Segmentation_Test_Files">Segmentation Test Files</a></h3>
+  <p>The following three data files are also located in the auxiliary directory of the UCD: </p>
+  <ul>
+    <li>GraphemeBreakTest.txt</li>
+    <li>SentenceBreakTest.txt</li>
+    <li>WordBreakTest.txt</li>
+  </ul>
+  <p>They 
+  contain data which can be used to test an implementation of the segmentation 
+  algorithms specified in [<a href="../tr41/tr41-3.html#UAX29">UAX29</a>]. </p>
+  <p>There are also associated documentation 
+  files, which display the results of the segmentation algorithms in an 
+  interactive chart form, with a documented listing of the rules: </p>
+  <ul>
+    <li>GraphemeBreakTest.html </li>
+    <li>SentenceBreakTest.html </li>
+    <li>WordBreakTest.html&nbsp; </li>
+  </ul>
+  <h2>5 <a name="UCD_in_XML">UCD in XML</a></h2>
+  <p>[<a href="../tr41/tr41-3.html#UAX42">UAX42</a>] defines an XML schema 
+which is used to incorporate all of the Unicode character property information 
+into an XML version of the UCD.  </p>
+  <p>Starting with Version 5.1.0, a set of XML data 
+files using that schema are also released with each version of the UCD. Those 
+data files make it possible to import and process the UCD property data using 
+standard XML parsing tools, instead of the specialized parsing required for the 
+various individual data files of the UCD. <br>
+  &nbsp;</p>
+  <h2 class="nonumber"><a name="Acknowledgments">Acknowledgments</a></h2>
+  <p>Mark Davis and Ken Whistler are the authors of the initial version and have added to and 
+	maintained the text of this annex.</p>
+  <h2 class="nonumber"><a name="References">References</a></h2>
+	<p>For references for this annex, see Unicode Standard Annex #41, “<a href="../tr41/tr41-3.html">Common 
+	References for Unicode Standard Annexes</a>.”</p>
+   <h2 class="nonumber"><a name="Modifications">Modifications</a></h2>
+	<!-- BOOK ONLY -->
+	<div class="book-only">
+	<p>For details of the change history, see the online copy of this annex at
+    <a href="index.html">
+    http://www.unicode.org/reports/tr44/</a>.</p>
+	</div>
+	<!-- WEB ONLY -->
+	<div class="web-only">
+  <p>The following summarizes modifications from previous revisions of this 
+	annex.</p>
+  <h3>Revision 2</h3>
+  <ul>
+    <li>Initial approved version</li>
+  </ul>
+  <h3>Revision 1</h3>
+  <ul>
+    <li>Initial draft</li>
+  </ul>
+  <hr>
+  <p class="copyright">Copyright © 2000-2008 Unicode, Inc. All Rights Reserved. The Unicode 
+  Consortium makes no expressed or implied warranty of any kind, and assumes no liability for errors 
+  or omissions. No liability is assumed for incidental and consequential damages in connection with 
+  or arising out of the use of the information or programs contained or accompanying this technical 
+  report. The Unicode <a href="http://www.unicode.org/copyright.html">Terms of Use</a> apply.</p>
+  <p class="copyright">Unicode and the Unicode logo are trademarks of Unicode, Inc., and are 
+  registered in some jurisdictions.</div> <!-- web only -->
+  </div> <!-- body -->
+  </div> <!-- book -->
+
+</body>
+
+</html>

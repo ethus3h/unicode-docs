@@ -1,0 +1,366 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta http-equiv="Content-Language" content="en-us">
+<link rel="stylesheet" href="../unicode/reports/reports.css" type="text/css">
+<title>UTR #26: Compatibility Encoding Scheme for UTF-16: 8-Bit (CESU-8)</title>
+</head>
+
+<body>
+<table class="header" cellspacing="0" cellpadding="0" width="100%">
+  <tr>
+    <td class="icon"><a href="http://www.unicode.org"> <img align="middle" alt="[Unicode]" border="0" src="../webscripts/logo60s2.gif" width="34" height="33"></a>&nbsp; <a class="bar" href="index.html">Technical Reports</a></td>
+  </tr>
+  <tr>
+    <td class="gray">&nbsp;</td>
+  </tr>
+</table>
+<div class="body">
+<h2 align="center">Unicode Technical Report #26</h2>                          
+<h1 align="center">Compatibility Encoding Scheme for UTF-16: 8-Bit (CESU-8)</h1>                 
+<table border="1" cellpadding="2" cellspacing="0" class="wide">    
+  <tr>                 
+    <td>Editor</td>                
+    <td>Rick McGowan</td>                 
+  </tr>                 
+  <tr>                 
+    <td>Date</td>                 
+    <td>2011-12-19</td>              
+  </tr>              
+  <tr>              
+    <td>This Version</td>              
+    <td><a href="tr26/tr26-4.html">
+	http://www.unicode.org/reports/tr26/tr26-4.html</a></td>              
+  </tr>              
+  <tr>              
+    <td>Previous Version</td>              
+    <td><a href="tr26/tr26-3.html">
+	http://www.unicode.org/reports/tr26/tr26-3.html</a></td>              
+  </tr>              
+  <tr>              
+    <td>Latest Version</td>             
+    <td><a href="tr26.1">
+	http://www.unicode.org/reports/tr26/</a></td>             
+  </tr>             
+      <tr >
+        <td valign="top">Latest Proposed Update</td>
+        <td valign="top"><a href="tr26/proposed.html">http://www.unicode.org/reports/tr26/proposed.html</a></td>
+      </tr>
+  <tr>                 
+    <td >Revision</td>                 
+    <td><a href="tr26.1#Modifications">4</a></td>                 
+  </tr>  
+  </table>
+
+    <h3><br>
+    <i>Summary</i></h3>
+        
+<p><i>This document specifies an 8-bit Compatibility Encoding Scheme for 
+UTF-16 (CESU) that is intended for internal use within systems processing 
+Unicode in order to provide an ASCII-compatible 8-bit encoding that is similar 
+to UTF-8 but preserves UTF-16 binary collation.     
+<u>  It is not intended nor recommended as an encoding used for open information 
+exchange.</u>   The Unicode Consortium, does not encourage the use of CESU-8, 
+but does recognize the existence of data in this encoding and supplies this 
+technical report to clearly define the format and to distinguish it from UTF-8. 
+This encoding does not replace or amend the definition of UTF-8.</i></p>              
+<h3><i>Status</i></h3>              
+	   <!-- NOT YET APPROVED
+	  <p><i class="changed">This is a<b><font color="#FF3333"> draft </font></b>document which 
+	  may be updated, replaced, or superseded by other documents at any time. 
+	  Publication does not imply endorsement by the Unicode Consortium. This is 
+	  not a stable document; it is inappropriate to cite this document as other 
+	  than a work in progress.</i></p>
+      END NOT YET APPROVED -->
+	  <!-- APPROVED -->
+      <p><i>This document has been reviewed by Unicode members and other interested 
+	parties, and has been approved for publication by the Unicode Consortium. 
+	This is a stable document and may be used as reference material or cited as 
+	a normative reference by other specifications.</i></p>
+      <!-- END APPROVED -->
+	<p><i><b>A Unicode Technical Report (UTR) </b>contains informative material. 
+	Conformance to the Unicode Standard does not imply conformance to any UTR. 
+	Other specifications, however, are free to make normative references to a 
+	UTR.</i></p>
+    <p><i>Please submit corrigenda and other comments with the online reporting form [<a href="tr26.1#Feedback">Feedback</a>]. 
+    Related information that is useful in understanding this document is found in
+    <a href="tr26.1#References">References</a>. For the latest version of the Unicode Standard see [<a href="tr26.1#Unicode">Unicode</a>]. 
+    For a list of current Unicode Technical Reports see [<a href="tr26.1#Reports">Reports</a>]. For more 
+    information about versions of the Unicode Standard, see [<a href="tr26.1#Versions">Versions</a>].</i>    </p>
+
+<h3><i>Contents</i></h3>               
+<ul class="toc">               
+  <li>1 <a href="tr26.1#introduction">Introduction</a></li>              
+  <li>2 <a href="tr26.1#definitions">Definitions</a></li>              
+  <li>3 <a href="tr26.1#identification">Identification of CESU-8</a></li>              
+  <li>4 <a href="tr26.1#relation">Relation to ISO/IEC 10646 and UTF-8</a></li>              
+  <li>5 <a href="tr26.1#iana">IANA Registration</a></li>
+		<li><a href="tr26.1#Acknowledgements">Acknowledgements</a></li>              
+  <li><a href="tr26.1#References">References</a></li>              
+  <li><a href="tr26.1#Modifications">Modifications</a></li>              
+</ul>              
+<hr align="LEFT">              
+<h2><a name="introduction">1 Introduction</a></h2>              
+<p>CESU-8 defines an encoding scheme for Unicode identical to UTF-8 except for 
+its representation of supplementary characters. In CESU-8, supplementary 
+characters are represented as six-byte sequences resulting from the 
+transformation of each UTF-16 surrogate code unit into an eight-bit form similar 
+to the UTF-8 transformation, but without first converting the input surrogate 
+pairs to a scalar value.</p>                  
+<p>              
+              
+CESU-8 is useful in 8-bit processing environments where binary collation with 
+UTF-16 is required. It is designed and recommended for use only within products 
+requiring this UTF-16 binary collation equivalence. <u>It is not intended nor 
+recommended for open interchange.&nbsp;        
+</u> </p>                
+<p>               
+              
+The following lists the important features of this encoding form:&nbsp; </p>                        
+<ul>              
+  <li>              
+    <p>The CESU-8 representation of characters on the Basic Multilingual Plane 
+	(BMP) is identical to the representation of these characters in UTF-8. Only 
+	the representation of supplementary characters differs.</li>               
+  <li>              
+    <p>               
+	Only the six-byte form of supplementary characters is legal in CESU-8; the 
+	four-byte UTF-8 style supplementary character sequence is illegal. </li>                 
+  <li>              
+    <p>A binary collation of data encoded in CESU-8 is identical to the binary 
+	collation of the same data encoded in UTF-16.&nbsp;</li>                       
+</ul>              
+<p>As a very small percentage of characters in a typical data stream are 
+expected to be supplementary characters, there is a strong possibility that 
+CESU-8 data may be misinterpreted as UTF-8. Therefore, all use of CESU-8 outside 
+closed implementations is strongly discouraged, such as the emittance of CESU-8 
+in output files, markup language or other open transmission forms. </p>                         
+<h2><a name="definitions">2 Definitions</a></h2>                
+<p>The following define the CESU-8 encoding scheme. CESU-8 is not a normative 
+part of the Unicode Standard, and therefore the definitions below do not form 
+part of the standard. Instead, they are encapsulated in this Unicode Technical 
+Report as an implementation-specific encoding scheme for use by implementers of 
+the Unicode Standard.&nbsp;</p>                       
+<h3><i>2.1 Encoding</i></h3>                       
+<p>CESU-8 is a Compatibility Encoding Scheme for UTF-16 (CESU) that serializes a 
+Unicode code point as a sequence of one, two, three or six bytes.&nbsp;</p>                       
+<ol type="a">             
+  <li>             
+    <p>Prior to transforming data into CESU-8, supplementary characters must 
+	first be converted to their surrogate pair UTF-16 representation. For 
+	example, U+F0000 must first be converted to U+DB80 U+DC00.</li>                
+  <li>             
+    <p>The resulting data stream is encoded into an eight-bit form using the bit 
+	distribution table in definition 2.2. It should be noted that this bit 
+	distribution table is identical to that of UTF-8 except that the input value 
+	is a sequence of UTF-16 code units, not a scalar value, and that a four-byte 
+	transformation is disallowed.    
+    </li>              
+  <li>             
+    <p>The bit pattern 1111xxxx is illegal in any CESU-8 byte, effectively 
+	prohibiting the occurrence of UTF-8 four-byte surrogates in CESU-8. Thus, a 
+	data stream may not contain both CESU-8 six-byte and UTF-8 four-byte 
+	supplementary character sequences.   
+    </li>              
+  <li>             
+    <p>The shortest form rules applied to UTF-8 in the Unicode Standard 
+	Definition D36 will also apply to CESU-8.&nbsp;</li>                      
+</ol>             
+    <p>             
+         CESU-8 encoding example:
+    <blockquote>
+    <p>In CESU-8, &lt;U+004D, U+0061, U+F0000&gt; is serialized as<br>
+    &lt;4D 61 ED AE 80 ED B0 80&gt;                     
+    </p>                         
+        </blockquote>
+        <h3 align="left"><i>2.2 CESU-8 Bit Distribution </i></h3>        
+             
+<center>
+    <table border="1" cellspacing="0" cellpadding="2">                      
+      <tr>             
+        <th valign="top" align="center">            
+          <p align="left">UTF-16 Code Unit</p>            
+        </th>            
+        <th valign="top" align="center">           
+          <p align="left">1st Byte</p>           
+        </th>            
+        <th valign="top" align="center">           
+          <p align="left">2nd Byte</p>           
+        </th>            
+        <th valign="top" align="center">           
+          <p align="left">3rd Byte</p>           
+        </th>            
+      </tr>            
+      <tr>            
+        <td valign="top" align="center">           
+          <p align="left">000000000xxxxxxx</p>           
+        </td>            
+        <td valign="top" align="center">           
+          <p align="left">0xxxxxxx</p>           
+        </td>            
+        <td valign="top" align="center">           
+          <p align="left">&nbsp;</p>           
+        </td>            
+        <td valign="top" align="center">           
+          <p align="left">&nbsp;</p>           
+        </td>            
+      </tr>            
+      <tr>            
+        <td valign="top" align="center">           
+          <p align="left">00000yyyyyxxxxxx</p>           
+        </td>            
+        <td valign="top" align="center">           
+          <p align="left">110yyyyy</p>           
+        </td>            
+        <td valign="top" align="center">           
+          <p align="left">10xxxxxx</p>           
+        </td>            
+        <td valign="top" align="center">           
+          <p align="left">&nbsp;</p>           
+        </td>            
+      </tr>            
+      <tr>            
+        <td valign="top" align="center">           
+          <p align="left">zzzzyyyyyyxxxxxx&nbsp;</p>           
+        </td>            
+        <td valign="top" align="center">           
+          <p align="left">1110zzzz&nbsp;</p>           
+        </td>            
+        <td valign="top" align="center">           
+          <p align="left">10yyyyyy&nbsp;</p>           
+        </td>            
+        <td valign="top" align="center">           
+          <p align="left">10xxxxxx</p>           
+        </td>            
+      </tr>            
+    </table>            
+
+</center>
+
+<p>&nbsp;</p>
+           
+           
+<h2><a name="identification">3 Identification of CESU-8</a></h2>                     
+           
+           
+<p>Data encoded in CESU-8 should only be exchanged when it is labeled as such in 
+a higher-level protocol or is agreed upon in an API definition. It should not be 
+auto-detected. Use of this encoding in the absence of encoding tags or a higher 
+level protocol describing the encoding is invalid and strongly discouraged. See 
+also
+<a href="tr26.1#iana">IANA Registration</a>.</p>
+<p>NOTE: Due to their apparent similarity in structure, implementers need to 
+take stronger than usual precautions that CESU-8 data are not inadvertently 
+misidentified as UTF-8 and vice versa. See also <a href="tr26.1#relation">Relation to 
+ISO/IEC 10646 and UTF-8</a>.</p>
+           
+           
+<h2><a name="relation">4 Relation to ISO/IEC 10646 and UTF-8</a></h2>               
+            
+<p>ISO/IEC 10646 and the Unicode Standard define the UTF-8 encoding form, which 
+is very similar in definition to CESU-8 other than its treatment of 
+supplementary characters. CESU-8 is a different encoding scheme. It does not 
+form part of either ISO/IEC 10646 or the Unicode Standard.         
+<u>It is intended only for use in compatibility situations where binary 
+collation with UTF-16 is required.</u></p>              
+<h2><a name="iana">5 IANA Registration</a></h2>             
+<p>CESU-8 has been registered in the Internet Assigned Numbers Authority (IANA)
+<a href="http://www.iana.org/assignments/character-sets">Character Set registry</a> 
+with the following properties:</p>
+<p>Name: CESU-8<br>
+MIBenum: 1016<br>
+Alias: csCESU-8
+</p>
+<p><u>Note:</u> CESU-8 was originally proposed and discussed with the name 
+UTF-8S, but was renamed CESU-8 to avoid possible confusion with UTF-8.</p>
+
+
+<h2><a name="Acknowledgements">Acknowledgements</a></h2>
+<p>Toby Phipps was the author of earlier versions of this 
+report. Thanks to Jianping Yang, Nobuyoshi Mori, Asmus Freytag, Markus Scherer and 
+Kent Karlsson for their feedback and input on this document.</p>
+
+<h2><a name="References">References</a></h2>           
+  <table class="nbwide" cellspacing="6">
+  <tr>
+      <td class="nb" valign="top" nowrap>[<a name="FAQ">FAQ</a>]</td>
+      <td class="nb">Unicode Frequently Asked Questions<br>
+        <a href="http://www.unicode.org/faq/">http://www.unicode.org/faq/</a><br>
+        <i>For answers to common questions on technical issues.</i></td>
+    </tr>
+    <tr>
+      <td class="nb" vAlign="top" width="1">[<a name="Feedback">Feedback</a>]</td>
+      <td class="nb" vAlign="top">Reporting Errors and Requesting 
+        Information Online<i><br>
+        </i><a href="http://www.unicode.org/reporting.html">http://www.unicode.org/reporting.html</a></td>
+
+    </tr>
+  	<tr>
+      <td class="nb" valign="top" nowrap>[<a name="Glossary">Glossary</a>]</td>
+      <td class="nb">Unicode Glossary<a
+        href="http://www.unicode.org/glossary/"><br>
+        http://www.unicode.org/glossary/<br>
+        </a><i>For explanations of terminology used in this and other documents.</i></td>
+    </tr>
+    <tr>
+      <td class="nb" vAlign="top" width="1">[<a name="Reports">Reports</a>]</td>
+      <td class="nb" vAlign="top">Unicode Technical Reports<br>
+        <a href="index.html">http://www.unicode.org/reports/<br>
+        </a><i>For information on the status and development process for 
+        technical reports, and for a list of technical reports.</i></td>
+    </tr>
+
+    <tr>
+      <td class="nb" vAlign="top" width="1">[<a name="Unicode">Unicode</a>]</td>
+      <td class="nb" vAlign="top">The Unicode Standard<br>
+          <i>For the latest version, see:</i><br>
+          <a href="http://www.unicode.org/versions/latest/">http://www.unicode.org/versions/latest/</a><br>
+          <em>For the 6.0.0 version, see:</em><br>
+          <a href="http://www.unicode.org/versions/Unicode6.0.0/">http://www.unicode.org/versions/Unicode6.0.0/</a><br></td>
+
+    </tr>
+    <tr>
+      <td class="nb" vAlign="top" width="1">[<a name="Versions">Versions</a>]</td>
+      <td class="nb" vAlign="top">Versions of the Unicode Standard<br>
+        <a href="http://www.unicode.org/standard/versions/">http://www.unicode.org/standard/versions/<br>
+        </a><i>For information on version numbering, and citing and referencing 
+        the Unicode Standard, the Unicode Character Database, and Unicode 
+        Technical Reports.</i></td>
+
+    </tr>
+
+
+    </table>
+
+<h2><a name="Modifications">
+Modifications</a></h2>
+<p>The following summarizes modifications from the previous version of this document.</p>
+
+  <h3>Revision 4 [RM]</h3>
+  <ul>
+    <li>Corrected the encoding example in<i> Section 2.1, 
+	Encoding</i>.</li>
+		<li>Updated header and some sections to conform to 
+		latest UTR format specifications. </li>
+  </ul>
+  <h3>Revision 3</h3>
+  <ul>
+      <li>First publication</li>
+  </ul>
+
+
+<hr align="LEFT">          
+<p class="copyright">Copyright © 2001-2011 Unicode, Inc. All 
+    Rights Reserved. The Unicode Consortium makes no expressed or implied warranty of any kind, 
+    and assumes no liability for errors or omissions. No liability is assumed for incidental and 
+    consequential damages in connection with or arising out of the use of the information or programs 
+    contained or accompanying this technical report. The Unicode <a href="http://www.unicode.org/copyright.html">Terms of Use</a> apply.</p>            
+<p class="copyright"><font size="-1">Unicode and the Unicode logo are trademarks of Unicode, Inc., 
+and are registered in some jurisdictions.</font></p>            
+
+</div>
+</body>            
+            
+</html>

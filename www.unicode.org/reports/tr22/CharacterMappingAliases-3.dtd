@@ -1,0 +1,25 @@
+<!ELEMENT characterMappingAliases (mapping*)>
+
+<!ELEMENT mapping (display*, alias*, bestFit*)>
+<!ATTLIST mapping
+    id CDATA #REQUIRED
+>
+
+<!ELEMENT display EMPTY>
+<!ATTLIST display
+    name CDATA #REQUIRED
+    xml:lang CDATA #REQUIRED
+>
+
+<!ELEMENT alias EMPTY>
+<!ATTLIST alias
+    name CDATA #REQUIRED
+    preferredBy CDATA #IMPLIED
+>
+
+<!ELEMENT bestFit EMPTY>
+<!ATTLIST bestFit 
+    id CDATA #REQUIRED
+    matchingA CDATA #REQUIRED
+    matchingB CDATA #REQUIRED
+>

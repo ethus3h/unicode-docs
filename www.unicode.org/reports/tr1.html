@@ -1,0 +1,1053 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<html>
+
+<head>
+<meta name="GENERATOR" content="Microsoft FrontPage 3.0">
+<title>Unicode Technical Report Number 1</title>
+</head>
+
+<body bgcolor="#FFFFFF" text="#000000" link="#FF0000" vlink="#808080" alink="#0000FF">
+
+<h1>Unicode Technical Report #1</h1>
+
+<h2>Burmese <br>
+Khmer <br>
+Ethiopian </h2>
+
+<table border="1" width="100%">
+  <tr>
+    <td>Revision</td>
+    <td>03 Nov 1992; rev 92/11/25 </td>
+  </tr>
+  <tr>
+    <td>Authors </td>
+    <td>Burmese proposal was written by Andy Daniels, with contributions by Lloyd Anderson,
+    Glenn Adams, and Lee Collins.<br>
+    Khmer proposal was written by Andy Daniels.<br>
+    Ethiopian proposal was written by Joe Becker. </td>
+  </tr>
+  <tr>
+    <td>Date </td>
+    <td>1992</td>
+  </tr>
+  <tr>
+    <td>This Version</td>
+    <td><a href="http://www.unicode.org/unicode/reports/tr1.html">http://www.unicode.org/unicode/reports/tr1.html</a></td>
+  </tr>
+  <tr>
+    <td>Previous Version</td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td>Latest Version</td>
+    <td><a href="http://www.unicode.org/unicode/reports/tr1.html">http://www.unicode.org/unicode/reports/tr1.html</a></td>
+  </tr>
+</table>
+
+<p>Technical Reports contain material that has been approved by the Unicode Consortium for
+publication, but that is not necessarily considered part of the Unicode Standard. Often,
+technical reports are superseded by later standardization, or the informative material
+that they contain is incorporated into explanatory chapters in subsequent editions of The
+Unicode Standard. &nbsp; Sometimes minor updates to the Unicode Standard itself are
+published as Technical Reports.&nbsp; Some Technical Reports are not available for
+downloading.</p>
+
+<hr>
+
+<p align="center"><font size="4"><strong>Technical Report #1</strong></font> <font
+size="4"><strong>- Burmese, Khmer, and Ethiopia</strong></font></p>
+
+<p align="left"><br>
+This Technical Report is comprised of three concrete proposals to which the Unicode
+Technical Committee is strongly committed in their current form.</p>
+
+<p><em><strong>Status of this document</strong></em></p>
+
+<p><em>This document has been considered and approved by the Unicode Technical Committee
+for publication as a Technical Report. At the current time, the specifications in this
+technical report are provided as information and guidance to implementers of the Unicode
+Standard, but do not form part of the standard itself. The Unicode Technical Committee may
+decide to incorporate all or part of the material of this technical report into a future
+version of the Unicode Standard, either as informative or as normative specification.
+Please mail corrigenda and other comments to <a href="mailto:unicore@unicode.org">errata@unicode.org</a>.</em></p>
+
+<hr>
+
+<h1>Document</h1>
+
+<p>This Technical Report is comprised of three concrete proposals to which the Unicode
+Technical Committee is strongly committed in their current form. These are: Ethiopian,
+Burmese, and Khmer. These proposals have been reviewed internally and have been relatively
+stable over a period of time. The committee believes they represent good technical
+solutions for the proposed scripts, and therefore also recommends that specific codepoints
+within the body of Unicode be allocated for them, as follows: </p>
+
+<p>Burmese U+0F00 U+0F7F<br>
+Khmer U+0F80 U+0FFF<br>
+Ethiopian U+1200 U+125F </p>
+
+<p>Specific open issues for each of these are addressed in the respective draft block
+introductions. These open issues do not detract substantially from the solidity of the
+proposals. </p>
+
+<hr>
+
+<h2>Burmese Proposal Description</h2>
+
+<p>Burmese U+0F00 -&gt; 0F7F </p>
+
+<p>The Burmese script is used to write Burmese, the majority language of Myanmar (formerly
+Burma) and Pali. Variations and extentions of the script are used to write other languages
+of the region, such as Shan and Mon, and also to write Sanskrit. </p>
+
+<p>The Burmese script derives from 11th century Mon. The Mon script itself is probably
+borrowed directly from South India. The earliest Mon inscription, found at Lopburi in
+Thailand, dates from the eight century and is written in the Pallava script used at the
+Hinayana Buddhist center of Conjeeveram in the area of Madras on the east coast of India.
+In A.D. 1057 one of the first Burmese kings, Aniruddha, conquered Thaton, a major Mon
+center, and brought back with him to Pagan the most learned monks, artists and artisans of
+the Mon. The first inscription in Burmese dates from the following year and is written in
+an alphabet almost identical with that of the Mon inscriptions. Aside from rounding of the
+originally square characters, this script has remained largely unchanged to the present. </p>
+
+<p>The Burmese script therfore ultimately derives from Brahmi, and so shares the
+structural features of its relatives: Consonant symbols include an inherent vowel; various
+signs are placed before, above, below and after a consonant to indicate a vowel other than
+the inherent one; ligatures and conjuncts are used to indicate consonant clusters. </p>
+
+<p>In the course of its adaptation to non-Indo-Aryan languages, the<br>
+Burmese script has acquired some features that distinguish it from<br>
+other Indic scripts. The killer, or virama, participates in some<br>
+common constructions that would be clumsy to handle the way they<br>
+would be in the other Indic scripts, so the control function of<br>
+the virama is separated from the diacritic function of the killer.<br>
+The virama, 0F4D is used to form conjunct consonants, while the<br>
+killer, 0F52, is a simple diacritic and has no effect on character<br>
+shaping. The killer is also combined with the VOWEL SIGN O (0F4B)<br>
+to form the low level tone vowel &quot;o.&quot; When used this way, this<br>
+symbol is known as hyei hto, or &quot;thrust forward.&quot; </p>
+
+<p>Burmese distinguishes as set of &quot;medial&quot; consonants. Originally<br>
+conjunct forms of YA PALE, YA GAU, WA and HA, they are used in<br>
+modern Burmese to form new letters and to spell certain vowel and<br>
+consonant combinations. They are treated here as no different from<br>
+any other conjunct and should be coded using the virama. </p>
+
+<p>ISSUE: There's no reason from the point of view of the rendering<br>
+engine to have separate codes for the medials. Some implementors<br>
+feel that the medials should nevertheless have separate codes.<br>
+Including them introduces alternate spellings for the same syllables,<br>
+something that should be avoided. If there are compelling reasons<br>
+for including the medials, there is certainly room to add them. </p>
+
+<p>When a syllable has more than one medial, it is recommended that<br>
+they appear in the order that such syllables are traditionally<br>
+spelled. That is, HA HTOU, before YA PIN or YA YI, before WA HSWE.<br>
+Note that YA PIN and YA YI cannot appear in the same syllable in<br>
+Burmese. For example, &quot;cwei&quot; (&quot;to drop off&quot;) is coded as<br>
+0F15+0F5C+0F5E+0F47. &quot;Hmyu&quot; (&quot;to delight, allure&quot;) is coded as<br>
+0F2E+0F5F+0F5D+0F42. This differs from the order in which medials<br>
+are normally written. </p>
+
+<p>ISSUE: This rule is not strictly necessary, but regularizes the<br>
+spelling and simplifies rendering, string comparison and other<br>
+functions. </p>
+
+<p>Burmese has several glyphs that are used with varying semantics<br>
+which are here given separate code points for each different usage.<br>
+The following pairs of letters look the same, but must be distinguished<br>
+in the text stream: </p>
+
+<p>EHKAYA U (0F09) and NYA GALEI (0F5B)<br>
+GA NGE (0F17) and DIGIT HYI (0F6E)<br>
+WA (0F35) and DIGIT THOUN NYA (0F66)<br>
+YA GAU (0F30) and DIGIT HKUN NI (0F6D)<br>
+DIGIT LEI (0F6A) and SYMBOL LAGAUN (0F73) </p>
+
+<p>The last two pairs are distinguished in some fonts but not in<br>
+others. </p>
+
+<p>Also, the LETTER 0 (0F13) is distinguished from the sequence<br>
+0F48+0F5D, and the ZA MYINZWE is distinguished from 0F1A+0F5C. </p>
+
+<p>Symbols not found as single characters are formed from sequences<br>
+of the basic characters given here. For example,tha ji (&quot;great<br>
+tha&quot;) is coded by the sequence 0F38+0F4D+0F38, i.e., it is a conjunct<br>
+formed from two THAs. Kinzi is a conjunct formed from LETTER NGA<br>
+followed by some other consonant, that is, the sequence<br>
+0F19+0F4D+Consonant. Low level tone &quot;o&quot; has already been noted.<br>
+Level tone &quot;ou&quot; is to be coded as 0F41+0F3F. Other combinations<br>
+follow similarly. </p>
+
+<p>The LETTER A, though classified here are a vowel, is actually a<br>
+consonant. Thus it can combine with any of the vowel symbols. </p>
+
+<p>The tone mark AUKA MYI is often written to the left of a subscript<br>
+vowel sign or medial consonant. It should, nevertheless come after<br>
+the vowel or medial in the text stream. It is also used with killed<br>
+consonants in writing closed syllables. In this case, too, the AUKA<br>
+MYI should come after the ATHA in the text stream. For example,<br>
+the word /hyun./ (short, high falling tone) should be represented<br>
+as 0F30+0F5F+0F5E+0F02+0F51. </p>
+
+<p>The SYMBOL HNAI is only used in the literary combination<br>
+0F73+0F19+0F52+0F03, meaning &quot;the aforementioned.&quot; </p>
+
+<p>Burmese does not use any whitespace between words. If word boundary<br>
+indications are desired, for example for the use of automatic line<br>
+layout algorithms, U+200B, ZERO WIDTH SPACE, is to be used. </p>
+
+<p>Block Structure: Burmese characters are mapped to their corresponding<br>
+ISCII slots whenever possible. Gaps in the block result mainly from<br>
+this mapping. Several ranges of code points are reserved for future<br>
+expansion. A notable exception is the pair NYA GALEI and NYA JI.<br>
+Historically, NYA GALEI is a simple palatal nasal, while NYA JI is<br>
+a ligature representing a double NYA GALEI. NYA JI, however, has<br>
+come to be regarded as the primary form of the letter in Burmese,<br>
+so it is assigned to the &quot;preferred&quot; ISCII slot for the palatal<br>
+nasal (U+0F1E), and NYA GALEI is placed at U+0F5F. </p>
+
+<p>U+0F00 to U+0F01 Unassigned<br>
+U+0F02 to U+0F03 Various signs<br>
+U+0F04 Unassigned<br>
+U+0F05 to U+0F14 Independent vowels<br>
+U+0F15 to U+0F39 Consonants<br>
+U+0F3A to U+0F3E Unassigned<br>
+U+0F3F to U+0F4C Dependent vowel signs<br>
+U+0F4D Virama<br>
+U+0F4E to U+0F50 Unassigned<br>
+U+0F51 to U+0F52 Tone marks<br>
+U+0F53 to U+0F5F Unassigned, reserved for extensions<br>
+U+0F60 to U+0F63 Additional dependent vowel signs<br>
+U+0F64 to U+0F65 Unassigned<br>
+U+0F66 to U+0F6F Digits<br>
+U+0F70 to U+0F73 Special symbols<br>
+U+0F74 to U+0F77 Unassigned, reserved for additional symbols </p>
+
+<p>Note: The transliteration used here follows D. Haigh Roop, An Introduction to the
+Burmese Writing System (1972). Tone indications are left out of the character names. </p>
+
+<p>ISSUE: As with Khmer, if there is a more standard transliteration,<br>
+it should be used. </p>
+
+<p>ISSUE: Old Burmese has a small subscript LETTER A, which is the<br>
+precursor of the tone mark AUKA MYA and appears exactly where modern<br>
+Burmese would use the latter. This can probably be treated as a<br>
+font difference. There is also a superscript form of YA GAU, similar<br>
+in use to the Indic repha. This can probably be accommodated in<br>
+the shaping rules. This is not a major issue as there is plenty of<br>
+room to add these characters. Further investigation is required. </p>
+
+<p>&nbsp;</p>
+
+<p><strong>DRAFT 03 Nov 1992; rev 92/11/25<br>
+</strong><br>
+<strong>DRAFT BURMESE CHARACTER NAMES</strong><br>
+<br>
+0F00<br>
+0F01<br>
+<br>
+@ Various Signs<br>
+0F02 BURMESE THEIDHEI TIN<br>
+= little thing put on<br>
+anusvara, niggahita<br>
+0F03 BURMESE HYEIGA PAU<br>
+= dots ahead<br>
+visarga<br>
+0F04<br>
+<br>
+@ Independent Vowels<br>
+0F05 BURMESE LETTER A<br>
+0F06<br>
+0F07 BURMESE PALI EHKAYA I<br>
+= letter pali I<br>
+0F08 BURMESE EHKAYA I<br>
+= letter I<br>
+0F09 BURMESE EHKAYA U<br>
+= letter U<br>
+x Burmese nya galei -&gt; 0F5B<br>
+0F0A<br>
+0F0B BURMESE LETTER VOCALIC R<br>
+Sanskrit<br>
+0F0C BURMESE LETTER VOCALIC L<br>
+Sanskrit<br>
+0F0D<br>
+0F0E<br>
+0F0F BURMESE EHKAYA EI<br>
+= letter EI<br>
+0F10<br>
+0F11<br>
+0F12<br>
+0F13 BURMESE LETTER O<br>
+x sra<br>
+0F14<br>
+<br>
+@ Consonants<br>
+0F15 BURMESE KA JI<br>
+= great ka<br>
+0F16 BURMESE HKA GWEI<br>
+= curved hka<br>
+0F17 BURMESE GA NGE<br>
+= small ga<br>
+x Burmese digit hyi -&gt; 0F6E<br>
+0F18 BURMESE GA JI<br>
+= great ga<br>
+0F19 BURMESE LETTER NGA<br>
+0F1A BURMESE SA LOUN<br>
+= round sa<br>
+0F1B BURMESE HSA LEIN<br>
+= twisted hsa<br>
+0F1C BURMESE ZA GWE<br>
+= split za<br>
+0F1D BURMESE ZA MYINZWE<br>
+= bridle za<br>
+x cya<br>
+0F1E BURMESE NYA JI<br>
+= great nya<br>
+0F1F BURMESE TA TALINJEI<br>
+= bier-hook ta<br>
+0F20 BURMESE HTA WUNBE<br>
+= duck hta<br>
+0F21 BURMESE DA YINGAU<br>
+= crooked-breasted da<br>
+0F22 BURMESE DA YEIHMOU<br>
+= water-dipper da<br>
+0F23 BURMESE NA JI<br>
+= great na<br>
+0F24 BURMESE TA WUNBU<br>
+= pot-bellied ta<br>
+0F25 BURMESE HTA HSINDU<br>
+= elephant-fetter hta<br>
+0F26 BURMESE DA DWEI<br>
+= twisted da<br>
+0F27 BURMESE DA AUHCAI<br>
+= bottom-indented da<br>
+0F28 BURMESE NA NGE<br>
+= small na<br>
+0F29<br>
+0F2A BURMESE PA ZAU<br>
+= steep-sided pa<br>
+0F2B BURMESE HPA OUHTOU<br>
+= capped hpa<br>
+0F2C BURMESE BA LAHCAI<br>
+= top-indented ba<br>
+0F2D BURMESE BA GOUN<br>
+= hump-backed ba<br>
+0F2E BURMESE LETTER MA<br>
+0F2F BURMESE YA PALE<br>
+= supine ya<br>
+0F30 BURMESE YA GAU<br>
+= crooked ya<br>
+x Burmese digit hkun ni -&gt; 0F6D<br>
+0F31<br>
+0F32 BURMESE LETTER LA<br>
+0F33 BURMESE LA JI<br>
+= great la<br>
+0F34<br>
+0F35 BURMESE LETTER WA<br>
+x Burmese digit thoun nya -&gt; 0F66<br>
+0F36 BURMESE LETTER SANSKRIT SHA<br>
+Sanskrit<br>
+0F37 BURMESE LETTER SANSKRIT SSA<br>
+Sanskrit<br>
+0F38 BURMESE LETTER THA<br>
+0F39 BURMESE LETTER HA<br>
+<br>
+0F3A<br>
+0F3B<br>
+0F3C<br>
+0F3D<br>
+<br>
+@ Vowel Signs<br>
+0F3E BURMESE YEI HCA<br>
+= line drawn down<br>
+0F3F BURMESE LOUNJI TIN<br>
+= big circle put on<br>
+0F40 BURMESE LOUNJI TIN HSAN HKA<br>
+= big circle put on with a grain of rice<br>
+0F41 BURMESE TAHCAUN NGIN<br>
+= one stroke drawn out<br>
+0F42 BURMESE HNAHCAUN NGIN<br>
+= two strokes drawn out<br>
+0F43 BURMESE VOWEL SIGN VOCALIC R<br>
+Sanskrit<br>
+0F44 BURMESE VOWEL SIGN VOCALIC RR<br>
+Sanskrit<br>
+0F45<br>
+0F46<br>
+0F47 BURMESE THAWEI HTOU<br>
+= thrust in front<br>
+0F48 BURMESE NAU PYI<br>
+= thrown backwards<br>
+0F49<br>
+0F4A<br>
+0F4B BURMESE VOWEL SIGN O<br>
+0F4C<br>
+<br>
+@ Virama<br>
+0F4D BURMESE VIRAMA<br>
+x Burmese atha -&gt; 0F52<br>
+0F4E<br>
+0F4F<br>
+0F50<br>
+<br>
+@ Tone Marks<br>
+0F51 BURMESE AUKA MYI<br>
+= stopped below<br>
+0F52 BURMESE ATHA<br>
+= killer<br>
+= hyei htou, &quot;thrust forward&quot;<br>
+x Burmese virama -&gt; 0F4D<br>
+0F53<br>
+0F54<br>
+0F55<br>
+0F56<br>
+0F57<br>
+0F58<br>
+0F59<br>
+0F5A<br>
+0F5B<br>
+0F5C<br>
+0F5D<br>
+0F5E<br>
+<br>
+@ Consonants<br>
+0F5F BURMESE NYA GALEI<br>
+= little nya<br>
+x Burmese ehkaya u -&gt; 0F09<br>
+<br>
+@ Vowel Signs<br>
+0F60 BURMESE LETTER VOCALIC RR<br>
+Sanskrit<br>
+0F61 BURMESE LETTER VOCALIC LL<br>
+Sanskrit<br>
+0F62 BURMESE VOWEL SIGN VOCALIC L<br>
+Sanskrit<br>
+0F63 BURMESE VOWEL SIGN VOCALIC LL<br>
+Sanskrit<br>
+0F64<br>
+0F65<br>
+<br>
+@ Digits<br>
+0F66 BURMESE DIGIT THOUN NYA<br>
+= digit zero<br>
+x Burmese wa -&gt; 0F35<br>
+0F67 BURMESE DIGIT TI<br>
+= digit one<br>
+0F68 BURMESE DIGIT HNI<br>
+= digit two<br>
+0F69 BURMESE DIGIT THOUN<br>
+= digit three<br>
+0F6A BURMESE DIGIT LEI<br>
+= digit four<br>
+x Burmese symbol lagaun -&gt; 0F73<br>
+0F6B BURMESE DIGIT NGA<br>
+= digit five<br>
+0F6C BURMESE DIGIT HCAU<br>
+= digit six<br>
+0F6D BURMESE DIGIT HKUN NI<br>
+= digit seven<br>
+x Burmese ya gau -&gt; 0F30<br>
+0F6E BURMESE DIGIT HYI<br>
+= digit eight<br>
+x Burmese ga nge -&gt; 0F17<br>
+0F6F BURMESE DIGIT KOU<br>
+= digit nine<br>
+<br>
+@ Various symbols<br>
+0F70 BURMESE SYMBOL YWEI<br>
+0F71 BURMESE SYMBOL EHKAYA I<br>
+0F72 BURMESE SYMBOL HNAI<br>
+0F73 BURMESE SYMBOL LAGAUN<br>
+x Burmese digit lei -&gt; 0F6A<br>
+0F74<br>
+0F75<br>
+0F76<br>
+0F77<br>
+0F78<br>
+0F79<br>
+0F7A<br>
+0F7B<br>
+0F7C<br>
+0F7D<br>
+0F7E<br>
+0F7F<br>
+</p>
+
+<hr>
+
+<p><font size="5"><strong>Khmer Proposal Description</strong></font><br>
+</p>
+
+<p><font size="3">Khmer U+0F80 -&gt; 0FDF</font><br>
+<br>
+Cambodian, also known as Khmer, is the official language of Cambodia.<br>
+Mutually intelligible dialects are also spoken in northeastern<br>
+Thailand and the Mekong Delta region of Vietnam. While not itself<br>
+an Indo-European language, much of the administrative, military<br>
+and literary vocabulary of Khmer is borrowed from Sanskrit. With<br>
+the advent of Theravada Buddhism at the beginning of the fifteenth<br>
+century, Khmer began to borrow Pali words, and continues to use<br>
+Pali as a major source of neologisms today. There is also much<br>
+cross-borrowing between Thai and Khmer, as well as a relatively<br>
+recent infusion of French words and a smattering of Chinese and<br>
+Vietnamese loanwords in colloquial speech.<br>
+<br>
+The Khmer script, called a'saa kmae (&quot;Khmer letters&quot;), as well as<br>
+Thai, Lao, Burmese, Old Mon and others, are all descended from the<br>
+Brahmi script of South India. The exact geographical source, or<br>
+possibly sources, has not been determined, but there is a great<br>
+similarity between the earliest inscriptions in the region and the<br>
+Pallawa script of the Coromandel coast of India.<br>
+<br>
+Structurally, the Khmer script stays very close to its southern<br>
+Brahmi origins. There is a set of 35 consonants, each with an<br>
+inherent vowel sound. Additional signs are placed before, above,<br>
+below and after the consonants to indicate vowels other than the<br>
+inherent one. Consonant clusters are represented by conjunct<br>
+consonants, where the first consonant of the cluster maintains its<br>
+full form and succeeding consonants are written as subscripts.<br>
+<br>
+The Khmer language has a much richer set of vowels than the Indo-Aryan<br>
+languages for which the ancestral script was used. By the same<br>
+token, there is a much smaller set of consonant sounds. The Khmer<br>
+script is adapted to the language by adding extra vowel signs and<br>
+various diacritic marks, and by using the choice of consonant as<br>
+well as of vowel signs to determine the particular vowel sound<br>
+represented. Thus most vowel signs do not have a single value but<br>
+must be interpreted in the context of the associated consonant.<br>
+This is very similar to the situation in Thai and Lao, where<br>
+different consonant symbols have the same sound but encode different<br>
+tones.<br>
+<br>
+There are two basic styles of script in modern Khmer, each with<br>
+two major variations. They are the a'saa criang (&quot;slanted script&quot;)<br>
+and the a'saa muul (&quot;round script&quot;). There is no fundamental<br>
+structural difference between them, however, so the &quot;standing&quot;<br>
+variant of the slanted script is chosen here as representative.<br>
+<br>
+Representation:<br>
+<br>
+The Khmer script follows the model of Devanagari and other Indic<br>
+scripts. The basic unit is the syllabic cluster consisting of a<br>
+series of consonants separated by WIRIAM (0FC5), followed by one<br>
+or both of the pronounciation shifters MUSEKATOAN (0FCA) and TRUYSAP<br>
+(0FCB), followed by an optional vowel, followed by diacritics and<br>
+quality marks. For example, the word /knyom/, &quot;I,&quot; is coded as the<br>
+string 0F81+0FC5+0F89+0FB5+0FC2.<br>
+<br>
+In cases where there is already some other superscript in the<br>
+cluster, the two pronounciation shifters are written as the subscript<br>
+symbol kbiah kraom, which looks much like VOWEL SIGN O. This vowel<br>
+sign is not to be used for this purpose. It is the responsibility<br>
+of the presentation software to select the correct appearance of<br>
+the shifter. For example, /sii/, &quot;to eat,&quot; should be coded as<br>
+0F9F+0FCB+0FB4, not as 0F9F+0FB7+0FB4.<br>
+<br>
+RAWBAT (0FCC) historically corresponds to the Devanagari repha,<br>
+that is, to an initial /r/. It has lost this function in Khmer and<br>
+instead is considered a simple diacritic similar to TOANDAKHIAT in<br>
+both reading and sorting. There are also many cases of consonant<br>
+clusters with initial /r/ that should be written with a full RAW<br>
+and not a RAWBAT, so a separate character is provided for it.<br>
+<br>
+Khmer writing does not normally separate words with white space as<br>
+European languages do. If it is desirable to represent word boundaries<br>
+in the text stream, for example, for use by automatic line layout<br>
+algorithms, U+200B, ZERO WIDTH SPACE, should be used.<br>
+<br>
+Two relatively rare symbols in modern usage are not included here.<br>
+They are pnek moan, the &quot;cock's eye,&quot; and &quot;komout.&quot; They are<br>
+identical in form and function to the Thai characters FONGMAN and<br>
+KHOMUT, respectively, so the latter two should be used when these<br>
+symbols are needed.<br>
+<br>
+Block Structure:<br>
+<br>
+U+0F80 to U+0FA2 Consonants<br>
+U+0FA3 to U+0FB1 Independent Vowels<br>
+U+0FB2 to U+0FC1 Vowel Signs<br>
+U+0FC2 to U+0FC4 Quality Marks<br>
+U+0FC5 Virama<br>
+U+0FC6 to U+0FC7 Unassigned<br>
+U+0FC8 to U+0FCF Diacritics<br>
+U+0FD0 to U+0FD9 Digits<br>
+U+0FDA to U+0FDE Symbols and Punctuation<br>
+U+0FDF Unassigned<br>
+<br>
+ISSUES: The independent vowels LETTER AO TYPE 2 and LETTER AW TYPE<br>
+2 are variant forms of LETTER AO TYPE 1 and LETTER AW TYPE 1,<br>
+respectively. It is not believed that they are in free variation:<br>
+LETTER AO TYPE 2 occurs only in the combination &quot;aoy,&quot; while LETTER<br>
+AW TYPE 2 is only cited in a few references, but not used. There<br>
+is an opportunity to unify these pairs. Note that LETTER UW and<br>
+LETTER OU are also listed as variants, but they are actually not<br>
+in free variation, so both must be provided.<br>
+<br>
+It may be desirable to add the vowel sign AM instead of using the<br>
+combination AA+NIKAHAT. This would simplify a common special case<br>
+in sorting.<br>
+<br>
+The punctuation marks KHAN and BARIYAOSAN may be unified with some<br>
+other characters, just as Indic dandas have been. A likely candidate<br>
+for the former is Thai PAI YAN NOI. Such a unification, as well as<br>
+that of the &quot;cock's eye&quot; and &quot;cow piss&quot; characters presents an<br>
+interesting challenge to the font mechanism of a Unicode rendering<br>
+engine: Different glyphs may be required for the same character<br>
+when used in conjunction with different scripts. This seems like<br>
+a needless complication for what are otherwise simple, non-combining<br>
+characters.<br>
+<br>
+It may be more desirable from a political standpoint to follow<br>
+either the Thai or the ISCII coding schemes. Sample charts have<br>
+been produced showing how this may be done. If this is indeed the<br>
+path taken, those charts should be expanded to include all characters<br>
+in this proposal.<br>
+<br>
+The vowel encoding takes an ISCII-like approach, coding as single<br>
+characters vowels that consist of two or more disjoint glyphs. If<br>
+vowel symbols are instead decomposed into their constituent glyphs<br>
+and those coded separately, there is then no advantage to the code<br>
+point assignments made here. In such a case, the assignments should<br>
+be made according to the Thai pattern.<br>
+<br>
+The romanization scheme here is rather ad-hoc. If a more commonly<br>
+accepted one exists, the character names should be changed accordingly.<br>
+<br>
+<strong>Draft 03 October 1992; rev 92/11/25<br>
+<br>
+DRAFT KHMER CHARACTER NAMES</strong><br>
+<br>
+@ Consonants<br>
+0F80 KHMER LETTER KAA<br>
+0F81 KHMER LETTER KHAA<br>
+0F82 KHMER LETTER KAW<br>
+0F83 KHMER LETTER KHAW<br>
+0F84 KHMER LETTER NGAW<br>
+0F85 KHMER LETTER CAA<br>
+0F86 KHMER LETTER CHAA<br>
+0F87 KHMER LETTER CAW<br>
+0F88 KHMER LETTER CHAW<br>
+0F89 KHMER LETTER NYAW<br>
+0F8A KHMER LETTER DAA<br>
+0F8B KHMER LETTER RETROFLEX THAA<br>
+0F8C KHMER LETTER DAW<br>
+0F8D KHMER LETTER RETROFLEX THAW<br>
+0F8E KHMER LETTER NAA<br>
+0F8F KHMER LETTER TAA<br>
+0F90 KHMER LETTER THAA<br>
+0F91 KHMER LETTER TAW<br>
+0F92 KHMER LETTER THAW<br>
+0F93 KHMER LETTER NAW<br>
+0F94 KHMER LETTER BAA<br>
+0F95 KHMER LETTER PHAA<br>
+0F96 KHMER LETTER PAW<br>
+0F97 KHMER LETTER PHAW<br>
+0F98 KHMER LETTER MAW<br>
+0F99 KHMER LETTER YAW<br>
+0F9A KHMER LETTER RAW<br>
+0F9B KHMER LETTER LAW<br>
+0F9C KHMER LETTER WAW<br>
+0F9D KHMER LETTER SHAA<br>
+Sanskrit<br>
+0F9E KHMER LETTER SSAA<br>
+Sanskrit<br>
+0F9F KHMER LETTER SAA<br>
+0FA0 KHMER LETTER HAA<br>
+0FA1 KHMER LETTER LAA<br>
+0FA2 KHMER LETTER QAA<br>
+glottal stop<br>
+<br>
+@ Independent Vowels<br>
+0FA3 KHMER LETTER E<br>
+0FA4 KHMER LETTER EY<br>
+0FA5 KHMER LETTER O<br>
+0FA6 KHMER LETTER UW<br>
+0FA7 KHMER LETTER OU<br>
+0FA8 KHMER LETTER AE<br>
+0FA9 KHMER LETTER AY<br>
+0FAA KHMER LETTER AO TYPE 1<br>
+0FAB KHMER LETTER AO TYPE 2<br>
+0FAC KHMER LETTER AW TYPE 1<br>
+0FAD KHMER LETTER AW TYPE 2<br>
+0FAE KHMER LETTER RIK<br>
+0FAF KHMER LETTER RII<br>
+0FB0 KHMER LETTER LIK<br>
+0FB1 KHMER LETTER LII<br>
+<br>
+@ Vowel Signs<br>
+0FB2 KHMER VOWEL SIGN AA<br>
+0FB3 KHMER VOWEL SIGN E<br>
+0FB4 KHMER VOWEL SIGN EY<br>
+0FB5 KHMER VOWEL SIGN U<br>
+0FB6 KHMER VOWEL SIGN UI<br>
+0FB7 KHMER VOWEL SIGN O<br>
+x kbiah kraom<br>
+0FB8 KHMER VOWEL SIGN OU<br>
+0FB9 KHMER VOWEL SIGN UA<br>
+0FBA KHMER VOWEL SIGN AU<br>
+0FBB KHMER VOWEL SIGN IE<br>
+0FBC KHMER VOWEL SIGN IU<br>
+0FBD KHMER VOWEL SIGN EI<br>
+0FBE KHMER VOWEL SIGN AE<br>
+0FBF KHMER VOWEL SIGN AY<br>
+0FC0 KHMER VOWEL SIGN AO<br>
+0FC1 KHMER VOWEL SIGN AW<br>
+<br>
+@ Quality Marks<br>
+0FC2 KHMER SIGN NIKAHAT<br>
+= sra am<br>
+= damla<br>
+0FC3 KHMER SIGN REAHMUK<br>
+= wihsakea<br>
+= wihsancani<br>
+0FC4 KHMER SIGN YUKALEAPINTU<br>
+= coc pi<br>
+<br>
+@ Virama<br>
+0FC5 KHMER SIGN WIRIAM<br>
+virama<br>
+0FC6<br>
+0FC7<br>
+<br>
+@ Diacritics<br>
+0FC8 KHMER VOWEL SIGN BANTA<br>
+= sangkat<br>
+= reahsannya<br>
+0FC9 KHMER VOWEL SIGN SANYOK SANNYA<br>
+0FCA KHMER SIGN MUSEKATOAN<br>
+= tmin kandao<br>
+vowel pronounciation shifter<br>
+0FCB KHMER SIGN TRUYSAP<br>
+vowel pronounciation shifter<br>
+0FCC KHMER SIGN RAWBAT<br>
+= rephea<br>
+0FCD KHMER SIGN TOANDAKHIAT<br>
+= samlap<br>
+= patdesaet<br>
+0FCE KHMER SIGN KAKABAT<br>
+= caung kaek<br>
+0FCF KHMER SIGN AHSDA<br>
+= leik prabuy<br>
+<br>
+@ Digits<br>
+0FD0 KHMER DIGIT ZERO<br>
+0FD1 KHMER DIGIT ONE<br>
+0FD2 KHMER DIGIT TWO<br>
+0FD3 KHMER DIGIT THREE<br>
+0FD4 KHMER DIGIT FOUR<br>
+0FD5 KHMER DIGIT FIVE<br>
+0FD6 KHMER DIGIT SIX<br>
+0FD7 KHMER DIGIT SEVEN<br>
+0FD8 KHMER DIGIT EIGHT<br>
+0FD9 KHMER DIGIT NINE<br>
+<br>
+@ Symbols and Punctuation<br>
+0FDA KHMER CURRENCY SYMBOL RIAL<br>
+0FDB KHMER LEIK TO<br>
+= amendit sannya<br>
+repetition sign<br>
+0FDC KHMER CAMNOC PI KUH<br>
+x (division sign -&gt; 00F7)<br>
+x (tibetan comma -&gt; 1038)<br>
+colon, semicolon<br>
+0FDD KHMER KHAN<br>
+full stop, ellipsis, abbreviation<br>
+0FDE KHMER BARIYAOSAN<br>
+end of section<br>
+0FDF</p>
+
+<hr>
+
+<p><font size="5"><strong>Proposal for Ethiopian Encoding</strong></font><br>
+<br>
+The Ethiopian proposal consists of a list of questions/issues, a<br>
+chart, a character names list, and a block introduction. The<br>
+content is based on UTC/1991-026 On the Extended Ethiopic Alphabet<br>
+of February 26, 1991 and its later adjustments by Lloyd Anderson,<br>
+unioned with features of the Xerox Amharic implementation by Joe<br>
+Becker. The character names are based on those in DP 10646, which<br>
+came from WG2/N459 &quot;Ethiopian character sets&quot; by Michael Mann.<br>
+<br>
+QUESTIONS FOR REVIEWERS:<br>
+<br>
+1. Is this collection missing any important, well-established<br>
+&quot;extension&quot; letters for writing less-common languages?<br>
+<br>
+2. Are the glyphs in the charts appropriate?<br>
+<br>
+3. Can you supply documentation to support the specification of<br>
+the following two characters?<br>
+121D ETHIOPIAN CONSONANT GG 1237<br>
+ETHIOPIAN VOWEL PHONETIC AE In particular, does U+1237<br>
+occur (as a vowel, not as a mark of &quot;w&quot; rounding) on any consonant<br>
+other than U+1211? Should the combination of U+1237 with U+1211<br>
+simply be encoded as a distinct consonant (to be added between<br>
+current U+1211 and U+1212)?<br>
+<br>
+4. Are the following characters specified correctly?<br>
+1256 ETHIOPIAN COMMA<br>
+modern usage like colon<br>
+1257 ETHIOPIAN COLON<br>
+modern usage like semicolon<br>
+1259 ETHIOPIAN NEW COMMA<br>
+modern usage<br>
+<br>
+5. Do syllable glyph variants ever occur distinctively within the<br>
+same text, or are they merely font design choices like the glyph<br>
+variants of Latin &quot;a&quot; or &quot;g&quot;?<br>
+<br>
+ISSUES:<br>
+<br>
+* In this design, no provision is made for coding the syllable<br>
+glyphs; it is intended that they be excluded from Unicode/10646<br>
+BMP. If we learn that glyph variants may occur distinctively, then<br>
+we may need to define some additional means for specifying glyph<br>
+variants within plain text.<br>
+<br>
+* Should we define an Ethiopian White Space character which can be<br>
+easily guaranteed to have the same (minimum) width as U+1255<br>
+ETHIOPIAN WORDSPACE? Currently opinion is that this is unnecessary.<br>
+<br>
+Ethiopian (U+1200 -&gt; U+125F)<br>
+<br>
+The Ethiopian script, which originally evolved for the archaic<br>
+language Ge'ez, is currently used to write several languages of<br>
+Eastern Africa, including Amharic, Tigre, and Oromo. The script<br>
+continues to be extended for writing languages that have little<br>
+tradition of printed typography; new characters to cover such<br>
+extensions may added to the standard later as definitive information<br>
+about them becomes available.<br>
+<br>
+Encoding Principles. The visible glyphs of the Ethiopian script<br>
+are not the objects shown in the encoding chart. The elements of<br>
+the encoding are the alphabet underlying the script, thus the<br>
+encoding is (roughly) phonetic rather than glyphic. These alphabetic<br>
+letters are expected to be the units of keyboard input and all text<br>
+representation short of rendering.<br>
+<br>
+Rendering. Each visible glyph of the Ethiopian script represents<br>
+a syllable rather than a single letter. The syllables can all be<br>
+treated as simple (consonant + vowel) pairs, so that each glyph<br>
+can be thought of as a ligature of two underlying letters. Thus<br>
+the syllable &quot;MA&quot; would be represented in the encoding as U+1203<br>
+ETHIOPIAN CONSONANT M plus U+1233 ETHIOPIAN VOWEL A. The syllable<br>
+glyphs themselves are not intended to be incorporated in this<br>
+encoding. The individual consonant or vowel codes should not be<br>
+isolated (i.e. unpaired) in normal final text, and their rendering<br>
+in such circumstances is an option of the implementation. One<br>
+possibility is to use special symbols for the individual letters,<br>
+as is done in the code charts here.<br>
+<br>
+Chart Symbols Representing Individual Letters. Since the Ethiopian<br>
+glyphs are normally syllabic, the script provides no unambiguous<br>
+way of representing the underlying individual letters. Therefore<br>
+in the code charts and names list, a convention has been adopted<br>
+in which consonant letters are represented by their &quot;first&quot; form<br>
+surrounded by a dotted circle, and vowel letters are represented<br>
+by a typical glyph fragment attached to a dotted circle. This is<br>
+not intended to imply direct glyphic composition of those forms,<br>
+but merely to signify the underlying letters.<br>
+<br>
+Encoding/Rendering of &quot;First Form&quot; Syllables. The circled consonants<br>
+in the charts U+1200 -&gt; U+1224 are underlying letters, they should<br>
+not be confused with rendered full first form syllable glyphs. As<br>
+with all glyphs in the script, the first form syllables are encoded<br>
+as simple (consonant + vowel) pairs. Thus the glyph &quot;MAE&quot; would<br>
+be represented in the encoding as U+1203 ETHIOPIAN CONSONANT M plus<br>
+U+1230 ETHIOPIAN VOWEL AE. This pair would then be rendered via<br>
+a &quot;ligature&quot; MAE whose appearance would resemble the chart symbol<br>
+for U+1203 ETHIOPIAN CONSONANT M without the circle.<br>
+<br>
+Encoding/Rendering of Lone Consonants (&quot;Sixth Form&quot; Syllables).<br>
+The sixth form syllable glyphs are sometimes pronounced as though<br>
+they were lone consonants (i.e. the vowel is dropped in speech),<br>
+but this does not change their encoding. As with all glyphs in the<br>
+script, the sixth form syllables are encoded as simple (consonant<br>
++ vowel) pairs. Thus the spoken lone consonant &quot;M&quot; would be<br>
+represented in the encoding as U+1203 ETHIOPIAN CONSONANT M plus<br>
+U+1235 ETHIOPIAN VOWEL SCHWA.<br>
+<br>
+Variant Glyph Forms. The script sometimes provides different glyph<br>
+forms to represent the same syllables. It is assumed that these<br>
+alternatives do not vary freely, in other words that is appropriate<br>
+for a given font to contain only one selected glyph form for each<br>
+syllable. Therefore no mechanism is provided for specifying glyph<br>
+variants within a plain text stream of characters. The situation<br>
+is analogous to that of the glyph variants of Latin &quot;a&quot; or &quot;g&quot;.<br>
+<br>
+Letter Names. The Ethiopian script often has multiple letters<br>
+corresponding to the same Latin letter, making it difficult to<br>
+assign unique Latin names. Therefore the names list makes use of<br>
+certain devices (such as doubling a Latin letter in the name) merely<br>
+to create uniqueness; this has no relation to the phonetics of the<br>
+Ethiopian letters.<br>
+<br>
+Encoding Order and Sorting. The order of the letters in the encoding<br>
+is based on the traditional alphabetical order. This order differs<br>
+from the sort order used for one or another language, if only<br>
+because in many languages various pairs or triplets of letters are<br>
+treated as equivalent in the first sorting pass. For example, an<br>
+Amharic dictionary is likely to start out with a section headed by<br>
+three letters:<br>
+<br>
+U+1200 ETHIOPIAN CONSONANT H<br>
+U+1202 ETHIOPIAN CONSONANT HH<br>
+U+120E ETHIOPIAN CONSONANT X<br>
+<br>
+Thus the encoding order cannot and does not implement a collation<br>
+procedure for any particular language using this script.<br>
+<br>
+Space Characters. The traditional word separator is U+1255 ETHIOPIAN<br>
+WORDSPACE ( : ), but in modern usage a plain white wordspace is<br>
+becoming common. The ASCII character U+0020 SPACE is suitable for<br>
+the latter usage, although its (minimum) width is not guaranteed<br>
+to be the same as that of the traditional wordspace.<br>
+<br>
+Diacritical Marks. The mark U+030E NON-SPACING DOUBLE VERTICAL<br>
+LINE ABOVE may occasionally be used to indicate emphasis or<br>
+gemination. If this or other diacritical marks are used, they<br>
+follow the vowel letter of the syllable to which they apply.<br>
+<br>
+Encoding Structure. The Unicode block for the Ethiopian script is<br>
+divided into the following ranges:<br>
+<br>
+U+1200 to U+1224 Consonant phonetic letters<br>
+U+1225 to U+122F Currently unassigned<br>
+U+1230 to U+123D Vowel phonetic letters (U+1239 is an intentional gap)<br>
+U+123E to U+123F Currently unassigned<br>
+U+1240 to U+1254 Numbers (U+1240 is an intentional gap)<br>
+U+1255 to U+125B Punctuation<br>
+U+125C to U+125F Currently unassigned<br>
+<br>
+<strong>Draft October 30, 1992; rev 93/01/08<br>
+<br>
+ETHIOPIAN CHARACTER NAMES LIST<br>
+</strong><br>
+@ Consonant phonetic letters<br>
+1200 ETHIOPIAN CONSONANT H<br>
+1201 ETHIOPIAN CONSONANT L<br>
+1202 ETHIOPIAN CONSONANT HH<br>
+1203 ETHIOPIAN CONSONANT M<br>
+1204 ETHIOPIAN CONSONANT SZ<br>
+1205 ETHIOPIAN CONSONANT R<br>
+1206 ETHIOPIAN CONSONANT S<br>
+1207 ETHIOPIAN CONSONANT SH<br>
+1208 ETHIOPIAN CONSONANT Q<br>
+1209 ETHIOPIAN CONSONANT QH<br>
+120A ETHIOPIAN CONSONANT B<br>
+120B ETHIOPIAN CONSONANT V<br>
+120C ETHIOPIAN CONSONANT T<br>
+120D ETHIOPIAN CONSONANT C<br>
+120E ETHIOPIAN CONSONANT X<br>
+120F ETHIOPIAN CONSONANT N<br>
+1210 ETHIOPIAN CONSONANT NY<br>
+1211 ETHIOPIAN CONSONANT GLOTTAL<br>
+1212 ETHIOPIAN CONSONANT K<br>
+1213 ETHIOPIAN CONSONANT XX<br>
+1214 ETHIOPIAN CONSONANT W<br>
+1215 ETHIOPIAN CONSONANT NULL<br>
+1216 ETHIOPIAN CONSONANT Z<br>
+1217 ETHIOPIAN CONSONANT ZH<br>
+1218 ETHIOPIAN CONSONANT Y<br>
+1219 ETHIOPIAN CONSONANT D<br>
+121A ETHIOPIAN CONSONANT DD<br>
+Oromo<br>
+121B ETHIOPIAN CONSONANT J<br>
+121C ETHIOPIAN CONSONANT G<br>
+121D ETHIOPIAN CONSONANT GG<br>
+Bilen<br>
+121E ETHIOPIAN CONSONANT TH<br>
+121F ETHIOPIAN CONSONANT CH<br>
+1220 ETHIOPIAN CONSONANT PH<br>
+1221 ETHIOPIAN CONSONANT TS<br>
+1222 ETHIOPIAN CONSONANT TZ<br>
+1223 ETHIOPIAN CONSONANT F<br>
+1224 ETHIOPIAN CONSONANT P<br>
+1225<br>
+1226<br>
+1227<br>
+1228<br>
+1229<br>
+122A<br>
+122B<br>
+122C<br>
+122D<br>
+122E<br>
+122F<br>
+<br>
+@ Vowel phonetic letters<br>
+1230 ETHIOPIAN VOWEL AE<br>
+1231 ETHIOPIAN VOWEL U<br>
+1232 ETHIOPIAN VOWEL I<br>
+1233 ETHIOPIAN VOWEL A<br>
+1234 ETHIOPIAN VOWEL E<br>
+1235 ETHIOPIAN VOWEL SCHWA<br>
+1236 ETHIOPIAN VOWEL O<br>
+1237 ETHIOPIAN VOWEL PHONETIC AE<br>
+used primarily with U+1211 ETHIOPIAN CONSONANT GLOTTAL<br>
+1238 ETHIOPIAN VOWEL WAE<br>
+1239<br>
+123A ETHIOPIAN VOWEL WI<br>
+123B ETHIOPIAN VOWEL WA<br>
+123C ETHIOPIAN VOWEL WE<br>
+123D ETHIOPIAN VOWEL W<br>
+123E<br>
+123F<br>
+<br>
+@ Numbers<br>
+1240<br>
+1241 ETHIOPIAN NUMBER ONE<br>
+1242 ETHIOPIAN NUMBER TWO<br>
+1243 ETHIOPIAN NUMBER THREE<br>
+1244 ETHIOPIAN NUMBER FOUR<br>
+1245 ETHIOPIAN NUMBER FIVE<br>
+1246 ETHIOPIAN NUMBER SIX<br>
+1247 ETHIOPIAN NUMBER SEVEN<br>
+1248 ETHIOPIAN NUMBER EIGHT<br>
+1249 ETHIOPIAN NUMBER NINE<br>
+124A ETHIOPIAN NUMBER TEN<br>
+124B ETHIOPIAN NUMBER TWENTY<br>
+124C ETHIOPIAN NUMBER THIRTY<br>
+124D ETHIOPIAN NUMBER FORTY<br>
+124E ETHIOPIAN NUMBER FIFTY<br>
+124F ETHIOPIAN NUMBER SIXTY<br>
+1250 ETHIOPIAN NUMBER SEVENTY<br>
+1251 ETHIOPIAN NUMBER EIGHTY<br>
+1252 ETHIOPIAN NUMBER NINETY<br>
+1253 ETHIOPIAN NUMBER HUNDRED<br>
+1254 ETHIOPIAN NUMBER TEN THOUSAND<br>
+<br>
+@ Punctuation<br>
+1255 ETHIOPIAN WORDSPACE<br>
+1256 ETHIOPIAN COMMA<br>
+modern usage like colon<br>
+1257 ETHIOPIAN COLON<br>
+modern usage like semicolon<br>
+1258 ETHIOPIAN PERIOD<br>
+1259 ETHIOPIAN NEW COMMA<br>
+modern usage<br>
+125A ETHIOPIAN QUESTION MARK<br>
+archaic<br>
+125B ETHIOPIAN PARAGRAPH SEPARATOR<br>
+archaic<br>
+</p>
+
+<hr>
+
+<h2>Copyright</h2>
+
+<p>Copyright © 1992-1998 Unicode, Inc. All Rights Reserved. The Unicode Consortium makes
+no expressed or implied warranty of any kind, and assumes no liability for errors or
+omissions. No liability is assumed for incidental and consequential damages in connection
+with or arising out of the use of the information or programs contained or accompanying
+this technical report. </p>
+
+<p>Unicode and the Unicode logo are trademarks of Unicode, Inc., and are registered in
+some jurisdictions.</p>
+
+<hr>
+
+<p>&nbsp;</p>
+</body>
+</html>

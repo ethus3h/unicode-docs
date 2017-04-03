@@ -1,0 +1,1003 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
+       "http://www.w3.org/TR/REC-html40/loose.dtd"> 
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta http-equiv="Content-Language" content="en-us">
+<link rel="stylesheet" href="../../unicode/reports/reports.css" type="text/css">
+<meta name="GENERATOR" content="Microsoft FrontPage 4.0">
+<meta name="ProgId" content="FrontPage.Editor.Document">
+<title>UTR #30: Character Foldings</title>
+<style type="text/css">
+<!--
+p.caption    { page-break-after: avoid; font-weight: bold; text-align: center }
+table.gray   { border-collapse: collapse; border-style: none; border-width: medium }
+td.grayfirst { border-left-style: none; border-left-width: medium; border-right-style: none; 
+               border-right-width: medium; border-top: 1.5pt solid gray; 
+               border-bottom: .75pt solid gray; padding-left: 5.4pt; 
+               padding-right: 5.4pt; padding-top: 0in; padding-bottom: 0in }
+td.graymiddle { border-style: none; border-width: medium; padding-left: 5.4pt; padding-right: 
+               5.4pt; padding-top: 0in; padding-bottom: 0in }
+td.graylast  { border-left-style: none; border-left-width: medium; border-right-style: none; 
+               border-right-width: medium; border-top-style: none; 
+               border-top-width: medium; border-bottom: 1.5pt solid gray; 
+               padding-left: 5.4pt; padding-right: 5.4pt; padding-top: 0in; 
+               padding-bottom: 0in }
+table.black  { border-collapse: collapse; border: .5pt solid black }
+td.black     { font-size: 9pt; border: .5pt solid black; padding-left: 5.4pt; padding-right: 
+               5.4pt; padding-top: 0in; padding-bottom: 0in }
+td.nb        { border-style: none }
+table.nb     { border-style: none }
+ul.toc       { list-style-type: none }
+ol.toc       { list-style-type: decimal; margin-bottom: 0pt }
+.changed { background-color: #C8C8FF }
+-->
+</style>
+</head>
+
+<body>
+
+<table class="header" cellpadding="0" cellspacing="0" width="100%">
+  <tr>
+    <td class="icon"><a href="http://www.unicode.org" name="_Toc21"><img align="middle" alt="[Unicode]" border="0" src="../../webscripts/logo60s2.gif" width="34" height="33"></a>&nbsp;&nbsp;<a class="bar" href="../index.html">Technical             
+      Reports</a></td>
+  </tr>
+  <tr>
+    <td class="gray">&nbsp;</td>
+  </tr>
+</table>
+<div class="body">
+  <h2 align="center"><font color="#FF0000">Draft</font> Unicode Technical             
+  Report #30</h2>             
+  <h1 align="center">Character Foldings</h1>
+  <table border="1" cellpadding="2" width="95%">
+    <tr>
+      <td height="24" valign="TOP">Authors</td>
+      <td valign="TOP">Asmus Freytag (<a href="mailto:asmus@unicode.org">asmus@unicode.org</a>)</td>
+    </tr>
+    <tr>
+      <td height="24" valign="TOP">Date</td>
+      <td valign="TOP">2003-09-30</td>
+    </tr>
+    <tr>
+      <td height="24" valign="TOP">This Version</td>
+      <td valign="TOP"><a href="tr30-2.html">http://www.unicode.org/reports/tr30-2.html</a></td>
+    </tr>
+    <tr>
+      <td height="24" valign="TOP">Previous Version</td>
+      <td valign="TOP"><a href="tr30-1.html">http://www.unicode.org/reports/tr30-1.html</a></td>
+    </tr>
+    <tr>
+      <td height="24" valign="TOP">Latest Version</td>
+      <td valign="TOP"><a href="index.html">http://www.unicode.org/reports/tr30/</a></td>
+    </tr>
+    <tr>
+      <td height="24" valign="TOP">Revision</td>
+      <td valign="TOP"><a href="tr30-2.html#Modifications">2</a></td>
+    </tr>
+  </table>
+      <!-- BEGIN OF DOCUMENT FRONT MATTER -->
+  <p><b>Summary</b> &nbsp;             
+  <p><i>This report identifies a set of character foldings, in other words,             
+  operations that map similar characters to a common target. Such operations are             
+  used to ignore certain distinctions between similar characters. The report             
+  also a provides an algorithm for applying these operations to searching.</i></p>             
+  <p><b>Status</b></p>
+  <p><i>This document is a <b>Draft Unicode
+  Technical Report</b>. Publication does not imply endorsement by
+  the Unicode Consortium. This is a draft document which may be updated,
+  replaced, or superseded by other documents at any time. This is not a stable
+  document; it is inappropriate to cite this document as other than a work in
+  progress.</i></p>
+  <!-- Approved
+  <p><i>This document has been reviewed by Unicode members and other interested
+  parties, and has been approved by the Unicode Technical Committee as a <span class="changed"><b>Unicode
+  Technical Report</b></span>. This is a stable document and may be used as
+  reference material or cited as a normative reference by other specifications.</i></p>
+  -->
+  <blockquote>
+    <p><i><b>A Unicode Technical Report (UTR) </b>contains informative material.
+    Conformance to the Unicode Standard does not imply conformance to any UTR.
+    Other specifications, however, are free to make normative references to a
+    UTR.</i></p>
+  </blockquote>
+  <p><i>Please submit corrigenda and other comments with the online reporting
+  form [<a href="tr30-2.html#Feedback">Feedback</a>]. Related information that is useful in
+  understanding this document is found in [<a href="tr30-2.html#References">References</a>].
+  For the latest version of the Unicode Standard see [<a href="tr30-2.html#Unicode">Unicode</a>].
+  For a list of current Unicode Technical Reports see [<a href="tr30-2.html#Reports">Reports</a>].
+  For more information about versions of the Unicode Standard, see [<a href="tr30-2.html#Versions">Versions</a>].</i></p>
+  <p><i>The foldings specified in this Technical Report cover Unicode, Version 4.0</i></p>
+  <p><i><font color="#008080">[Notes to reviewers are indicated like this]</font></i></p>
+  <h4><i>Contents</i></h4>
+  <ol class="toc">
+    <li><a href="tr30-2.html#_Toc1">Scope</a><br>
+    <li><a href="tr30-2.html#_Toc2">Introduction</a><br>
+      2.1&nbsp;&nbsp;&nbsp; <a href="tr30-2.html#_Toc21">Search Term Folding</a><br>             
+      2.2&nbsp;&nbsp;&nbsp; <a href="tr30-2.html#_Toc22">Relation to Normalization</a><br>             
+      2.3&nbsp;&nbsp;&nbsp; <a href="tr30-2.html#_Toc23">Relation to Collation</a><br>             
+    </li>
+    <li><a href="tr30-2.html#_Toc3">Definitions</a><br>
+      3.1&nbsp;&nbsp;&nbsp; <a href="tr30-2.html#_Toc31">Notation</a><br>             
+    </li>
+    <li><a href="tr30-2.html#_Toc4">Specifications</a><br>
+      4.1&nbsp;&nbsp;&nbsp; <a href="tr30-2.html#_Toc41">Folding Algorithm</a><br>             
+      4.2&nbsp;&nbsp;&nbsp; <a href="tr30-2.html#_Toc42">Specification of Foldings</a><br>             
+    </li>
+    <li><a href="tr30-2.html#_Toc5">Notes and Guidelines<br> 
+      </a>5.1&nbsp;&nbsp;&nbsp; <a href="tr30-2.html#_Toc51">General Notes</a><br>             
+      5.2&nbsp;&nbsp;&nbsp; <a href="tr30-2.html#_Toc52">Problematic Foldings</a></li>             
+  </ol>
+  <ul class="toc">
+    <li><a href="tr30-2.html#References">References</a></li>
+    <li><a href="tr30-2.html#Modifications">Modifications</a></li>
+  </ul>
+  <p><i>A list of current Unicode Technical Reports is found 
+  on <a href="../index.html">http://www.unicode.org/reports/</a>.
+  For more information about versions of the Unicode Standard, 
+  see <a href="http://www.unicode.org/unicode/standard/versions/">http://www.unicode.org/unicode/standard/versions/</a>.</i></p>
+  <hr align="LEFT">
+  <h2><a name="_Toc1"></a>1 Scope</h2>              
+  <p>This report identifies a set of character foldings, in other words,         
+  operations that map similar characters to a common target. Such operations are         
+  used to ignore certain distinctions between similar characters and are useful         
+  for &quot;fuzzy&quot; or &quot;loose&quot; searches, among other things. Each         
+  of the folding operations specified in this report has well-understood         
+  properties, and is appropriate in specific contexts. For example some         
+  identifiers need case folding, some do not. Some text searches need to         
+  preserve superscript form such as the <i>trademark symbol </i>™, while         
+  others do not. Not all of these folding operations may be appropriate in a         
+  give context. See <a href="tr30-2.html#_Toc52">Section 5.2</a> for some of the more         
+  problematic folding or expansion operations.</p>         
+  <p>The report also a provides an algorithm for combining these operations for
+  the purpose of searching or programmatic identifier matching. They combine
+  canonical normalization with optional folding operations. This allows
+  implementers to decide which folding option is useful for a particular
+  purpose.</p>
+  <h2><a name="_Toc2">2 </a>Introduction</h2> 
+  A folding function a folding operation removes a distinction              
+  between related characters by mapping them to the same target.&nbsp; For example,          
+  a case folding may removes the case distinction, by replacing              
+    upper and title case variants of a character with the lower case. In other          
+  words, foldings define equivalence classes, and chose a representative or          
+  target member for each equivalence class.<p>Foldings can be transient, for         
+  example the same folding can be applied to two strings before comparison, or  
+  they can be a permanent transformation of the text, for example when applying 
+  the Positional Forms Folding to converting legacy data that uses explicit 
+  Arabic positional shapes to the generic Arabic characters with implicit 
+  directionality.</p>
+  <h3><a name="2.1 Search term folding">2.1 Search term folding</a></h3> 
+  <p>For the purpose of fuzzy text matching, including both programmatic
+  identifier matching and general text searching, it is often necessary to
+  selectively ignore otherwise meaningful distinctions between related
+  characters, for example upper and lower case, removal of accent marks, etc.
+  This process can be called <i>search term folding</i>. Depending on the
+  operation, different foldings need to be applied, and possible interactions
+  must be carefully managed. False positive matches may be acceptable more often
+  than false negative matches.</p>
+  <p>A significant aspect of string foldings for programmatic identifier matching 
+  is that the set of allowable 
+  characters is restricted. Issues that relate to identifier matching in 
+  particular are addressed 
+  specifically below.</p> 
+  <h3><a name="_Toc22">2.2 Relation to Normalization</a></h3> 
+  <p>Normalization [<a href="tr30-2.html#Normalization">Normalization</a>] is part of any    
+  robust search term folding algorithm (see section <a href="tr30-2.html#_Toc411">Section 4.1.1    
+  <i>Basic Folding Algorithm</i></a>).&nbsp;    
+  However, there are some important differences between normalization and the    
+  foldings that make up search term folding. Normalization, particular the    
+  canonical forms (NFC or NFD) are often        
+  intended for permanent transformation of data,&nbsp; while search term folding        
+  is by nature transient. Further, unlike the other foldings considered here,    
+  normalization it is not context-independent, since the equivalences are not    
+  between characters, but character sequences.</p>   
+  <p> As defined, the normalization forms offer only two broad        
+  levels of distinctions (they either preserve or do not preserve compatibility        
+  distinctions).&nbsp;&nbsp;The choice of which distinctions may be ignored for search term folding       
+  needs to be more specific; it depends on the nature of the operation. One size       
+  does not fit all.</p>    
+  <p>For example, two of the normalization forms depend on compatibility
+  mappings which replace character by their compatibility decompositions.
+  Applying certain of these compatibility mappings may lead to unintended false
+  positive matches, preventing their use in general text searches. In
+  combination with whole word search it could even lead to unintended false
+  negatives. (See <a href="tr30-2.html#_Toc52">Section 5.2 <i>Problematical foldings</i></a>).</p>
+  <p>Furthermore, normalization and case folding are defined as separate and       
+  independent operations, but&nbsp; case folding often occurs together with       
+  other foldings in search term folding. In order to avoid inconsistencies,       
+  search term folding needs to address the interaction of case folding with the       
+  other steps in the algorithm.</p>       
+  <p>Search term folding includes canonical normalization; however, whether the       
+  normalized text is in the composed (NFC) or decomposed form (NFD) is of       
+  secondary importance in terms of defining the foldings. Due to the transient       
+  nature of search term folding, the distinction between NFC and NFD is       
+  immaterial, as long as the two forms are not mixed.&nbsp;</p>       
+  <h3><a name="_Toc23">2.3 Relation to Collation</a></h3>       
+  <p>Like foldings, the comparisons at  
+  the heart of the <a href="../tr10/index.html">Unicode  
+  Collation Algorithm</a> [UCA] also define equivalences. One can derive a  
+  specific folding by applying the collation algorithm with a particular  
+  strength and specific tailorings. Foldings derived in this manner can be useful in  
+  searches that ignore similar distinctions to those ignored in collation. Such  
+  foldings are not subject of this report.</p>  
+  <h2><a name="_Toc3">3 Definitions</a></h2> 
+  <p><i>All terms not defined here are used as defined in the Unicode Standard 
+  or in the online [<a href="tr30-2.html#Glossary">Glossary</a>].</i></p> 
+  <p><b>Folding operation</b> — an idempotent context-independent string function.&nbsp;</p>      
+  <blockquote>
+  <p>
+      Idempotent means that the output of the function is a string, and repeated      
+      applications of the same function produce the same output: F(F(S)) = F(S)      
+      for all S.     
+      Every folding establishes a set of equivalence classes that partitions all      
+      strings, where X = Y if and only if F(X) = F(Y)..&nbsp;</p>     
+  </blockquote>
+  <p><b>Codepoint count-preserving folding</b> — a folding that folds any      
+  string&nbsp; to a string of equal number of code points.</p>      
+  <blockquote>
+    <p>Other foldings may replace individual characters by a character sequence.</p>
+  </blockquote>
+  <p><b>Multigraph expansion</b> — a multigraph expansion replaces a 
+  digraph or higher multigraph, such as <i>double prime</i> or <i>triple prime</i>, 
+  by its expansion into an equivalent sequence of base characters, in this case, 
+  two or three single <i>prime </i>characters.</p> 
+  <blockquote>
+    <p>The distinction from other expansions is that the character sequence is
+    not a combining character sequence.</p>
+  </blockquote>
+  <p><b>Provisional folding</b> — a folding operation for which only a 
+  provisional definition exists.</p> 
+  <h3><a name="_Toc31">3.1 Notation</a></h3>
+  <p>The following notational conventions are used in this TR</p>
+  <table border="1" width="639" cellspacing="0" cellpadding="3">
+    <tr>
+      <td width="106" align="center">XXXX..YYYY&nbsp;</td>
+      <td width="517">indicates an inclusive range</td>     
+    </tr>
+    <tr>
+      <td width="106" align="center">XXXX, YYYY&nbsp;</td>    
+      <td width="517">indicates an alternative</td>     
+    </tr>
+    <tr>
+      <td width="106" align="center">&lt;cccc&gt;&nbsp;</td>
+      <td width="517">refers to a compatibility mapping tag as defined in [<a href="tr30-2.html#Aliases">Aliases</a>].  
+        This should not be confused with a character code sequence of length 1,  
+        which would be &lt;XXXX&gt; where X is an upper case hex digit.</td>    
+    </tr>
+    <tr>
+      <td width="106" align="center">Xy&nbsp;</td>
+      <td width="517">refers to a particular value for the General Category     
+        property defined in [UnicodeData], e.g. &quot;Pd&quot;</td>     
+    </tr>
+    <tr>
+      <td width="106" align="center">&lt;+&gt;&nbsp;</td>
+      <td width="517">means a folding is contained in the Unicode data files,     
+        but its general use is not recommended</td>     
+    </tr>
+    <tr>
+      <td width="106" align="center">[CD]</td>
+      <td width="517">Canonical Decomposition</td>
+    </tr>
+    <tr>
+      <td width="106" align="center">[KD]</td>
+      <td width="517">Compatibility Decomposition</td>
+    </tr>
+  </table>
+  <p><h2>4<a name="_Toc4"> Specifications</a></h2>   
+  <p>All specifications of algorithms are in terms of results—all      
+  implementations that achieve the same result are fully equivalent. In      
+  particular, implementations commonly use optimization techniques, such as      
+  normalizing and folding 'on demand'.&nbsp;</p>    
+  <h3><a name="_Toc41">4.1 Folding algorithm</a></h3>    
+  <h4><a name="_Toc411">4.1.1 Basic Folding Algorithm</a></h4> 
+  <p>The basic algorithm for search term folding can be stated as</p>
+  <p>a. Apply optional&nbsp; folding operations<br>     
+  b. Apply canonical decomposition<br>     
+  c. Repeat (<b>a)</b> and (<b>b)</b> until stable<br>     
+  d. Apply composition if necessary</p>     
+  <p>where each step is applied on the whole string, and applies to the result 
+  of the preceding operation. Implementations may be able to avoid step <b> (c)</b> by 
+  applying additional transformations.</p> 
+  <h4><a name="_Toc412">4.1.2 Identifier Folding algorithm</a></h4> 
+  <p>For identifier folding, it is important to account for prohibited 
+  characters. This adds a new step <b>(e)</b>. The modified basic algorithm then 
+  becomes:</p>
+  <p>a. Apply optional&nbsp; folding operations&nbsp;<br>     
+  b. Apply canonical decomposition<br>     
+  c. Repeat <b> a</b> and <b>b</b> until stable<br>     
+  d. Apply composition if necessary<br>     
+  e. Eliminate or flag forbidden characters</p>     
+  <p>Foldings in step <b> (a)</b> can be modified to also disallow certain characters by    
+  mapping them to forbidden characters, which are then caught in step <b>(e)</b>.    
+  Implementations may be able to avoid step <b> (c)</b> by applying additional    
+  transformations.</p>
+  <h3><a name="_Toc42">4.2 Specification of folding operations</a></h3> 
+  <p>The following table summarizes the definition of a number of important and
+  well-defined folding operations for which the data are availble in the Unicode
+  Character Database[<a href="tr30-2.html#UCD">UCD</a>].
+  Foldings that are <i>multigraph expansions</i> have been collected at the end
+  of the table.</p>
+  <ul>
+    <li>The <i>description</i> column identifies the folding.</li>
+    <li>The <i>source</i> column identifies the set of characters subject to the      
+      folding operation by referencing a set of code points, a set of general      
+      categories, or a compatibility mapping tag. All characters matching the      
+      source condition are subject to the given folding. Note that this column      
+      does <i>not</i> indicate the set of characters with which the source      
+      characters are equivalenced by the folding.&nbsp;</li>     
+    <li>The <i>target</i> column indicates the result of the folding, either by     
+      reference to an operation, or, in some cases, by providing the single     
+      Unicode character to which a whole set of source characters is folded.</li>     
+    <li>The <i>data file</i> column indicates which data file carries the     
+      character by character information to implement the operation referred to     
+      in the <i>target</i> column.&nbsp;</li>     
+  </ul>
+  <table border="1" width="95%" cellspacing="0" cellpadding="3">
+    <tr>
+      <th width="32%" style="background-color: #C0FFC0">Descriptive Name</th>     
+      <th width="17%" style="background-color: #C0FFC0">Source Characters</th>
+      <th width="25%" style="background-color: #C0FFC0">Target Characters</th>
+      <th width="26%" style="background-color: #C0FFC0">Data file specifying the
+        mapping</th>
+    </tr>
+    <tr>
+      <td width="32%">Accent removal&nbsp;</td>     
+      <td width="17%">Latin/Greek/Cyrillic characters with canonical     
+        decomposition</td>
+      <td width="25%">base characters of [CD]</td>
+      <td width="26%">[UnicodeData]</td>
+    </tr>
+    <tr>
+      <td width="32%">Case folding</td>
+      <td width="17%">any</td>
+      <td width="25%">case fold according to CaseFolding.txt</td>
+      <td width="26%">[CaseFolding]</td>
+    </tr>
+    <tr>
+      <td width="32%">Canonical duplicates folding (e.g. Ohm - Omega)&nbsp;</td>     
+      <td width="17%">0374, 037E, 0387, 1FBE, 1FEF, 1FFD, 2000, 2001, 2126,     
+        212A, 212B, 2329..232A</td>     
+      <td width="25%">[CD]</td>
+      <td width="26%">[UnicodeData]</td>
+    </tr>
+    <tr>
+      <td width="32%">Dashes folding</td>
+      <td width="17%">Pd</td>
+      <td width="25%">U+002D</td>
+      <td width="26%">[UnicodeData]</td>
+    </tr>
+    <tr>
+      <td width="32%">Greek letterforms folding</td>
+      <td width="17%">03D0..03D2, 03D5..03D6, 03F0..03F2, 03F4..03F5</td>
+      <td width="25%">[KD]</td>
+      <td width="26%">[UnicodeData]</td>
+    </tr>
+    <tr>
+      <td width="32%">Hebrew Alternates folding&nbsp;</td>     
+      <td width="17%">FB20..FB28</td>
+      <td width="25%">[KD]</td>
+      <td width="26%">[UnicodeData]</td>
+    </tr>
+    <tr>
+      <td width="32%">Jamo folding&nbsp;</td>     
+      <td width="17%">3131..3183</td>
+      <td width="25%">[CD]</td>
+      <td width="26%">[UnicodeData]</td>
+    </tr>
+    <tr>
+      <td width="32%">Math symbol folding</td>
+      <td width="17%">&lt;font&gt;</td>
+      <td width="25%">[KD]</td>
+      <td width="26%">[UnicodeData]</td>
+    </tr>
+    <tr>
+      <td width="32%">Native digit folding</td>
+      <td width="17%">Nd</td>
+      <td width="25%">substitute ASCII digit of same numeric property</td>
+      <td width="26%">[UnicodeData]</td>
+    </tr>
+    <tr>
+      <td width="32%">Non-break folding&nbsp;</td>     
+      <td width="17%">&lt;no-break&gt;</td>
+      <td width="25%">[KD]</td>
+      <td width="26%">[UnicodeData]</td>
+    </tr>
+    <tr>
+      <td width="32%">Overline folding&nbsp;</td>     
+      <td width="17%">FE49..FE4C</td>
+      <td width="25%">[KD] maps to:<br>     
+        203E&nbsp;
+      </td>
+      <td width="26%">[UnicodeData]</td>
+    </tr>
+    <tr>
+      <td width="32%">Positional Forms folding&nbsp;<br>     
+        - includes Arabic ligatures</td>     
+      <td width="17%">&lt;initial&gt;, &lt;medial&gt;, &lt;final&gt;,
+        &lt;isolate&gt;</td>
+      <td width="25%">[KD]</td>
+      <td width="26%">[UnicodeData]</td>
+    </tr>
+    <tr>
+      <td width="32%">Small forms folding&nbsp;</td>     
+      <td width="17%">&lt;small&gt;</td>
+      <td width="25%">[KD]</td>
+      <td width="26%">[UnicodeData]</td>
+    </tr>
+    <tr>
+      <td width="32%">Space folding&nbsp;</td>     
+      <td width="17%">Zs</td>
+      <td width="25%">U+0020</td>
+      <td width="26%">[UnicodeData]&nbsp;</td>
+    </tr>
+    <tr>
+      <td width="32%">Spacing Accents&nbsp;&lt;+&gt;</td>     
+      <td width="17%">00AF,00B4,00B8,02D8..02DD, 037A,0384,1FBD,1FBE..1FC0,
+        1FFE,2017,203E,309B..309C</td>
+      <td width="25%">[KD]</td>
+      <td width="26%">[UnicodeData]</td>
+    </tr>
+    <tr>
+      <td width="32%">Subscript folding&nbsp;</td>     
+      <td width="17%">&lt;sub&gt;</td>
+      <td width="25%">[KD]</td>
+      <td width="26%">[UnicodeData]</td>
+    </tr>
+    <tr>
+      <td width="32%">Symbol folding&nbsp;&lt;+&gt;</td>     
+      <td width="17%">00B5, 2107,2135..2138</td>
+      <td width="25%">[KD]</td>
+      <td width="26%">[UnicodeData]</td>
+    </tr>
+    <tr>
+      <td width="32%">Underline folding&nbsp;</td>     
+      <td width="17%">2017, FE4D..FE4F</td>     
+      <td width="25%">005E</td>
+      <td width="26%">[UnicodeData]&nbsp;</td>
+    </tr>
+    <tr>
+      <td width="32%">Vertical forms folding&nbsp;</td>     
+      <td width="17%">&lt;vertical&gt;</td>
+      <td width="25%">[KD]</td>
+      <td width="26%">[UnicodeData]</td>
+    </tr>
+    <tr>
+      <td width="100%" colspan="4"><b>Multigraph expansions</b></td>
+    </tr>
+    <tr>
+      <td width="32%">&nbsp;- Circled symbols expansion</td>     
+      <td width="17%">&lt;circled&gt;</td>
+      <td width="25%">[KD]</td>
+      <td width="26%">[UnicodeData]</td>
+    </tr>
+    <tr>
+      <td width="32%">&nbsp;- Dotted&nbsp;</td>     
+      <td width="17%">2488..249B</td>
+      <td width="25%">[KD]</td>
+      <td width="26%">[UnicodeData]</td>
+    </tr>
+    <tr>
+      <td width="32%">&nbsp;- Ellipsis expansion</td>     
+      <td width="17%">2024..2026</td>
+      <td width="25%">[KD]</td>
+      <td width="26%">[UnicodeData]</td>
+    </tr>
+    <tr>
+      <td width="32%">&nbsp;- Fraction expansion&nbsp;</td>     
+      <td width="17%">&lt;fraction&gt;</td>
+      <td width="25%">[KD]</td>
+      <td width="26%">[UnicodeData]</td>
+    </tr>
+    <tr>
+      <td width="32%">&nbsp;- Integral expansion</td>     
+      <td width="17%">222C..222D,222F..2230</td>
+      <td width="25%">[KD]</td>
+      <td width="26%">[UnicodeData]</td>
+    </tr>
+    <tr>
+      <td width="32%">&nbsp;- Ligature expansion Misc.&nbsp;</td>     
+      <td width="17%">0587, 0675..0678, 0E33, 0EB3,&nbsp; 0EDC..0EDD, 0F77,     
+        0F79, FB00..FB06,&nbsp; FB13..FB17, FB4F</td>     
+      <td width="25%">[KD]</td>
+      <td width="26%">[UnicodeData]</td>
+    </tr>
+    <tr>
+      <td width="32%">&nbsp;- Parenthesized</td>     
+      <td width="17%">2474..2487,249C..24B5, 3200..3243</td>
+      <td width="25%">[KD]</td>
+      <td width="26%">[UnicodeData]</td>
+    </tr>
+    <tr>
+      <td width="32%">&nbsp;- Prime expansion&nbsp;</td>     
+      <td width="17%">2033..2034,2036..2037</td>
+      <td width="25%">[KD]</td>
+      <td width="26%">[UnicodeData]</td>
+    </tr>
+    <tr>
+      <td width="32%">&nbsp;- Roman numerals&nbsp;</td>     
+      <td width="17%">2160..2183</td>
+      <td width="25%">[KD]</td>
+      <td width="26%">[UnicodeData]</td>
+    </tr>
+    <tr>
+      <td width="32%">&nbsp;- Squared</td>     
+      <td width="17%">&lt;square&gt;</td>
+      <td width="25%">[KD]</td>
+      <td width="26%">[UnicodeData]</td>
+    </tr>
+    <tr>
+      <td width="32%">&nbsp;- Squared&nbsp;&nbsp; (unmarked) &nbsp;</td>     
+      <td width="17%">3358..3370, 33E0..33FE, 32C0..32CB</td>     
+      <td width="25%">[KD]</td>
+      <td width="26%">[UnicodeData]</td>
+    </tr>
+    <tr>
+      <td width="32%">&nbsp;- Digraphs</td>     
+      <td width="17%">0132..0133, 013F..0140. 0149, 01C4..01CC, 01F1..01F3, 1E9A</td>
+      <td width="25%">[KD]</td>
+      <td width="26%">[UnicodeData]</td>
+    </tr>
+    <tr>
+      <td width="32%">&nbsp;- Other multigraphs,<br>     
+        &nbsp; e.g. c/o, TEL</td>     
+      <td width="17%">203C, 2047..2049, 20A8, 2100..2101, 2103, 2105..2106,
+        2109, 2116, 2121</td>
+      <td width="25%">[KD]</td>
+      <td width="26%">[UnicodeData]</td>
+    </tr>
+    <tr>
+      <td width="100%" colspan="4"><b>Provisional foldings</b></td>
+    </tr>
+    <tr>
+      <td width="32%">Diacritic removal (includes stroke, hook, descender)</td>
+      <td width="17%">any</td>
+      <td width="25%">fold Latin/Greek/Cyrillic characters with diacritics to
+        their related base character according to DiacriticFolding.txt</td>
+      <td width="26%">[DiacriticFolding] <span style="background-color: #FFFF00">TBD</span></td>
+    </tr>
+    <tr>
+      <td width="32%">Han Radical folding&nbsp;</td>     
+      <td width="17%">2F00..2F5D, 2EF3, 2E9F</td>     
+      <td width="25%">TBD</td>
+      <td width="26%">[RadicalFolding] <span style="background-color: #FFFF00">TBD</span>&nbsp;</td>     
+    </tr>
+    <tr>
+      <td width="32%">Hiragana folding</td>     
+      <td width="17%">Hiragana</td>
+      <td width="25%">Katakana</td>
+      <td width="26%">[HiraganaFolding] <span style="background-color: #FFFF00">TBD</span></td>
+    </tr>
+    <tr>
+      <td width="32%">Katakana folding</td>
+      <td width="17%">Katakana</td>
+      <td width="25%">Hiragana</td>
+      <td width="26%">[KatakanaFolding] <span style="background-color: #FFFF00">TBD</span></td> 
+    </tr>
+    <tr>
+      <td width="32%">Letterforms folding&nbsp;</td>     
+      <td width="17%">Variants of letter forms<br>      
+        <i>e.g.</i> 017F (long s)</td>      
+      <td width="25%">fold to related base form<br>      
+        <i>e.g.</i> 0073 (s)&nbsp;</td>     
+      <td width="26%">[LetterFolding] <span style="background-color: #FFFF00">TBD</span></td>     
+    </tr>
+    <tr>
+      <td width="32%">Simplified Han Folding</td>  
+      <td width="17%">simplified Han characters</td>
+      <td width="25%">TBD (corresponding traditional characters)</td>
+      <td width="26%">[SimplifiedFolding] <span style="background-color: #FFFF00">TBD</span></td>
+    </tr>
+    <tr>
+      <td width="32%">Superscript folding&nbsp;</td>     
+      <td width="17%">&lt;super&gt;, plus modifier letters 02C0..02C1,06E5..06E6<br>    
+        plus other modifier letters (UPA)</td>    
+      <td width="25%">[KD] with some additions</td>
+      <td width="26%">[SuperScriptFolding] <span style="background-color: #FFFF00">TBD</span></td> 
+    </tr>
+    <tr>
+      <td width="32%">Suzhou Numeral folding</td>
+      <td width="17%">3038..303A, 3021..3029</td>
+      <td width="25%">TBD</td>
+      <td width="26%">[SuzhouFolding] <span style="background-color: #FFFF00">TBD</span></td>
+    </tr>
+    <tr>
+      <td width="32%">Width folding</td>
+      <td width="17%">&lt;wide&gt;,&lt;narrow&gt;any</td>
+      <td width="25%">[KD] with additional handling of contraction for narrow 
+        kana sound marks</td>
+      <td width="26%">[WidthFolding] <span style="background-color: #FFFF00">TBD</span></td>
+    </tr>
+  </table>
+  <p><b>Notes:&nbsp;</b></p>
+  <ul>
+    <li>some transformations (such as case, or width) in principle would allow a    
+      free choice or representative target for each equivalence class (e.g. the    
+      upper case or the lower case character for case folding), but the    
+      predefined foldings select a preferred default target.</li>   
+    <li>some target characters (such as 203E) are also subject to another folding, other  
+      than case folding</li> 
+  </ul>
+  <h2><a name="_Toc5">5 Notes and Guidelines</a></h2>  
+  <h3><a name="_Toc51">5.1 General notes</a></h3> 
+  <p>The most important guideline is &quot;discriminate&quot;. Understand the 
+  effect before applying a folding. Do not apply any of these folding all at 
+  once just because it exists, and certainly never all of them at once. The 
+  following notes on individual foldings or issues may be of help in following 
+  this guideline.</p>
+  <h4>5.1.1 Case folding</h4>
+  <p>The [<a href="tr30-2.html#CaseFolding">CaseFolding</a>] data file provides case
+  folding information. For more information see Section 5.18 <i>Case
+  Mappings</i> in [<a href="tr30-2.html#Unicode">Unicode</a>].</p>
+  <h4>5.1.2 Diacritic folding</h4>
+  <p>Diacritic folding goes beyond the decomposition and removal of accents,     
+  umlauts, cedillas etc. that is provided by the canonical decompositions,     
+  but&nbsp; also includes barred, slashed forms etc, as well as hooks,     
+  descenders, etc.</p>     
+  <h4>5.1.3 Letter forms</h4>
+  <p>Greek letter forms should be folded for Greek text. They should <b>not</b>
+  be folded for mathematical and scientific usage as doing so would conflate
+  very distinct concepts. To give an example of common usage consider physics,
+  which distinguishes angle encoded by <i>theta</i> and temperature encoded by <i>theta
+  symbol</i>.</p>
+  <p><font color="#008080"><i>[Ed. note: In the datafile, letterforms need to have 'final sigma'     
+  and 'final, +alternate Hebrew' added to them.&nbsp;]</i></font></p>     
+  <h4>5.1.4 Han Character Foldings</h4>
+  <h5>Han Radical folding</h5>
+  <p>Han Radical folding substitutes a Unified ideograph for a Han radical.</p>
+  <ul>
+    <li>Note that the compatibility decomposition for Han Radicals is inconsistent and should
+      not be used for Radical folding.</li>
+  </ul>
+  <h5>Simplified / traditional folding</h5>
+  <p>Simplified and traditional forms of Han ideographs are separately encoded 
+  in Unicode, even where they represent the same meaning. This folding would 
+  remove the distinction. In practice, there are additional differences in Han 
+  character usage between writers of simplified and traditional Han ideographs, 
+  some of which cannot be folded without context and semantic information. A 
+  simple 1:1folding is nevertheless useful for many purposes.</p>
+  <h5>Turtle folding <font color="#008080"><i>[Ed. note: better name.]</i></font></h5>
+  <p>As results of historical development of the Han ideograph there are 
+  multiple variations of characters for the same concept, for example there are 
+  47 variants for 'turtle'. Such folding would remove such variations. The 
+  process of defining such a folding for all such cases will be difficult and 
+  lengthy.</p>
+  <h5>Source separation foldings</h5>
+  <p>The Unicode Standard maintains duplications for certain Han ideographs 
+  based on the fact that they were separately encoded <i>within</i> a given 
+  source character set. A Han source separation folding would equivalence such 
+  separated characters.</p> 
+  <h4>5.1.4 Kana Foldings</h4>
+  <p>Japanese Katakana and Hiragana are two generally equivalent syllabaries,     
+  where each Hiragana syllable has a corresponding Katakana syllable. Foldings   
+  in both directions are useful, depending on the situation. However,     
+  since Katakana are used to represent the pronunciation of foreign words in     
+  Japanese, there are more Katakana than Hiragana characters.&nbsp;</p>    
+  <p>There is one important difference in orthography between the syllabaries,     
+  affecting the way the long syllables are expressed. Hiragana uses an     
+  additional vowel, while Katakana uses a length mark. If this is taken into     
+  account, the folding is no longer context free. In fact, these are better seen   
+  as examples of algorithmic transliterations, such as the ISCII   
+  transliterations between Indic scripts.</p>    
+  <h4>5.1.5 Semantically neutral foldings</h4>
+  <p>Semantically neutral foldings could be defined as those foldings that     
+  simply remove a distinction that is more or less purely an artifact of the     
+  encoding itself. Under the right circumstances, these foldings are in     
+  principle candidates for permanent data transformation. This is primarily true for the canonical decomposition and composition, but could also     
+  apply to text using the Arabic positional forms. If such a text is converted     
+  to use non-positional forms, but rendered via a standard Unicode rendering     
+  process, the appearance would be the same (except for deliberately odd     
+  combinations of positional shapes). In practice it is far more likely that the     
+  data containing the positional forms will display poorly on a system that   
+  expects characters with implicit positional shaping.&nbsp;</p>  
+  <p>The following foldings can be considered semantically neutral</p>     
+  <ul>
+    <li>Arabic positional forms folding</li>
+    <li>Vertical forms folding</li>
+    <li>Canonical decomposition and composition, excepting Han compatibility 
+      characters.</li>
+  </ul>
+  <p>Note that Arabic positional folding, especially when intended as a 
+  permanent data transformation, may need to introduce ZWJ or ZWNJ characters.</p>
+  <h4><i>5.1.6 Foldings based on tailored collation data</i></h4>
+  <p>Foldings based on tailored collation data would fold characters that are
+  'nearly equivalent' in a particular language. For example, a locale-based
+  folding for Swedish could follow common practice in Sweden and match the
+  following pairs of character sequences, among others, based on equivalence in
+  pronunciation.</p>
+  <table border="1" width="30%" cellspacing="0" cellpadding="3">
+    <tr>
+      <td width="25%" align="center" height="18">
+        <p align="center">Ä</p>
+      </td>
+      <td width="25%" align="center" height="18">
+        <p align="center">Æ</td>
+    </tr>
+    <tr>
+      <td width="25%" align="center" height="18">
+        <p align="center">Ö</p>
+      </td>
+      <td width="25%" align="center" height="18">
+        <p align="center">Ø</td>
+    </tr>
+    <tr>
+      <td width="25%" align="center" height="18">
+        <p align="center">ss</p>
+      </td>
+      <td width="25%" align="center" height="18">
+        <p align="center">ß</td>
+    </tr>
+    <tr>
+      <td width="25%" align="center" height="14">
+        <p align="center">y</p>
+      </td>
+      <td width="25%" align="center" height="14">
+        <p align="center">ü</td>
+    </tr>
+    <tr>
+      <td width="25%" align="center" height="18">
+        <p align="center">v</p>
+      </td>
+      <td width="25%" align="center" height="18">
+        <p align="center">w</td>
+    </tr>
+  </table>
+  <p>In other words, locale-based foldings would be different for some user
+  groups using the same script (in this case Latin). The recommended way to
+  implement locale-based searching based on sorting tables is found in [<a href="tr30-2.html#Collation">Collation</a>].</p>
+  <h4>5.1.7 Compatibility decompositions</h4>
+  <p>Compatibility decomposition provides a fixed combination of several
+  foldings and expansions. It is in fact the source of most of the foldings in
+  the table in section 4.0. There are two ways to subdivide compatibility
+  decompositions:</p>
+  <ol>
+    <li>by compatibility decomposition type (the value in &lt;&gt; in the date
+      file, e.g. &lt;super&gt;)</li>
+    <li>by explicitly limiting the range of <i>source</i> characters</li>
+  </ol>
+  <p>The specifications in <a href="tr30-2.html#_Toc5">Section 5.0</a> uses the first method, whenever the     
+  compatibility tag is well defined and meaningful. Where it is too broad, e.g.,     
+  for the&nbsp; &lt;compat&gt; tag, foldings are further subdivided by defining     
+  specific ranges of source characters.</p>     
+  <p>Using compatibility decomposition is convenient, since existing algorithms
+  for Normalization may provide them. However, the full decomposition includes
+  several foldings that may not be appropriate for the given purpose. By
+  selectively not applying the decomposition to certain character ranges given
+  in Section 4.0, one can in effect limit the compatibility decomposition to
+  only the desired foldings.</p>
+  <h3><a name="_Toc52">5.2 Problematic foldings or expansions</a></h3>
+  <p>Some foldings can have unintended consequences, including inadvertent
+  changes in the semantics of the text. In most cases, it is best to be
+  conservative and avoid problematic foldings altogether. There are two general
+  exceptions to this rule. The first is the case of identifier matching. If a
+  folding has a prohibited character as one of the output characters, it will
+  not match any legal identifier. Therefore, for properly restricted inputs, one
+  may safely use fixed combinations of foldings, such as NFKC. The other
+  exception is the case of more extensive string pre-processing, discussed
+  below.</p>
+  <h4>5.2.1 Fraction expansion</h4>
+  <p>Fraction expansion as defined in the compatibility decompositions can lead     
+  to a drastic change of the semantics of a string and can lead to term boundary     
+  issues for searching. For example:&nbsp; Expanding the fraction in this     
+  string: DIGIT 5 + VULGAR FRACTION ONE QUARTER&nbsp; turns it into DIGIT 5 +     
+  DIGIT 1 + FRACTION SLASH + DIGIT 4. This now will be found by a search for     
+  &quot;51&quot;. Because of the semantics of FRACTION SLASH the expansion     
+  changed the numeric value from &quot;5 and a quarter&quot; into &quot;51 over     
+  4&quot;. Fraction expansion is therefore best avoided altogether.</p>     
+  <p>By modifying the fraction expansion from the standard compatibility
+  decomposition and inserting an appropriate space character, for example THIN
+  SPACE, before the fraction, it is possible to prevent the expanded fraction
+  from coalescing with preceding digits. However, if there are no preceding
+  digits, no THIN SPACE must be added, or strings containing the expanded
+  fraction would no longer match strings with already expanded fractions which
+  presumably would not contain THIN SPACE characters. Finally, any space
+  character would be subject to any space folding, which, if present would
+  introduce a SPACE character, possibly affecting the search term.</p>
+  <h4>5.2.2 Bullet expansions</h4>
+  <p>If a circled bullet character is simply replaced by its contents, as when<i>&nbsp;</i>     
+  CIRCLED DIGIT 5 is replaced by DIGIT 5, the separation from the surrounding     
+  text is lost, and the DIGIT 5 could run together with adjacent numbers. For     
+  bullet characters using parenthesized or dotted letters or digit, this issue     
+  is somewhat mitigated by fact that the bullet itself contains punctuation.     
+  Bullet characters are commonly used like footnote marks to refer to other     
+  text, in other words, they do not occur just at the beginning of bulleted     
+  lines.</p>
+  <h4>5.2.3 Spacing accents substitution</h4>
+  <p>Spacing accents are mapped by compatibility decomposition to SPACE followed
+  by a non-spacing accent. This inappropriately introduces a space character
+  into the term, as well as introducing non-spacing marks where none were in the
+  data before. The former is especially problematic, where the matching
+  operation is affected by these spaces and combining characters.</p>
+  <h4>5.2.4 Math folding</h4>
+  <p>The set of compatibility decompositions includes the folding of letterlike
+  mathematical symbols to their nearest ASCII or Hebrew equivalent. In
+  particular the Hebrew characters used as letterlike symbols do not have RIGHT
+  TO LEFT directionality and the set of such letters in mathematical usage is
+  sufficiently restricted that such folding makes little sense in math, except
+  in pure 'looks like' style searches.</p>
+  <h4>5.2.5 Various &quot;cluster&quot; expansions</h4>
+  <p>Unicode contains many clusters, <i>e.g.</i> square symbols, some of the
+  letterlike characters that are made up of several characters. 'Decomposing'
+  these may or may not be the right thing for search equivalence. Parenthesized
+  characters and numbers would probably be immune to the term boundaries issues
+  raised earlier, but the story is less clear for others.</p>
+  <h4>5.2.5 Jamo expansion</h4>
+  <p>For more information on Jamo expansion see Section 11.4 <i> Hangul</i> in [<a href="tr30-2.html#Unicode">Unicode</a>].</p>
+  <h4>5.2.6 Preserving semantics</h4>
+  <p>To a limited extent, the problems surrounding bullet expansion can be
+  mitigated by inserting a THIN SPACE around the expansion to set the expanded
+  text off from the surrounding text. However, this cannot be applied together
+  with any space folding, as otherwise the THIN SPACE may become SPACE and might
+  be considered a search term delimiter.</p>
+  <h2><a name="References">References</a></h2>
+  <table style="border-style:none" cellspacing="12" cellpadding="0" width="99%" border="0" class="noborder">
+    <tr>
+      <td class="noborder">[<a name="Aliases">Aliases</a>]</td>
+      <td class="noborder">Data files <a href="ftp://ftp.unicode.org/Public/UNIDATA/PropertyAliases.txt">ftp://ftp.unicode.org/Public/UNIDATA/PropertyAliases.txt</a> 
+        and <a href="http://www.unicode.org/Public/UNIDATA/PropertyValueAliases.txt">http://www.unicode.org/Public/UNIDATA/PropertyValueAliases.txt</a></td>
+    </tr>
+    <tr>
+      <td class="noborder">[<a name="CaseFolding">CaseFolding</a>]</td>
+      <td class="noborder">Data file <a href="ftp://ftp.unicode.org/Public/UNIDATA/CaseFolding.txt">ftp://ftp.unicode.org/Public/UNIDATA/CaseFolding.txt</a></td>
+    </tr>
+    <tr>
+      <td class="noborder">[<a name="Collation">Collation</a>]</td>
+      <td class="noborder">Mark Davis, Unicode Technical Report #10:    
+        Collation,&nbsp;<a href="../tr10/index.html"><br>
+        http://www.unicode.org/reports/tr10</a>&gt;</td>
+    </tr>
+    <tr>
+      <td class="noborder" valign="top" width="1">[<a name="Charts">Charts</a>]</td>
+      <td class="noborder" valign="top">The online code charts can be found at <a href="http://www.unicode.org/charts/">http://www.unicode.org/charts/</a>
+        An index to characters names with links to the corresponding chart is
+        found at <a href="http://www.unicode.org/charts/charindex.html">http://www.unicode.org/charts/charindex.html</a></td>
+    </tr>
+    <tr>
+      <td class="noborder" valign="top" width="1">[DiacriticRemoval]</td>
+      <td class="noborder" valign="top"><b><i><font color="#008080">Ed. The data
+        file containing the data for Diacritic removal is TBD.</font></i></b></td>
+    </tr>
+    <tr>
+      <td class="noborder" valign="top" width="1">[<a name="EAW">EAW</a>]</td>
+      <td class="noborder" valign="top">Unicode Standard Annex #11, <i>East
+        Asian Width</i>. <a href="../tr11/index.html">http://www.unicode.org/reports/tr11<br>
+        </a><i>For a definition of East Asian Width</i></td>
+    </tr>
+    <tr>
+      <td class="noborder" valign="top" width="1"><a name="Feedback">Feedback</a>]</td>
+      <td class="noborder" valign="top">Reporting Errors and Requesting
+        Information Online<i><br>
+        </i><a href="http://www.unicode.org/reporting.html">http://www.unicode.org/reporting.html</a></td>
+    </tr>
+    <tr>
+      <td class="noborder" valign="top" width="1">[<a name="FAQ">FAQ</a>]</td>
+      <td class="noborder" valign="top">Unicode Frequently Asked Questions<br>
+        <a href="http://www.unicode.org/unicode/faq/">http://www.unicode.org/unicode/faq/<br>
+        </a><i>For answers to common questions on technical issues.</i></td>
+    </tr>
+    <tr>
+      <td class="noborder" valign="top" width="1">[<a name="Glossary">Glossary</a>]</td>
+      <td class="noborder" valign="top">Unicode Glossary<a href="http://www.unicode.org/glossary/"><br>
+        http://www.unicode.org/glossary/<br>
+        </a><i>For explanations of terminology used in this and other documents.</i></td>
+    </tr>
+    <tr>
+      <td class="noborder" valign="top" width="1">[<span><a name="Normalization">Normalization</a></span>]</td>
+      <td class="noborder" valign="top">Unicode Standard Annex #15: <i>Unicode
+        Normalization Forms</i><a href="../tr15.1"><br>
+        http://www.unicode.org/reports/tr15/</a></td>
+    </tr>
+    <tr>
+      <td class="noborder" valign="top" width="1">HiraganaFolding</td>
+      <td class="noborder" valign="top">
+        <b><i><font color="#008080">Ed. The data 
+        file containing the data for Hiragana to Katakana Folding is TBD.</font></i></b> 
+      </td>
+    </tr>
+    <tr>
+      <td class="noborder" valign="top" width="1">[KatakanaFolding]</td>
+      <td class="noborder" valign="top">
+        <p><b><i><font color="#008080">Ed. The data 
+        file containing the data for Katakana to Hiragana Folding is TBD.</font></i></b></p> 
+      </td>
+    </tr>
+    <tr>
+      <td class="noborder" valign="top" width="1">[WidthFolding]</td>
+      <td class="noborder" valign="top">
+        <p><b><i><font color="#008080">Ed. The data 
+        file containing the data for Width Folding is TBD.</font></i></b></p> 
+      </td>
+    </tr>
+    <tr>
+      <td class="noborder" valign="top" width="1">[<a name="Reports">Reports</a>]</td>
+      <td class="noborder" valign="top">Unicode Technical Reports<br>
+        <a href="../index.html">http://www.unicode.org/reports/<br>
+        </a><i>For information on the status and development process for
+        technical reports, and for a list of technical reports.</i></td>
+    </tr>
+    <tr>
+      <td class="noborder" valign="top" width="1">[SimplifiedFolding]</td>
+      <td class="noborder" valign="top"><i><font color="#008080"><b>Ed.: The data file 
+        containing the data for simplified to traditional folding is TBD.</b></font></i></td> 
+    </tr>
+    <tr>
+      <td class="noborder" valign="top" width="1">[SuperScriptFolding]</td>
+      <td class="noborder" valign="top"><i><font color="#008080"><b>Ed.:
+        Superscript folding needs to cover not only characters given a
+        &lt;super&gt; compatibility decomposition, but also other superscript
+        characters, like modifier letters. A data file for the folding is TBD.</b></font></i></td>
+    </tr>
+    <tr>
+      <td class="noborder" valign="top" width="1">[SuzhouFolding]</td>
+      <td class="noborder" valign="top"><i><font color="#008080"><b>Ed.: The 
+        data file containing the data for Suzhou Folding is TBD.</b></font></i></td> 
+    </tr>
+    <tr>
+      <td class="noborder" valign="top" width="1"></td>
+      <td class="noborder" valign="top"></td>
+    </tr>
+    <tr>
+      <td class="noborder" valign="top" width="1">[<span><a name="Unicode">Unicode</a></span>]</td>
+      <td class="noborder" valign="top"><i>The Unicode Standard, Version 4.0, </i>(Reading,   
+        Massachusetts: Addison-Wesley Developers Press 2003, ISBN:   
+        0-321-18578-1) or online as <a href="http://www.unicode.org/unicode/versions/Unicode4.0.0/">http://www.unicode.org/versions/Unicode4.0.0/</a>&nbsp;</td>   
+    </tr>
+    <tr>
+      <td class="noborder" valign="top" width="1">[<a name="UCA">UCA</a>]</td>
+      <td class="noborder" valign="top">Unicode Technical Standard #10: <i>Unicode
+        Collation Algorithm<br>
+        </i><a href="../tr10/index.html">http://www.unicode.org/reports/tr10/</a></td>
+    </tr>
+    <tr>
+      <td class="noborder" valign="top" width="1">[<a name="UCD">UCD</a>]</td>
+      <td class="noborder" valign="top">Unicode Character Database. <a href="http://www.unicode.org/Public/UNIDATA/UnicodeCharacterDatabase.html">http://www.unicode.org/Public/UNIDATA/UnicodeCharacterDatabase.html<br>
+        </a><i>For and overview of the Unicode Character Database and a list of
+        its associated files</i></td>
+    </tr>
+    <tr>
+      <td class="noborder" valign="top" width="1">[<a name="UnicodeData">UnicodeData</a>]</td>
+      <td class="noborder" valign="top"><a href="http://www.unicode.org/Public/UNIDATA/UnicodeData.txt">http://www.unicode.org/Public/UNIDATA/UnicodeData.txt<br>
+        </a><i>This file contains the combining class and decomposition 
+        information needed to carry out canonical and compatibility 
+        decompositions as defined in chapter 3 of the Unicode Standard.</i></td>
+    </tr>
+    <tr>
+      <td class="noborder" valign="top" width="1">[<a name="UXML">UXML</a>]</td>
+      <td class="noborder" valign="top">Unicode Technical Report #20: <i>Unicode
+        in XML and other Markup Languages</i><a href="../tr20/index.html"><br>
+        http://www.unicode.org/reports/tr20/</a></td>
+    </tr>
+    <tr>
+      <td class="noborder" valign="top" width="1">[<a name="Versions">Versions</a>]</td>
+      <td class="noborder" valign="top">Versions of the Unicode Standard<br>
+        <a href="http://www.unicode.org/unicode/standard/versions/">http://www.unicode.org/unicode/standard/versions/<br>
+        </a><i>For details on the precise contents of each version of the
+        Unicode Standard, and how to cite them.</i></td>
+    </tr>
+    <tr>
+      <td class="noborder" valign="top" width="1">[<a name="XML">XML</a>]</td>
+      <td class="noborder" valign="top"><span>Tim Bray, Jean Paoli, C. M.
+        Sperberg-McQueen, Eve Maler, Eds., <cite>Extensible Markup Language
+        (XML) 1.0 (Second Edition)</cite>, W3C Recommendation 6-October-2000, <a href="http://www.w3.org/TR/REC-xml">http://www.w3.org/TR/REC-xml</a></span></td>
+    </tr>
+  </table>
+  <h2><a name="Modifications">Modifications</a></h2>
+  <p><b>Changes from Tracking Number&nbsp;</b></p>   
+  <p><b>1 </b>Updated to Unicode 4.0, updated Status and References, removed 
+  conformance section, added detail throughout</p>  
+  <p><b> 0</b> First version</p>
+  <hr align="LEFT">
+  <p><font size="-1">Copyright © 2001-2003 Unicode, Inc. All Rights Reserved.   
+  The Unicode Consortium makes no expressed or implied warranty of any kind, and   
+  assumes no liability for errors or omissions. No liability is assumed for   
+  incidental and consequential damages in connection with or arising out of the   
+  use of the information or programs contained or accompanying this technical   
+  report. The Unicode <a href="http://www.unicode.org/copyright.html">Terms of Use</a> apply.</font></p>
+  <p><font size="-1">Unicode and the Unicode logo are trademarks of Unicode,
+  Inc., and are registered in some jurisdictions.</font></p>
+  <hr>
+</div>
+
+</body>
+
+</html>

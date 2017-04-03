@@ -1,0 +1,81 @@
+#	Foldings.txt
+#	DRAFT 1 - 2004-07-14 Asmus Freytag
+#	Subject to change
+#
+#	Base version of Unicode: 4.0.0
+#
+#	Datafile for Unicode Techical Report #30
+#	Copyright (c) 1991-2004 Unicode, Inc.
+#	For terms of use, and documentation see 
+#	http://www.unicode.org/reports/tr30/
+
+#	=================================
+
+#	Specify all Folding operations
+#
+#	Format
+#		Field 0 - name of folding operation
+#		Field 1 - operation
+#				  Map(\uXXXX) - replace source by constant character
+#				  Map(property) - replace source by string property
+#				  Map(XXXFolding) - replace source by mapping in 
+#									corresponding definition file 
+#									'XXXFolding.txt'
+#				  "description" - folding operation cannot be 
+#				  				  directly expressed as a map using
+#								  existing datafiles
+#		Field 2 - set of source characters (filter)
+
+#	Notes:
+#
+#	1) Sources are given by regular expressions, see UTS#18
+#
+#	2) Sources may include some or all of the the target characters
+#
+#	Stability
+#		Syntax for this file may change. Content will change change when
+#		new foldings are added, or set of source characters changes
+#
+###########################################################################
+AccentRemoval;				"Map(NFD) and replace combining sequences by base characters, if  base character is in source set";	[:sc=Latin:]+[:sc=Greek:]+[:sc=Cyrillic:]
+CaseFolding;				Map(CaseFolding);			[:isCaseFolding:]
+CanonicalDuplicatesFolding;	Map(NFC);					[\u0374 \u037E \u0387 \u1FBE \u1FEF \u1FFD \u2000 \u2001 \u2126 \u212A \u212B \u2329-\u232A]
+DashesFolding;				Map(\u002D);				[:Gc=Pd:]
+GreekLetterformsFolding;	Map(NFD);					[\u03D0-\u03D2 \u03D5-\u03D6 \u03F0-\u03F2 \u03F4-\u03F5]
+HebrewAlternatesFolding;	Map(NFD);					[\uFB20-\uFB28]
+JamoFolding;				Map(NFD);					[\u3131-\u3183]
+MathSymbolFolding;			Map(NFD);					[:dt=font:]-[\uFB20-\uFB28]
+NativeDigitFolding;			"Map to corresponding ASCII digit";			[:gc=Nd:]
+NobreakFolding;				Map(NFD);					[:dt=no-break:]
+OverlineFolding;			Map(\u203E);				[\uFE49-\uFE4C]
+PositionalFormsFolding;		Map(NFD);					[:dt=initial:]+[:dt=medial:]+[:dt=final, dt=isolate:]
+SmallFormsFolding;			Map(NFD);					[:dt=small:]
+SpaceFolding;				Map(\u0020);				[:gc=Zs:]
+SpacingAccentsFolding;		Map(NFD);					[\u00AF,\u00B4,\u00B8,\u02D8-\u02DD \u037A,\u0384,\u1FBD,\u1FBE-\u1FC0 \u1FFE,\u2017,\u203E,\u309B-\u309C]
+SubscriptFolding;			Map(NFD);					[:dt=sub:]
+SymbolFolding;				Map(NFD);					[\u00B5 \u2107 \u2135-\u2138]
+UnderlineFolding;			Map(\u005E);				[\u2017 \uFE4D-\uFE4F]
+VerticalFormsFolding;		Map(NFD);					[:dt=vertical:]
+CircledSymbolsExpansion;	Map(NFD);					[:dt=circled:]
+DottedExpansion;			Map(NFD);					[\u2488-\u249B]
+EllipsisExpansion;			Map(NFD);					[\u2024-\u2026]
+FractionExpansion;			Map(NFD);					[:dt=fraction:]
+IntegralExpansion;			Map(NFD);					[\u222C-\u222D,\u222F-\u2230]
+LigatureExpansion;			Map(NFD);					[\u0587 \u0675-\u0678 \u0E33 \u0EB3 \u0EDC-\u0EDD \u0F77 \u0F79 \uFB00-\uFB06 \uFB13-\uFB17 \uFB4F]
+ParenthesizedExpansion;		Map(NFD);					[\u2474-\u2487,\u249C-\u24B5 \u3200-\u3243]
+PrimesExpansion;			Map(NFD);					[\u2033-\u2034,\u2036-\u2037]
+RomanNumeralsExpansion;		Map(NFD);					[\u2160-\u2183]
+SquaredSymbolsExpansion;	Map(NFD);					[:dt=square:]
+OtherSquaredExpansion;		Map(NFD);					[\u3358-\u3370 \u33E0-\u33FE \u32C0-\u32CB]
+DigraphExpansion;			Map(NFD);					[\u0132-\u0133 \u013F-\u0140. \u0149 \u01C4-\u01CC \u01F1-\u01F3 \u1E9A]
+OtherMultigraphExpansion;	Map(NFD);					[\u203C \u2047-\u2049 \u20A8 \u2100-\u2101 \u2103 \u2105-\u2106 \u2109 \u2116 \u2121]
+DiacriticFolding;			Map(DiacriticFolding);		[:isDiacriticFolding:]
+HanRadicalFolding;			Map(HanRadicalFolding);		[\u2F00-\u2F5D \u2EF3 \u2E9F]
+HiraganaFolding;			Map(HiraganaFolding);		[:isHiraganaFolding:]
+KatakanaFolding;			Map(KatakanaFolding);		[:isKatakanaFolding:]
+LetterformsFolding;			Map(LetterformFolding);		[:isLetterformFolding:]
+SimplifiedHanFolding;		Map(SimplifiedHanFolding);	[:isSimplifiedHanFolding:]
+SuperscriptFolding;			Map(SuperScriptFolding);	[:isSuperScriptFolding:]
+SuzhouFolding;				Map(SuzhouFolding);			[\u3038-\u303A \u3021-\u3029]
+WidthFolding;				Map(WidthFolding);			[:dt=wide:]+[:dt=narrow:]
+

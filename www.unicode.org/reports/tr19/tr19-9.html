@@ -1,0 +1,339 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+
+<head>
+<title>UAX&nbsp; #19: UTF-32</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta content="Microsoft FrontPage 5.0" name="GENERATOR">
+<meta content="FrontPage.Editor.Document" name="ProgId">
+<meta content="unicode, UTF-32, UTF-8, UTF-16" name="keywords">
+<meta content="Specifies the Unicode Normalization Formats" name="description">
+<link rel="stylesheet" href="../../unicode/reports/reports.css" type="text/css">
+</head>
+
+<body>
+
+<table class="header" cellspacing="0" cellpadding="0" width="100%">
+  <tr>
+    <td class="icon"><a href="http://www.unicode.org"><img align="middle"
+      alt="[Unicode]" border="0"
+      src="../../webscripts/logo60s2.gif" width="34"
+      height="33"></a>&nbsp;&nbsp;<a class="bar"
+      href="http://www.unicode.org/unicode/reports">Technical Reports</a></td>
+  </tr>
+  <tr>
+    <td class="gray">&nbsp;</td>
+  </tr>
+</table>
+<div class="body">
+
+<h2 align="center">Unicode Standard Annex #19</h2>    
+<h1 align="center">UTF-32</h1>    
+<table cellspacing="2" cellpadding="2" width="100%" border="1">          
+  <tbody>    
+    <tr>    
+      <td valign="top">Version</td>    
+      <td valign="top">Unicode 3.2.0</td>   
+    </tr>   
+    <tr>   
+      <td valign="top">Authors</td>   
+      <td valign="top">Mark Davis (<a href="mailto:mark.davis@us.ibm.com">mark.davis@us.ibm.com</a>,    
+        <a href="http://www.macchiato.com/">home</a>)</td>   
+    </tr>   
+    <tr>   
+      <td valign="top">Date</td>   
+      <td valign="top">2002-03-27 1:45 p.m.</td>  
+    </tr>  
+    <tr>  
+      <td valign="top">This Version</td>  
+      <td valign="top">
+      <a href="http://www.unicode.org/unicode/reports/tr19/tr19-9.html">http://www.unicode.org/unicode/reports/tr19/tr19-9.html</a></td>  
+    </tr>  
+    <tr>  
+      <td valign="top">Previous Version</td>  
+      <td valign="top">
+      <a href="http://www.unicode.org/unicode/reports/tr19/tr19-8.html">http://www.unicode.org/unicode/reports/tr19/tr19-8.html</a></td>  
+    </tr>  
+    <tr>  
+      <td valign="top">Latest Version</td>  
+      <td valign="top"><a href="http://www.unicode.org/unicode/reports/tr19">http://www.unicode.org/unicode/reports/tr19</a></td>  
+    </tr>  
+    <tr>  
+      <td valign="top">Tracking Number</td>  
+      <td valign="top"><a href="tr19-9.html#TrackingNumber9">9</a></td>  
+    </tr>  
+  </tbody>  
+</table>  
+<br>  
+<h3><i>Summary</i></h3>  
+<p><i>This document specifies a Unicode transformation format that    
+serializes a Unicode codepoint (from U+0000 to U+10FFFF) as a sequence of four bytes.</i></p>   
+<h3><i>Status</i></h3>   
+<p><i>This document has been reviewed by Unicode members and other interested         
+parties, and has been approved by the Unicode Technical Committee as a <b>Unicode         
+Standard Annex</b>. It is a stable document and may be used as reference         
+material or cited as a normative reference from another document.</i></p>        
+<blockquote>        
+  <p><i><b>A Unicode Standard Annex (UAX)</b> forms an integral part of 
+the Unicode Standard, but is published as a separate document. Note 
+that conformance to a version of the Unicode Standard includes conformance 
+to its Unicode Standard Annexes. The version number of a UAX document 
+corresponds to the version number of the Unicode Standard at the last point 
+that the UAX document was updated.</i>
+</p>        
+</blockquote>        
+<p><i>A list of current Unicode Technical Reports is found on <a                                        
+href="http://www.unicode.org/unicode/reports/">http://www.unicode.org/unicode/reports/</a>.                                         
+For more information about versions of the Unicode Standard, see <a                                        
+href="http://www.unicode.org/unicode/standard/versions/">http://www.unicode.org/unicode/standard/versions/</a>.</i></p>                                        
+<p><i>The <a href="tr19-9.html#references">References</a> provide related information that             
+is useful in understanding this document. Please mail corrigenda and other             
+comments to the author(s).</i></p>                                      
+<h3><i>Contents</i></h3>  
+<ul>  
+  <li><a href="tr19-9.html#Introduction">1 Introduction</a>  
+  <li><a href="tr19-9.html#Definitions">2 Definitions</a>  
+  <li><a href="tr19-9.html#10646">3 Relation to ISO/IEC 10646 and UCS-4</a></li>  
+  <li><a href="tr19-9.html#References">References</a>  
+  <li><a href="tr19-9.html#Modifications">Modifications</a></li>  
+</ul>  
+<hr>  
+<h2><a name="Introduction"></a>1 Introduction</h2>     
+<p>UTF-32 defines an encoding form for Unicode for representing Unicode code      
+points with single 32-bit code units. With the addition of UTF-32, the Unicode      
+Standard now has three sanctioned encoding forms: UTF-8, UTF-16, and UTF-32.      
+These use 8-bit, 16-bit, and 32-bit code units, respectively.</p>     
+<p>Different encoding forms of Unicode are useful in different system      
+environments. For example, UTF-32 is somewhat simpler in usage than UTF-16, but      
+in almost all cases occupies twice the storage. A common strategy is to have      
+internal string storage use UTF-16 or UTF-8, but to use UTF-32 for individual      
+character datatypes.</p>   
+<p>Considerations of byte-order serialization lead to a further     
+subdivision of this encoding form into 3 encoding schemes: UTF-32 (possibly     
+using BOM), UTF-32BE, and UTF-32LE.</p>    
+<p>The following lists the important features of this encoding form:</p>    
+<ul>    
+  <li>UTF-32 is restricted in values to the range 0..10FFFF<sub>16</sub>, which     
+    precisely matches the range of characters defined in the Unicode Standard     
+    (and other standards such as XML), and those representable by UTF-8 and     
+    UTF-16.    
+  <li>Over and above ISO 10646, the Unicode Standard adds a number of     
+    conformance constraints on character semantics (see <i>The Unicode Standard,     
+    Version 3.0, Chapter 3).</i> Declaring UTF-32 instead of UCS-4 allows     
+    implementations to explicitly commit to Unicode semantics.    
+  <li>The term <i>UTF-32</i> is parallel to <i>UTF-16</i> and <i>UTF-8</i>,     
+    avoiding confusion among software developers — especially since the     
+    pronunciations of &quot;UTF&quot; and &quot;UCS&quot; are so very similar.</li>    
+</ul>    
+<p>The code units for UTF-32 correspond exactly to Unicode code points. Compare     
+this to UTF-8, where only for the ASCII repertoire (U+0000..U+007F) do code     
+units numerically correspond to code points. In terms of frequency of use, the     
+situation for UTF-16 is essentially the same as UTF-32. For the vast majority of     
+computer text in the world, UTF-16 code units correspond to code points, since     
+the frequency of characters with code points above U+FFFF is and will remain     
+vanishingly small.</p>    
+<p>In any event, however, Unicode code points do <i>not</i> necessarily match      
+user-expectations for &quot;characters&quot;. For example, the following are not    
+represented by a single code point: a combining character sequences such as &lt;g, acute&gt;;     
+a conjoining jamo sequence; or the Devanagari conjunct &quot;ksha&quot;. These     
+are better matched by      
+grapheme boundaries, as explained in <a    
+href="http://www.unicode.org/unicode/uni2book/ch05.pdf">Chapter 5,     
+Implementation Guidelines</a> and in <a    
+href="http://www.unicode.org/unicode/reports/tr18/">UTR #18: Unicode Regular     
+Expression Guidelines</a>.</p>    
+<p>For a discussion      
+of the general framework for understanding the Unicode character encoding and      
+its relationship to the Unicode Transformation Formats, see <a href="http://www.unicode.org/unicode/reports/tr17/">UTR #17,      
+Character Encoding Model</a> [<a href="tr19-9.html#CharMod">CharMod</a>].</p>    
+<h2>2 <a name="Definitions">Definitions</a></h2>    
+<p>The following define the UTF-32 Transformation Formats. Note that these rely     
+on the conformance modifications introduced in <a    
+href="http://www.unicode.org/unicode/reports/tr27/">Unicode 3.1</a> [<a    
+href="tr19-9.html#U3.1">U3.1</a>].</p>    
+<table class="noborder" style="border-collapse: collapse" cellpadding="0" cellspacing="0">    
+  <tr>    
+    <td valign="top" align="middle" class="noborder">D36a</td>    
+    <td valign="top" align="left" class="noborder">(a) <b>UTF-32BE</b> is the Unicode     
+      Transformation Format that serializes a Unicode code point as a sequence     
+      of four bytes, in big-endian format. An initial sequence corresponding to U+FEFF is interpreted as a <span style="FONT-VARIANT: small-caps">zero     
+      width no-break space</span>.<br>    
+      (b) An illegal UTF-32BE code unit sequence is any byte sequence that would     
+      correspond to a numeric value outside of the range 0 to 10FFFF<sub>16</sub>.<i><br>    
+      </i>(c) An irregular UTF-32BE code unit sequence is an eight-byte sequence     
+      where the first four bytes correspond to a high surrogate, and the next     
+      four bytes correspond to a low surrogate. As a consequence of C12, these     
+      irregular UTF-32BE sequences shall not be generated by a conformant     
+      process.    
+      <ul>    
+        <li>In UTF-32BE, &lt;U+004D, U+0061, U+10000&gt; is serialized as &lt;00     
+          00 00 4D 00 00 00 61 00 01 00 00&gt;</li>    
+      </ul>    
+    </td>    
+  <tr>    
+    <td valign="top" align="middle" class="noborder">D36b</td>    
+    <td valign="top" align="left" class="noborder">(a) <b>UTF-32LE</b> is the Unicode     
+      Transformation Format that serializes a Unicode code point as a sequence     
+      of four bytes, in little-endian format. An initial sequence corresponding     
+      to U+FEFF is interpreted as a <span style="FONT-VARIANT: small-caps">zero     
+      width no-break space</span>.<br>    
+      (b) An illegal UTF-32LE code unit sequence is any byte sequence that would     
+      correspond to a numeric value outside of the range 0 to 10FFFF<sub>16</sub>.<i><br>    
+      </i>(c) An irregular UTF-32LE code unit sequence is an eight-byte sequence     
+      where the first four bytes correspond to a high surrogate, and the next     
+      four bytes correspond to a low surrogate. As a consequence of C12, these     
+      irregular UTF-32LE sequences shall not be generated by a conformant     
+      process.    
+      <ul>    
+        <li>In UTF-32LE, &lt;U+004D, U+0061, U+10000&gt; is serialized as &lt;4D     
+          00 00 00 61 00 00 00 00 00 01 00&gt;</li>    
+      </ul>    
+    </td>    
+  <tr>    
+    <td valign="top" align="middle" class="noborder">D36c</td>    
+    <td valign="top" align="left" class="noborder">(a) <b>UTF-32</b> is the Unicode     
+      Transformation Format that serializes a Unicode code point as a sequence     
+      of four bytes, in either big-endian or little-endian format. An initial     
+      sequence corresponding to U+FEFF is interpreted as a <i>byte order mark:</i>     
+      it is used to distinguish between the two byte orders. The <i>byte order     
+      mark</i> is not considered part of the content of the text. A     
+      serialization of Unicode code points into UTF-32 may or may not begin with     
+      a <i>byte order mark.</i><br>    
+      (b) An illegal UTF-32 code unit sequence is any byte sequence that would     
+      correspond to a numeric value outside of the range 0 to 10FFFF<sub>16</sub>.<i><br>    
+      </i>(c) An irregular UTF-32 code unit sequence is an eight-byte sequence     
+      where the first four bytes correspond to a high surrogate, and the next     
+      four bytes correspond to a low surrogate. As a consequence of C12, these     
+      irregular UTF-32 sequences shall not be generated by a conformant process.    
+      <ul>    
+        <li>In UTF-32, &lt;U+004D, U+0061, U+10000&gt; is serialized as any of:    
+          <ul>    
+            <li>&lt;00 00 FE FF 00 00 00 4D 00 00 00 61 00 01 00 00&gt;</li>    
+            <li>&lt;FF FE 00 00 4D 00 00 00 61 00 00 00 00 00 01 00&gt;</li>    
+            <li>&lt;00 00 00 4D 00 00 00 61 00 01 00 00&gt;</li>    
+          </ul>    
+        <li>The term <b>UTF-32</b> can be used ambiguously. When referring to     
+          the encoding of Unicode in memory, there is no associated byte     
+          orientation, and a BOM is never used. When referring to a     
+          serialization of Unicode code points into bytes, it may have a BOM and     
+          either byte orientation.</li>    
+      </ul>    
+    </td>    
+</table>    
+<h2>3 Relation to ISO/IEC <a name="10646">10646</a> and UCS-4</h2>    
+<p>ISO/IEC 10646 defines a 4-byte encoding form called <i>UCS-4</i>. Since     
+UTF-32 is simply a subset of UCS-4 characters, it is conformant to ISO/IEC 10646     
+as well as to the Unicode Standard.    
+<p>As of the recent publication of the second edition of ISO/IEC 10646-1, UCS-4     
+still assigns private use codepoints (E00000<sub>16</sub>..FFFFFF<sub>16</sub>     
+and 60000000<sub>16</sub>..7FFFFFFF<sub>16</sub>) that are not in the range of     
+valid Unicode codepoints. To promote interoperability among the Unicode encoding     
+forms JTC1/SC2/WG2 has approved a motion removing those private use assignments:</p>    
+<blockquote>    
+  <p><i>Resolution M38.6 (Restriction of encoding space) [adopted unanimously]</i></p>    
+  <p>&quot;WG2 accepts the proposal in document N2175 towards removing the     
+  provision for Private Use Groups and Planes beyond Plane 16 in ISO/IEC 10646,     
+  to ensure internal consistency in the standard between UCS-4, UTF-8 and UTF-16     
+  encoding formats, and instructs its project editor [to] prepare suitable text     
+  for processing as a future Technical Corrigendum or an Amendment to     
+  10646-1:2000.&quot;</p>    
+</blockquote>    
+<p>While this resolution must still be approved as an Amendment to 10646-1:2000,    
+the Unicode Technical Committee has every expectation that once the text for    
+that Amendment completes its formal balloting it will proceed smoothly to    
+publication as part of that standard.</p>   
+<p>Until the formal balloting is concluded, the term UTF-32 can be used to refer     
+to the subset of UCS-4 characters that are in the range of valid Unicode code     
+points. After it passes, UTF-32 will then simply be an alias for UCS-4 (with the     
+extra requirement that Unicode semantics are observed).</p>    
+<h2><a name="References">References</a></h2>    
+<table cellspacing="12" cellpadding="0" width="100%" border="0" class="noborder" style="border-collapse: collapse" bordercolor="#111111">    
+  <tbody>    
+    <tr>    
+      <td valign="top" width="1" height="88" class="noborder">[<a name="CharMod">CharMod</a>]</td>    
+      <td valign="top" height="88" class="noborder">Unicode Technical Report #17: Character Encoding Model<br>    
+        <a href="http://www.unicode.org/unicode/reports/tr17/">http://www.unicode.org/unicode/reports/tr17/<br>    
+        </a><i>For a detailed discussion of the relations between characters,    
+        glyphs, and encoding forms.</i></td>   
+    </tr>   
+    <tr>   
+      <td valign="top" width="1" height="66" class="noborder">[<a name="FAQ">FAQ</a>]</td>   
+      <td valign="top" height="66" class="noborder">Unicode Frequently Asked Questions<br>    
+        <a href="http://www.unicode.org/unicode/faq/">http://www.unicode.org/unicode/faq/<br>    
+        </a><i>For answers to common questions on technical issues.</i></td>   
+    </tr>   
+    <tr>   
+      <td valign="top" width="1" height="66" class="noborder">[<a name="Glossary">Glossary</a>]</td>   
+      <td valign="top" height="66" class="noborder">Unicode Glossary<a    
+        href="http://www.unicode.org/glossary/"><br>    
+        http://www.unicode.org/glossary/<br>    
+        </a><i>For explanations of terminology used in this and other documents.</i></td>   
+    </tr>   
+    <tr>   
+      <td valign="top" width="1" height="88" class="noborder">[<a name="Reports">Reports</a>]</td>   
+      <td valign="top" height="88" class="noborder">Unicode Technical Reports<br>   
+        <a   
+href="http://www.unicode.org/unicode/reports/">http://www.unicode.org/unicode/reports/<br>   
+        </a><i>For information on the status and development process for    
+        technical reports, and for a list of technical reports.</i></td>   
+    </tr>   
+    <tr>   
+      <td valign="top" width="1" height="44" class="noborder">[<a name="U3.1">U3.1</a>]</td>   
+      <td valign="top" height="44" class="noborder">Unicode Standard Annex #27: Unicode 3.1<a   
+        href="http://www.unicode.org/unicode/reports/tr27/"><br>   
+        http://www.unicode.org/unicode/reports/tr27/</a></td>   
+    </tr>   
+    <tr>   
+      <td valign="top" width="1" height="88" class="noborder">[<a name="Versions">Versions</a>]</td>   
+      <td valign="top" height="88" class="noborder">Versions of the Unicode Standard<br>   
+        <a   
+href="http://www.unicode.org/unicode/standard/versions/">http://www.unicode.org/unicode/standard/versions/<br>   
+        </a><i>For details on the precise contents of each version of the    
+        Unicode Standard, and how to cite them.</i></td>   
+    </tr>   
+  </tbody>   
+</table>   
+<h2><a name="Modifications">Modifications</a></h2>   
+<p>The following summarizes modifications from the previous version of this    
+document.</p>   
+<table cellspacing="4" cellpadding="0" width="100%" border="0" class="noborder" style="border-collapse: collapse" bordercolor="#111111">   
+  <tbody>   
+    <tr>
+      <td valign="top" width="1" class="noborder"><a name="TrackingNumber7">7</a></td>   
+      <td valign="top" class="noborder">   
+        <ul>   
+          <li>Changed to UAX</li>   
+          <li>Revised wording to reflect changes introduced by UTF-8 Corrigendum</li>   
+          <li>Added definition numbers. Note: these are interleaved between D36     
+            and D37.</li>    
+          <li>Updated introduction</li>    
+          <li>Added contents, references, modification sections</li>    
+          <li>Minor editing</li>   
+        </ul>   
+      </td>   
+    </tr>
+    <tr>   
+      <td valign="top" width="1" class="noborder"><a name="TrackingNumber9">9</a></td>   
+      <td valign="top" class="noborder">   
+        <ul>   
+          <li>Updated for Unicode 3.2.</li>    
+          <li>Updated UAX boilerplate in the status section.</li>   
+        </ul>   
+      </td>   
+    </tr>   
+  </tbody>   
+</table>   
+<hr align="left">   
+<p><font size="2">Copyright © 1999-2002 Unicode, Inc. All Rights Reserved.</font></p>    
+<p><font size="2">The Unicode Consortium makes no expressed or implied warranty     
+of any kind, and assumes no liability for errors or omissions. No liability is     
+assumed for incidental and consequential damages in connection with or arising     
+out of the use of the information or programs contained or accompanying this     
+technical report.</font></p>    
+<p><font size="2">Unicode and the Unicode logo are trademarks of Unicode, Inc.,     
+and are registered in some jurisdictions.</font></p>
+
+</div>
+</body>    
+    
+</html>

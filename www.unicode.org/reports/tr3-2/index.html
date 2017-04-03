@@ -1,0 +1,3427 @@
+<html>
+
+<head><!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+
+<meta name="GENERATOR" content="Microsoft FrontPage 3.0">
+<title>UTR #3 - Exploratory Proposals</title>
+</head>
+
+<body bgcolor="#FFFFFF" text="#000000" link="#FF0000" vlink="#808080" alink="#0000FF">
+
+<h1>Unicode Technical Report #3</h1>
+
+<h2>Exploratory Proposals</h2>
+
+<table border="1" width="100%">
+  <tr>
+    <td>Revision</td>
+    <td>2</td>
+  </tr>
+  <tr>
+    <td>Authors </td>
+    <td>The Glagolitic proposal was written by Joe Becker.<br>
+    All other proposals herein were written by Rick McGowan.</td>
+  </tr>
+  <tr>
+    <td>Date </td>
+    <td>1992-1993, various dates</td>
+  </tr>
+  <tr>
+    <td>This Version</td>
+    <td><a href="http://www.unicode.org/unicode/reports/tr3-2">http://www.unicode.org/unicode/reports/tr3-2</a></td>
+  </tr>
+  <tr>
+    <td>Previous Version</td>
+    <td><a href="http://www.unicode.org/unicode/reports/tr3.html">http://www.unicode.org/unicode/reports/tr3.html</a></td>
+  </tr>
+  <tr>
+    <td>Latest Version</td>
+    <td><a href="http://www.unicode.org/unicode/reports/tr3">http://www.unicode.org/unicode/reports/tr3</a></td>
+  </tr>
+</table>
+
+<p>The material in this technical report contains the original 1992 exploratory proposals
+for the encoding of many scripts. Since its first publication, several scripts have been
+encoded in the standard, or are in the process of being encoded. Please always refer to
+the latest published version of the Unicode Standard or to the information on the status
+of active proposals. </p>
+
+<hr>
+
+<p align="center"><font size="4"><strong>Technical Report #3</strong></font> <font
+size="4"><strong>- Exploratory Proposals</strong></font></p>
+
+<p align="left"><em><strong>Status of this document</strong></em></p>
+
+<p><em>This document has been considered and approved by the Unicode Technical Committee
+for publication as a Technical Report. At the current time, the specifications in this
+technical report are provided as information and guidance to implementers of the Unicode
+Standard, but do not form part of the standard itself. The Unicode Technical Committee may
+decide to incorporate all or part of the material of this technical report into a future
+version of the Unicode Standard, either as informative or as normative specification.
+Please mail corrigenda and other comments to <a href="mailto:errata@unicode.org">errata@unicode.org</a>.</em></p>
+
+<hr>
+
+<h2>Exploratory Proposals</h2>
+
+<p>Text only version without charts</p>
+
+<p>Until the end of the review period in August 1993: Permission is<br>
+granted to freely reproduce this report in small quantities for<br>
+purposes of review provided this notice remains affixed.</p>
+
+<p>Review period closes August 15, 1993</p>
+
+<p>Another draft will subsequently be issued for review</p>
+
+<h3>Introduction</h3>
+
+<p>This Technical Report is comprised of several exploratory proposals<br>
+that the Unicode Technical Committee wishes to present for their<br>
+first public review and commentary. These proposals have been<br>
+generated from the committee's current knowledge about the scripts<br>
+in question. Most of them are believed to be reasonable technical<br>
+solutions for encoding of particular scripts, as far as can be<br>
+ascertained at this time. However, many of them are known to be<br>
+incomplete or be possessed of significant unresolved issues. The<br>
+major unresolved issues are discussed in each proposal.</p>
+
+<p>Technical inaccuracies and ambiguities are to be expected in a work<br>
+of this nature, and most probably abound in these proposals. The<br>
+work involves conjecture, relies on scanty information, and often<br>
+requires re-interpretation as new information becomes available.</p>
+
+<p>The committee is not strongly committed to these proposals as they<br>
+stand, and further information is being actively sought. Suggestions<br>
+for improvement by way of additional symbols, further technical<br>
+requirements, changes in the script model, refinements to the block<br>
+introductions, or any other information can be mailed to the Scripts<br>
+Subcommittee at the Unicode, Inc. address. The committee especially<br>
+wishes to invite active participation and feedback from the<br>
+communities which these proposals are designed to serve.</p>
+
+<p>In these exploratory proposals, it is often mentioned that ``sufficient<br>
+information is not available'' for some particular aspect of the<br>
+script under discussion. This does not refer to the availability<br>
+of information in an absolute sense, rather that the committee has<br>
+not yet been able to obtain sufficient information for its archives.</p>
+
+<h3>Acknowledgements</h3>
+
+<p>Many individuals, too numerous to list here, have contributed<br>
+information over a period of over a year during which portions of<br>
+this report have been in preparation. The Unicode Technical<br>
+Committee wishes to thank them collectively for their contributions,<br>
+and hopes to see more such involvement in the future.</p>
+
+<p>The Glagolitic proposal was written by Joe Becker.<br>
+All other proposals herein were written by Rick McGowan.</p>
+
+<p>The following individuals have made significant contributions of<br>
+time and energy in following bibliographic leads, searching libraries,<br>
+forwarding information for the archives, or in analysis of various<br>
+scripts included here:</p>
+
+<p>Scott DeLancey, Lloyd Anderson, Andy Daniels, Elizabeth McGowan, <br>
+Joan Aliprand, Glenn Adams, Lars-Erik Fredriksson, Asmus Freytag</p>
+
+<h3>About the Epigraphic Blocks</h3>
+
+<h4>Semitic Alphabets</h4>
+
+<p>In these exploratory proposals, we distinguish two major ``Early Semitic <br>
+Alphabet'' blocks, Phoenician and Early Aramaic, which are<br>
+divided based on what may be termed ``significant'' differences in<br>
+the shapes of various letters. Admittedly, this is a highly<br>
+subjective choice. This arrangement makes two decisive cuts in<br>
+a historical continuum covering several thousand years of middle-eastern<br>
+history. The first cut is at approximately the point where several<br>
+scripts leading eventually to the Aramaic and Hebrew branches began<br>
+to be quite differentiated in their appearances from the branch<br>
+that led to Punic. The second cut is at the point where the <br>
+Aramaic/Hebrew branch began to noticeably split apart into the<br>
+various lines that led to the Greek, Etruscan, and Latin branches<br>
+on the one hand, and the Syriac, Arabic, and Hebrew branches on<br>
+the other.</p>
+
+<p>The alphabet encoded in the Early Phoenician block represents<br>
+Phoenician as it stabilized by about 1100-1050 BC, as well as<br>
+several early scripts that are quite closely related, though they<br>
+are used to write a number of languages. The Phoenician block may<br>
+be used, with appropriate font changes, to express Early Phoenician,<br>
+Moabite, Early Hebrew, the earliest Early Aramaic, and Canaanite<br>
+or Proto-Sinaitic scripts. It is also recommended for use to<br>
+express Later Phoenician and Punic, which represent the main line<br>
+of Phoenician evolution as a distinct script.</p>
+
+<h4>Later Branches of the Phoenician Alphabet</h4>
+
+<p>For encoding of Late Aramaic (especially papyri), Palmyrene, and<br>
+Nabataean the Early Aramaic block should be used. The dividing<br>
+line is relatively fuzzy, but in general a decision of which block<br>
+to use can be made on the language, or when necessary on the general<br>
+appearance of the script. The Unicode blocks are based rather<br>
+roughly on ``significant'' differences in at least 12 letters (out<br>
+of 22), including most obviously the letters transcribed as A(aleph), <br>
+B, H-underdot, T-underdot, Y, S, and R. (A reasonable comparative<br>
+source chart is contained in Healey's The Early Alphabet, fig. 15;<br>
+the two blocks are divided approximately between the fourth and<br>
+fifth of eight columns.)<br>
+&nbsp;</p>
+
+<h4>Related Historical Script Blocks</h4>
+
+<p>South Arabian and its descendents used for the Lihyanite, Safaitic, <br>
+and Thamudic languages are encoded in the South Arabian <br>
+block. The Syriac scripts (Serta, Estrangela, and<br>
+Nestorian and their immediate precursors such as Mandaic)<br>
+are encoded in a Syriac block and treated as font differences<br>
+from a prototypical Syriac script. (Mandaic shapes are<br>
+also shown in the Syriac block.) Varieties of Syriac are<br>
+in modern use. Etruscan and Oscan are encoded in the</p>
+
+<h4>Etruscan block.</h4>
+
+<p>Scripts Not Considered for Encoding<br>
+Lydian, Lycian , Sidetic, Carian are not currently being<br>
+considered for encoding. Information on the repertoire<br>
+for the first two is available, but other significant<br>
+information is lacking for all of them. They may eventually<br>
+be encoded separately, or mapped onto other scripts.</p>
+
+<p><strong>Future Directions</strong></p>
+
+<p>In the future, this epigraphic introduction may be expanded to<br>
+include further discussions of epigraphic scripts and families of<br>
+scripts.</p>
+
+<p><strong>Some Sources</strong></p>
+
+<p>Healey, John F. <em>The Early Alphabe</em>t. <br>
+Cross, Frank Moore. <em>The Invention and Development of the Alphabet. </em><br>
+Encyclopaedia Brittanica, <em>Articles on: Anatolian Languages, <br>
+Ancient Epigraphic Remains, Alphabets, Luwian, Lycian alphabet, <br>
+Lycian language, Lydian language</em>.</p>
+
+<p>Rev 92/11/25;</p>
+
+<h3>Early Aramaic</h3>
+
+<p>The Aramaic alphabet branched from the 22 letter alphabet used<br>
+for Phoenician and evolved along separate lines culminating <br>
+in Syriac, Arabic and other scripts. The Early Aramaic block should <br>
+be used for Late Aramaic (especially papyri), Palmyrene, <br>
+and Nabataean, Mandaic and their immediate precursors and successors.</p>
+
+<p>The order shown in the accompanying chart matches the order of <br>
+the Early Phoenician block and the shapes shown there are in the<br>
+Palmyrene style.</p>
+
+<p>See the Phoenician block introduction and the Early Alphabets block <br>
+introduction for further information and issues.</p>
+
+<p><strong>Some Sources</strong></p>
+
+<p>Healey, John F. <em>The Early Alphabet.</em> <br>
+Cross, Frank Moore. <em>The Invention and Development of the Alphabet</em>. <br>
+Diringer, David. <em>Writing</em>.</p>
+
+<p>Rev 92/10/30<br>
+&nbsp;</p>
+
+<p>Aramaic Names List, draft 92/10/29<br>
+&nbsp;<br>
+00 ARAMAIC LETTER ALEPH<br>
+01 ARAMAIC LETTER BETH<br>
+02 ARAMAIC LETTER GIMEL<br>
+03 ARAMAIC LETTER DALETH<br>
+04 ARAMAIC LETTER HE<br>
+05 ARAMAIC LETTER ZAIN<br>
+06 ARAMAIC LETTER HETH<br>
+07 ARAMAIC LETTER THET<br>
+08 ARAMAIC LETTER YODH<br>
+09 ARAMAIC LETTER KAPH<br>
+0A ARAMAIC LETTER LAMED<br>
+0B ARAMAIC LETTER MEM<br>
+0C ARAMAIC LETTER NUN<br>
+0D ARAMAIC LETTER SAMEKH<br>
+0E ARAMAIC LETTER AIN<br>
+0F ARAMAIC LETTER PE<br>
+<br>
+10 ARAMAIC LETTER SAN<br>
+11 ARAMAIC LETTER QOPPA<br>
+12 ARAMAIC LETTER RESH<br>
+13 ARAMAIC LETTER SHIN<br>
+14 ARAMAIC LETTER TAU<br>
+15 ARAMAIC LETTER WAW<br>
+</p>
+
+<h3>Balti</h3>
+
+<p>The Balti script is now extinct, but was formerly used to write<br>
+the Balti language of Baltistan, in what is now part of Ladakh in<br>
+Northern Kashmir. The script was apparently introduced in about<br>
+the fifteenth century when the people converted to Islam. It is<br>
+related to the Arabic script.</p>
+
+<p>In contrast to many other Indic scripts, Balti is written from<br>
+right to left horizontally, in the Arabic manner. All of the vowel<br>
+signs except long a are integrated into the glyphs used for<br>
+consonants, becoming projections from the consonants rather than<br>
+being separate marks as in most of the modern Indic scripts. The<br>
+consonants apparently have an inherent a vowel (or an explicit<br>
+vowel sign a may appear; there may not be a distinction between<br>
+long and short a). There appears to be a sign (overdot) used to<br>
+indicate the end of a word, but no interword spacing seems to be<br>
+used.</p>
+
+<p>The base form of b is the same as p and t; only the dots distinguish<br>
+these. There are two other similar pairs. These appear to<br>
+approximately parallel similar dotted versus dotless letters in Arabic.</p>
+
+<p><strong>Issues:</strong> The set of Balti consonants is too small to make it worth<br>
+encoding parallel to any of the other Indic scripts, or to Arabic.</p>
+
+<p>Not enough information is available at this time to determine the<br>
+completeness of the accompanying chart. The digits are unknown.</p>
+
+<p>It is unknown how much literature is available in the old Balti<br>
+script, or what the level of scholarly interest in it is. The<br>
+function of the character listed in the names list as ``Balti null<br>
+vowel or word ending'' is uncertain.</p>
+
+<p><strong>Some Sources</strong></p>
+
+<p>Grierson, G. A. Linguistic <em>Survey of India</em>, Vol. 3. One photocopy<br>
+of 2 pages (326 and 327) from an unknown volume in German.</p>
+
+<p>Rev 92/11/25<br>
+&nbsp;</p>
+
+<p>Balti Names, draft 92/10/23<br>
+&nbsp;<br>
+00 BALTI LETTER A<br>
+01 BALTI LETTER B<br>
+02 BALTI LETTER P<br>
+03 BALTI LETTER T<br>
+04 BALTI LETTER G<br>
+05 BALTI LETTER HH<br>
+06 BALTI LETTER C<br>
+07 BALTI LETTER CH<br>
+08 BALTI LETTER D<br>
+09 BALTI LETTER R<br>
+0A BALTI LETTER Z<br>
+0B BALTI LETTER S<br>
+0C BALTI LETTER SH<br>
+0D BALTI LETTER K<br>
+0E BALTI LETTER L<br>
+0F BALTI LETTER M<br>
+&nbsp;<br>
+10 BALTI LETTER N<br>
+11 BALTI LETTER H<br>
+12 BALTI LETTER J<br>
+13 BALTI LETTER KH<br>
+14 BALTI LETTER TH<br>
+15 BALTI LETTER TS<br>
+16 BALTI LETTER NG<br>
+17 BALTI VOWEL SIGN A<br>
+18 BALTI VOWEL SIGN AA<br>
+19 BALTI VOWEL SIGN E<br>
+1A BALTI VOWEL SIGN I<br>
+1B BALTI VOWEL SIGN O<br>
+1C BALTI VOWEL SIGN U<br>
+1D BALTI NULL VOWEL OR WORD ENDING?</p>
+
+<h3>Batak</h3>
+
+<p>The Batak script is (or was) used to write Toba (or Toba-Batak), <br>
+Mandailing, Dairi, and possibly other languages on the island <br>
+of Sumatra . The alphabet is called si-sija-sija in Toba-Batak (van<br>
+der Tuuk). Batak is read from left to right, but is often written<br>
+similarly to Tagalog and Buhid, by writing vertically along the<br>
+length of a piece of bamboo.</p>
+
+<p>The phonetic system of the script is similar to the scripts of the<br>
+Philippines (Tagalog). Like Tagalog and other scripts of the<br>
+archipelagos between Southeast Asia and Australia, Batak ultimately<br>
+derives from scripts of India. Batak has a virama and final<br>
+consonants are expressed in the script. Like Tagalog, only two<br>
+independent vowels other than a are included in the script (but<br>
+several vowel signs are used). The alphabetical order (if van der</p>
+
+<p>Tuuk gives it in order) differs from both the primeval Sanskritic<br>
+and Tagalog orders; the accompanying chart is in the order given<br>
+for Toba-Batak.</p>
+
+<p>The vowel signs i, o, and the pangolat (=virama) are spacing marks.</p>
+
+<p>The vowel signs e and final ng are non-spacing marks. The vowel<br>
+sign i is placed after the consonant. The vowel sign u is placed<br>
+under a consonant and somewhat to the right. Several ligated forms<br>
+of letters with the u sound are known. The vowel sign o is placed<br>
+after the consonant. The pangolet is likewise placed after the<br>
+consonant, causing the inherent a vowel to be lost. The final ng<br>
+is placed above the consonant and somewhat to the right. (When e<br>
+and ng occur together on a consonant, thus, there are two dashlike<br>
+marks above.) The hamisaran is usually written above the vowels<br>
+i and o. When pangolat (the devoweller) is used to close a syllable,<br>
+the vowel sign for the previous vowel is placed either under the<br>
+final consonant or after the final consonant, and before the pangolat<br>
+itself.</p>
+
+<p>Punctuation is not normally used, all letters simply running<br>
+together, but a bindu does exist and is occasionally used to<br>
+disambiguate similar words or phrases. (This bindu is unfortunately<br>
+known by the same name as the virama, pangolat.) The bindu apparently<br>
+appears in several forms. One is called bindu pinardjolma and is<br>
+used to separate sections of text; another is bindu pinarulok, and<br>
+a third is bindu pinarboras, again used to separate sections of<br>
+text. These marks are apparently large signs that physically<br>
+separate sections of text, and may be more in the manner of ornaments<br>
+than characters. Thus, only one bindu mark is included in the<br>
+chart. A sign called pustaha is also sometimes used to separate<br>
+a title from the main text which normally begins on the same line.</p>
+
+<p><strong>Mandailing: </strong>The Mandailing alphabetical order differs somewhat<br>
+from Toba-Batak, and North Mandailing again differs slightly from</p>
+
+<p><strong>South Mandailing. </strong>Some of the letter shapes are likewise slightly<br>
+different; these are ha and sa. The rendering forms for the<br>
+consonant vowel-sign combinations pa+u, sa+u, and la+u may differ<br>
+from the forms used for Toba Batak. Mandailing uses two other<br>
+letters for k and tj sounds. These two letters are produced by<br>
+putting a mark called tompi onto the normal letters for h and s.</p>
+
+<p>It is not known whether the tompi is otherwise productive, so both<br>
+the Mandailing letters and the tompi itself are included in the<br>
+chart.</p>
+
+<p><strong>Dairi: </strong>Dairi alphabetical order again differs from Toba-Batak and<br>
+Mandailing. Dairi does not include the letter nja. The forms for<br>
+ta and wa differ significantly from those used for Toba-Batak.</p>
+
+<p>The vowel sign listed in the chart as u is pronounced more like a<br>
+closed e and written after the associated consonant rather than<br>
+under (or attached to) the consonant. The sign sikordjan, which<br>
+is pronounced as a soft h following the associated vowel, is placed<br>
+over the consonant. When final ng is used in Dairi, it goes over<br>
+the previous consonant rather than over the vowel sign. In<br>
+Toba-Batak, it may optionally go over the vowel if the vowel is<br>
+not a non-spacing mark.</p>
+
+<p><strong>Issues:</strong> It is not clear whether the Mandailing tompi is different<br>
+from the Dairi sikordjan; if not, then one of them should be deleted<br>
+from the chart.</p>
+
+<p>Batak is known to have been in use in the mid-1800s. Nakanishi<br>
+(1975) states that it is ``seldom used today.'' It may be extinct<br>
+as of this writing (1992). The completeness of this analysis and<br>
+chart is not known.</p>
+
+<p><strong>Some Sources</strong></p>
+
+<p>van der Tuuk, H. N. <em>A Grammar of Toba Batak.</em></p>
+
+<p>Rev 92/10/23</p>
+
+<p>Batak Names draft, 92/10/23<br>
+&nbsp;<br>
+00 BATAK LETTER A<br>
+01 BATAK LETTER HA<br>
+02 BATAK LETTER MA<br>
+03 BATAK LETTER NA<br>
+04 BATAK LETTER RA<br>
+05 BATAK LETTER TA<br>
+06 BATAK LETTER SA<br>
+07 BATAK LETTER PA<br>
+08 BATAK LETTER LA<br>
+09 BATAK LETTER GA<br>
+0A BATAK LETTER DJA<br>
+0B BATAK LETTER DA<br>
+0C BATAK LETTER NGA<br>
+0D BATAK LETTER BA<br>
+0E BATAK LETTER WA<br>
+0F BATAK LETTER JA<br>
+&nbsp;<br>
+10 BATAK LETTER NJA<br>
+11 BATAK LETTER I<br>
+12 BATAK LETTER U<br>
+13 MANDAILING LETTER K<br>
+14 MANDAILING LETTER TJ<br>
+15 BATAK VOWEL SIGN I (HALUAIN)<br>
+16 BATAK VOWEL SIGN U (HABORUWAN)<br>
+17 BATAK VOWEL SIGN O (SIJALA)<br>
+18 BATAK VOWEL SIGN E (HATADINGAN)<br>
+19 BATAK FINAL NG (HAMISARAN)<br>
+1A MANDAILING DIACRITICAL MARK TOMPI<br>
+1B DAIRI SOFT H SIGN SIKORDJAN<br>
+1C BATAK VIRAMA PANGOLAT<br>
+1D BATAK SEPARATOR (BINDU)<br>
+1E BATAK SIGN PUSTAHA</p>
+
+<h3>Buginese</h3>
+
+<p>The Buginese script is used on the island of Sulawesi, mainly in<br>
+the south-west. It is of the Indic type and perhaps related to<br>
+Javanese. It bears some affinity with Tagalog as well, and it<br>
+apparently does not record final consonants. Buginese may be the<br>
+easternmost representative of the Brahmi descendents. Sirk (1983)<br>
+reports that the Buginese language (an Austronesian language) has<br>
+a rich traditional literature making it one of the foremost languages<br>
+of Indonesia. There may be as many as 2.3 million speakers of</p>
+
+<p>Buginese in the southern part of Sulawesi (as of 1971). The script<br>
+was reported in some use as of 1983, and a variety of traditional<br>
+literature has been printed in it.</p>
+
+<p>Buginese literature was studied extensively by B. F. Matthes (a<br>
+Dutch missionary) in the 19th century. Matthes published a</p>
+
+<p>Buginese-Dutch dictionary in 1874 with a supplement in 1889, as<br>
+well as a grammar.. The script was previously also used to write<br>
+the Makassarese, Bimanese, and Madurese languages.</p>
+
+<p>Buginese seems to use spaces between certain units, which are noted<br>
+by Sirk to be ``longer than a word in its grammatical definition.''</p>
+
+<p>There is one punctuation symbol, pallawa, used ``to separate<br>
+rhythmico-intonational groups, thus functionally corresponding to<br>
+the full stop and comma of the Latin script.'' It is also apparently<br>
+used sometimes to denote word doubling.</p>
+
+<p><strong>Issues:</strong> The only page from Fossey available to this author (page<br>
+377) comments that the ordering, also observed here, is after</p>
+
+<p>Matthes, and further remarks on ``une certaine diffrence entre les<br>
+caractres de ses publications et ceux de l'Imprimerie Nationale.''</p>
+
+<p>The digits, if any, are unknown.</p>
+
+<p><strong>Some Sources</strong></p>
+
+<p>Nakanishi, Akira. <em>Writing Systems of the World.</em><br>
+Fossey, Charles. <em>Notices sur les caractres trangers, anciens et modernes.</em><br>
+Sirk, .<em>The Buginese Language</em>.</p>
+
+<p>Rev 92/11/25<br>
+&nbsp;</p>
+
+<p>Buginese Names draft, 92/10/23<br>
+&nbsp;<br>
+00 BUGINESE LETTER KA<br>
+01 BUGINESE LETTER GA<br>
+02 BUGINESE LETTER NNA<br>
+03 BUGINESE LETTER NNKA<br>
+04 BUGINESE LETTER PA<br>
+05 BUGINESE LETTER BA<br>
+06 BUGINESE LETTER MA<br>
+07 BUGINESE LETTER MPA<br>
+08 BUGINESE LETTER TA<br>
+09 BUGINESE LETTER DA<br>
+0A BUGINESE LETTER NA<br>
+0B BUGINESE LETTER NRA<br>
+0C BUGINESE LETTER CA<br>
+0D BUGINESE LETTER JA<br>
+0E BUGINESE LETTER NYA<br>
+0F BUGINESE LETTER NYCA<br>
+&nbsp;<br>
+00 BUGINESE LETTER YA<br>
+11 BUGINESE LETTER RA<br>
+12 BUGINESE LETTER LA<br>
+13 BUGINESE LETTER WA<br>
+14 BUGINESE LETTER SA<br>
+15 BUGINESE LETTER A<br>
+16 BUGINESE LETTER HA<br>
+17 BUGINESE VOWEL SIGN I<br>
+18 BUGINESE VOWEL SIGN U<br>
+19 BUGINESE VOWEL SIGN E ACUTE<br>
+1A BUGINESE VOWEL SIGN O<br>
+1B BUGINESE VOWEL SIGN E BREVE<br>
+1C BUGINESE PUNCTUATION MARK<br>
+&nbsp;<br>
+</p>
+
+<h3>Cherokee Syllabary</h3>
+
+<p>The Cherokee script is a syllabic system used by <br>
+the Cherokee Indians of North America. It was invented in the early 19th Century<br>
+by Sequoyah who, realizing the power of written language, set out<br>
+to produce a system of writing for his language. It was first<br>
+tested among the Western Cherokee, and quickly adopted by the tribal<br>
+council. The modern syllabary consists of 85 letters. There<br>
+actually exist two forms of each letter; the modern symbols (shown<br>
+here) are apparently the result of the need for simplified forms<br>
+to be used with 19th century typesetting technology. As originally<br>
+invented, the symbols were all much more cursive in form (see the<br>
+sample in Alexander's Dictionary).</p>
+
+<p>Modern Cherokee punctuation and page formatting conventions are as<br>
+in English. Though the Cherokee syllabary is caseless, capitalization<br>
+has been observed in some publications for proper names and at the<br>
+beginning of each sentence, however, the ``majuscule'' letters do<br>
+not differ at all in appearance from the minuscule letters, they<br>
+are merely of larger size. Though Sequoyah invented a system of<br>
+numerals for Cherokee, they were not adopted by the tribal council<br>
+and have never been used. There are thus no independent digits<br>
+encoded in the Cherokee block; Arabic (Western) digits are used.</p>
+
+<p><strong>Encoding Structure:</strong> The Unicode block for the Cherokee script is<br>
+arranged in linear order consistent with what seems to be its normal<br>
+collation order. The columnar arrangement below is the typical<br>
+arrangement shown in dictionaries and textbooks. The vowel written<br>
+as &quot;v&quot; is a nasalized &quot;u&quot; (after Holmes &amp; Smith). No syllable mv
+exists.</p>
+
+<h4>Syllabary Layout</h4>
+
+<blockquote>
+  <p>A E I O U V<br>
+  GA KA GE GI GO GU GV</p>
+  <p>HA HE HI HO HU HV<br>
+  LA LE LI LO LU LV</p>
+  <p>MA ME MI MO MU --<br>
+  NA HNA NAH NE NI NO NU NV<br>
+  QUA QUE QUI QUO QUU QUV</p>
+  <p>SA S SE SI SO SU SV<br>
+  DA TA DE TE DI TI DO DU DV<br>
+  DLA TLA TLE TLI TLO TLU TLV</p>
+  <p>TSA TSE TSI TSO TSU TSV<br>
+  WA WE WI WO WU WV<br>
+  YA YE YI YO YU YV</p>
+</blockquote>
+
+<p><strong>Other Issues: </strong>It may be advisable to include an 86th symbol, which<br>
+was invented but quickly fell out of use. It occurs in facsimiles<br>
+of pages in Sequoyah's hand. Its phonetic value has been reported<br>
+as being close to that of HV.</p>
+
+<p><strong>Some Sources</strong></p>
+
+<p>Holmes, Ruth Bradley and Betty Sharp Smith. <em>Beginning Cherokee.<br>
+</em>Alexander, J. T. <em>A Dictionary of the Cherokee Indian Language.<br>
+</em>Sloat, Clarence, et al. <em>Introduction to Phonology</em>. <br>
+Kilpatrick,Jack Frederick and Anna Gritts Kilpatrick, eds. <em>New Echota Letters.</em></p>
+
+<p>Rev 92/10/29<br>
+Draft Cherokee Names List, 10/20/92.</p>
+
+<p>&nbsp;<br>
+00 CHEROKEE LETTER A<br>
+01 CHEROKEE LETTER E<br>
+02 CHEROKEE LETTER I<br>
+03 CHEROKEE LETTER O<br>
+04 CHEROKEE LETTER U<br>
+05 CHEROKEE LETTER V<br>
+06 CHEROKEE LETTER GA<br>
+07 CHEROKEE LETTER KA<br>
+08 CHEROKEE LETTER GE<br>
+09 CHEROKEE LETTER GI<br>
+0A CHEROKEE LETTER GO<br>
+0B CHEROKEE LETTER GU<br>
+0C CHEROKEE LETTER GV<br>
+0D CHEROKEE LETTER HA<br>
+0E CHEROKEE LETTER HE<br>
+0F CHEROKEE LETTER HI<br>
+&nbsp;<br>
+10 CHEROKEE LETTER HO<br>
+11 CHEROKEE LETTER HU<br>
+12 CHEROKEE LETTER HV<br>
+13 CHEROKEE LETTER LA<br>
+14 CHEROKEE LETTER LE<br>
+15 CHEROKEE LETTER LI<br>
+16 CHEROKEE LETTER LO<br>
+17 CHEROKEE LETTER LU<br>
+18 CHEROKEE LETTER LV<br>
+19 CHEROKEE LETTER MA<br>
+1A CHEROKEE LETTER ME<br>
+1B CHEROKEE LETTER MI<br>
+1C CHEROKEE LETTER MO<br>
+1D CHEROKEE LETTER MU<br>
+1E CHEROKEE LETTER NA<br>
+1F CHEROKEE LETTER HNA<br>
+&nbsp;<br>
+20 CHEROKEE LETTER NAH<br>
+21 CHEROKEE LETTER NE<br>
+22 CHEROKEE LETTER NI<br>
+23 CHEROKEE LETTER NO<br>
+24 CHEROKEE LETTER NU<br>
+25 CHEROKEE LETTER NV<br>
+26 CHEROKEE LETTER QUA<br>
+27 CHEROKEE LETTER QUE<br>
+28 CHEROKEE LETTER QUI<br>
+29 CHEROKEE LETTER QUO<br>
+2A CHEROKEE LETTER QUU<br>
+2B CHEROKEE LETTER QUV<br>
+2C CHEROKEE LETTER SA<br>
+2D CHEROKEE LETTER S<br>
+2E CHEROKEE LETTER SE<br>
+2F CHEROKEE LETTER SI<br>
+&nbsp;<br>
+30 CHEROKEE LETTER SO<br>
+31 CHEROKEE LETTER SU<br>
+32 CHEROKEE LETTER SV<br>
+33 CHEROKEE LETTER DA<br>
+34 CHEROKEE LETTER TA<br>
+35 CHEROKEE LETTER DE<br>
+36 CHEROKEE LETTER TE<br>
+37 CHEROKEE LETTER DI<br>
+38 CHEROKEE LETTER TI<br>
+39 CHEROKEE LETTER DO<br>
+3A CHEROKEE LETTER DU<br>
+3B CHEROKEE LETTER DV<br>
+3C CHEROKEE LETTER DLA<br>
+3D CHEROKEE LETTER TLA<br>
+3E CHEROKEE LETTER TLE<br>
+3F CHEROKEE LETTER TLI<br>
+&nbsp;<br>
+40 CHEROKEE LETTER TLO<br>
+41 CHEROKEE LETTER TLU<br>
+42 CHEROKEE LETTER TLV<br>
+43 CHEROKEE LETTER TSA<br>
+44 CHEROKEE LETTER TSE<br>
+45 CHEROKEE LETTER TSI<br>
+46 CHEROKEE LETTER TSO<br>
+47 CHEROKEE LETTER TSU<br>
+48 CHEROKEE LETTER TSV<br>
+49 CHEROKEE LETTER WA<br>
+4A CHEROKEE LETTER WE<br>
+4B CHEROKEE LETTER WI<br>
+4C CHEROKEE LETTER WO<br>
+4D CHEROKEE LETTER WU<br>
+4E CHEROKEE LETTER WV<br>
+4F CHEROKEE LETTER YA<br>
+&nbsp;<br>
+50 CHEROKEE LETTER YE<br>
+51 CHEROKEE LETTER YI<br>
+52 CHEROKEE LETTER YO<br>
+53 CHEROKEE LETTER YU<br>
+54 CHEROKEE LETTER YV<br>
+&nbsp;</p>
+
+<h3>Etruscan</h3>
+
+<p>The Etruscan script is used to write both the Etruscan and Oscan<br>
+(or Oscan-Umbrian) languages. Etruscan was the language of a people<br>
+(who called themselves rasna) in Etruria, corresponding to modern</p>
+
+<p>Tuscany in western Italy. The Etruscan civilization lived alongside<br>
+the Romans and there was much contact between the two. Inscriptions<br>
+in Etruscan date from about the 7th century BC through the first<br>
+century AD. The Etruscan and Oscan languages are unrelated, Oscan<br>
+being an Italic language similar to Latin and Etruscan being<br>
+imperfectly known and of uncertain linguistic affiliation.</p>
+
+<p>Etruscan is written horizontally from right to left (occasionally<br>
+boustrophedon). Archaic inscriptions have no spaces between words,<br>
+but later inscriptions frequently have single or double dots between<br>
+words. The letters ii and uu are used in Oscan but not in Etruscan.</p>
+
+<p>The letters s and o (0E and 0F) appear in Etruscan inscriptions<br>
+only in the context of abecedaries and were apparently not used in<br>
+writing the Etruscan language.</p>
+
+<p>Etruscan numerals are imperfectly known. They are similar to Roman<br>
+numerals, but they are read and written from right to left, in<br>
+contrast to Latin. The numerals at 26 and 27 are uncertain.</p>
+
+<p><strong>Issues:</strong> The numerals are too uncertain at this time to warrant a<br>
+final encoding; more information is necessary.</p>
+
+<p><strong>Some Sources</strong></p>
+
+<p>Encyclopaedia Brittanica, Article: <em>Etruscan Language. Bonfante</em>,<br>
+Larissa. <em>Etruscan</em>.</p>
+
+<p>Rev 92/10/20<br>
+&nbsp;</p>
+
+<p>Etruscan Names List, draft 92/10/29<br>
+&nbsp;<br>
+00 ETRUSCAN LETTER A<br>
+01 ETRUSCAN LETTER B<br>
+02 ETRUSCAN LETTER C<br>
+03 ETRUSCAN LETTER D<br>
+04 ETRUSCAN LETTER E<br>
+05 ETRUSCAN LETTER V<br>
+06 ETRUSCAN LETTER Z<br>
+07 ETRUSCAN LETTER H<br>
+08 ETRUSCAN LETTER TH<br>
+09 ETRUSCAN LETTER I<br>
+0A ETRUSCAN LETTER K<br>
+0B ETRUSCAN LETTER L<br>
+0C ETRUSCAN LETTER M<br>
+0D ETRUSCAN LETTER N<br>
+0E ETRUSCAN LETTER S<br>
+0F ETRUSCAN LETTER O<br>
+&nbsp;<br>
+10 ETRUSCAN LETTER P<br>
+11 ETRUSCAN LETTER SH<br>
+12 ETRUSCAN LETTER Q<br>
+13 ETRUSCAN LETTER R<br>
+14 ETRUSCAN LETTER S<br>
+15 ETRUSCAN LETTER T<br>
+16 ETRUSCAN LETTER U<br>
+17 ETRUSCAN LETTER SS<br>
+18 ETRUSCAN LETTER PH<br>
+19 ETRUSCAN LETTER KH<br>
+1A ETRUSCAN LETTER F<br>
+1B ETRUSCAN LETTER II<br>
+1C ETRUSCAN LETTER UU<br>
+1D <br>
+1E <br>
+1F <br>
+&nbsp;<br>
+20 <br>
+21 ETRUSCAN NUMERAL I<br>
+22 ETRUSCAN NUMERAL V<br>
+23 ETRUSCAN NUMERAL X<br>
+24 ETRUSCAN NUMERAL L<br>
+25 ETRUSCAN NUMERAL C<br>
+26 ETRUSCAN NUMERAL UNKNOWN A<br>
+27 ETRUSCAN NUMERAL UNKNOWN B<br>
+</p>
+
+<h3>Glagolitic</h3>
+
+<p>Glagolitic, sometimes called by its Russian name Glagolitsa (``verbal<br>
+script''), was developed in the 9th century to write Old Slavic.</p>
+
+<p>It arose more or less in parallel with the Cyrillic alphabet for<br>
+the same language, and the two alphabets correspond to each other<br>
+quite closely. The relationship between the origins of Glagolitic<br>
+and Cyrillic is unknown, though St. Cyril is said to have had a<br>
+hand in both. The Cyrillic script gradually supplanted Glagolitic,<br>
+but Glagolitic continued in some liturgical use until the 19th<br>
+century.</p>
+
+<p>In the encoding, Glagolitic is treated as a separate script from<br>
+Cyrillic, principally because the letter shapes are in most cases<br>
+totally unrelated, with differences not at all arising from &quot;mere<br>
+font style&quot;. Glagolitic itself is seen in two slightly different<br>
+styles, called the Bulgarian-Macedonian and Croatian. The Croatian<br>
+form distinguishes uppercase and lowercase letters, although the<br>
+difference in nearly all instances is merely one of size. The<br>
+letterforms shown in the charts are Croatian style.</p>
+
+<p>Like Cyrillic, the Glagolitic script is written in linear sequence<br>
+from left to right with no contextual modification of the letterforms.</p>
+
+<p><strong>Variant Glyph Forms: </strong>Two or three of the letters have variant<br>
+glyph forms. These are not given separate character codes.</p>
+
+<p><strong>Encoding Order: </strong>The ordering is basically the same as that of the<br>
+(old) Cyrillic alphabet. Occasional sources show minor variations<br>
+in the ordering of one or two characters.</p>
+
+<p><strong>Letter Names: </strong>These old names for the Cyrillic letters apply as<br>
+well to the Glagolitic.</p>
+
+<p><strong>Encoding Structure:</strong> The Unicode block for the Glagolitic script<br>
+is divided into the following ranges:<br>
+U+00 to U+27 Uppercase letters (generic Glagolitic)<br>
+U+28 to U+2F Currently unassigned U+30 to<br>
+U+57 Lowercase letters (Croatian-style only) U+58 to<br>
+U+5F Currently unassigned</p>
+
+<p><strong>Open issues:</strong><br>
+1. order and names of IZHE / I: seems to be random, may be<br>
+able to find a preference.<br>
+2. discrepancies with (DIS) 6861it appears to contain 3 pairs<br>
+of variant glyphs for the same letters<br>
+- suggest ignoring these, there's room to add them<br>
+later if necessary it appears to contain 1 (or 2)<br>
+pairs of letters seen nowhere else<br>
+- suggest ignoring these, there's room to add them<br>
+later if appropriate it appears to contain 1<br>
+duplicated glyph (IZHE)<br>
+- suggest ignoring this, apparently a mistake</p>
+
+<p>DRAFT GLAGOLITIC CHARACTER NAMES LIST<br>
+&nbsp;<br>
+@ Uppercase letters (generic Glagolitic)<br>
+00 GLAGOLITIC CAPITAL LETTER AZ<br>
+01 GLAGOLITIC CAPITAL LETTER BUKI<br>
+02 GLAGOLITIC CAPITAL LETTER VEDI<br>
+03 GLAGOLITIC CAPITAL LETTER GLAGOL<br>
+04 GLAGOLITIC CAPITAL LETTER DOBRO<br>
+05 GLAGOLITIC CAPITAL LETTER YEST<br>
+06 GLAGOLITIC CAPITAL LETTER ZHIVETE<br>
+07 GLAGOLITIC CAPITAL LETTER ZELO<br>
+08 GLAGOLITIC CAPITAL LETTER ZEMLYA<br>
+09 GLAGOLITIC CAPITAL LETTER IZHE<br>
+0A GLAGOLITIC CAPITAL LETTER I<br>
+= izhey<br>
+0B GLAGOLITIC CAPITAL LETTER DERV<br>
+= gerv<br>
+0C GLAGOLITIC CAPITAL LETTER KAKO<br>
+0D GLAGOLITIC CAPITAL LETTER LYUDI<br>
+0E GLAGOLITIC CAPITAL LETTER MISLETE<br>
+0F GLAGOLITIC CAPITAL LETTER NASH<br>
+10 GLAGOLITIC CAPITAL LETTER ON<br>
+11 GLAGOLITIC CAPITAL LETTER POKOY<br>
+12 GLAGOLITIC CAPITAL LETTER RTSI<br>
+13 GLAGOLITIC CAPITAL LETTER SLOVO<br>
+14 GLAGOLITIC CAPITAL LETTER TVERDO<br>
+15 GLAGOLITIC CAPITAL LETTER UK<br>
+16 GLAGOLITIC CAPITAL LETTER FERT<br>
+17 GLAGOLITIC CAPITAL LETTER KHER<br>
+18 GLAGOLITIC CAPITAL LETTER OT<br>
+= omega<br>
+19 GLAGOLITIC CAPITAL LETTER TSI<br>
+1A GLAGOLITIC CAPITAL LETTER CHERV<br>
+1B GLAGOLITIC CAPITAL LETTER SHA<br>
+1C GLAGOLITIC CAPITAL LETTER SHTA<br>
+1D GLAGOLITIC CAPITAL LETTER YER<br>
+1E GLAGOLITIC CAPITAL LETTER YERI<br>
+1F GLAGOLITIC CAPITAL LETTER YERY<br>
+20 GLAGOLITIC CAPITAL LETTER YAT<br>
+21 GLAGOLITIC CAPITAL LETTER YU<br>
+22 GLAGOLITIC CAPITAL LETTER YUS MALIY<br>
+23 GLAGOLITIC CAPITAL LETTER YUS MALIY YOTIROVANNIY<br>
+24 GLAGOLITIC CAPITAL LETTER YUS BOLSHOY<br>
+25 GLAGOLITIC CAPITAL LETTER YUS BOLSHOY YOTIROVANNIY<br>
+26 GLAGOLITIC CAPITAL LETTER FITA<br>
+27 GLAGOLITIC CAPITAL LETTER IZHITSA<br>
+28<br>
+29<br>
+2A<br>
+2B<br>
+2C<br>
+2D<br>
+2E<br>
+2F<br>
+&nbsp;<br>
+@ Lowercase letters (Croatian-style only)<br>
+30 GLAGOLITIC SMALL LETTER AZ<br>
+31 GLAGOLITIC SMALL LETTER BUKI<br>
+32 GLAGOLITIC SMALL LETTER VEDI<br>
+33 GLAGOLITIC SMALL LETTER GLAGOL<br>
+34 GLAGOLITIC SMALL LETTER DOBRO<br>
+35 GLAGOLITIC SMALL LETTER YEST<br>
+36 GLAGOLITIC SMALL LETTER ZHIVETE<br>
+37 GLAGOLITIC SMALL LETTER ZELO<br>
+38 GLAGOLITIC SMALL LETTER ZEMLYA<br>
+39 GLAGOLITIC SMALL LETTER IZHE<br>
+3A GLAGOLITIC SMALL LETTER I<br>
+= izhey<br>
+3B GLAGOLITIC SMALL LETTER DERV<br>
+= gerv<br>
+3C GLAGOLITIC SMALL LETTER KAKO<br>
+3D GLAGOLITIC SMALL LETTER LYUDI<br>
+3E GLAGOLITIC SMALL LETTER MISLETE<br>
+3F GLAGOLITIC SMALL LETTER NASH<br>
+40 GLAGOLITIC SMALL LETTER ON<br>
+41 GLAGOLITIC SMALL LETTER POKOY<br>
+42 GLAGOLITIC SMALL LETTER RTSI<br>
+43 GLAGOLITIC SMALL LETTER SLOVO<br>
+44 GLAGOLITIC SMALL LETTER TVERDO<br>
+45 GLAGOLITIC SMALL LETTER UK<br>
+46 GLAGOLITIC SMALL LETTER FERT<br>
+47 GLAGOLITIC SMALL LETTER KHER<br>
+48 GLAGOLITIC SMALL LETTER OT<br>
+= omega<br>
+49 GLAGOLITIC SMALL LETTER TSI<br>
+4A GLAGOLITIC SMALL LETTER CHERV<br>
+4B GLAGOLITIC SMALL LETTER SHA<br>
+4C GLAGOLITIC SMALL LETTER SHTA<br>
+4D GLAGOLITIC SMALL LETTER YER<br>
+4E GLAGOLITIC SMALL LETTER YERI<br>
+4F GLAGOLITIC SMALL LETTER YERY<br>
+50 GLAGOLITIC SMALL LETTER YAT<br>
+51 GLAGOLITIC SMALL LETTER YU<br>
+52 GLAGOLITIC SMALL LETTER YUS MALIY<br>
+53 GLAGOLITIC SMALL LETTER YUS MALIY YOTIROVANNIY<br>
+54 GLAGOLITIC SMALL LETTER YUS BOLSHOY<br>
+55 GLAGOLITIC SMALL LETTER YUS BOLSHOY YOTIROVANNIY<br>
+56 GLAGOLITIC SMALL LETTER FITA<br>
+57 GLAGOLITIC SMALL LETTER IZHITSA<br>
+58<br>
+59<br>
+5A<br>
+5B<br>
+5C<br>
+5D<br>
+5E<br>
+5F<br>
+&nbsp;<br>
+</p>
+
+<h3>Kirat (Limbu)</h3>
+
+<p>The Limbu (or Kirat or Kiranti) alphabet is (or was) used among<br>
+the Limbu of Sikkim and Darjeeling. Kirat is structurally similar<br>
+to the Róng (Lepcha) script. It has 20 consonants (including the<br>
+stand-alone ``A'' as in other Indic scripts), 8 vowel signs, 7<br>
+(or 8 or 10?) final consonants. Letters YA, RA, and WA may be<br>
+subscripted in a manner similar to the Tibetan and Róng scripts.</p>
+
+<p>There appears to have been, at sometime in the past, an orthographic<br>
+reform, and two slightly different varieties of the script appear<br>
+to be in existence.</p>
+
+<p>There are three other symbols needed for proper pronunciation of<br>
+Limbu. These are mukphreng (aspiration mark), kehmphreng (length<br>
+mark) and sa-i (possibly the virama). The sa-i appears to be used<br>
+to remove the inherent A sound like a virama. Sa-i has been<br>
+conjectured to occur visibly only in word-medial position. It has<br>
+been observed also in apparent word-final position. Its function<br>
+may be therefor different from an invisible virama.</p>
+
+<p>Kirat appears to include three other marks, the names of which are<br>
+not presently known. These are (1) a mark indicating colon or full<br>
+stop, (2) a mark indicating a prolonged final note during a chant,<br>
+(3) a mark which looks like the Oriya anusvara (a circle above)<br>
+indicating an acute type of accent.</p>
+
+<p>The accompanying chart was prepared from a draft supplied <br>
+by Lloyd Anderson. The ISCII model and layout is followed in the accompanying<br>
+chart. The shaded cells to the far right are final consonants<br>
+(lower nine cells), a ``tr'' conjunct and a ``j'' rendering form.</p>
+
+<p><strong>Issues:</strong> It is not known whether the Kirat script is still in use<br>
+as of this writing (1992). It was reported in 1855 as nearly<br>
+extinct, but sources as recent as 1979 are available.</p>
+
+<p>This draft for Kirat is by no means complete. Sources vary even<br>
+as to the correct number of final consonants (or ``conjoint letters''<br>
+called kedumba sok); there may be as many as ten of them.</p>
+
+<p>There are two different approaches to encoding of Kirat. If the<br>
+script is postulated to contain an invisible virama distinct from<br>
+sa-i, then the final consonants could be rendered in text by using<br>
+this virama followed by the corresponding normal forms If, however,<br>
+no such invisible virama is postulated, then the final consonants<br>
+should be encoded distinctly. There is no concrete evidence yet<br>
+available [to this author] for or against such an invisible virama<br>
+that is distinct from sa-i. Both are transliterated into Devanagari<br>
+by use of half-consonant forms, as Devanagari has no such distinction<br>
+at all. The final consonants cannot be rendered alone by use of<br>
+sa-i, since the sa-i appears to be always visible when it occurs,<br>
+and kedumba sok forms also occur without the sa-i. There thus<br>
+appears to be some distinction, and sa-i alone is insufficient to<br>
+generate both forms. Sa-i is also seen with full consonants, where<br>
+it presumably functions like a virama (in eliding the inherent<br>
+vowel). Because of these observations the final consonants should, perhaps<br>
+be encode distinctly and no invisible<em>virama</em> encoded. In this <br>
+case Limbu would then be similar to the model for Rong. See <br>
+the block introduction for Rong, Lepcha.</p>
+
+<p>In either case, the script bears some similarity to the Róng script,<br>
+and it seems that the same conceptual model should be used for<br>
+both. Kirat could be laid out in a manner compatible with ISCII<br>
+and parallel to Devanagari as far as the arrangement of its vowels<br>
+and consonants. However, since it has a somewhat smaller complement<br>
+of consonants than Devanagari, and needs no precomposed long vowels,<br>
+many empty codepoints are unnecessarily scattered throughout such<br>
+an encoding. Kirat could also be encoded parallel to Tibetan as<br>
+far as the arrangement of its consonants.</p>
+
+<p><strong>Some Sources</strong></p>
+
+<p>Campbell, A. Note on the Limboo <em>Alphabet of the Sikkim Himalaya</em>.<br>
+Chemsong, Iman Singh. <em>The Kirat Grammar (Limbu).</em> <br>
+Subba, B. B.<em> Limbu Nepali English Dictionary</em>. <br>
+Kirat Primary Book. <em>Limbu Reader VI.</em></p>
+
+<p>Rev 92/10/30<br>
+&nbsp;<br>
+Kirat (Limbu) Names List, draft 92/10/20</p>
+
+<p>This is a sign inventory of the chart rather than a names list.</p>
+
+<p>The chart follows the ISCII order, as discussed in the Issues<br>
+section of the block introduction; the names for each codepoint<br>
+may be obtained by looking at the Unicode Devanagari block.</p>
+
+<p>KIRAT LETTER KA<br>
+KIRAT LETTER KHA<br>
+KIRAT LETTER GA<br>
+KIRAT LETTER NGA<br>
+KIRAT LETTER CHA<br>
+KIRAT LETTER CHHA<br>
+KIRAT LETTER JA<br>
+KIRAT LETTER NA<br>
+KIRAT LETTER TA<br>
+KIRAT LETTER THA<br>
+KIRAT LETTER DA<br>
+KIRAT LETTER DHA<br>
+KIRAT LETTER PA<br>
+KIRAT LETTER PHA<br>
+KIRAT LETTER BA<br>
+KIRAT LETTER BHA<br>
+KIRAT LETTER MA<br>
+KIRAT LETTER YA<br>
+KIRAT LETTER RA<br>
+KIRAT LETTER LA<br>
+KIRAT LETTER WA<br>
+KIRAT LETTER SHA<br>
+KIRAT LETTER SA<br>
+KIRAT LETTER HA<br>
+KIRAT LETTER GHA<br>
+KIRAT LETTER A<br>
+KIRAT VOWEL SIGN A<br>
+KIRAT VOWEL SIGN I<br>
+KIRAT VOWEL SIGN U<br>
+KIRAT VOWEL SIGN E<br>
+KIRAT VOWEL SIGN AI<br>
+KIRAT VOWEL SIGN O<br>
+KIRAT VOWEL SIGN AU<br>
+KIRAT VOWEL SIGN TIT-CHA<br>
+KIRAT VOWEL SIGN PET-CHA<br>
+KIRAT FINAL CONSONANT K<br>
+KIRAT FINAL CONSONANT NG<br>
+KIRAT FINAL CONSONANT T<br>
+KIRAT FINAL CONSONANT N<br>
+KIRAT FINAL CONSONANT P<br>
+KIRAT FINAL CONSONANT M<br>
+KIRAT FINAL CONSONANT R<br>
+KIRAT FINAL CONSONANT L<br>
+KIRAT SUBSCRIPT YA<br>
+KIRAT SUBSCRIPT RA<br>
+KIRAT SUBSCRIPT WA<br>
+KIRAT ASPIRATION MARK (MUKPHRENG)<br>
+KIRAT LENGTH MARK (KEHMPHRENG)<br>
+KIRAT VIRAMA? (SAI)<br>
+KIRAT ANUSVARA<br>
+KIRAT PROLONGED FINAL MARK<br>
+KIRAT STOP <br>
+&nbsp;</p>
+
+<h3>Linear B</h3>
+
+<p>The script called Linear B is a syllabic system that was used on<br>
+the island of Crete (and parts of the nearby mainland) to write<br>
+the oldest recorded variety of the Greek language. Linear B clay<br>
+tablets predate Homeric Greek by some 700 years, the latest being<br>
+from about 1375 BC. Major archaeological sites include Knossos,<br>
+first uncovered in about 1900 by Sir Arthur Evans, and a major site<br>
+near Pylos on the mainland. The majority of inscriptions currently<br>
+known are inventories of commodities and accounting records.</p>
+
+<p>The script resisted early attempts at decipherment, but it finally<br>
+yielded to the efforts of Michael Ventris, an architect and amateur<br>
+decipherer. Ventris' breakthrough in decipherment came after the<br>
+realization that the language might be Greek, and not (as had been<br>
+previously thought) a completely unknown language. Ventris formed<br>
+an alliance with John Chadwick, and decipherment proceeded quickly.<br>
+Ventris and Chadwick published a joint paper in 1953.</p>
+
+<p>Linear B was written from left to right with no non-spacing marks<br>
+or other complications. The script consists mainly of a number of<br>
+phonetic signs representing the combination of a consonant and<br>
+vowel. There are 60 known phonetic signs, a few signs that seem<br>
+to be mainly free variants (Chadwick's optional signs), a few<br>
+unidentified signs, numerals, and a number of ideographic signs<br>
+which were used mainly as counters for commodities. Some ligatures<br>
+formed from combinations of syllables were apparently used as well.</p>
+
+<p>Chadwick gives several examples of these ligatures, which are not<br>
+included in this encoding.</p>
+
+<p>The signs having phonetic values beginning with J are pronounced<br>
+in the German manner as the English Y.</p>
+
+<p><strong>Issues:</strong> The first four rows (through the syllable zo) are well<br>
+established; the rest of the symbols are more questionable. Some<br>
+of the unknown symbols may now be known, and hence require some<br>
+movement of codes. The characters for weights are not necessarily<br>
+in a sensible order. There may be no distinction between characters<br>
+43 and 6A. The ideograms (e.g., for weight) may be the tip of a<br>
+much larger ideographic iceberg, though the sources would seem to<br>
+indicate that there are only a small number of such ideograms.</p>
+
+<p>The 5th unknown symbol may be gold, but it's not clear; one older<br>
+source listed it as unknown, but Chadwick's book (see below) lists<br>
+it as meaning gold. The character names for the weight units<br>
+reflect the lists in Chadwick, but do not convey the proper meaning<br>
+well; better names must be found.</p>
+
+<p>The historical importance of Linear B is well established. It may<br>
+make sense, however, to encode Linear B along with Linear A and<br>
+the Cypriot Syllabary of Enkomi, either as a unified set of signs<br>
+or separately in adjacent blocks with phonetic parallels. Unicode<br>
+archives contain some references for Linear A and Cypriot.</p>
+
+<p>The Linear B ligatures may be another case requiring the encoding<br>
+of some form of ligature manufacturing code in Unicode, since such<br>
+ligatures would be optional and totally free variants in any<br>
+rendering system. Such a ligature code has been widely discussed,<br>
+and may be necessary in other scripts as well.</p>
+
+<p><strong>Some Sources</strong></p>
+
+<p>Chadwick, John. <em>Linear B and Related Scripts. </em><br>
+Sampson, Geoffrey.<em>Writing Systems; a linguistic introduction</em>.</p>
+
+<p>Rev 92/11/25<br>
+&nbsp;<br>
+Linear B names, 92/10/26<br>
+00 LINEAR B SYLLABLE A<br>
+01 LINEAR B SYLLABLE E<br>
+02 LINEAR B SYLLABLE I<br>
+03 LINEAR B SYLLABLE O<br>
+04 LINEAR B SYLLABLE U<br>
+05 LINEAR B SYLLABLE DA<br>
+06 LINEAR B SYLLABLE DE<br>
+07 LINEAR B SYLLABLE DI<br>
+08 LINEAR B SYLLABLE DO<br>
+09 LINEAR B SYLLABLE DU<br>
+0A LINEAR B SYLLABLE JA<br>
+0B LINEAR B SYLLABLE JE<br>
+0C <br>
+0D LINEAR B SYLLABLE JO<br>
+0E LINEAR B SYLLABLE JU<br>
+0F LINEAR B SYLLABLE KA<br>
+10 LINEAR B SYLLABLE KE<br>
+11 LINEAR B SYLLABLE KI<br>
+12 LINEAR B SYLLABLE KO<br>
+13 LINEAR B SYLLABLE KU<br>
+14 LINEAR B SYLLABLE MA<br>
+15 LINEAR B SYLLABLE ME<br>
+16 LINEAR B SYLLABLE MI<br>
+17 LINEAR B SYLLABLE MO<br>
+18 LINEAR B SYLLABLE MU (OX)<br>
+19 LINEAR B SYLLABLE NA<br>
+1A LINEAR B SYLLABLE NE<br>
+1B LINEAR B SYLLABLE NI (FIGS)<br>
+1C LINEAR B SYLLABLE NO<br>
+1D LINEAR B SYLLABLE NU<br>
+1E LINEAR B SYLLABLE PA<br>
+1F LINEAR B SYLLABLE PE<br>
+20 LINEAR B SYLLABLE PI<br>
+21 LINEAR B SYLLABLE PO<br>
+22 LINEAR B SYLLABLE PU<br>
+23 LINEAR B SYLLABLE QA<br>
+24 LINEAR B SYLLABLE QE<br>
+25 LINEAR B SYLLABLE QI (SHEEP)<br>
+26 LINEAR B SYLLABLE QO<br>
+27 <br>
+28 LINEAR B SYLLABLE RA<br>
+29 LINEAR B SYLLABLE RE<br>
+2A LINEAR B SYLLABLE RI<br>
+2B LINEAR B SYLLABLE RO<br>
+2C LINEAR B SYLLABLE RU<br>
+2D LINEAR B SYLLABLE SA (FLAX)<br>
+2E LINEAR B SYLLABLE SE<br>
+2F LINEAR B SYLLABLE SI<br>
+30 LINEAR B SYLLABLE SO<br>
+31 LINEAR B SYLLABLE SU<br>
+32 LINEAR B SYLLABLE TA<br>
+33 LINEAR B SYLLABLE TE<br>
+34 LINEAR B SYLLABLE TI<br>
+35 LINEAR B SYLLABLE TO<br>
+36 LINEAR B SYLLABLE TU<br>
+37 LINEAR B SYLLABLE WA<br>
+38 LINEAR B SYLLABLE WE<br>
+39 LINEAR B SYLLABLE WI<br>
+3A LINEAR B SYLLABLE WO<br>
+3B <br>
+3C LINEAR B SYLLABLE ZA<br>
+3D LINEAR B SYLLABLE ZE<br>
+3E <br>
+3F LINEAR B SYLLABLE ZO<br>
+40 <br>
+41 LINEAR B SYLLABLE HA<br>
+42 LINEAR B SYLLABLE INITIAL AI<br>
+43 LINEAR B SYLLABLE INITIAL AU<br>
+44 LINEAR B SYLLABLE DWE<br>
+45 LINEAR B SYLLABLE DWO<br>
+46 LINEAR B SYLLABLE NWA<br>
+47 LINEAR B SYLLABLE PA3<br>
+48 LINEAR B SYLLABLE PHU<br>
+49 LINEAR B SYLLABLE PTE<br>
+4A LINEAR B SYLLABLE RJA<br>
+4B LINEAR B SYLLABLE RAI (SAFFRON)<br>
+4C LINEAR B SYLLABLE RJO<br>
+4D LINEAR B SYLLABLE SWA<br>
+4E LINEAR B SYLLABLE SWI<br>
+4F LINEAR B SYLLABLE TJA<br>
+50 LINEAR B SYLLABLE TWO<br>
+51 LINEAR B UNKNOWN SYMBOL 1<br>
+52 LINEAR B UNKNOWN SYMBOL 2 <br>
+53 LINEAR B UNKNOWN SYMBOL 3 <br>
+54 LINEAR B UNKNOWN SYMBOL 4 <br>
+55 LINEAR B UNKNOWN SYMBOL 5 <br>
+56 LINEAR B UNKNOWN SYMBOL 6 <br>
+57 LINEAR B UNKNOWN SYMBOL 7 <br>
+58 LINEAR B UNKNOWN SYMBOL 8 <br>
+59 LINEAR B UNKNOWN SYMBOL 9 <br>
+5A LINEAR B UNKNOWN SYMBOL 10 <br>
+5B LINEAR B SYLLABLE TWE<br>
+5C LINEAR B IDEOGRAM CLOTH<br>
+5D LINEAR B IDEOGRAM WHEAT<br>
+5E LINEAR B IDEOGRAM WINE<br>
+5F LINEAR B IDEOGRAM BRONZE<br>
+60 LINEAR B IDEOGRAM WOOL<br>
+61 LINEAR B IDEOGRAM BARLEY<br>
+62 LINEAR B IDEOGRAM OLIVE OIL<br>
+63 LINEAR B IDEOGRAM GOLD<br>
+64 LINEAR B IDEOGRAM SHEEP<br>
+65 LINEAR B IDEOGRAM RAM<br>
+66 LINEAR B IDEOGRAM EWE<br>
+67 LINEAR B IDEOGRAM GOAT<br>
+68 LINEAR B IDEOGRAM HE-GOAT<br>
+69 LINEAR B IDEOGRAM SHE-GOAT<br>
+6A LINEAR B IDEOGRAM PIG<br>
+6B LINEAR B IDEOGRAM BOAR<br>
+6C LINEAR B IDEOGRAM SOW<br>
+6D LINEAR B IDEOGRAM OX<br>
+6E LINEAR B IDEOGRAM BULL<br>
+6F LINEAR B IDEOGRAM COW<br>
+70 LINEAR B WEIGHT TIMES SIX<br>
+71 LINEAR B WEIGHT TIMES TWELVE<br>
+72 LINEAR B WEIGHT TIMES FOUR<br>
+73 LINEAR B WEIGHT TIMES THIRTY<br>
+74 LINEAR B WEIGHT MAXIMUM<br>
+75 LINEAR B DRY WEIGHT TIMES FOUR<br>
+76 LINEAR B DRY WEIGHT TIMES SIX<br>
+77 LINEAR B DRY WEIGHT TIMES TEN<br>
+78 LINEAR B LIQUID MEASURE TIMES THREE</p>
+
+<h3>Maldivian (Dihevi)</h3>
+
+<p>The Maldivian script is used in the Republic of Maldives (a group<br>
+of atolls in the Indian Ocean, circa 400 miles SW of Sri Lanka,<br>
+about 4N 73E) to write the Dihevi language.</p>
+
+<p>Maldivian is written from right to left and partakes of features<br>
+of both the Indic and Arabic script varieties. Consonants have an<br>
+inherent a vowel sound, but they are always written with either a<br>
+vowel sign or a null ``vanishing vowel'' sign (U+xx2A) above them.</p>
+
+<p>On alif (U+xx07) the null vowel sign is a glottal stop. Loanwords<br>
+from Arabic are also written in the Arabic script or transcribed<br>
+by means of dots on existing Maldivian letters. Both Arabic and<br>
+Western digits are used.</p>
+
+<p><strong>Issues:</strong> There is also an older set of Maldivian letter forms (for<br>
+which see Faulmann) which are completely different from, yet exactly<br>
+parallels these. It should probably not be considered a separate<br>
+script. The older form could be used by shifting fonts.</p>
+
+<p><strong>Encoding Structure:</strong> The Unicode block for the Maldivian script is<br>
+divided into four ranges: U+xx00 U+xx17 Consonant Letters U+xx18<br>
+U+xx23 Extended Maldivian Letters U+xx24 Currently unassigned<br>
+U+xx25 U+xx2F Non-spacing Vowel Signs</p>
+
+<p><strong>Issues:</strong> The enumeration of the 12 Extended Maldivian Letters used<br>
+for transcriptions of Arabic letters is consistent with the Unicode<br>
+treatment of the Arabic script, in which various combinations of<br>
+dots are always alotted separate code points. The source of these<br>
+is the Library of Congress Cataloging Service Bulletin, No. 19 /<br>
+Winter 1982. The 12 text elements listed in that publication<br>
+follow, in Arabic alphabetic order, with their Arabic equivalents:</p>
+
+<h4>Maldivian Character Arabic Letter Equivalent</h4>
+
+<p>TH + triple overdot THAA</p>
+
+<p>H + underdot HAA</p>
+
+<p>H + overdot KHAA<br>
+D + overdot THAL</p>
+
+<p>S + triple overdot SHEEN</p>
+
+<p>S + underdot SAD</p>
+
+<p>S + overdot DAD</p>
+
+<p>TH + underdot TAH</p>
+
+<p>TH + overdot DHAH</p>
+
+<p>A + underdot AIN</p>
+
+<p>A + overdot GHAIN<br>
+G + double overdot QAF</p>
+
+<p>The idea that Maldivian letters have an inherent a vowel is from<br>
+Nakanishi, but it seems inconsistent with the fact that the letters<br>
+never appear without a vowel sign or a null-vowel sign. This issue<br>
+must be clarified.</p>
+
+<p><strong>Some Sources</strong></p>
+
+<p>Nakanishi, Akira. <em>Writing Systems of the World.</em><br>
+Library of Congress. <em>Cataloging Service Bulletin</em>, No. 19 / Winter 1982.<br>
+Faulmann, Carl. <em>Schriftzeichen und Alphabete aller Zeiten und Volker.</em></p>
+
+<p>Rev 92/11/25<br>
+&nbsp;</p>
+
+<p>Maldivian Names List, draft 92/10/29<br>
+&nbsp;<br>
+(These names reflect only the phonetic values.)<br>
+&nbsp;<br>
+00 MALDIVIAN LETTER H<br>
+01 MALDIVIAN LETTER SH<br>
+02 MALDIVIAN LETTER N<br>
+03 MALDIVIAN LETTER R<br>
+04 MALDIVIAN LETTER B<br>
+05 MALDIVIAN LETTER L<br>
+06 MALDIVIAN LETTER K<br>
+07 MALDIVIAN LETTER A<br>
+08 MALDIVIAN LETTER W,V<br>
+09 MALDIVIAN LETTER M<br>
+0A MALDIVIAN LETTER F,PH<br>
+0B MALDIVIAN LETTER D<br>
+0C MALDIVIAN LETTER TH<br>
+0D MALDIVIAN LETTER L<br>
+0E MALDIVIAN LETTER G<br>
+0F MALDIVIAN LETTER NY<br>
+&nbsp;<br>
+10 MALDIVIAN LETTER S<br>
+11 MALDIVIAN LETTER D<br>
+12 MALDIVIAN LETTER Z<br>
+13 MALDIVIAN LETTER T<br>
+14 MALDIVIAN LETTER Y<br>
+15 MALDIVIAN LETTER P<br>
+16 MALDIVIAN LETTER J<br>
+17 MALDIVIAN LETTER CH<br>
+18 MALDIVIAN LETTER TH WITH THREE DOTS ABOVE<br>
+19 MALDIVIAN LETTER H WITH DOT BELOW<br>
+1A MALDIVIAN LETTER H WITH DOT ABOVE<br>
+1B MALDIVIAN LETTER D WITH DOT ABOVE<br>
+1C MALDIVIAN LETTER S WITH THREE DOTS ABOVE<br>
+1D MALDIVIAN LETTER S WITH DOT BELOW<br>
+1E MALDIVIAN LETTER S WITH DOT ABOVE<br>
+1F MALDIVIAN LETTER TH WITH DOT BELOW<br>
+&nbsp;<br>
+20 MALDIVIAN LETTER TH WITH DOT ABOVE<br>
+21 MALDIVIAN LETTER A WITH DOT BELOW<br>
+22 MALDIVIAN LETTER A WITH DOT ABOVE<br>
+23 MALDIVIAN LETTER G WITH two DOTS ABOVE<br>
+24 <br>
+25 MALDIVIAN VOWEL SIGN A<br>
+26 MALDIVIAN VOWEL SIGN I<br>
+27 MALDIVIAN VOWEL SIGN U<br>
+28 MALDIVIAN VOWEL SIGN E<br>
+29 MALDIVIAN VOWEL SIGN O<br>
+2A MALDIVIAN VOWEL SIGN AA<br>
+2B MALDIVIAN VOWEL SIGN II<br>
+2C MALDIVIAN VOWEL SIGN UU<br>
+2D MALDIVIAN VOWEL SIGN EE<br>
+2E MALDIVIAN VOWEL SIGN OO<br>
+2F MALDIVIAN NULL VOWEL SIGN (Sukun)</p>
+
+<h3>Manipuri (Meithei)</h3>
+
+<p>The Manipuri script is a recently extinct script that was formerly<br>
+used to write the Methei language in Manipur State, India. The<br>
+script may have been introduced as early as the fourteenth century<br>
+or as late as the sixteenth. The only available source has been<br>
+Grierson (see below).</p>
+
+<p>The script is of the same lineage as Devanagari. Unlike Devanagari,<br>
+there are no independent signs for vowels other than a, the other<br>
+independent vowels being expressed as signs upon the independent<br>
+vowel a (similar to the Tibetan method). The consonantal and vowel<br>
+systems are both fairly complete, so it is probably most useful<br>
+and correct to encode it in the ISCII manner, parallel to Devanagari<br>
+as much as possible.</p>
+
+<p>The anusvara (nasalization) mark in Manipuri produces some special<br>
+rendering forms depending on the vowel preceding it. There are<br>
+eight of these, producing the endings ang, -áng, -íng, -ing, -eng,<br>
+-ung, -úng, and -ong. The rendering forms look like ligatures of<br>
+the vowel sign with the anusvara, or similar. Manipuri contains no<br>
+long O vowel, so the place of the long O is filled with the dipthong<br>
+sign AO, which does not seem to fit elsewhere.</p>
+
+<p><strong>Issues:</strong> Because Manipuri lacks special symbols for the independent<br>
+vowels, the entire first column of an encoding completely parallel<br>
+to Devanagari would be empty but for anusvara and the letter A .</p>
+
+<p>Therefore, to save one column, these have been moved into the column<br>
+containing the consonants, so that A occurs just before KA, and<br>
+the anusvara is left in the third position of that same row. The<br>
+script can thus be put into four rows instead of five. There are<br>
+presumably digits belonging to Manipuri, but no samples have been<br>
+available. Space for them is available in the fifth column of the<br>
+chart. It is also not known how much scholarly and historical<br>
+interest there is in the Manipuri script.</p>
+
+<p><strong>Some Sources</strong></p>
+
+<p>Grierson, G. A. <em>Linguistic Survey of India</em>, Vol. 3, pt. 3., Bombay?,<br>
+1898?</p>
+
+<p>Rev 92/11/25<br>
+&nbsp;</p>
+
+<p>Manipuri Names draft, mostly parallel to ISCII, 92/10/23<br>
+&nbsp;<br>
+00 <br>
+01 <br>
+02 MANIPURI ANUSVARA<br>
+03 <br>
+04 MANIPURI LETTER A<br>
+05 MANIPURI LETTER KA<br>
+06 MANIPURI LETTER KHA<br>
+07 MANIPURI LETTER GA<br>
+08 MANIPURI LETTER GHA<br>
+09 MANIPURI LETTER NGA<br>
+0A MANIPURI LETTER CA<br>
+0B MANIPURI LETTER CHA<br>
+0C MANIPURI LETTER JA<br>
+0D MANIPURI LETTER JHA<br>
+0E MANIPURI LETTER NYA<br>
+0F MANIPURI LETTER TTA<br>
+&nbsp;<br>
+10 MANIPURI LETTER TTHA<br>
+11 MANIPURI LETTER DDA<br>
+12 MANIPURI LETTER DDHA<br>
+13 MANIPURI LETTER NNA<br>
+14 MANIPURI LETTER TA<br>
+15 MANIPURI LETTER THA<br>
+16 MANIPURI LETTER DA<br>
+17 MANIPURI LETTER DHA<br>
+18 MANIPURI LETTER NA<br>
+19 <br>
+1A MANIPURI LETTER PA<br>
+1B MANIPURI LETTER PHA<br>
+1C MANIPURI LETTER BA<br>
+1D MANIPURI LETTER BHA<br>
+1E MANIPURI LETTER MA<br>
+1F MANIPURI LETTER YA<br>
+&nbsp;<br>
+20 MANIPURI LETTER RA<br>
+21 <br>
+22 MANIPURI LETTER LA<br>
+23 <br>
+24 <br>
+25 MANIPURI LETTER WA<br>
+26 MANIPURI LETTER SHA<br>
+27 MANIPURI LETTER SSA<br>
+28 MANIPURI LETTER SA<br>
+29 MANIPURI LETTER HA<br>
+2A MANIPURI LETTER KSHA<br>
+2B <br>
+2C <br>
+2D <br>
+2E MANIPURI VOWEL SIGN AA<br>
+2F MANIPURI VOWEL SIGN I<br>
+&nbsp;<br>
+30 MANIPURI VOWEL SIGN II<br>
+31 MANIPURI VOWEL SIGN U<br>
+32 MANIPURI VOWEL SIGN UU<br>
+33 <br>
+34 <br>
+35 <br>
+36 MANIPURI VOWEL SIGN E<br>
+37 <br>
+38 MANIPURI VOWEL SIGN AI<br>
+39 MANIPURI VOWEL SIGN OI<br>
+3A MANIPURI VOWEL SIGN O<br>
+3B MANIPURI VOWEL SIGN OI<br>
+3C MANIPURI VOWEL SIGN AU<br>
+3D MANIPURI VIRAMA<br>
+3E <br>
+3F <br>
+&nbsp;<br>
+40 MANIPURI DIGIT ZERO<br>
+41 MANIPURI DIGIT ONE<br>
+42 MANIPURI DIGIT TWO<br>
+43 MANIPURI DIGIT THREE<br>
+44 MANIPURI DIGIT FOUR<br>
+45 MANIPURI DIGIT FIVE<br>
+46 MANIPURI DIGIT SIX<br>
+47 MANIPURI DIGIT SEVEN<br>
+48 MANIPURI DIGIT EIGHT<br>
+49 MANIPURI DIGIT NINE<br>
+4A <br>
+4B <br>
+4C <br>
+4D <br>
+4E <br>
+4F <br>
+&nbsp;</p>
+
+<h3>Meroïtic</h3>
+
+<p>Meroïtic was the language of a great African kingdom (called Kush)<br>
+which lay to the south of Egypt in what is now the Sudan. The<br>
+capital city was Mero (modern Begrawiya), along the Nile River.</p>
+
+<p>The Meroïtic script is a syllabary, and its glyphs are derived from<br>
+or related to Egyptian Hieroglyphics. It comes in two forms,<br>
+monumental (Hieroglyphic) and cursive, of which the monumental is<br>
+much more rare. The two forms bear very little outward resemblance,<br>
+the one looking very much like Egyptian, the other quite abbreviated,<br>
+not unlike Demotic.</p>
+
+<p>The earliest dated Meroïtic inscriptions are from about 180 BC, and<br>
+it was extinct by the 5th Century AD. The Meroïtic script was first<br>
+deciphered by F. L. Griffith in the early 1900s and that work was<br>
+later refined somewhat by F. Hintze and others. The language<br>
+itself, though, remains incompletely known in the absence of<br>
+bilingual inscriptions and relationships to other known languages.</p>
+
+<p>Most consonantal signs of Meroïtic have an inherent a vowel, except<br>
+when they are followed by one of the vowel signs i, e, or o. There<br>
+are special signs for the combinations ne, se, te, and to. Meroïtic<br>
+is usually written from right to left in cursive form, and from<br>
+top to bottom (with columns running from right to left) in monumental<br>
+form. In the monumental form, the human and animal figures face<br>
+in the direction which the text runs (i.e., away from the beginning<br>
+of the line). It should be carefully noted that this is unlike</p>
+
+<p>Egyptian, in which the figures face the beginning of the line.</p>
+
+<p><strong>Issues:</strong> The main draft chart shows the cursive form, with<br>
+corresponding hieroglyphic shapes in columns labelled X and Y.</p>
+
+<p>These have completely different values than identical Egyptian</p>
+
+<p>Hieroglyphic symbols, and unification of Meroïtic and Egyptian (if<br>
+attempted) would be purely on the basis of glyphic identity in the<br>
+monumental form, not on abstract letter semantics. Unification<br>
+seems inadvisable because the normal form is the cursive form.</p>
+
+<p>The ordering of symbols in the two main sources differs in the 3rd<br>
+and 4th positions (o and i) and also in the 16th and 17th positions<br>
+(s and se). The order used here is that given in Friedrich, while<br>
+the transliteration is after Davies. There does not seem to be a<br>
+standard order.</p>
+
+<p><strong>Some Sources</strong></p>
+
+<p>Davies, W. V. <em>Egyptian Hieroglyphs</em>. <br>
+Friedrich, Johannes. <em>Extinct Languages.</em></p>
+
+<p>Rev 92/10/21</p>
+
+<p>Meroitic, draft Dec 10, 1991<br>
+&nbsp;<br>
+00 MEROITIC LETTER A<br>
+01 MEROITIC LETTER E<br>
+02 MEROITIC LETTER O<br>
+03 MEROITIC LETTER I<br>
+04 MEROITIC LETTER Y<br>
+05 MEROITIC LETTER W<br>
+06 MEROITIC LETTER B<br>
+07 MEROITIC LETTER P<br>
+08 MEROITIC LETTER M<br>
+09 MEROITIC LETTER N<br>
+0A MEROITIC LETTER NE<br>
+0B MEROITIC LETTER R<br>
+0C MEROITIC LETTER L<br>
+0D MEROITIC LETTER H<br>
+0E MEROITIC LETTER HH<br>
+0F MEROITIC LETTER S<br>
+&nbsp;<br>
+10 MEROITIC LETTER SE<br>
+11 MEROITIC LETTER K<br>
+12 MEROITIC LETTER Q<br>
+13 MEROITIC LETTER T<br>
+14 MEROITIC LETTER TE<br>
+15 MEROITIC LETTER TO<br>
+16 MEROITIC LETTER D<br>
+17 MEROITIC WORD DIVIDER<br>
+&nbsp;</p>
+
+<h3>Tifinagh, Numidian</h3>
+
+<p>Tifinagh is a living script used among the Berber people of the</p>
+
+<p>Sahara. It seems to be a direct descendant of the ancient Numidian<br>
+script, with which it shares many of its letter forms. (Numidian<br>
+is also called Libyan by Diringer who notes that it is contemporaneous<br>
+with the Roman period.) Unfortunately, not much more is known<br>
+about it at this time. It was apparently influenced by Punic.</p>
+
+<p>Numidian was normally written from bottom to top, in columns from<br>
+left to right. In some bilingual Numidian and Punic inscriptions,<br>
+the Numidian parts were written from right to left horizontally in<br>
+the Punic manner.</p>
+
+<p>Modern Tifinagh is apparently written horizontally, from right to<br>
+left with lines running from top to bottom. There are some ligatures<br>
+used in writing Tifinagh. It is not known whether they are obligatory<br>
+or not in Tifinagh rendering.</p>
+
+<p>Neither Tifinagh nor Numidian uses any diacritical marks or other<br>
+non-spacing characters. Some of the glyphs in both Numidian and</p>
+
+<p>Tifinagh change form depending on whether they are being written<br>
+horizontally or vertically.</p>
+
+<p><strong>Issues:</strong> The script called Tamachek may be the same thing as</p>
+
+<p><strong>Tifinagh.</strong> The names list is purely for identification and must<br>
+be revised when information becomes available.</p>
+
+<p>It is not at all clear whether Tifinagh should be encoded separately<br>
+from Numidian or whether they should be encoded as a single composite<br>
+script. Some of the graphic elements used for one phonetic value<br>
+in Tifinagh were used for a completely different phonetic value in<br>
+Numidian. Fairly solid information on Tifinagh, including ligatures<br>
+and the alphabet, is currently available, as is information on<br>
+Numidian. Since they have very high overlap in terms of signs, it<br>
+seems reasonable to encode them either in parallel or as a single<br>
+script, depending primarily upon graphic form for the choice of<br>
+the character complement. Not enough information is available<br>
+about the history of either to make this proposal very complete.</p>
+
+<p>The accompanying charts were prepared from draft charts supplied<br>
+by Lloyd Anderson. They are laid out to match each other phonetically,<br>
+and are both parallel to the Unicode Hebrew block. They are here<br>
+supplied together for information and comparison. The left hand<br>
+group is Numidian, with glyphs for vertical writing. The middle<br>
+group is Numidian, with glyphs for horizontal writing. The right<br>
+hand group is modern Tifinagh.</p>
+
+<p><strong>Some Sources</strong></p>
+
+<p>Friedrich, Johannes. <em>Extinct Languages. </em><br>
+Diringer, David. <em>Writing</em>.</p>
+
+<p>Rev 92/10/23<br>
+&nbsp;<br>
+Numidian Names draft, 92/10/23 (parallel to Hebrew)<br>
+&nbsp;<br>
+00 NUMIDIAN LETTER ALPHA<br>
+01 NUMIDIAN LETTER B<br>
+02 NUMIDIAN LETTER G HACEK<br>
+03 NUMIDIAN LETTER D<br>
+04 NUMIDIAN LETTER H<br>
+05 NUMIDIAN LETTER U UNDERBAR<br>
+06 NUMIDIAN LETTER Z HACEK<br>
+07 NUMIDIAN LETTER G OVERDOT<br>
+08 NUMIDIAN LETTER T UNDERDOT<br>
+09 NUMIDIAN LETTER I UNDERBAR<br>
+0A <br>
+0B NUMIDIAN LETTER K<br>
+0C NUMIDIAN LETTER L<br>
+0D <br>
+0E NUMIDIAN LETTER M<br>
+0F NUMIDIAN LETTER Z OVERBAR<br>
+&nbsp;<br>
+10 NUMIDIAN LETTER N<br>
+11 NUMIDIAN LETTER S TWO<br>
+12 <br>
+13 <br>
+14 NUMIDIAN LETTER P (F)<br>
+15 <br>
+16 NUMIDIAN LETTER S<br>
+17 NUMIDIAN LETTER Q<br>
+18 NUMIDIAN LETTER R<br>
+19 NUMIDIAN LETTER S HACEK<br>
+1A NUMIDIAN LETTER T<br>
+1B NUMIDIAN LETTER H UNDERBAR<br>
+1C <br>
+1D NUMIDIAN LETTER Z<br>
+1E <br>
+1F NUMIDIAN LETTER T TWO<br>
+&nbsp;<br>
+</p>
+
+<h3>Ogham</h3>
+
+<p>The Ogham script was used in Ireland and England prior to the<br>
+introduction of the Latin alphabet. The form of its letters seems<br>
+heavily influenced by the medium with which it was used; it was<br>
+most often scratched on stones and posts, as well as on the frames<br>
+of doors. At least one interactive variety called ``leg Ogham''<br>
+(reported in the Book of Ballymote) was also apparently used; it<br>
+was signed with the hands upon the shin, the five fingers being<br>
+used in a manner suggesting the horizontal lines of the script.</p>
+
+<p>The Ogham is divided into groups of five. The last five are<br>
+diphthongs, and are later developments. Each letter has a traditional<br>
+name which is the name of a tree or shrub. Some of the phonetic<br>
+values apparently differ depending on the locale in which it was<br>
+used and the language being written.</p>
+
+<p>Ogham was formerly written on stones and door lintels from the<br>
+bottom left hand side, over the crest, and down the right hand<br>
+side. The center line in the charts represents the corner of a<br>
+stone or lintel. It is suggested that it be rendered on computers<br>
+from left to right, turned 90 degrees counterclockwise with the<br>
+center line running horizontally, or top to bottom, with the center<br>
+line running vertically.</p>
+
+<p>Punctuation was not normally used in Ogham, but later developments<br>
+suggest that a middle dot delimiter or a vertical line delimiter<br>
+may be used; sources are unclear on this point.</p>
+
+<p><strong>Issues:</strong> There is distinct disagreement in the sources available<br>
+as to the order of the first five letters. Ogham has been called<br>
+``Beth-Luis-Nuin'' possibly after the first three letters, but<br>
+other sources say these are the first, second, and fifth letters.</p>
+
+<p>In either case, the sources thus give conflicting names for the<br>
+latter three of the first five letters. This question must be<br>
+resolved satisfactorily before a final encoding can be made. The<br>
+present names are after Lehmann (see below).</p>
+
+<p><strong>Some Sources</strong></p>
+
+<p>Lehmann, Ruth P. M. <em>Ogham: Ancient Script of the Celts.</em><br>
+Graves, Robert. <em>The White Goddess</em></p>
+
+<p>Rev 92/10/20<br>
+Ogham Draft Names List, 92/10/20<br>
+&nbsp;<br>
+00 OGHAM LETTER BEITHE<br>
+01 OGHAM LETTER LUIS<br>
+02 OGHAM LETTER FERN<br>
+03 OGHAM LETTER SAIL<br>
+04 OGHAM LETTER NUIN<br>
+05 OGHAM LETTER HUATHE<br>
+06 OGHAM LETTER DUIR<br>
+07 OGHAM LETTER TINNE<br>
+08 OGHAM LETTER COLL<br>
+09 OGHAM LETTER CIERT<br>
+0A OGHAM LETTER MUINN<br>
+0B OGHAM LETTER GORT<br>
+0C OGHAM LETTER GETAL<br>
+0D OGHAM LETTER STRAIF<br>
+0E OGHAM LETTER RUIS<br>
+0F OGHAM LETTER AILM<br>
+10 OGHAM LETTER ONN<br>
+11 OGHAM LETTER UR<br>
+12 OGHAM LETTER EDAD<br>
+13 OGHAM LETTER IDAD<br>
+14 OGHAM LETTER EABAB<br>
+15 OGHAM LETTER OIR<br>
+16 OGHAM LETTER UILLEND<br>
+17 OGHAM LETTER IPHIN<br>
+18 OGHAM LETTER MO'R<br>
+</p>
+
+<h3>Pahlavi/Avestan</h3>
+
+<p>The Pahlavi script is an historically important script related to<br>
+the Arabic script. It was used (in various related forms) over a<br>
+period of nearly a thousand years to write Pazand, Middle Persian,<br>
+Parthian, and Pahlavi languages. An improved form of Pahlavi which<br>
+includes explicit vowel letters was used to write the Avesta (the<br>
+sacred book of Zoroastrianism containing teachings of the prophet<br>
+Zoroaster or Zarathushtra); the latter form of the script is referred<br>
+to as Avestan.</p>
+
+<p>Pahlavi is written from right to left, in the Arabic manner. The<br>
+form known as Book Pahlavi contains only 13 simple letters, certain<br>
+graphemes that originally represented distinct letters having been<br>
+coalesced to a high degree. Avestan, on the other hand, is improved<br>
+and the ambiguities are much less. The accompanying chart is<br>
+intended for use with Pahlavi and Avestan both. The Avestan letter<br>
+forms are shown, and some of the Book Pahlavi forms differ slightly<br>
+from these.</p>
+
+<p>Pahlavi utilizes a complex seemingly open-ended set of ligatures<br>
+and pronounciation changes in various combinations. Many of the<br>
+letters do some sort of ``double duty.'' There are complex cursive<br>
+connections between certain characters preceding or following.</p>
+
+<p>Some of the double-duty letters were sometimes written with<br>
+diacritical marks or dots to remove ambiguities in some situations.</p>
+
+<p>The Avestan alphabet, in contrast, is much more regular and the<br>
+letters generally refer to a single phoneme. The set of vowel<br>
+letters in Avestan is considerably improved, and there are fewer<br>
+(or no) cursive connections. The letter called ao by Jackson is<br>
+a ligature of aa + schwa.</p>
+
+<p><strong>Issues:</strong> The order given here is not very good. The main source<br>
+for Avestan (Jackson) is mute regarding alphabetical order. There<br>
+was a bit of detective work involved in generating correspondences<br>
+between that and other sources on Book Pahlavi. The shapes in the<br>
+accompanying chart are the Avestan shapes (after Jackson). The<br>
+letter aa may be better unencoded, simply using a + a. A case<br>
+could probably be made for having an abstract length mark which<br>
+could be used for doubling the vowels. It seems to be the case<br>
+that, except for a, the short vertical appendage below each vowel<br>
+has the meaning of lengthening it.</p>
+
+<p>Complete names for the Avestan letters being currently unavailable,<br>
+the names list is a hodge-podge using a semblance of the phonetic<br>
+value, mainly after Jackson. The numerals are not well specified<br>
+in the sources available at this time; hence, no numerals are given<br>
+in the accompanying chart.</p>
+
+<p>Pahlavi seems to contain a large number of words called ``ideograms''<br>
+in the literature (see Nyberg, for instance) that appear to be<br>
+words which are actually pronounced and have a meaning fairly<br>
+unrelated to their ``literal'' meaning and pronounciation if viewed<br>
+simply as a group of letters.</p>
+
+<p>There are two important ligatures that stand for the endings et,<br>
+eh, or end. None of the sources gave enough detail on the usage<br>
+and etymology of these. It is also not clear whether some of the<br>
+``letters'' of Avestan given by Jackson should not be simple<br>
+ligatures; these are sk, s-ogonek-hacek, n-tilde, ao. These are<br>
+not shown in the accompanying chart.</p>
+
+<p>Jackson seems to not give an alphabetical order. The Book Pahlavi<br>
+alphabetical order should probably be followed, and this does that<br>
+to some extent. However, the interpolation of some letters may<br>
+mean that there are letters out of order here, and the order should<br>
+be carefully considered.</p>
+
+<p><strong>Some Sources</strong></p>
+
+<p>Nyberg, Henrik Samuel. <em>A Manual of Pahlavi. </em><br>
+Haug, Martin. <em>An Old Pahlavi-Pazand Glossary</em>. <br>
+Jackson, A. V. Williams. <em>An Avesta Grammar in Comparison with Sanskrit.<br>
+</em>MacKenzie, D. N. <em>A Concise Pahlavi Dictionary.</em></p>
+
+<p>Rev 92/10/30<br>
+&nbsp;<br>
+Pahlavi Names, draft, 92/10/27<br>
+00 PAHLAVI LETTER A<br>
+01 PAHLAVI LETTER B<br>
+02 PAHLAVI LETTER P<br>
+03 PAHLAVI LETTER T<br>
+04 PAHLAVI AVESTAN LETTER T<br>
+05 PAHLAVI LETTER TH<br>
+06 PAHLAVI LETTER J<br>
+07 PAHLAVI LETTER CH<br>
+08 PAHLAVI LETTER KH<br>
+09 PAHLAVI LETTER D<br>
+0A PAHLAVI LETTER DH<br>
+0B PAHLAVI LETTER R<br>
+0C PAHLAVI LETTER Z<br>
+0D PAHLAVI LETTER S<br>
+0E PAHLAVI LETTER SH<br>
+0F PAHLAVI LETTER GH<br>
+10 PAHLAVI LETTER F<br>
+11 PAHLAVI LETTER K<br>
+12 PAHLAVI LETTER G<br>
+13 PAHLAVI LETTER L<br>
+14 PAHLAVI LETTER Y<br>
+15 PAHLAVI LETTER M<br>
+16 PAHLAVI LETTER N<br>
+17 PAHLAVI LETTER N OVERDOT<br>
+18 PAHLAVI LETTER N ACUTE<br>
+19 PAHLAVI LETTER N TILDE<br>
+1A PAHLAVI LETTER V<br>
+1B PAHLAVI LETTER H<br>
+1C PAHLAVI LETTER H OGONEK<br>
+1D PAHLAVI LETTER E<br>
+1E PAHLAVI LETTER O<br>
+1F PAHLAVI LETTER HW<br>
+&nbsp;<br>
+20 PAHLAVI LETTER AA<br>
+21 PAHLAVI LETTER I<br>
+22 PAHLAVI LETTER II<br>
+23 PAHLAVI LETTER U<br>
+24 PAHLAVI LETTER UU<br>
+25 PAHLAVI LETTER SCHWA<br>
+26 PAHLAVI LETTER SCHWA SCHWA<br>
+27 PAHLAVI LETTER EE<br>
+28 PAHLAVI LETTER OO<br>
+29 PAHLAVI LETTER A OGONEK<br>
+2A PAHLAVI LETTER W<br>
+2B PAHLAVI LETTER SH<br>
+2C PAHLAVI LETTER ZH<br>
+2D PAHLAVI FULL STOP<br>
+</p>
+
+<h3>Old Persian Cuneiform</h3>
+
+<p>Old Persian cuneiform was used extensively over a large area drained<br>
+by the Euphrates and Tigris rivers in lands that were once called</p>
+
+<p>Akkad and Sumer. It was the first type of cuneiform to be deciphered<br>
+in modern times. The script is traditionally said to have been<br>
+invented by Darius I (ca 521-486 BC) so that he might be comparable<br>
+to Babylonian and Assyrian kings; by about 300 BC it had fallen<br>
+out of use.</p>
+
+<p>Old Persian inscriptions were first seriously studied by C. Niebuhr<br>
+in 1765, though various types of cuneiform inscriptions had been<br>
+known in the West for quite some time. Preliminary studies which<br>
+eventually culminated in decipherment and understanding of the<br>
+language were made as early as 1798 by O.G. Tycheson <br>
+and F.C.C.Münter; they were succeeded in the task by G.F. Grotefend and others.</p>
+
+<p>Decipherment was essentially complete by about 1845. Decipherment<br>
+was also achieved, quite independently, by H. C. Rawlinson between<br>
+about 1836 and 1850. A rather small literature in Old Persian is<br>
+extant, but it includes some lengthy carved inscriptions at Behistun<br>
+and Persepolis (northeast of modern Baghdad along the Tigris River).</p>
+
+<p>The system is essentially a syllabary of thirty-six signs, augmented<br>
+by a specialized word divider and five ideographs. The ideographs<br>
+are for king, country, earth, god, and the supreme diety of the<br>
+time, Ahura-Mazda. Of these, the latter appears in several minor<br>
+glyphic variations. The script is thought to be complete in this<br>
+encoding; it should not be confused with the much earlier ideographic<br>
+cuneiform scripts of Akkadian and Sumerian derivation.</p>
+
+<p><strong>Issues:</strong> The numbers (1, 2, 3, 10, 20, 40, 100) may be incomplete<br>
+in the chart, but sufficient information is not available at this<br>
+time. These numbers could be compressed together, but in this<br>
+chart are spread out into what may be appropriate places, assuming<br>
+the existence of other number signs. They could also be packed at<br>
+the end of the script. If a word-divider is shared with Ugaritic<br>
+Cuneiform (and was encoded there), then the seven numbers could be<br>
+put into the third column of the chart, and Old Persian would fit<br>
+into three complete rows instead of taking part of a fourth row.</p>
+
+<p><strong>Some Sources</strong></p>
+
+<p>Cleator, P. E. <em>Lost Languages. </em><br>
+Friedrich, Johannes. <em>Extinct Languages.</em> <br>
+Coulmas, Florian. <em>Writing Systems of the World.</em></p>
+
+<p>Rev 92/10/20<br>
+&nbsp;<br>
+Old Persian Names List, draft Dec 10, 1991<br>
+&nbsp;<br>
+00 OLD PERSIAN CUNEIFORM LETTER A<br>
+01 OLD PERSIAN CUNEIFORM LETTER I<br>
+02 OLD PERSIAN CUNEIFORM LETTER U<br>
+03 OLD PERSIAN CUNEIFORM LETTER BA<br>
+04 OLD PERSIAN CUNEIFORM LETTER CA<br>
+05 OLD PERSIAN CUNEIFORM LETTER CHA<br>
+06 OLD PERSIAN CUNEIFORM LETTER DA<br>
+07 OLD PERSIAN CUNEIFORM LETTER DI<br>
+08 OLD PERSIAN CUNEIFORM LETTER DU<br>
+09 OLD PERSIAN CUNEIFORM LETTER FA<br>
+0A OLD PERSIAN CUNEIFORM LETTER GA<br>
+0B OLD PERSIAN CUNEIFORM LETTER GU<br>
+0C OLD PERSIAN CUNEIFORM LETTER HA<br>
+0D OLD PERSIAN CUNEIFORM LETTER HHA<br>
+0E OLD PERSIAN CUNEIFORM LETTER JA<br>
+0F OLD PERSIAN CUNEIFORM LETTER JI<br>
+&nbsp;<br>
+10 OLD PERSIAN CUNEIFORM LETTER KA<br>
+11 OLD PERSIAN CUNEIFORM LETTER KU<br>
+12 OLD PERSIAN CUNEIFORM LETTER LA<br>
+13 OLD PERSIAN CUNEIFORM LETTER MA<br>
+14 OLD PERSIAN CUNEIFORM LETTER MI<br>
+15 OLD PERSIAN CUNEIFORM LETTER MU<br>
+16 OLD PERSIAN CUNEIFORM LETTER NA<br>
+17 OLD PERSIAN CUNEIFORM LETTER NU<br>
+18 OLD PERSIAN CUNEIFORM LETTER PA<br>
+19 OLD PERSIAN CUNEIFORM LETTER RA<br>
+1A OLD PERSIAN CUNEIFORM LETTER RU<br>
+1B OLD PERSIAN CUNEIFORM LETTER SA<br>
+1C OLD PERSIAN CUNEIFORM LETTER SHA<br>
+1D OLD PERSIAN CUNEIFORM LETTER TA<br>
+1E OLD PERSIAN CUNEIFORM LETTER TU<br>
+1F OLD PERSIAN CUNEIFORM LETTER THA<br>
+&nbsp;<br>
+20 OLD PERSIAN CUNEIFORM LETTER WA<br>
+21 OLD PERSIAN CUNEIFORM LETTER WI<br>
+22 OLD PERSIAN CUNEIFORM LETTER YA<br>
+23 OLD PERSIAN CUNEIFORM LETTER ZA<br>
+24 OLD PERSIAN CUNEIFORM WORD DIVIDER<br>
+25 OLD PERSIAN CUNEIFORM IDEOGRAPH KING<br>
+26 OLD PERSIAN CUNEIFORM IDEOGRAPH COUNTRY<br>
+27 OLD PERSIAN CUNEIFORM IDEOGRAPH EARTH<br>
+29 OLD PERSIAN CUNEIFORM IDEOGRAPH GOD<br>
+2A OLD PERSIAN CUNEIFORM IDEOGRAPH AHURA-MAZDA<br>
+</p>
+
+<h3>Phoenician</h3>
+
+<p>The Phoenician alphabet and its successors were widely used over<br>
+a broad area surrounding the Medierranean Sea. Phoenician evolved<br>
+over several hundred years from the end of the 2nd millenium BC<br>
+(before 1100 BC) with some modifications until the 2nd century BC,<br>
+with the last neo-Punic inscriptions dating from about the 3rd<br>
+century AD. The Phoenician alphabet is a forerunner of the Etruscan,<br>
+Latin, Greek, Arabic, Hebrew, and Syriac scripts among others, many<br>
+of which are still in modern use. It has also been suggested that<br>
+Phoenician is the ultimate source of the Indic scripts descending<br>
+from Brahmi and Kharoshthi.</p>
+
+<p>Phoenician is quintessentially illustrative of the historical<br>
+problem of where to draw lines in an evolutionary tree of contiuously<br>
+changing scripts extending over thousands of years. The twenty<br>
+two letters in the Phoenician block may be used, with appropriate<br>
+font changes, to express Early Phoenician, Moabite, Early Hebrew,<br>
+Later Phoenician, and Punic, and possibly some Early Aramaic. It<br>
+is especially intended for use with Phoenician and Punic. The<br>
+historical cut that has been made in Unicode considers the line<br>
+from Phoenician to Punic to represent a single continuous branch<br>
+of script evolution.</p>
+
+<p>Phoenician is generally written from right to left horizontally.</p>
+
+<p>Phoenician language inscriptions usually have no space between<br>
+words; there are sometimes dots between words in later inscriptions<br>
+(e.g., in Moabite inscriptions). Typical fonts for the Phoenician<br>
+and especially Punic have very exaggerated descenders. These<br>
+descenders help distinguish the main line of Phoenician evolution<br>
+toward Punic from the other (e.g., Hebrew) branches of the script,<br>
+where the descenders instead grew shorter over time.</p>
+
+<p><strong>Some Sources</strong></p>
+
+<p>Healey, John F. <em>The Early Alphabet</em>. <br>
+Cross, Frank Moore. <em>The Invention and Development of the Alphabet. </em><br>
+Diringer, David. <em>Writing</em>.</p>
+
+<p>Rev 92/10/30<br>
+&nbsp;</p>
+
+<p>Early Phoenician Names List, draft Dec 10, 1991<br>
+&nbsp;<br>
+00 EARLY PHOENICIAN LETTER ALEPH<br>
+01 EARLY PHOENICIAN LETTER BETH<br>
+02 EARLY PHOENICIAN LETTER GIMEL<br>
+03 EARLY PHOENICIAN LETTER DALETH<br>
+04 EARLY PHOENICIAN LETTER HE<br>
+05 EARLY PHOENICIAN LETTER ZAIN<br>
+06 EARLY PHOENICIAN LETTER HETH<br>
+07 EARLY PHOENICIAN LETTER THET<br>
+08 EARLY PHOENICIAN LETTER YODH<br>
+09 EARLY PHOENICIAN LETTER KAPH<br>
+0A EARLY PHOENICIAN LETTER LAMED<br>
+0B EARLY PHOENICIAN LETTER MEM<br>
+0C EARLY PHOENICIAN LETTER NUN<br>
+0D EARLY PHOENICIAN LETTER SAMEKH<br>
+0E EARLY PHOENICIAN LETTER AIN<br>
+0F EARLY PHOENICIAN LETTER PE<br>
+&nbsp;<br>
+10 EARLY PHOENICIAN LETTER SAN<br>
+11 EARLY PHOENICIAN LETTER QOPPA<br>
+12 EARLY PHOENICIAN LETTER RESH<br>
+13 EARLY PHOENICIAN LETTER SHIN<br>
+14 EARLY PHOENICIAN LETTER TAU<br>
+15 EARLY PHOENICIAN LETTER WAW</p>
+
+<h3>Róng (Lepcha)</h3>
+
+<p>The Róng script (also called Lepcha) is used to write the Róng language<br>
+of Sikkim (located between Nepal and Bhutan, just south of Tibet).</p>
+
+<p>It bears structural similarity to Tibetan, from whence it probably<br>
+ultimately derives. The script is tradtionally held to have been<br>
+invented by a Sikkim Raja (named Phyag-rdor-rnam-rgyal) in the<br>
+early 18th century. This ``invention'' was probably actually an<br>
+extensive revision of an older script. A unique feature of the<br>
+script is its use of syllable-final ``floating consonant signs''<br>
+(U+xx37 U+xx3F). These signs were probably invented for and<br>
+introduced into the Róng script by the reviser. This structural<br>
+feature eliminates the need for any conjunct consonants in Rong.</p>
+
+<p>The signs for letters with an infixed ``L'' sound are likewise<br>
+unknown from other scripts of the area, and seem to be a unique<br>
+feature.</p>
+
+<p>The two signs KYA and KRA (U+xx24 and U+xx25) are analogous to the</p>
+
+<p>Tibetan ya-ta and ra-ta but are affixed after the preceding consonant<br>
+rather than as subscripts. Róng typography uses a number of very<br>
+regular ligatures formed by consonants with succeeding KYA and KRA.</p>
+
+<p>There is also a special ligature form of KRA followed by KYA, which<br>
+itself forms ligatures with the preceding consonant. Of the seven<br>
+vowel signs, three (U+xx31 U+xx33) are reordered in display, as<br>
+are two of the syllable-final floating consonant signs (U+xx3E and<br>
+U+xx3F). When a vowel sign of the reordering type is followed by<br>
+one of the floating consonant signs of the reordering type, the<br>
+consonant sign is written to the left of the vowel sign.</p>
+
+<p>Róng occasionally makes use of a floating dot (U+xx2E) below consonants<br>
+to distinguish special pronunciations (an innovation introduced by<br>
+Mainwaring). The floating mark RAN (U+xx2F) is used over consonants<br>
+(and above their associated floating consonant signs, if any) to<br>
+indicate a slight lengthening or emphasis of the vowel. The only<br>
+punctuation is U+xx2D, equivalent to the Devanagari danda. Róng<br>
+seems to always be written with space between words or compound<br>
+words.</p>
+
+<p><strong>Issues:</strong> Unless there has been a recent revival, this script is<br>
+probably not in active use at all as of this writing (1992).</p>
+
+<p>Haarh's 1959 article seems to imply that the script was still in<br>
+use at that time. The Baptist mission in the late 1800s apparently<br>
+printed three books of the New Testament in the script. While<br>
+Mainwaring's work (1876) gives an encouraging picture, Gorer's<br>
+ethnography of the Lepcha (written in 1938, revised in 1967) is<br>
+quite clear as regards the script. Gorer contends that it was<br>
+rather artificially revived by the eccentric General Mainwaring,<br>
+and reports that he could find only one old lama who possessed or<br>
+could read a book in the script:</p>
+
+<blockquote>
+  <p>...the Lepcha script, never widely known, has now completely fallen<br>
+  into disuse; in order to read the scriptures Lepchas have to learn a<br>
+  new, and otherwise completely useless, alphabet; most of them are<br>
+  far more familiar with Nepali. ... All the existing Lepcha manuscripts<br>
+  of which I have heard are translations of the Tibetan lamaist<br>
+  scriptures... (Gorer, p. 38-39)</p>
+</blockquote>
+
+<p>Róng is structurally similar to Kirat (Limbu), especially in its<br>
+use of floating final consonant signs, which are also used in Kirat.</p>
+
+<p>In this respect the two scripts differ from most (or all?) other<br>
+scripts of the area. These signs would seem to be an innovation<br>
+of the Róng script which was taken up in the Kirat script. The<br>
+language for which the script was originally invented is a<br>
+``mono-syllabic'' type language. The script is apparently derived<br>
+from the Tibetan script, but Róng was revised in the early 1700s,<br>
+at which time these signs were introduced. This model presumes<br>
+the final consonant signs to be a unique invention that makes<br>
+structural sense in the script and the language which it is intended<br>
+to serve. In this author's view, this model is straightforward,<br>
+and should be more or less retained unless strong evidence to the<br>
+contrary becomes available.</p>
+
+<p>It has been argued elsewhere, however, that the Róng (and Kirat)<br>
+final consonants are simply rendering forms, and hence should be<br>
+spelled by means of an affixed invisible virama (which would follow<br>
+a normal consonant and produce visually one of the floating signs<br>
+in word-final position). No evidence available at this time suggests<br>
+that any type of virama (visible or invisible) is known in the<br>
+script at all. The possibility cannot be completely discounted,<br>
+however, since the script derives ultimately from Brahmi and the<br>
+other Indic scripts, and there is some evidence for an invisible<br>
+virama (at least conceptually) in Tibetan. Such a model would<br>
+include a virama and use it to spell the final consonant signs; it<br>
+would also presumably encode the consonants with infix-l offglide<br>
+(such as HLA) with this virama as well. Such a model is not without<br>
+some merit, chiefly in paralleling existing script encodings.</p>
+
+<p>It has also been suggested that Róng (as well as Kirat) could be<br>
+encoded (at least partially) parallel to the order of the Tibetan<br>
+block, or it could be encoded parallel to ISCII. While neither of<br>
+these is particularly compelling, the closer relation to the Tibetan<br>
+script makes it the more likely choice, if it must be encoded<br>
+parallel to another script.</p>
+
+<p>The letters with infixed &quot;L&quot;' could also be moved elsewhere in<br>
+the alphabetic order, which may make alphabetization easier or more<br>
+clear. Mainwaring's dictionary order may be artificial.</p>
+
+<p>This draft for Róng is by no means a final answer. The available<br>
+sources are somewhat sketchy as regards fine points of the script;<br>
+not enough analytical sources or textual sources are available at<br>
+this time to conclusively resolve some of the issues. See also the<br>
+block introduction for Kirat (Limbu).</p>
+
+<p><strong>Some Sources</strong></p>
+
+<p>Mainwaring, G. B.<em> A Grammar of the Róng (Lepcha) Language.</em><br>
+Mainwaring, G. B.<em> Dictionary of the Lepcha Language</em>. <br>
+Haarh, Erik.<em>The Lepcha Script.</em> <br>
+Gorer, Geoffrey. <em>Himalayan Village</em>.</p>
+
+<p>Rev 92/11/25<br>
+&nbsp;<br>
+Draft RONG/LEPCHA Names List, rev 10/21/92.</p>
+
+<p>&nbsp;<br>
+00 RONG/LEPCHA LETTER KA<br>
+01 RONG/LEPCHA LETTER KHA<br>
+02 RONG/LEPCHA LETTER GA<br>
+03 RONG/LEPCHA LETTER NGA<br>
+04 RONG/LEPCHA LETTER CHA<br>
+05 RONG/LEPCHA LETTER CHHA<br>
+06 RONG/LEPCHA LETTER JA<br>
+07 RONG/LEPCHA LETTER NYA<br>
+08 RONG/LEPCHA LETTER TA<br>
+09 RONG/LEPCHA LETTER THA<br>
+0A RONG/LEPCHA LETTER DA<br>
+0B RONG/LEPCHA LETTER NA<br>
+0C RONG/LEPCHA LETTER PA<br>
+0D RONG/LEPCHA LETTER PHA<br>
+0E RONG/LEPCHA LETTER FA<br>
+0F RONG/LEPCHA LETTER BA<br>
+&nbsp;<br>
+10 RONG/LEPCHA LETTER MA<br>
+11 RONG/LEPCHA LETTER TSA<br>
+12 RONG/LEPCHA LETTER TSHA<br>
+13 RONG/LEPCHA LETTER ZA<br>
+14 RONG/LEPCHA LETTER YA<br>
+15 RONG/LEPCHA LETTER RA<br>
+16 RONG/LEPCHA LETTER LA<br>
+17 RONG/LEPCHA LETTER HA<br>
+18 RONG/LEPCHA LETTER VA<br>
+19 RONG/LEPCHA LETTER SA<br>
+1A RONG/LEPCHA LETTER SHA<br>
+1B RONG/LEPCHA LETTER WA<br>
+1C RONG/LEPCHA LETTER KLA<br>
+1D RONG/LEPCHA LETTER GLA<br>
+1E RONG/LEPCHA LETTER PLA<br>
+1F RONG/LEPCHA LETTER FLA<br>
+&nbsp;<br>
+20 RONG/LEPCHA LETTER BLA<br>
+21 RONG/LEPCHA LETTER MLA<br>
+22 RONG/LEPCHA LETTER HLA<br>
+23 RONG/LEPCHA LETTER A<br>
+24 RONG/LEPCHA Affix KYA<br>
+25 RONG/LEPCHA Affix KRA<br>
+26 unencoded<br>
+27 unencoded<br>
+28 unencoded<br>
+29 unencoded<br>
+2A unencoded<br>
+2B unencoded<br>
+2C unencoded<br>
+2D RONG/LEPCHA FINAL PUNCTUATION (DANDA)<br>
+2E RONG/LEPCHA DOT BELOW<br>
+2F RONG/LEPCHA NON-SPACING SIGN RAN<br>
+&nbsp;<br>
+30 RONG/LEPCHA VOWEL SIGN AA<br>
+31 RONG/LEPCHA VOWEL SIGN I<br>
+32 RONG/LEPCHA VOWEL SIGN O<br>
+33 RONG/LEPCHA VOWEL SIGN OO<br>
+34 RONG/LEPCHA VOWEL SIGN U<br>
+35 RONG/LEPCHA VOWEL SIGN UU<br>
+36 RONG/LEPCHA VOWEL SIGN E<br>
+37 RONG/LEPCHA FINAL CONSONANT SIGN AK<br>
+38 RONG/LEPCHA FINAL CONSONANT SIGN AM<br>
+39 RONG/LEPCHA FINAL CONSONANT SIGN AL<br>
+3A RONG/LEPCHA FINAL CONSONANT SIGN AN<br>
+3B RONG/LEPCHA FINAL CONSONANT SIGN AB<br>
+3C RONG/LEPCHA FINAL CONSONANT SIGN AR<br>
+3D RONG/LEPCHA FINAL CONSONANT SIGN AT<br>
+3E RONG/LEPCHA FINAL CONSONANT SIGN NG<br>
+3F RONG/LEPCHA FINAL CONSONANT SIGN ANG<br>
+&nbsp;<br>
+40 RONG/LEPCHA DIGIT ZERO<br>
+41 RONG/LEPCHA DIGIT ONE<br>
+42 RONG/LEPCHA DIGIT TWO<br>
+43 RONG/LEPCHA DIGIT THREE<br>
+44 RONG/LEPCHA DIGIT FOUR<br>
+45 RONG/LEPCHA DIGIT FIVE<br>
+46 RONG/LEPCHA DIGIT SIX<br>
+47 RONG/LEPCHA DIGIT SEVEN<br>
+48 RONG/LEPCHA DIGIT EIGHT<br>
+49 RONG/LEPCHA DIGIT NINE<br>
+</p>
+
+<h3>Northern Runes</h3>
+
+<p>The Northern Runic script was widely used in northern Europe,<br>
+primarily in Scandinavia and Germany, between about the second and<br>
+eleventh centuries AD when it was gradually replaced by the Latin<br>
+alphabet. (We call it the Northern Runic script to distinguish it<br>
+from other so-called Runic scripts, such as the Turkic.) Northern<br>
+Runes were also used in England from about the 7th century AD.</p>
+
+<p>Some 5000 known Runic inscriptions survive from the central cultural<br>
+area and outlying areas as far away as Russia, Poland, and North<br>
+America. Inscriptions are found primarily on wood, stone, and<br>
+metal objects, but there are also extant manuscripts that explain<br>
+the runes. These inscriptions often consist simply of the letters<br>
+of the (local) alphabet written out in standardized order, so the<br>
+alphabetical orders are well known and various stages can be compared<br>
+with relative ease.</p>
+
+<p>The Runic alphabet for a given language and locale is commonly<br>
+referred to as the futhark, a name derived from its first six<br>
+letters. There are two major branches of Northern Runes, the<br>
+Germanic branch and the Scandinavian branch, which differ in their<br>
+arrangement and in the forms of many characters. The Runic script<br>
+modelled in this block is a minimal composite of graphic forms<br>
+derived from the major Runic alphabets. These alphabets and their<br>
+glyphic variants are considered here to be built from elements of<br>
+a single larger Runic script. The Runic script, however, is not<br>
+a predefined entity, rather a theoretical construction consisting<br>
+of the graphic elements which must be minimally distinguished and<br>
+grouped into ``glyphic alternative'' bundles where appropriate.</p>
+
+<p>The Scandinavian futhark consisted of 16 base characters, apparently<br>
+derived by eliminating symbols from the older futhark, but with<br>
+other changes as well. A dot or double-dot mark was used on five<br>
+of these base characters bringing the total distinct symbols to<br>
+21. In several instances the form used for one sound in the<br>
+Scandinavian was used for a different sound in the Germanic (this<br>
+fact is more apparent when various futharks using variant glyphs<br>
+are brought together for comparison than it is in the charts shown<br>
+here). The Scandinavian futhark includes the so-called ``short<br>
+twig'' or Hlsing Runic shapes.</p>
+
+<p>The Runes evolved considerably over the course of some 1000 years,<br>
+often differently in various locales. It cannot be stressed enough<br>
+that the Unicode Runic block is abstracted from the historical<br>
+inscriptions used throughout the Runic cultural area. Some<br>
+characters, our composite runes numbered 10 and 26 for instance,<br>
+assumed a wide variety of related forms; the h rune (composite<br>
+number 13) could have one or two bars. The glyphic forms used in<br>
+the charts are not intended to be normative, merely illustrative<br>
+of the more typical shapes.</p>
+
+<p><strong>Display and rendering: </strong>The predominant writing direction was in<br>
+horizontal lines from left to right. However, they were also<br>
+sometimes written retrograde. The earliest inscriptions were<br>
+written with no punctuation and run-together words, much like<br>
+ancient Greek. Later inscriptions often made use of a colon (:)<br>
+or middle-dot between words (not included in this block). Fonts<br>
+for the Runes would probably encode a superset of the most widely<br>
+used glyphs, from which glyphs would be chosen to represent one or<br>
+the other of the desired futhark surface structures with their<br>
+variations. (The stroke font designed for the accompanying chart<br>
+is one example; the full glyphic complement of this font is shown.)</p>
+
+<p>Some later inscriptions also mixed Latin letters with runes, so it<br>
+seems not unreasonable that the most flexible fonts would include<br>
+various harmonious Latin shapes as well. Ligatures were sometimes<br>
+used in Runic inscriptions. They seem to have been freely formed<br>
+by bodily fusion of two or more characters, Issues: Because <br>
+the Anglo-Saxon and Germanic futharks are closely<br>
+related in most of their forms and functions, the major part of<br>
+the Anglo-Saxon one can be mapped directly onto the Germanic futhark<br>
+of 24 letters. (There are seven extra characters used for Anglo-Saxon.) </p>
+
+<p>The Runic block could then be divided into two parts,<br>
+one representing the Anglo-Saxon and Germanic branches with a total<br>
+of 31 characters (referred to as the older futhark), and another<br>
+representing the Scandinavian branch of fewer characters with some<br>
+different forms (referred to as the younger futhark). Division in<br>
+this manner (encoding two separate sections of 31 and 24 characters)<br>
+can be easily envisioned by comparing the four alphabets shown in<br>
+the accompanying chart. Another obvious alternative would be to<br>
+encode the entire set on phonemic principles (with minor variations),<br>
+which would be equivalent (or nearly so) to a simple interwoven<br>
+unification of the four aforementioned alphabets. All of the<br>
+approaches seem to have disadvant<br>
+</p>
+
+<p>We here use the comparative Runic sets on the following pages (after<br>
+Healey). One inconsistency introduced by division into two blocks<br>
+is that the 4th Germanic rune (our composite number 4a) must still<br>
+be distinguished from the 4th Anglo-Saxon rune (our number 7).<br>
+Anglo-Saxon puts the Germanic 4th rune shape at its 26th location).</p>
+
+<p>The only choice is to put one or the other out of alphabetical<br>
+order. There are several other minor problems with the division,<br>
+notably that our rune (composite number) 19a is used for two or<br>
+more different sounds.</p>
+
+<p>Implementation of Runes almost requires some standard method of<br>
+indicating glyphic preference, as many of the Runic shapes seem to<br>
+be free variants that probably make a great deal of difference to<br>
+scholars, though legibility should not be impaired if normative<br>
+forms are used.</p>
+
+<p><strong>Some Sources</strong></p>
+
+<p>Page, R. I. <em>Runes</em>. <br>
+Antonsen, Elmer H. <em>The Runes: The Earliest Germanic Writing System.</em><br>
+Xerox Character Code Standard. <br>
+Haugen, Einar. <em>History of the Scandinavian Languages. </em><br>
+??? pages from &quot;<em>runläsboken</em>'' (in Swedish).</p>
+
+<p>Rev 92/11/25</p>
+
+<p>Notes on the Runic Chart</p>
+
+<p>This proposed composite block is based on a preliminary analysis<br>
+of elements that clearly need to be distinguished within any one<br>
+of the four idealized Runic alphabets (shown below). Some outstanding<br>
+distinctions are these:</p>
+
+<p>Runes 4a, 5, 7a both occur in the Anglo-Saxon Runes 4b, 6a both<br>
+occur in the Danish Runes 10c occurs as a variant of 20a in the</p>
+
+<p>Anglo-Saxon Rune 19a is ``m'' in the Danish, ``R'' (?) in the<br>
+Germanic, ``x'' in the Anglo-Saxon Runes 13, 14a both occur in the</p>
+
+<p>Anglo-Saxon Runes 21b, 25 both occur in Swedo-Norwegian (whereas<br>
+elsewhere they might be used interchangeably for ``l'' in retrograde<br>
+inscriptions)</p>
+
+<h3>Epigraphic South Arabian</h3>
+
+<p>The script known as South Arabian is related to the Proto-Canaanite<br>
+and early Semitic alphabets, but the shapes are remarkably unique<br>
+for such a derivation. It is also an ancestor of the modern Ethiopic<br>
+script. Inscriptions in this script are found in Southern Arabia<br>
+(ancient Sabaean and Minaean kingdoms) dating from as far back as<br>
+500 BC. The script was apparently used until about 600 AD.</p>
+
+<p>According to Healey (see below), the alphabetic order has been<br>
+reconstructed on fragmentary evidence. The order given here follows<br>
+that given by Healey.</p>
+
+<p>The letters as 10 and 11 probably correspond to the Arabic hamzah<br>
+and ain, but this is not certain from information currently available.</p>
+
+<p><strong>Issues:</strong> The South Arabian alphabet could be arranged parallel to<br>
+the Semitic alphabets. See the introduction to the Early Alphabet<br>
+blocks for further discussion.</p>
+
+<p><strong>Some Sources</strong></p>
+
+<p>Healey, John F. <em>The Early Alphabet.</em></p>
+
+<p>Rev 92/10/29<br>
+&nbsp;</p>
+
+<p>Epigraphic South Arabian, draft names 92/10/20<br>
+&nbsp;<br>
+00 SOUTH ARABIAN LETTER H<br>
+01 SOUTH ARABIAN LETTER L<br>
+02 SOUTH ARABIAN LETTER H UNDERDOT<br>
+03 SOUTH ARABIAN LETTER M<br>
+04 SOUTH ARABIAN LETTER Q<br>
+05 SOUTH ARABIAN LETTER W<br>
+06 SOUTH ARABIAN LETTER S HACEK<br>
+07 SOUTH ARABIAN LETTER R<br>
+08 SOUTH ARABIAN LETTER B<br>
+09 SOUTH ARABIAN LETTER T<br>
+0A SOUTH ARABIAN LETTER S<br>
+0B SOUTH ARABIAN LETTER K<br>
+0C SOUTH ARABIAN LETTER N<br>
+0D SOUTH ARABIAN LETTER H UNDERBAR<br>
+0E SOUTH ARABIAN LETTER S ACUTE<br>
+0F SOUTH ARABIAN LETTER F<br>
+&nbsp;<br>
+10 SOUTH ARABIAN LETTER RIGHT HALF RING (HAMZAH)<br>
+11 SOUTH ARABIAN LETTER LEFT HALF RING (AIN)<br>
+12 SOUTH ARABIAN LETTER D UNDERDOT<br>
+13 SOUTH ARABIAN LETTER G<br>
+14 SOUTH ARABIAN LETTER D<br>
+15 SOUTH ARABIAN LETTER G ACUTE<br>
+16 SOUTH ARABIAN LETTER T UNDERDOT<br>
+17 SOUTH ARABIAN LETTER Z<br>
+18 SOUTH ARABIAN LETTER D UNDERBAR<br>
+19 SOUTH ARABIAN LETTER Y<br>
+1A SOUTH ARABIAN LETTER T UNDERBAR<br>
+1B SOUTH ARABIAN LETTER S UNDERDOT<br>
+1C SOUTH ARABIAN LETTER Z UNDERDOT</p>
+
+<h3>Syriac</h3>
+
+<p>The Syriac script is a later descendent of the Aramaic script.</p>
+
+<p>The earliest known Syriac inscriptions are dated about 6 AD from<br>
+near the town of Edessa to write the Aramaic dialect that became</p>
+
+<p>Syriad. The Syriac script really represents a family of three<br>
+closely related writing styles called Estrangela, Nestorian, and</p>
+
+<p>Serta (the latter is also called Jacobite). The earliest form that<br>
+became distinguished from Aramaic itself is Estrangela, developed<br>
+about the 5th century AD. It was used extensively from the earliest<br>
+times to record various Christian scriptures. The Syriac script<br>
+is still in modern use. According to Healey (1990):</p>
+
+<blockquote>
+  <p>``Syriac speaking communities have survived in large numbers in<br>
+  the area around the point where the borders of Syria, Turkey,<br>
+  and Iraq meet, and there are also emigr communities in Europe and the<br>
+  United States. Books, magazines and newspapers are still produced<br>
+  in the Syriac scripts.''</p>
+</blockquote>
+
+<p>The Syriac scripts are generally cursive or semi-cursive, with some<br>
+letters joining regularly to others and sometimes changing shape<br>
+in a manner similar to the Arabic script. Vowel signs are known<br>
+to exist, but available sources do not discuss them.</p>
+
+<p><strong>Issues:</strong> The vowel signs at least must be added to complete <br>
+the Syriac proposal. There seem to be at least two different non-spacing<br>
+vowel systems: one is attributed to Jacob of Edessa and utilizes<br>
+small letters written above or below others to indicate following<br>
+vowels; the other is an older dotting system.</p>
+
+<p>The chart shows in parallel the Mandaic alphabet (which includes<br>
+the extra letter e at the end). It is not clear whether Mandaic<br>
+should be unified with the Syriac block or not; it might be better<br>
+encoded using the Aramaic block, or encoded separately.</p>
+
+<p>Note that this order differs from the Early Phoenician and Aramic<br>
+orders. It is not known whether waw in particular should come at<br>
+the end, or at its place here.</p>
+
+<p><strong>Some Sources</strong></p>
+
+<p>Healey, John F. <em>The Early Alphabet. </em><br>
+Diringer, David. <em>Writing</em>.</p>
+
+<p>Rev 92/11/25<br>
+&nbsp;</p>
+
+<p>Syriac Names List, draft 92/10/29<br>
+00 SYRIAC LETTER ALAP<br>
+01 SYRIAC LETTER BET<br>
+02 SYRIAC LETTER GAMAL<br>
+03 SYRIAC LETTER DALAT<br>
+04 SYRIAC LETTER HE<br>
+05 SYRIAC LETTER WAW<br>
+06 SYRIAC LETTER ZAYN<br>
+07 SYRIAC LETTER HET<br>
+08 SYRIAC LETTER TET<br>
+09 SYRIAC LETTER YO<br>
+0A SYRIAC LETTER KAP<br>
+0B SYRIAC LETTER LAMAD<br>
+0C SYRIAC LETTER MIM<br>
+0D SYRIAC LETTER NUN<br>
+0E SYRIAC LETTER SEMKAT<br>
+0F SYRIAC LETTER E<br>
+10 SYRIAC LETTER PE<br>
+11 SYRIAC LETTER SADE<br>
+12 SYRIAC LETTER QOP<br>
+13 SYRIAC LETTER RES<br>
+14 SYRIAC LETTER SIN<br>
+15 SYRIAC LETTER TAW</p>
+
+<h3>Tagalog and Mangyan (Buhid)</h3>
+
+<p>Tagalog is a script of the Philippines. It was formerly used to<br>
+write the Tagalog, Bisaya, Iloko, and other languages. The Tagalog<br>
+language is very much alive, but now utilizes the Latin script.</p>
+
+<p>The Tagalog script is distantly related to the scripts of the<br>
+southern Indian subcontinent, but the exact route by which they<br>
+were brought to the Philippines is not certain. It seems that they<br>
+may have been transported by way of the palaeographic scripts of<br>
+Western Java between the 10th and 14th centuries. Written accounts<br>
+of the Tagalog script by Spanish missionaries, and documents in</p>
+
+<p>Tagalog, are known from about the period of initial Spanish incursion<br>
+(mid-1500s). It has (or had) two living descendents the Mangyan<br>
+and Tagbanuwa scripts both of which will be covered below.</p>
+
+<p>Vowel signs are used in a manner similar to that employed by the<br>
+scripts of the Indian subcontinent, from whence Tagalog seems to<br>
+derive. The vowel I is written with a mark above, and the vowel<br>
+U with an identical mark below the associated consonant. The mark<br>
+looks like the sign ``&gt;''. It is known as kulit or tulbok in<br>
+Mangyan and ulitan in Tagbanuwa. The script has only the two vowel<br>
+signs I and U, which are also used respectively to stand for the<br>
+vowels E and O. Though all languages normally written with this<br>
+script have syllables possessing final consonants, they cannot be<br>
+expressed in the script. Reforms to express final consonants or<br>
+to add the missing vowel signs were apparently proposed at various<br>
+times, but were always rejected by native users who considered the<br>
+script adequate. Native speakers of Tagbanuwa, for instance,<br>
+apparently have no trouble distinguishing uses of the vowel sign</p>
+
+<p>I for the vowel e, or the sign U for o. In Tagalog there are<br>
+several similar glyphs for the independent vowe</p>
+
+<p>Tagalog is read from left to right in horizontal lines running from<br>
+top to bottom. It may be written either in that manner, or in<br>
+vertical lines running from bottom to top, moving from left to<br>
+right. In the latter case, the letters are written sideways so<br>
+they may be read horizontally. This method of writing may be due<br>
+to the medium and writing implements used. It was often scratched<br>
+with a sharp instrument onto beaten strips of bamboo which were<br>
+held pointing away from the body and worked from the proximal to<br>
+distal ends, from left to right.</p>
+
+<p>Between words in Tagalog, a sign similar to double danda seems to<br>
+be used (see the example in Nakanishi). The double danda is not<br>
+included in the chart.</p>
+
+<p>The alphabetical order of Tagalog is known from Tagbanuwa speakers<br>
+and is described in folktales. This order is used in the accompanying<br>
+charts. The two vowel signs are added at the end of the alphabet.</p>
+
+<p>The accompanying chart is divided into three segments. The leftmost<br>
+group are the forms used for classical Tagalog. The middle group,<br>
+exactly paralleling the Tagalog, are the forms used for Tagbanuwa.<br>
+The rightmost group are the forms used for Mangyan.</p>
+
+<p><strong>Tagbanuwa: </strong>The Tagbanuwa letter forms are nearly the same as the<br>
+old Tagalog forms, and the lineage is obvious as can be seen from<br>
+the accompanying charts. Particularly different are the letters</p>
+
+<p>I and KA. Modern Tagbanuwa does not use the letter HA, hence this<br>
+spot is left blank in the Tagbanuwa chart.</p>
+
+<p><strong>Mangyan:</strong> Mangyan is the term given to the Bongabon Mangyans, also<br>
+known as Buhid or Bukid. The Mangyan letter forms differ significantly<br>
+from their Tagalog counterparts. They were normally incised on<br>
+bamboo, and the influence of the medium is unmistakably expressed<br>
+in the angular letter forms. The vowel signs I and U are normally<br>
+written as strokes attached to the main body of the associated<br>
+consonant, in contrast to the Tagalog case for the same vowel signs.</p>
+
+<p>A font for Mangyan might thus be completely ``unrolled'' as a<br>
+syllabary, requiring about 50 distinct glyphs.</p>
+
+<p><strong>Issues:</strong> It is known that Tagbanuwa and Mangyan were being actively<br>
+used as recently as the early 1960s, as near as can be ascertained<br>
+from evidence in Francisco's monograph. It is not known whether<br>
+they are still being used as of this date (1992). It is unclear<br>
+whether to classify them (and thus Tagalog) as living or extinct<br>
+scripts. The extent to which their encoding is important to living<br>
+communities is likewise uncertain.</p>
+
+<p>Mangyan should perhaps be separately encoded from a Tagalog &amp; <br>
+Tagbanuwa block due to (1) significant differences in nearly all<br>
+letter forms and (2) the means by which vowel signs are attached<br>
+and (3) as the two scripts are (or were) living side by side there<br>
+may be a need for distinguishing them in plaintext, (4) either one<br>
+may not be readable by those unfamiliar with the other.</p>
+
+<p><strong>Some Sources</strong></p>
+
+<p>Francisco, Juan R. <em>Philippine Palaeography.</em></p>
+
+<p>Faulmann, Carl. Schriftzeichen und Alphabete aller Zeiten und Volker.</p>
+
+<p>Rev 92/10/29<br>
+&nbsp;</p>
+
+<p>Tagalog Names, draft 92/10/21<br>
+&nbsp;<br>
+00 TAGALOG LETTER A<br>
+01 TAGALOG LETTER I AND E<br>
+02 TAGALOG LETTER U AND O<br>
+03 TAGALOG LETTER BA<br>
+04 TAGALOG LETTER DA<br>
+05 TAGALOG LETTER GA<br>
+06 TAGALOG LETTER HA<br>
+07 TAGALOG LETTER KA<br>
+08 TAGALOG LETTER LA<br>
+09 TAGALOG LETTER MA<br>
+0A TAGALOG LETTER NA<br>
+0B TAGALOG LETTER NGA<br>
+0C TAGALOG LETTER PA<br>
+0D TAGALOG LETTER SA<br>
+0E TAGALOG LETTER TA<br>
+0F TAGALOG LETTER WA<br>
+10 TAGALOG LETTER YA<br>
+11 TAGALOG VOWEL SIGN I<br>
+12 TAGALOG VOWEL SIGN U</p>
+
+<p>Similarly for Mangyan, if separately encoded:<br>
+XX MANGYAN LETTER XX</p>
+
+<h3>Tai Lu (Chieng Mai, Northern Thai)</h3>
+
+<p>The Tai Lu script is widely used for various Tai dialects in northern Thailand, Yunnan,
+and parts of Burma (they are variously referred<br>
+to as Lannathai, Yuan, or Kam Muang). The Tai Lu script is of the Indic variety, and is
+structurally similar to both the Thai and Burmese scripts to which the affinities can be
+easily seen in the<br>
+forms. The script is also known by the name Northern Thai;<br>
+neither name seems to be a standard. The script referred to as<br>
+Chieng Mai by Nakanishi is a fancier typographical form of the Tai<br>
+Lu script, and hence included here.</p>
+
+<p>The language known as Tai Lu is in use in northern Thailand and in<br>
+Yunnan province of China. There are about 1 million living speakers<br>
+of Tai Lu, and this script is officially recognized by the Chinese<br>
+government.</p>
+
+<p>Each Tai Lu consonant has an inherent vowel and (apparently) an<br>
+inherent tone. Most of the consonants contain an inherent ``o''<br>
+vowel (or ``a''?), but some seem to contain other inherent vowels.</p>
+
+<p>There are 41 consonants, five stand-alone vowels, and 32 vowel<br>
+signs. The vowel system of the Northern Thai language is very<br>
+complex, so the script contains a correspondingly large number of<br>
+vowel signs, though some of them are written as compounds of simpler<br>
+graphic symbols.</p>
+
+<p>The traditional order of the consonants as given by Davis is<br>
+distinctly different from the typical Devanagari order (for instance,<br>
+the aspirated letters all come before the associated unaspirated<br>
+ones, while Devanagari order is the opposite).</p>
+
+<p><strong>Issues:</strong> This draft is nowhere near complete as not enough is known<br>
+at this time and sources are currently scarce. The chart is thought<br>
+to contain a complete repertoire of possible candidates for encoding,<br>
+except for punctuation and digits.</p>
+
+<p>The vowel system could be greatly reduced by removing several<br>
+compound vowel signs and manufacturing these vowels from simpler<br>
+vowels and glyphic fragments. The glottal stop consonant itself<br>
+is a component of the graphic representation of two other vowel<br>
+signs.</p>
+
+<p>The letters at codepoints 1B, 1D, 1E, 1F may be conjuncts of some<br>
+type involving 18 together with other letters. Perhaps: MA=1B=18+13,<br>
+LA=1D=18+14, NYA=1E=18+07, NGA=1F=18+03.</p>
+
+<p>The names list is fully inadequate for any purpose except unique<br>
+identification. The names were generated by taking Davis's pseudo-IPA<br>
+transliterations and formulating unique names from them, while<br>
+utilizing only the symbols allowed in ISO names.</p>
+
+<p>Because the order cited by Davis differs so significantly from the<br>
+Devanagari order, the utility and correctness of this order should<br>
+be corroborated by other sources.</p>
+
+<p><strong>Some Sources</strong></p>
+
+<p>Davis, Richard. <em>A Northern Thai Reader.</em><br>
+Pontalis, Pierre Lefevre. <em>L'invasion Thaie en Indo-Chine.</em></p>
+
+<p>Rev 92/11/25</p>
+
+<p>Tai Lu (Chieng Mai, Northern Thai) names, rev 92/10/21<br>
+&nbsp;<br>
+00 TAI LU LETTER KHA<br>
+01 TAI LU LETTER KA<br>
+02 TAI LU LETTER KHAA1<br>
+03 TAI LU LETTER NGAA<br>
+04 TAI LU LETTER SA1<br>
+05 TAI LU LETTER CAA<br>
+06 TAI LU LETTER SAA1<br>
+07 TAI LU LETTER NYAA<br>
+08 TAI LU LETTER LAATHA<br>
+09 TAI LU LETTER LAADA<br>
+0A TAI LU LETTER LAATHAA<br>
+0B TAI LU LETTER LAANAA<br>
+0C TAI LU LETTER THA<br>
+0D TAI LU LETTER TAA<br>
+0E TAI LU LETTER THAA<br>
+0F TAI LU LETTER NAA1<br>
+10 TAI LU LETTER PHA<br>
+11 TAI LU LETTER PAA<br>
+12 TAI LU LETTER PHAA<br>
+13 TAI LU LETTER MAA<br>
+14 TAI LU LETTER LAA1<br>
+15 TAI LU LETTER LAA2<br>
+16 TAI LU LETTER WAA<br>
+17 TAI LU LETTER SA2<br>
+18 TAI LU LETTER HA<br>
+19 TAI LU LETTER LAA3<br>
+1A TAI LU LETTER A<br>
+1B TAI LU LETTER MA<br>
+1C TAI LU LETTER WA<br>
+1D TAI LU LETTER LA<br>
+1E TAI LU LETTER NYA<br>
+1F TAI LU LETTER NGA<br>
+&nbsp;<br>
+20 TAI LU LETTER FA<br>
+21 TAI LU LETTER FAA<br>
+22 TAI LU LETTER HAA<br>
+23 TAI LU LETTER LAEAE<br>
+24 TAI LU LETTER NAA2<br>
+25 TAI LU LETTER LII<br>
+26 TAI LU LETTER PA<br>
+27 TAI LU LETTER KHAA2<br>
+28 TAI LU LETTER SAA2<br>
+29 TAI LU LETTER I<br>
+2A TAI LU LETTER II<br>
+2B TAI LU LETTER U<br>
+2C TAI LU LETTER UU<br>
+2D TAI LU LETTER EE<br>
+2E <br>
+2F <br>
+&nbsp;<br>
+30 TAI LU VOWEL SIGN A<br>
+31 TAI LU VOWEL SIGN AA<br>
+32 TAI LU VOWEL SIGN I<br>
+33 TAI LU VOWEL SIGN II<br>
+34 TAI LU VOWEL SIGN I BAR<br>
+35 TAI LU VOWEL SIGN II BAR<br>
+36 TAI LU VOWEL SIGN U<br>
+37 TAI LU VOWEL SIGN UU<br>
+38 TAI LU VOWEL SIGN E<br>
+39 TAI LU VOWEL SIGN EE<br>
+3A TAI LU VOWEL SIGN AE<br>
+3B TAI LU VOWEL SIGN AEAE<br>
+3C TAI LU VOWEL SIGN O<br>
+3D TAI LU VOWEL SIGN OO<br>
+3E TAI LU VOWEL SIGN OH<br>
+3F TAI LU VOWEL SIGN OHOH<br>
+&nbsp;<br>
+40 TAI LU VOWEL SIGN UEH<br>
+41 TAI LU VOWEL SIGN UE<br>
+42 TAI LU VOWEL SIGN IEH<br>
+43 TAI LU VOWEL SIGN IE<br>
+44 TAI LU VOWEL SIGN I BAR E<br>
+45 TAI LU VOWEL SIGN I BAR SCHWA<br>
+46 TAI LU VOWEL SIGN SCHWA<br>
+47 TAI LU VOWEL SIGN SCHWA SCHWA<br>
+48 TAI LU VOWEL SIGN ANG<br>
+49 TAI LU VOWEL SIGN AM<br>
+4A TAI LU VOWEL SIGN AW<br>
+4B TAI LU VOWEL SIGN OO TWO<br>
+4C TAI LU VOWEL SIGN ANG TWO<br>
+4D TAI LU VOWEL SIGN ANG THREE<br>
+4E TAI LU VOWEL SIGN O MEDIAL<br>
+4F TAI LU VOWEL SIGN A MEDIAL<br>
+&nbsp;</p>
+
+<h3>Tai Mau, Tai Nua</h3>
+
+<p>The Tai Mau or Tai Nua script is a recent invention that is reported<br>
+to have been in use only since 1940. It is apparently used for<br>
+writing several Shan languages within China (Yunnan) and Northeastern</p>
+
+<p>Burma (between the Nam Mau and Salween rivers). The Tai Mau script<br>
+was invented (revised?), apparently, as a reaction to a reported<br>
+revision of another script used by the Tai Tai (Burma).</p>
+
+<p>This script is remarkably simpler in structure than those used for<br>
+standard Thai and Northern Thai (see Thai and Tai Lu block<br>
+introductions). It has many different attributes when considered<br>
+as a relative of those scripts, mostly in the features which it<br>
+lacks: it has no non-spacing tone marks, non-spacing vowel signs,<br>
+re-ordering matras, or conjunct consonant glyphs to name but a few.</p>
+
+<p>It has only two floating marks; all other symbols are normal spacing<br>
+characters. The alphabetic order of the consonants is similar to<br>
+the typical Indic order.</p>
+
+<p>Tai Mau is written from left to right (with spaces between words?<br>
+syllables?). Each syllable begins with a consonant (or glottal<br>
+stop?) followed by a vowel, any final stop follows the vowel, and<br>
+finally comes a tone mark. Tone marks are spacing characters; the<br>
+first tone is indicated by absence of any other tone mark. There<br>
+are no special symbols for final consonants: consonants are known<br>
+to be final stops by virtue of their position within a syllable<br>
+after a vowel, since all vowels are explicitly marked. (is that<br>
+strictly true?). As in the Indic systems, the consonants also<br>
+contain an inherent conceptual vowel. This inherent vowel in Tai<br>
+Mau represents both the vowel ``a'' and a glottal stop. To write<br>
+the vowel ``a'' without glottal stop, a special symbol (like a<br>
+lowercase `b') is used.</p>
+
+<p>Foreign sounds are expressed principally through use of a non-spacing<br>
+dot. This dot may be written either on the upper right shoulder<br>
+of a vowel, or below the vowel, to shorten its value. Placing the<br>
+dot over the tone symbol indicates a rising tone; and placing it<br>
+below the tone symbol indicates a falling tone. Voiced consonants<br>
+are written by applying the dot under a consonant (e.g., to turn<br>
+`k' into 'g'). More than one final stop may be written by putting<br>
+a dot above the 2nd (and nth) final consonants of a syllable.</p>
+
+<p><strong>Issues:</strong> Several issues are framed as questions in the paragraphs<br>
+above. The script seems, from the available sources, to be<br>
+deceptively simple. It is not known at all how widely this system<br>
+is currently used, but it is assuredly in modern use. Punctuation<br>
+and word spacing and so forth are currently unknown.</p>
+
+<p>There are some diphthongs that are written with combinations of<br>
+primitive vowel signs followed by ``sha1'', and some diphthongs<br>
+written with combinations of primitive vowel signs followed by what<br>
+appears to be the consonant WA. The diphthong listed as ``ai bar''<br>
+in the names list is written with a unique symbol that looks like<br>
+the vowel sign AA, but has the hook to the right; it is not clear<br>
+whether this is an error in the source or not.</p>
+
+<p>There is no ``tone mark 1'' in the chart or names list since the<br>
+unmarked state is what we shall call tone 1.</p>
+
+<p><strong>Some Sources</strong></p>
+
+<p>Young, Linda Wai Ling. <em>Shan Chrestomathy</em>.</p>
+
+<p>Rev 92/11/25<br>
+&nbsp;</p>
+
+<p>Tai Mau, draft names list, 92/10/21<br>
+&nbsp;<br>
+00 TAI MAU LETTER KA<br>
+01 TAI MAU LETTER KHA<br>
+02 TAI MAU LETTER NGA<br>
+03 TAI MAU LETTER TSA<br>
+04 TAI MAU LETTER SA<br>
+05 TAI MAU LETTER NYA<br>
+06 TAI MAU LETTER TA<br>
+07 TAI MAU LETTER THA<br>
+08 TAI MAU LETTER NA<br>
+09 TAI MAU LETTER PA<br>
+0A TAI MAU LETTER PHA<br>
+0B TAI MAU LETTER FA<br>
+0C TAI MAU LETTER MA<br>
+0D TAI MAU LETTER YA<br>
+0E TAI MAU LETTER RA<br>
+0F TAI MAU LETTER LA<br>
+&nbsp;<br>
+10 TAI MAU LETTER WA<br>
+11 TAI MAU LETTER HA<br>
+12 TAI MAU LETTER AH<br>
+13 TAI MAU LETTER SHA1<br>
+14 TAI MAU LETTER SHAA<br>
+15 TAI MAU LETTER SHA2<br>
+16 TAI MAU TONE MARK 2<br>
+17 TAI MAU TONE MARK 3<br>
+18 TAI MAU TONE MARK 4<br>
+19 TAI MAU TONE MARK 5<br>
+1A TAI MAU TONE MARK 6<br>
+1B TAI MAU VOWEL SIGN A<br>
+1C TAI MAU VOWEL SIGN AA<br>
+1D TAI MAU VOWEL SIGN I<br>
+1E TAI MAU VOWEL SIGN E<br>
+1F TAI MAU VOWEL SIGN EE<br>
+&nbsp;<br>
+20 TAI MAU VOWEL SIGN U<br>
+21 TAI MAU VOWEL SIGN O<br>
+22 TAI MAU VOWEL SIGN OH<br>
+23 TAI MAU VOWEL SIGN I BAR<br>
+24 TAI MAU VOWEL SIGN SCHWA<br>
+25 TAI MAU VOWEL SIGN AI BAR<br>
+26 TAI MAU FALLING TONE OR VOICE MARK<br>
+27 TAI MAU RISING TONE OR SHORT VOWEL<br>
+</p>
+
+<h3>Ugaritic Cuneiform</h3>
+
+<p>The city state of Ugarit was an important seaport on the Phoenician<br>
+coast (directly east of Cyprus, north of the modern town of Minet<br>
+el-Beida) from about 1400 BC until it was completely destroyed in<br>
+the 12th century BC. The site of Ugarit, now called Ras esh-Shamra,<br>
+was apparently continuously occupied from Neolithic times (ca. 5000<br>
+BC). It was first uncovered by a local inhabitant while ploughing<br>
+a field in 1928, and subsequently excavated by Claude Schaeffer<br>
+and Georges Chenet beginning in 1929, in which year the first of<br>
+many tablets written in the Ugaritic script were discovered. They<br>
+later proved to contain extensive portions of an important Canaanite<br>
+mythological and religious literature that had long been sought<br>
+and which revolutionized Biblical studies. The script was first<br>
+deciphered in a remarkably short time jointly by Hans Bauer, douard<br>
+Dhorme, and Charles Virolleaud.</p>
+
+<p>The Ugaritic language is Semitic, variously regarded by scholars<br>
+as being a distinct language related to Akkadian and Canaanite, or<br>
+a Canaanite dialect. Ugaritic is generally written from left to<br>
+right horizontally, sometimes with a vertical stroke between words.</p>
+
+<p>In the city of Ugarit, this script was also used to write the</p>
+
+<h3>Hurrian language.</h3>
+
+<p>Glyphs for T-Underbar, G-Acute, and D-Underbar differ somewhat<br>
+between modern reference sources (as do some transliterations).</p>
+
+<p>T-Underbar is most often displayed with a glyph that looks like an<br>
+occurrence of Glottal Stop overlaid with G. The Unicode block for<br>
+Ugaritic is in the order that was apparently standard; it coincides<br>
+for the mostpart with Phoenician and Early Hebrew order.</p>
+
+<p>Ugaritic cuneiform is thought to be complete in this encoding; it<br>
+is a syllabic script and should not be confused with the ideographic<br>
+cuneiform scripts of Akkadian and Sumerian derivation. There may<br>
+be relatives of the Ugaritic script used for other Canaanite<br>
+languages at about the same time.</p>
+
+<p><strong>Issues:</strong> Because the Ugaritic language was Semitic, and therefore<br>
+the script contains syllables which somewhat echo the Semitic<br>
+alphabets, it has been suggested that scholars could benefit were<br>
+it to be encoded in phonetic parallel to the Hebrew script.</p>
+
+<p><strong>Some Sources</strong></p>
+
+<p>Cleator, P. E. <em>Lost Languages.</em> <br>
+Coulmas, Florian. <em>Writing Systems of the World. </em><br>
+Friedrich, Johannes. <em>Extinct Languages</em>. <br>
+Gordon, Cyrus H. <em>Forgotten Scripts.</em></p>
+
+<p>Rev 92/10/20<br>
+&nbsp;<br>
+</p>
+
+<p>Ugaritic Names List, draft 92/10/29<br>
+&nbsp;<br>
+00 UGARITIC LETTER A<br>
+01 UGARITIC LETTER B<br>
+02 UGARITIC LETTER G<br>
+03 UGARITIC LETTER H UNDERBAR<br>
+04 UGARITIC LETTER D<br>
+05 UGARITIC LETTER H<br>
+06 UGARITIC LETTER W<br>
+07 UGARITIC LETTER Z<br>
+08 UGARITIC LETTER H UNDERDOT<br>
+09 UGARITIC LETTER T UNDERDOT<br>
+0A UGARITIC LETTER Y<br>
+0B UGARITIC LETTER K<br>
+0C UGARITIC LETTER S BREVE<br>
+0D UGARITIC LETTER L<br>
+0E UGARITIC LETTER M<br>
+0F UGARITIC LETTER D UNDERBAR<br>
+&nbsp;<br>
+10 UGARITIC LETTER N<br>
+11 UGARITIC LETTER T UNDERBAR UNDERDOT<br>
+12 UGARITIC LETTER S<br>
+13 UGARITIC LETTER GLOTTAL STOP (ain)<br>
+14 UGARITIC LETTER P<br>
+15 UGARITIC LETTER S UNDERDOT<br>
+16 UGARITIC LETTER Q<br>
+17 UGARITIC LETTER R<br>
+18 UGARITIC LETTER T UNDERBAR<br>
+19 UGARITIC LETTER G ACUTE<br>
+1A UGARITIC LETTER T<br>
+1B UGARITIC LETTER I<br>
+1C UGARITIC LETTER U<br>
+1D UGARITIC LETTER S GRAVE<br>
+1E<br>
+1F UGARITIC WORD DIVIDER<br>
+</p>
+
+<h3>Other Scripts (Without Specific Proposals)</h3>
+
+<p>There are, of course, a number of other scripts for which proposals<br>
+have not been made. Some of these will be described in this section.</p>
+
+<p>Further information about these scripts is welcome. Scholars<br>
+interested in pursuing the encoding of any of these may contact<br>
+the Unicode offices. In the following thumbnail sketches, when it<br>
+is written that a particular item ``is not known,'' this usually<br>
+means that the relevant information has not yet been found by<br>
+members of the Unicode Consortium working on these issues, rather<br>
+than that the information is really not known.</p>
+
+<h3>Brahmi and Other Scripts of India</h3>
+
+<p>The Brahmi script is the progenitor of all or most of the scripts<br>
+of India, as well as most scripts of Southeast Asia. Brahmi is<br>
+also known as Asoka, the script in which the famous Asokan edicts<br>
+were incised in the second century BC. (Asoka was an emperor of<br>
+the Mauryan dynasty of what is now Orissa State, India.) Brahmi<br>
+is historically important, but not enough information is currently<br>
+available to make a concrete proposal beyond a mere list of the<br>
+basic alphabet (e.g., for which see Diringer's Writing). Unlike<br>
+most of its modern descendants, Brahmi vowel signs are written in<br>
+an attached form, and the script thus requires a large number of<br>
+glyphs for rendering.</p>
+
+<p>The so-called Box-Headed Script was used in India during the 6th<br>
+century AD. It appears in many stone inscriptions around Hyderabad<br>
+in central India. Several other old Indian scripts are known to<br>
+exist (Modi, Kaithi, Satavahana, Chola, Kharoshthi, Lahnda) but<br>
+not enough information is currently available about them to evaluate<br>
+their content and historical importance. They may eventually be<br>
+encoded.</p>
+
+<h3>'Phags-pa</h3>
+
+<p>The 'Phags-pa script an extinct fore-runner of the Tibetan script,<br>
+is traditionally held to have been invented in about 1269 by Bla-ma<br>
+'Phags-pa. It was used in Mongolia throughout the Yan dynasty and<br>
+(reportedly) was the official script of the Mongolian empire under<br>
+Kublai Khan. 'Phags-pa can be viewed as mostly parallel to the<br>
+modern Tibetan script, but it was written vertically and contained<br>
+several letters not found in Tibetan.</p>
+
+<h3>Ancient Egyptian (Hieroglyphic)</h3>
+
+<p>The Egyptian hieroglyphic script is well-known and historically<br>
+important; it is also well-studied by scholars and frequently<br>
+requested for addition to Unicode. The major problem to solve is<br>
+determining the extent to which variant forms should be unified<br>
+into a single codepoint, relying on richer text handling mechanisms<br>
+for rendering and glyphic choice. The Gardner set of glyphs contains<br>
+some 750 entities from a late hieroglyphic period. French scholars<br>
+have compiled some 9000 entities spanning from the earliest to<br>
+latest inscriptions; of these 9000, one preliminary estimate suggests<br>
+that only about 2000 should really be distinct characters, the<br>
+other 7000 are variant forms. A clear model needs to be developed<br>
+that can give a coherent picture of the historical periods involved,<br>
+and how various periods can be reflected in the final rendering<br>
+and processing models. So far, no work has been done in this area.</p>
+
+<p>This problem is of similar magnitude to the ``Han unification''<br>
+problem.</p>
+
+<h3>Akkadian / Babylonian / Sumerian</h3>
+
+<p>The Egyptian hieroglyphic problem is probably closely matched by<br>
+the problems involved in the Akkadian, Sumerian, and Babylonian<br>
+cuneiform systems. One existing Akkadian font lists over 700 signs.</p>
+
+<p>The Manuel d'Epigraphie Akkadienne has not been available for<br>
+preliminary consultation (it has been purchased, but we have yet<br>
+to receive it as of this writing). Akkadian was a lingua franca<br>
+over much of the ancient Middle East for well over a thousand years,<br>
+and its historical importance is uncontested, but again, there is<br>
+an historical problem of considerable magnitude to be solved before<br>
+encoding it.</p>
+
+<h3>Hittite Hieroglyphics</h3>
+
+<p>The Hittite language written with a unique hieroglyphic system is<br>
+the oldest recorded Indo-European language. The Hittite hieroglyphics<br>
+came to light gradually during the latter half of the 19th century.</p>
+
+<p>There are some 110 signs or so. Many of these are listed in various<br>
+readily-available sources, but we have not yet found source materials<br>
+showing all of the known signs or expounding more than cursorily<br>
+upon the hieroglyphic system. Hittite was also written at one time<br>
+in a later form of Akkadian cuneiform; it is not known to what<br>
+extent the glyphs used for cuneiform Hittite overlap exactly with<br>
+particular Akkadian glyphs.</p>
+
+<h3>Kawi / Javanese / Balinese</h3>
+
+<p>It is not clear at this time whether Kawi, Javanese, and Balinese<br>
+scripts are distinct enough entities to require separate encoding,<br>
+or whether a single encoding with three different font presentations<br>
+will suffice. The Javanese script is known to enjoy some sporadic<br>
+use, and some information on it (the shapes and phonetic values of<br>
+its basic letters, from Faulmann and other sources) is readily<br>
+available. Kawi is basically an extinct language, but it is known<br>
+to still enjoy some use at least in traditional Balinese theatre<br>
+(see, e.g., McPhee, Music in Bali where the Kawi language is<br>
+mentioned repeatedly as the language of vocal recitation for much<br>
+theatre music). It is unknown to what extent either the Kawi or<br>
+Balinese scripts are in use, however.</p>
+
+<h3>Ahom / Khamti</h3>
+
+<p>Ahom is a recently extinct Shan language. The Ahom and Khamti<br>
+scripts appear in the Linguistic Survey of India (see below), where<br>
+there is enough information to quickly generate an exploratory<br>
+proposal. Hearsay suggests, however, that a new book on the Ahom<br>
+language (and script?) is forthcoming; this could be expected to<br>
+contain much better information. It is unknown how much current<br>
+scholarly interest there is in encoding of the Ahom and Khamti<br>
+scripts.</p>
+
+<h3>Pyu / Tircul</h3>
+
+<p>The Pyu script is another descendant of Brahmi that was used in</p>
+
+<p>Burma sometime between about 800 and 1000 AD. It is described<br>
+somewhat in Luce (see below), where there is a large chart that<br>
+gives a good idea of the letter shapes and the repertoire, but is<br>
+too scanty for even an exploratory proposal.</p>
+
+<h3>Yi (Lolo)</h3>
+
+<p>The Yi or Lolo script is known to be in use among the Yi people of<br>
+Yunnan Province in China. The modern Yi script is a syllabary<br>
+containing hundreds of symbols. Each symbol seems to encode a<br>
+syllable and one of three tones. A table of this script is available.</p>
+
+<p>The system seems to be a revision of an older syllabic/ideographic<br>
+system about which little information is available. Some further<br>
+other information is contained in Vial (see below).</p>
+
+<h3>Moso (a.k.a. Naxi, Nahsi, Nakhi)</h3>
+
+<p>The Moso or Naxi script is used among the Moso people of China.</p>
+
+<p>It is apparently an ideographic script (with many beautiful and<br>
+detailed glyphs), and may still be in use as of this writing. It<br>
+was apparently in use as late as 1981. Bacot shows a large number<br>
+of ideographs, with brief synopses of meaning. This information<br>
+is adequate to get an idea of the number of symbols and their type,<br>
+but more information is needed to generate an exploratory proposal.</p>
+
+<p>One volume in Chinese (1981) is available and lists some 1340<br>
+graphic units, though this number must be augmented because several<br>
+dissimilar graphic elements are often recorded and defined under<br>
+one numbered entry.</p>
+
+<h3>Siddham</h3>
+
+<p>The Siddham script is closely related to Devanagari. It is still<br>
+widely used as an art form (calligraphy) in connection with Buddhism<br>
+in Japan and the Far East. Excellent sources, such as Stevens (see<br>
+bibliography) are available, and a proposal could be quickly<br>
+generated.</p>
+
+<h3>Linear A and Others</h3>
+
+<p>Several other scripts are known from the Middle East. Among these<br>
+are Linear A and the Cypriot Syllabary (or Cypro-Minoan). They are<br>
+both related to Linear B but the extent of the connection is not<br>
+clear enough to decide whether they could or should be encoded in<br>
+parallel to Linear B or unified with Linear B, or encoded separately.</p>
+
+<p>Not much information is available on the so-called ``pseudo-<br>
+hieroglyphic'' script of Byblos.</p>
+
+<p><strong>Some Sources</strong></p>
+
+<p>Luce, G. H. <em>Phases of Pre-Pagán Burma. </em><br>
+Vial, Paul. <em>Les Lolos.</em><br>
+Bacot, J. <em>Les Mo-so</em>. <br>
+Grierson, G. A. <em>Linguistic Survey of India</em>.<br>
+Gordon, Cyrus H.<em> Forgotten Scripts</em>. <br>
+Stevens, John. <em>Sacred Calligraphy of the East.</em></p>
+
+<h3>Bibliography</h3>
+<font size="4">
+
+<blockquote>
+  <p></font><font size="3">Alexander, J~ T. <i>A Dictionary of the Cherokee Indian Language.
+  </i>Published by the author, 1971.</p>
+  <p>Antonsen, Elmer H. The <i>Runes: </i>The <i>Earliest Germanic Writing System, in </i>The
+  origins of Writing. Wayne M. Senner, ed. Univ. of Nebraska Press, Lincoln, 1989.</p>
+  <p>Bacot, J. <i>Lies Mo-so; Etlinographie </i>&amp; <i>Mo-so, leurs religions, leur langue
+  et leur dcriture. </i>E. 3. Brill, Leide, 1913.</p>
+  <p>Bonfante, Larissa. <i>Etruscan. </i>University of California Press <i>I </i>British
+  Museum, Berkeley, 1990. <i>Reading the Past </i>Series.</p>
+  <p>Budge, E. A. Wallis. The <i>Rosetta Stone. </i>Dover. New York, 1989. ISBN</p>
+  <p>0486-26163-8 [First published 1929].</p>
+</blockquote>
+
+<blockquote>
+  <p>Campbell, A. <i>Note on the Limboo Alphabet of the Skkim Himalaya in </i>Journal of the
+  Asiatic Society of Bengal, Vol 24, <i>1855.</p>
+  </i><p>Chadwick, John. <i>Linear B and Related Scripts. </i>University of California Press
+  <i>I </i>British Museum, Berkeley, 1987. <i>Reading the Past </i>Series.</p>
+  <p>Chemsong, Iman Singh. The <i>Kirat Grammar (Limbu). </i>PL3SO1.L91C5 Information
+  incomplete.</p>
+  <p>Cleator, P. E. <i>Lost Languages. </i>The John Day Co. New York, 1961. LC 61-8278.
+  Cook, B. F. <i>Greek Inscriptions. </i>University of California Press <i>I </i>British
+  Museum, Berkeley, 1987. <i>Reading the Past </i>Series.</p>
+</blockquote>
+
+<blockquote>
+  <p>Coulmas, Florian. <i>Writing Systems of the Worli </i>Basil Blackwell, Oxford, 1989.</p>
+</blockquote>
+
+<blockquote>
+  <p>Cross, Frank Moore. The <i>Invention and Development of the Alphabet, </i>in The
+  Origins of Writing. Wayne M. Senner, ed. Univ. of Nebraska Press, Lincoln, 1989.</p>
+  <p>Davies, W.V. <i>Egyptian Hieroglyphs. </i>University of California Press <i>I </i>British
+  Museum, Berkeley, 1990. <i>Reading the Past </i>Series.</p>
+  <p>Davis, Richard. <i>A Northern Thai Reader. </i>The Siam Society, Bangkok, 1970.</p>
+  <p>Diringer, David. <i>Writing. </i>Frederick A. Praeger Publisher, New York, 1962.</p>
+  <p>Diringer, David. The <i>Stoiy of the Aleph Beth. </i>Thomas Yoseloff, New York, 1960.</p>
+  <p>Encyclopaedia Britannica, 15th edition (1981), Articles: <i>Anatolian languages,
+  Ancient epigraphic remains, Alphabets, Etruscan language Luwian, Lycian alphabet, Lycian
+  language, Lydian language.</p>
+  </i><p>Faulmann, Carl. <i>Schriftzeichen and Alphabete aller Zeiten and Völker. </i>Augustus
+  Verlag, Augsburg, 1990. Reprint of 1880 edition.</p>
+  <p>Fossey,Charles. Notices sur les caractéres étrangers, anciens Impr. nationale de
+  France, Paris, 1948.</p>
+  <p>Francisco, Juan R. <i>Philippine Palaeography. </i>Philippine Journal of Linguistics,
+  Special Monograph Issue Number 3. Linguistic Society of the Philippines, Quezon City,
+  1973.</p>
+  <p>Friedrich, Johannes. <i>Etttinct Languages. </i>Philosophical Library, New York, 1957.
+  (Translation of <i>Entzifferung Verschollener Schriften </i>und <i>Sprachen)</p>
+  </i><p>Gardiner, A. H. <i>Egyptian Grammar. </i>London, 1957. [Reprinted by Dover?]</p>
+  <p>Gelb, I. J. <i>Hittite Hieroglyphics, I, II, IlL </i>Chicago, 1931, 1935. [Not found
+  for consultation.]</p>
+  <p>Gordon, Cyrus H. <i>Forgotten Scripts. </i>Basic Books, New York, 1968.</p>
+  <p>Gordon, Cyrus H. <i>Ugaritic Literature. </i>Ventnor Publishers, Ventnor NJ, 1949. [Not
+  found for consultation. Cited as source of Cleator's Ugaritic table.]</p>
+  <p>Gorer, Geoffrey. <i>Himalayan Village, an account of The Lepchas of Sikkim. </i>Second
+  Edition. Basic Books, New York, 1967. (First pub. London, 1938).</p>
+  <p ALIGN="JUSTIFY">Graves, Robert. The <i>White Goddess: a historical grammar of poetic
+  myth. </i>Noonday Press, New York, 1948 (1990 reprint).</p>
+</blockquote>
+
+<blockquote>
+  <p ALIGN="JUSTIFY">Grierson, G. A. <i>Linguistic Survey of India. </i>Bombay?, 1898?</p>
+  <p ALIGN="JUSTIFY">Haarh, Erik. The <i>Lepcha Script, </i>in Acta Orientalia 24, 1959, pp
+  107-122.</p>
+  <p ALIGN="JUSTIFY">Haug, Martin &amp; Destur Hoshangji Jamaspji Asa. <i>An Old
+  Pahlavi-Pazand Glossary. Biblio Verlag, Osnabrtick, 1973. (Reprint of 1870 edition.)</p>
+  </i>
+</blockquote>
+
+<blockquote>
+  <p ALIGN="JUSTIFY">Haugen, Einar. <i>History of the Scandinavian Languages. </i>Faber and
+  Faber, London, 1976.</p>
+  <p ALIGN="JUSTIFY">Holmes, Ruth Bradley &amp; Betty Sharp Smith. <i>Beginning Cherokee. </i>University
+  of Oklahoma Press, Norman. [Publication date unknown.]</p>
+  <p ALIGN="JUSTIFY">Healey, John F. The <i>Early Alphabet </i>University of California
+  Press <i>I </i>British Museum, Berkeley, 1990. <i>Reading the Past </i>Series.</p>
+</blockquote>
+
+<blockquote>
+  <p ALIGN="JUSTIFY">Jackson, A. V. Wiffiams. <i>An Avesta Grammar in Comparison with
+  Sanskrit. </i>Part 1, Phonology, Inflection, Word-Formation. AMS Press, 1975. (Reprint of
+  the 1892 edition of W. Kohihammer, Stuttgart.)</p>
+</blockquote>
+
+<blockquote>
+  <p ALIGN="JUSTIFY">Kilpatrick, Jack Frederick &amp; Anna Gritts Kilpatrick, eds. <i>New
+  Echota Letters: Contributions of Samual A. Worcester to the Cherokee Phoenix. </i>Southern
+  Methodist Univ. Press, Dallas, n.d. (Rreprint of an article by S. A. Worcester which
+  appeared in the Cherokee Phoenix, Feb.21, 1828).<i></p>
+  </i>
+</blockquote>
+
+<blockquote>
+  <i><p ALIGN="JUSTIFY">Kirat Primary Book </i>1970. Information incomplete.</p>
+  <p ALIGN="JUSTIFY">Lelirnarm, Ruth P. M. <i>Ogham: Ancient Script of the Celts, </i>in The
+  Origins of</p>
+  <p ALIGN="JUSTIFY">Writing. Wayne M. Senner, ed. Univ. of Nebraska Press, Lincoln, 1989.
+  Library of Congress. <i>Cataloging Service Bulletin, </i>No.191 Winter 1982.</p>
+  <i><p ALIGN="JUSTIFY">Limbu Reader VL </i>LC 82-90304. Information incomplete.</p>
+</blockquote>
+
+<blockquote>
+  <p>Luce, G. H. <i>Phases of Pre-Pagán Burma; Languages and History. </i>Oxford University
+  Press, Oxford, 1985. [Pyu, Tircul]</p>
+  <p>MacKenzie, D. N. <i>A Concise Pahlavi Dictionary. </i>Oxford University Press, London,
+  1971.</p>
+</blockquote>
+</font>
+
+<blockquote>
+  <font size="3"><p>Mainwaring, G. B. <i>A Grammar of the ROng (Lepcha) Language. </i>Printed
+  by C. B. Lewis, Baptist Mission Press, Calcutta, 1876. (Recenfly reprinted by Raffia
+  Pustak Bancihar, Kathmandu.)</p>
+  <p>Mamwaring, G. B. <i>Dictionary of the Lepcha Language. </i>Revised and completed by A.
+  Griinwedel, Berlin, 1898.</p>
+  <p>McPhee, Colin <i>Music in Bali, </i>Yale Univ Press, New Haven, 1966</p>
+  <p>Nakanishi, Akira. <i>Writing Systems of the World. </i>Tuttle. Rutland, VT, 1980.
+  Translation of <i>Sekai </i>no <i>moji, </i>Shokado, Kyoto, 1975.) ISBN 0-8048-12934. LC
+  79-64826.</p>
+  <p>Nakano, Miyoko. <i>A Phonological Study in the 'Phags-pa Script and the Meng-ku
+  Tzu-yün. </i>Faculty of Asian Studies in association with Australian National University
+  Press, Canberra, 1971.</p>
+  <p>Norman, James. <i>Ancestral Voices; decoding ancient languages. </i>Four Winds Press,
+  New York, 1975.</p>
+  <p>Nyberg, Henrik Samuel. <i>A Manual of Pahlavi </i>Otto Harrassowitz, Wiesbaden, 1964.
+  Second edition of <i>Hiijsbuch &amp;5 Pehlevz.</p>
+  </i><p>Page, R. I. <i>Runes </i>(University of California Press / British Museum,
+  Berkeley, 1990). <i>Reading the Past </i>Series.</p>
+  <p>Pontalis, Pierre Lefevre. <i>L 'invasion </i>Thare <i>en Indo-Chine, </i>in T'oung pao
+  Archives, Vol VIII. E. J. Brill, Leide, 1897. Kraus Reprint, Nendek, Liechtenstein, 1975.</p>
+  <p>Sampson, Geoffrey. <i>Writing Systems; a linguistic introduction. </i>Stanford
+  University Press, Stanford, CA, <i>1985.</p>
+  </i><p>Senner, Wayne M., ed. The <i>Origins of Writing. </i>University of Nebraska Press,
+  Lincoln, 1989. [Several articles also cited.]</p>
+  <p>Sirk, Ü. The <i>Buginese Language. </i>Nauka Publishing House, Central Department of
+  Oriental Literature, Moscow, 1983. <i>Languages of Asia and Africa </i>series.</p>
+  <p>Sloat, Clarence &amp; Sharon Henderson Taylor &amp; James E. Hoard <i>Introduction to
+  Phonology. </i>Prentice Hall, Englewood Cliffs, 1978. [Cherokee table.]</p>
+  <p>Stevens, John. <i>Sacred Calligraphy of the East. </i>Shambala. Boston, 1988. [Source
+  for <i>Siddiram </i>script.]</p>
+  <p>Subba, B. B. <i>Limbu Nepali English Dictionary. </i>Gangtok, Sikkim, 1979. PL3801
+  .L54S9 1979.</p>
+  <p>van der Tutik, H. N. <i>A Grammar of Toba Batak. </i>Martinus Nijhoff, The Hague, 1971.
+  ('1'ranslation of 1864 work.)</p>
+  <p>Vial, Paul. <i>Lies Lobs; histoire, religion, moeurs, langue. </i>Chang-Iki, Imprimerie
+  de la Mission Catholique, 1898.</p>
+  <p>Walker, C. B. F. <i>Cuneiform. </i>University of California Press <i>I </i>British
+  Museum, Berkeley, 1987. <i>Reading the Past </i>Series.</p>
+  <i><p>Xerox Character Code Standard. </i>Xerox System Integration Standard XNSS 059003,
+  June 1990, Version 2.0.</p>
+  <p>Young, Linda Wai Ling. <i>Shan Chrestomathy; an introduction to Tai Mau language and
+  Literature. </i>Monograph series no.28. Center for South and Southeast Asia Studies,
+  University of California, Berkeley, 1985.</font><font size="4"></p>
+  </font>
+</blockquote>
+
+<hr>
+
+<h3>Changes from previous versions</h3>
+
+<h4>Changes from the original printed text version</h4>
+
+<p>This version of the Unicode Technical report does not have the character code charts
+from the original paper document. It also lacks most of the formatting, and there have
+been a number of small glitches in extracting the plain text from the original document.
+These have been corrected where possiible, but the content of the text has not been
+brought up to date since its original publication. All header text up to the last
+horizontal rule at the top, and all end text after the first horizontal rule at the end
+has been added as part of the republication of this Unicode Technical Report on the web.</p>
+
+<h4>Changes from the initial web version</h4>
+
+<p>Double spacing has been removed, some missing text from the source txt file retyped
+from the original printed edition, accensts and some formatting have been restored. Legal
+language and headers updated. Change history added. Some formating added for readability.</p>
+
+<h2>Copyright</h2>
+
+<p>Copyright © 1992-1998 Unicode, Inc. All Rights Reserved. The Unicode Consortium makes
+no expressed or implied warranty of any kind, and assumes no liability for errors or
+omissions. No liability is assumed for incidental and consequential damages in connection
+with or arising out of the use of the information or programs contained or accompanying
+this technical report. </p>
+
+<p>Unicode and the Unicode logo are trademarks of Unicode, Inc., and are registered in
+some jurisdictions.</p>
+
+<hr>
+
+<p>The Unicode Home Page: http://www.unicode.org<br>
+<br>
+Unicode Technical Reports reside at: http://www.unicode/unicode/reports</p>
+
+<hr>
+</body>
+</html>

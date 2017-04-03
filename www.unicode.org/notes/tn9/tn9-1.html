@@ -1,0 +1,596 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
+       "http://www.w3.org/TR/REC-html40/loose.dtd"> 
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta http-equiv="Content-Language" content="en-us">
+<meta name="GENERATOR" content="Microsoft FrontPage 6.0">
+<meta name="ProgId" content="FrontPage.Editor.Document">
+<link rel="stylesheet" href="../../unicode/reports/reports.css" type="text/css">
+<title>UTN #9: Deterministic Sorting</title>
+</head>
+
+<body bgcolor="#ffffff">
+
+<table class="header">
+  <tr>
+    <td class="icon"><a href="http://www.unicode.org"><img align="middle" alt="[Unicode]" border="0" src="../../webscripts/logo60s2.gif" width="34" height="33"></a>&nbsp;&nbsp; 
+      <font size="3"><a class="bar" href="http://www.unicode.org/notes">Technical 
+      Notes</a></font></td>
+  </tr>
+  <tr>
+    <td class="gray">&nbsp;</td>
+  </tr>
+</table>
+<div class="body">
+  <h2 align="center">Unicode Technical Note #9</h2>
+  <h1 align="center">Deterministic Sorting</h1>
+  <table class="wide">
+    <tr>
+      <td width="20%">Version</td>
+      <td><a href="tn9-1.html#TrackingNumber1">1</a></td>
+    </tr>
+    <tr>
+      <td>Authors</td>
+      <td><a href="http://www.unicode.org/unicode/reporting.html">Mark Davis</a></td>
+    </tr>
+    <tr>
+      <td>Date</td>
+      <td>2003-07-28</td>
+    </tr>
+    <tr>
+      <td>This Version</td>
+      <td><a href="tn9-1.html">http://www.unicode.org/notes/tn9/tn9-1.html</a></td>
+    </tr>
+    <tr>
+      <td>Previous Version</td>
+      <td>none</td>
+    </tr>
+    <tr>
+      <td>Latest Version</td>
+      <td><a href="index.html">http://www.unicode.org/notes/tn9/</a></td>
+    </tr>
+  </table>
+  <br>
+  <h3><i>Summary</i></h3>
+  <p><i><em>There is often confusion about what is meant by the terms &quot;</em>stable&quot; 
+  or &quot;deterministic&quot; when applied to sorting or comparison. <em>This </em>Technical 
+  Notes clarifies the issues surrounding these terms.</i></p>
+  <h3><i>Status</i></h3>
+  <p><i>This document is a <b>Unicode Technical Note</b>. It is supplied purely 
+  for informational purposes and publication does not imply any endorsement by 
+  the Unicode Consortium. For general information on Unicode Technical Notes, 
+  see <a href="http://www.unicode.org/notes">http://www.unicode.org/notes</a>.</i></p>
+  <h3>Contents</h3>
+  <blockquote>
+    <dl>
+      <dt><a href="tn9-1.html#Stable_Sort">Stable Sort</a></dt>
+      <dt><a href="tn9-1.html#Deterministic_Sort">Deterministic Sort</a></dt>
+      <dt><a href="tn9-1.html#Deterministic_Comparison">Deterministic Comparison</a></dt>
+      <dd><a href="tn9-1.html#Forcing_Deterministic_Comparisons">Forcing Deterministic 
+        Comparisons</a></dd>
+      <dd><a href="tn9-1.html#Best_Practice">Best Practice</a></dd>
+      <dd><a href="tn9-1.html#Forcing_Stable_Sorts">Forcing Stable Sorts</a></dd>
+      <dt><a href="tn9-1.html#Stable_Comparison">Stable Comparison</a></dt>
+      <dt><a href="tn9-1.html#Acknowledgements">Acknowledgements</a></dt>
+      <dt><a href="tn9-1.html#References">References</a></dt>
+    </dl>
+  </blockquote>
+  <h2><a name="Introduction">Introduction</a></h2>
+  <p>There is often a good deal of confusion about what is meant by the terms 
+  &quot;stable&quot; or &quot;deterministic&quot; when applied to sorting or 
+  comparison. This confusion in terms often leads people to make mistakes in 
+  their software architecture, or make choices of language-sensitive comparison 
+  options that have significant impact in terms of performance and footprint, 
+  and yet do not give the results that users expect.</p>
+  <p>This technical note describes the meaning of each of these term in the 
+  proper context, and clarifies their usage and implications.</p>
+  <h2><a name="Stable_Sort">Stable Sort</a></h2>
+  <p>A stable sort is one where two records will retain their order when sorted 
+  according to a particular field, even when the two fields have the same 
+  contents. Thus those two records come out in the same relative order that they 
+  were in before sorting, although their positions relative to other records may 
+  change. Importantly, this is a property of the sorting algorithm, <i>not</i> 
+  the comparison mechanism.</p>
+  <p>Two examples of differing sorting algorithms are Quick Sort and Merge. 
+  Quick Sort is not stable while Merge Sort is stable. (A Bubble Sort, as 
+  typically implemented, is also stable.)</p>
+  <ul>
+    <li>For background on the names and characteristics of different sorting 
+      methods, see [<a href="tn9-1.html#SortAlg">SortAlg</a>]</li>
+    <li>For a definition of stable sorting, see [<a href="tn9-1.html#Unstable">Unstable</a>]</li>
+  </ul>
+  <p>&nbsp;Suppose that you have the following records and you sort on the 
+  Last_Name field only:</p>
+  <div align="center">
+    <center>
+    <table border="1" cellspacing="0" cellpadding="4">
+      <caption>Original Records</caption>
+      <tr>
+        <th>Record</th>
+        <th>Last_Name</th>
+        <th>First_Name</th>
+      </tr>
+      <tr>
+        <td><font color="#00FF00">1</font></td>
+        <td>Davis</td>
+        <td>John</td>
+      </tr>
+      <tr>
+        <td><font color="#00FF00">2</font></td>
+        <td>Davis</td>
+        <td>Mark</td>
+      </tr>
+      <tr>
+        <td>3</td>
+        <td>Curtner</td>
+        <td>Fred</td>
+      </tr>
+    </table>
+    </center>
+  </div>
+  <h4>&nbsp;</h4>
+  <div align="center">
+    <center>
+    <table border="1" cellspacing="0" cellpadding="4">
+      <caption>Merge Sort Results</caption>
+      <tr>
+        <th>Record</th>
+        <th>Last_Name</th>
+        <th>First_Name</th>
+      </tr>
+      <tr>
+        <td>3</td>
+        <td>Curtner</td>
+        <td>Fred</td>
+      </tr>
+      <tr>
+        <td><font color="#00FF00">1</font></td>
+        <td>Davis</td>
+        <td>John</td>
+      </tr>
+      <tr>
+        <td><font color="#00FF00">2</font></td>
+        <td>Davis</td>
+        <td>Mark</td>
+      </tr>
+    </table>
+    </center>
+  </div>
+  <h4>&nbsp;</h4>
+  <div align="center">
+    <center>
+    <table border="1" cellspacing="0" cellpadding="4">
+      <caption>Quick Sort Results</caption>
+      <tr>
+        <th>Record</th>
+        <th>Last_Name</th>
+        <th>First_Name</th>
+      </tr>
+      <tr>
+        <td>3</td>
+        <td>Curtner</td>
+        <td>Fred</td>
+      </tr>
+      <tr>
+        <td><font color="#FF0000">2</font></td>
+        <td>Davis</td>
+        <td>Mark</td>
+      </tr>
+      <tr>
+        <td><font color="#FF0000">1</font></td>
+        <td>Davis</td>
+        <td>John</td>
+      </tr>
+    </table>
+    </center>
+  </div>
+  <p>As you see from the above, the Quicksort algorithm is not stable; the 
+  records 1 and 2 are not in the same order they were in before sorting.</p>
+  <p>A stable sort is often desired; for one thing, it allows records to be 
+  successively sorting according to different fields, and retain the correct 
+  lexigraphic order. Thus with a stable sort, one could all the records by 
+  First_Name, then sort all the records by Last_Name, giving the desired 
+  results: that all records would be sorted by Last_Name, and where the 
+  Last_Names are the same, sorted by First_Name.</p>
+  <h2><a name="Deterministic_Sort">Deterministic Sort</a></h2>
+  <p>A <i>deterministic</i> sort is a very different beast. This is a sort 
+  algorithm that returns the same results each time. On the face of it, it would 
+  seem odd for any sort algorithm to <i>not</i> be deterministic, but there are 
+  examples of real-world sort algorithms that aren't.</p>
+  <p>The key concept is that these sort algorithms <i>are</i> deterministic when 
+  two records have unequal fields, but they may return different results at 
+  different times when two records have equal fields.</p>
+  <p>For example, a classic Quick Sort algorithm works recursively on ranges of 
+  records. For any given range of records, it takes the first element as the <i>pivot 
+  element</i>. We're not going to explain the details here, but that algorithm 
+  performs badly with input data that happens to be sorted (or mostly sorted). A 
+  randomized Quick Sort, which picks a random element as the pivot, can on 
+  average be faster. The results it gets are not deterministic; from <i>exactly </i>the 
+  same input, different results can be output:</p>
+  <div align="center">
+    <center>
+    <table border="0" cellspacing="0" cellpadding="4" class="noborder">
+      <caption>Enhanced Quick Sort Results</caption>
+      <tr>
+        <td class="noborder">
+          <table border="1" cellspacing="0" cellpadding="4">
+            <tr>
+              <th>Record</th>
+              <th>Last_Name</th>
+              <th>First_Name</th>
+            </tr>
+            <tr>
+              <td>3</td>
+              <td>Curtner</td>
+              <td>Fred</td>
+            </tr>
+            <tr>
+              <td><font color="#FF0000">2</font></td>
+              <td>Davis</td>
+              <td>John</td>
+            </tr>
+            <tr>
+              <td><font color="#FF0000">1</font></td>
+              <td>Davis</td>
+              <td>Mark</td>
+            </tr>
+          </table>
+        </td>
+        <td class="noborder">
+          <p align="center">or</td>
+        <td class="noborder">
+          <table border="1" cellspacing="0" cellpadding="4">
+            <tr>
+              <th>Record</th>
+              <th>Last_Name</th>
+              <th>First_Name</th>
+            </tr>
+            <tr>
+              <td>3</td>
+              <td>Curtner</td>
+              <td>Fred</td>
+            </tr>
+            <tr>
+              <td><font color="#00FF00">1</font></td>
+              <td>Davis</td>
+              <td>Mark</td>
+            </tr>
+            <tr>
+              <td><font color="#00FF00">2</font></td>
+              <td>Davis</td>
+              <td>John</td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+    </table>
+    </center>
+  </div>
+  <p>As another example, multiprocessor sorting algorithms can be 
+  non-deterministic. The work of sorting different blocks of data are farmed out 
+  to different processors and then merged back together. The ordering of records 
+  with equal fields might be different according to when different processors 
+  finish different tasks.</p>
+  <p>Note that a deterministic sort is weaker than a stable sort. A stable sort 
+  is always deterministic, but not vice versa. And typically when people say 
+  they want a deterministic sort, they really mean that they want a stable sort.</p>
+  <h2><a name="Deterministic_Comparison">Deterministic Comparison</a></h2>
+  <p>A <i>deterministic comparison</i> is different than either of the above; it 
+  is a property of a comparison function, <i>not</i> a sorting algorithm. This 
+  is a comparison where strings that do not have identical binary contents 
+  (optionally, after some process of normalization) will compare as unequal. A 
+  deterministic comparison is sometimes called a <i>stable</i> (or <i>semi-stable</i>) 
+  <i>comparison</i>.</p>
+  <p>There are many people who confuse a deterministic comparison with a 
+  deterministic (or stable) sort, but once again, these are <i>very</i> 
+  different creatures. A comparison is used by a sorting algorithm to determine 
+  the relative ordering of two fields, such as strings. Using a deterministic 
+  comparison <i>cannot</i> cause a sort to be deterministic, nor to be stable. 
+  Whether a sort is deterministic or stable is a property of the sort algorithm, 
+  <i>not</i> the comparison function. If you look at the examples above, this is 
+  clear.</p>
+  <h3><a name="Forcing_Deterministic_Comparisons">Forcing Deterministic 
+  Comparisons</a></h3>
+  <p>One can produce a deterministic comparison function from a 
+  non-deterministic one, in the following way (in pseudo-code):</p>
+  <pre>int new_compare (String a, String b) {
+  int result = old_compare(a, b);
+  if (result == 0) {
+    result = binary_compare(a, b);
+  }
+  return result;
+}</pre>
+  <p>Programs typically also provide the facility to generate a <i>sort key</i>, 
+  which is a sequences of bytes generated from a string in alignment with a 
+  comparison function. Two sort keys will binary-compare in the same order as 
+  their original strings.&nbsp; To create a deterministic sort key that aligns 
+  with the above <code>new_compare</code>, the simplest means is to append a 
+  copy of the original string to the sort key. This will force the comparison to 
+  be deterministic.</p>
+  <pre>byteSequence new_sort_key (String a) {
+  return old_sort_key(a) + SEPARATOR + toByteSequence(a);
+}</pre>
+  <p>Because sort keys and comparisons must be aligned, a sort key generator is 
+  deterministic if and only if a comparison is.</p>
+  <h3><a name="Best_Practice">Best Practice</a></h3>
+  <p>However, a deterministic comparison is generally not best practice. First, 
+  it has a certain performance cost in comparison, and a quite substantial 
+  impact on sort key size. (For example, [<a href="tn9-1.html#ICU">ICU</a>] 
+  language-sensitive sort keys are generally about the size of the original 
+  string, so appending a copy of the original string generally <i>doubles</i> 
+  the size of the sort key.)&nbsp; A database using these sort keys can have 
+  substantially increased disk footprint and memory footprint, and consequently 
+  reduced performance.</p>
+  <p>More importantly, a deterministic comparison function does not actually 
+  achieve the effect people think it will have. Look at the sorted examples 
+  above. Whether a deterministic comparison is use or not, there will be <i><b>no</b></i> 
+  effect on Quick Sort example, since the two records in question have identical 
+  last name fields. It does not make a non-deterministic sort into a 
+  deterministic one, nor does it make a non-stable sort into a stable one.</p>
+  <p>Thirdly, a deterministic comparison is often not what is wanted, when 
+  people look closely at the implications. Look at our above example, and 
+  suppose that this time the user is sorting first by last name, then by first 
+  name.</p>
+  <div align="center">
+    <center>
+    <table border="1" cellspacing="0" cellpadding="4">
+      <caption>Original Records</caption>
+      <tr>
+        <th>Record</th>
+        <th>Last_Name</th>
+        <th>First_Name</th>
+      </tr>
+      <tr>
+        <td><font color="#00FF00">1</font></td>
+        <td>Davis</td>
+        <td>John</td>
+      </tr>
+      <tr>
+        <td><font color="#00FF00">2</font></td>
+        <td>Davis</td>
+        <td>Mark</td>
+      </tr>
+      <tr>
+        <td>3</td>
+        <td>Curtner</td>
+        <td>Fred</td>
+      </tr>
+    </table>
+    </center>
+  </div>
+  <p>The desired results are the following, which should result whether the 
+  sorting algorithm is stable or not, since we are using both fields.</p>
+  <div align="center">
+    <center>
+    <table border="1" cellspacing="0" cellpadding="4">
+      <caption>Last then First</caption>
+      <tr>
+        <th>Record</th>
+        <th>Last_Name</th>
+        <th>First_Name</th>
+      </tr>
+      <tr>
+        <td>3</td>
+        <td>Curtner</td>
+        <td>Fred</td>
+      </tr>
+      <tr>
+        <td><font color="#00FF00">1</font></td>
+        <td>Davis</td>
+        <td>John</td>
+      </tr>
+      <tr>
+        <td><font color="#00FF00">2</font></td>
+        <td>Davis</td>
+        <td>Mark</td>
+      </tr>
+    </table>
+    </center>
+  </div>
+  <p>Now suppose that in record 2, the source for the data caused the last name 
+  to contain a control character, such as a ZWJ (used to request ligatures on 
+  display). There is in this case no visible distinction in the forms, since the 
+  font doesn't have any ligatures for these values. The standard UCA collation 
+  sequence causes that character to be—correctly—ignored in comparison, 
+  since it should only affect rendering. However, if that comparison is changed 
+  to be deterministic (by appending the binary original string, then unexpected 
+  results will occur.</p>
+  <div align="center">
+    <center>
+    <table border="1" cellspacing="0" cellpadding="4">
+      <caption>Last then First<br>
+        (Deterministic)</caption>
+      <tr>
+        <th>Record</th>
+        <th>Last_Name</th>
+        <th>First_Name</th>
+      </tr>
+      <tr>
+        <td>3</td>
+        <td>Curtner</td>
+        <td>Fred</td>
+      </tr>
+      <tr>
+        <td><font color="#FF0000">2</font></td>
+        <td>Davis</td>
+        <td>Mark</td>
+      </tr>
+      <tr>
+        <td><font color="#FF0000">1</font></td>
+        <td>Davis</td>
+        <td>John</td>
+      </tr>
+    </table>
+    </center>
+  </div>
+  <ul>
+    <li>For a discussion of other issues connected with sorting multiple fields, 
+      see [<a href="tn9-1.html#Interleaved">Interleaved</a>].</li>
+  </ul>
+  <h3><a name="Forcing_Stable_Sorts">Forcing Stable <i>Sorts</i></a></h3>
+  <p>Typically, what people really want when they say they want a deterministic 
+  comparison is actually a stable sort.</p>
+  <p>One <i>can</i> force non-stable sorting algorithm to produce stable results 
+  by how one does the comparison. However, it has literally nothing to do with 
+  making the comparison be deterministic or not. Instead, it can be done by 
+  appending the <i>current record number</i> to the strings to be compared. (The 
+  implementation may not actually append the number; it may use some other 
+  mechanism, but the effect would be the same.)</p>
+  <p>If such a modified sort comparison is used, for example, then it forces 
+  Quick Sort to get the same results as Merge Sort. And in that case, the 
+  irrelevant character ZWJ does not affect the outcome, as illustrated below, 
+  and the correct results occur.</p>
+  <div align="center">
+    <center>
+    <table border="1" cellspacing="0" cellpadding="4">
+      <caption>Last then First<br>
+        (Forced Stable Results)</caption>
+      <tr>
+        <th>Record</th>
+        <th>Last_Name</th>
+        <th>First_Name</th>
+      </tr>
+      <tr>
+        <td>3</td>
+        <td>Curtner</td>
+        <td>Fred</td>
+      </tr>
+      <tr>
+        <td><font color="#00FF00">1</font></td>
+        <td>Davis</td>
+        <td>John</td>
+      </tr>
+      <tr>
+        <td><font color="#00FF00">2</font></td>
+        <td>Davis</td>
+        <td>Mark</td>
+      </tr>
+    </table>
+    </center>
+  </div>
+  <p>If anything, this then is what users want when they say they want a 
+  deterministic comparison.</p>
+  <h2><a name="Stable_Comparison">Stable Comparison</a></h2>
+  <p>There are a few other terms worth mentioning, simply because they are also 
+  subject to considerable confusion. Any or all of the following may be easily 
+  confused with above.</p>
+  <p>A <i>stable comparison</i> is one that does not change over successive 
+  software versions. That is, as one uses successive versions of an API, with 
+  the same &quot;settings&quot; (such as locale), one gets the same results.</p>
+  <ul>
+    <li>For more information on the stability of language-sensitive comparisons, 
+      see [<a href="tn9-1.html#UTS10">UTS10</a>].</li>
+  </ul>
+  <p>A <i>stable sort key generator</i> is one that generates the same binary 
+  sequence over successive software versions.</p>
+  <blockquote>
+    <p><b>Warning: </b>if the sort key generator is stable, then the associated 
+    comparison will perforce be. However, the reverse is not guaranteed. To take 
+    a trivial example, suppose the new version of the software always adds an 
+    0xFF byte at the front of every sort key. The results of any comparison of 
+    any two <i>new</i> keys would be identical to the results of the comparison 
+    of any two corresponding <i>old</i> keys. But the bytes have changed, and 
+    the comparison of old and new keys would give different results. Thus one 
+    can have a stable comparison, yet an associated non-stable sort key 
+    generator.</p>
+  </blockquote>
+  <p>A <i>portable comparison</i> is where corresponding APIs for comparison 
+  produce the same results across different platforms. That is, if one uses the 
+  same &quot;settings&quot; (such as locale), one gets the same results.</p>
+  <p>A <i>portable sort key generator </i>is where corresponding sort key APIs 
+  produce exactly the same sequence of bytes across different platforms.</p>
+  <blockquote>
+    <p><b>Warning: </b>as above, a comparison may be portable without the 
+    associated sort key generator being portable.</p>
+  </blockquote>
+  <p>Ideally, all products would have the same string comparison and sort key 
+  generation for, say Swedish, and thus be portable. For historical reasons, 
+  this is not the case. Even if the main letters sort the same, there will be 
+  differences in the handling of other letters, or symbols, punctuation, and 
+  other characters. There are some libraries that offer portable comparison, 
+  such as [<a href="tn9-1.html#ICU">ICU</a>], but in general the results of comparison or 
+  sort key generation may vary significantly between different platforms.</p>
+  <p>In a closed system, or in simple scenarios, portability may not matter. 
+  Where someone has a given set of data to present to a user, and just wants the 
+  output to be reasonably appropriate for Swedish, then the exact order on the 
+  screen may not matter.</p>
+  <p>In other circumstances, it can lead to data corruption. For example, 
+  suppose that two implementations do a database SELECT for records between a 
+  pair of strings. If the collation is different in the least way, they can get 
+  different data results. Financial data might be different, for example, if a 
+  city is included in one SELECT on one platform and excluded from the same 
+  SELECT on another platform.</p>
+  <p>There are efforts to try to come to some common ground on these sorts of 
+  issues. See [<a href="tn9-1.html#CommonLocale">CommonLocale</a>] for more information.</p>
+  <h2><a name="Acknowledgements">Acknowledgements</a></h2>
+  <p>Thanks to Ken Whistler and Cathy Wissink for their many useful suggestions 
+  and contributions to the text.</p>
+  <h2><a name="References">References</a></h2>
+  <table border="0" width="100%" cellspacing="0" cellpadding="4" class="noborder">
+    <tr>
+      <td class="noborder">[<a name="CommonLocale">CommonLocale</a>]</td>
+      <td class="noborder">For information on the Common XML Locale Repository 
+        project, see<br>
+        <a href="http://www.openi18n.org/subgroups/lade/locale/">http://www.openi18n.org/subgroups/lade/locale/</a>.<br>
+        For the XML specification, see<br>
+        <a href="http://www.openi18n.org/specs/ldml/1.0/ldml-spec.htm">http://www.openi18n.org/specs/ldml/1.0/ldml-spec.htm</a>.</td>
+    </tr>
+    <tr>
+      <td class="noborder">[<a name="ICU">ICU</a>]</td>
+      <td class="noborder">For information about the ICU Unicode service library 
+        (C, C++, Java) see<br>
+        <a href="http://www.icu-project.org">http://www.icu-project.org</a> 
+      </td>
+    </tr>
+    <tr>
+      <td class="noborder">[<a name="Interleaved">Interleaved</a>]</td>
+      <td class="noborder">For a discussion of other issues connected with 
+        sorting multiple fields, see <a href="http://www.unicode.org/reports/tr10/tr10-10.html#Interleaved_Levels">http://www.unicode.org/reports/tr10/tr10-10.html#Interleaved_Levels</a>.</td>
+    </tr>
+    <tr>
+      <td class="noborder">[<a name="SortAlg">SortAlg</a>]</td>
+      <td class="noborder">For background on the names and characteristics of 
+        different sorting methods, see<br>
+        <a href="http://www.aeriesoft.ru/Projects/SortAlg/">http://www.aeriesoft.ru/Projects/SortAlg/</a></td>
+    </tr>
+    <tr>
+      <td class="noborder">[<a name="UTS10">UTS10</a>]</td>
+      <td class="noborder">For general issues regarding language-sensitive 
+        collation, see<br>
+        <a href="http://www.unicode.org/reports/tr10/tr10-10.html">http://www.unicode.org/reports/tr10/tr10-10.html</a>.</td>
+    </tr>
+    <tr>
+      <td class="noborder">[<a name="Unstable">Unstable</a>]</td>
+      <td class="noborder">For a definition of stable sorting, see<br>
+        <a href="http://planetmath.org/encyclopedia/UnstableSortingAlgorithm.html">http://planetmath.org/encyclopedia/UnstableSortingAlgorithm.html</a></td>
+    </tr>
+  </table>
+  &nbsp;
+    <h2><a name="Modifications">Modifications</a></h2>   
+  <p>The following summarizes modifications from the previous version of this   
+  document.</p>   
+  <table class="noborder" style="border-collapse: collapse" cellpadding="8" cellspacing="0">   
+    <tr>
+      <td width="2" class="noborder">2008.10.01</td>   
+      <td class="noborder">Updated stale links in version 1 </td>   
+    	</tr>
+    <tr>   
+      <td width="1" class="noborder"><a name="TrackingNumber1">1</a></td>   
+      <td class="noborder">Initial version</td>   
+    </tr>   
+    </table>   
+
+  <p class="copyright">Copyright © 2003 Mark Davis. All Rights Reserved. The 
+  Unicode Consortium and the authors make no expressed or implied warranty of 
+  any kind, and assume no liability for errors or omissions. No liability is 
+  assumed for incidental and consequential damages in connection with or arising 
+  out of the use of the information or programs contained or accompanying this 
+  technical note. The Unicode <a href="http://www.unicode.org/copyright.html">
+  Terms of Use</a> apply.</p>
+  <p class="copyright">Unicode and the Unicode logo are trademarks of Unicode, 
+  Inc., and are registered in some jurisdictions.</p>
+</div>
+
+</body>

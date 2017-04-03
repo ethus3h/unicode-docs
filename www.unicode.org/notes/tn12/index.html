@@ -1,0 +1,397 @@
+<!doctype HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html lang="en-US">
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link rel="stylesheet" href="../../unicode/reports/reports.css" type="text/css">
+<title>UTN #12: UTF-16 for Processing</title>
+</head>
+
+<body bgcolor="#ffffff">
+
+<table class="header">
+  <tr>
+    <td class="icon"><a href="http://www.unicode.org/"><img align="middle" alt="[Unicode]" border="0" src="../../webscripts/logo60s2.gif" width="34" height="33"></a>&nbsp;&nbsp;                               
+    <font size="3"><a class="bar" href="../index.html">Technical                                
+    Notes</a></font></td>
+  </tr>
+  <tr>
+    <td class="gray">&nbsp;</td>
+  </tr>
+</table>
+
+<div style="margin: 2em">
+  <h2 align="center">Unicode Technical Note #12</h2>                               
+  <h1 align="center">UTF-16 for Processing</h1> 
+  <table class="wide">
+    <tr>
+      <td>Version</td>
+      <td><a href="index.html#TrackingNumber1">1</a></td>
+    </tr>
+    <tr>
+      <td>Authors</td>
+      <td>Markus Scherer</td>
+    </tr>
+    <tr>
+      <td>Date</td>
+      <td>2004-01-13</td>
+    </tr>
+    <tr>
+      <td>This Version</td>
+      <td><a href="tn12-1.html">
+      http://www.unicode.org/notes/tn12/tn12-1.html</a></td>
+    </tr>
+    <tr>
+      <td>Previous Version</td>
+      <td>[none]</td>
+    </tr>
+    <tr>
+      <td>Latest Version</td>
+      <td><a href="index.html">
+      http://www.unicode.org/notes/tn12/</a></td>
+    </tr>
+  </table>
+
+  <h3><i>Summary</i></h3>
+  <p><i>This document attempts to make the case that it is advantageous to use  
+    UTF-16 (or 16-bit 
+    Unicode strings) for text processing. It is most important to use Unicode rather than  
+    older approaches to text encoding, but beyond that it  
+    simplifies software development even further to use the same internal form for text  
+    representation everywhere. UTF-16 is already the dominant processing  
+    form and therefore provides advantages.</i></p>  
+
+  <h3><i>Status</i></h3>
+  <p><i>This document is a <b>Unicode Technical Note</b>. It is supplied purely 
+  for informational purposes and publication does not imply any endorsement by 
+  the Unicode Consortium. For general information on Unicode Technical Notes, 
+  see <a href="../index.html">http://www.unicode.org/notes/</a>.</i></p>
+
+  <h3><i>Contents</i></h3>
+  <ol>
+    <li><a href="index.html#Unicode_Processing">Unicode for Processing</a>
+    </li>
+    <li><a href="index.html#Optimized_16">Unicode is Optimized for 16 Bits</a></li>
+    <li><a href="index.html#UTF8">UTF-8: Good for Compatibility</a></li>
+    <li><a href="index.html#UTF32">UTF-32: Too Much Memory, Too Little Advantage</a></li>
+    <li><a href="index.html#Consistency">Consistency is Best</a></li>
+    <li><a href="index.html#Software_16">Software Using UTF-16</a></li>
+    <li><a href="index.html#Conclusion">Conclusion</a></li>
+    <li><a href="index.html#References">References</a></li>
+    <li><a href="index.html#Acknowledgments">Acknowledgments</a></li>
+    <li><a href="index.html#Modifications">Modifications</a></li>
+  </ol>
+
+  <p><i>Unless the distinction is particularly important, I use the term “UTF-x” 
+    to mean “UTF-x or x-bit Unicode strings” for brevity, and because “UTF-x” is the older and more familiar term compared with 
+  “x-bit 
+    Unicode strings” [<a href="index.html#U4ch2">U4ch2</a>].</i></p>
+
+  <h2>1 <a name="Unicode_Processing">Unicode for Processing</a></h2>
+  <p>More important than the question of the preferred form of Unicode is to use Unicode at all: The 
+    most important lesson of several decades of handling text in software is to use 
+    a single, universal coded character set. Originally, a single legacy character 
+    set was assumed, which limited software to single markets. The POSIX model of 
+    character set agnosticism was an improvement but made it hard to optimize for 
+    efficient text processing, and nearly impossible to handle truly multilingual 
+    documents or server data. Switching between different processing charsets 
+    requires specific text handling functions and character properties databases for 
+    each supported charset. Direct programming for Unicode allows to develop and 
+    use optimized libraries and also to hardcode critical paths without restricting 
+    the reach of the software.</p> 
+
+  <p><i>Important: </i>There are multiple encoding forms for  
+  Unicode. The standard [<a href="index.html#U4ch2">U4ch2</a>] defines the UTF-8, UTF-16 and  
+  UTF-32 encoding forms for processing (as well as related encoding schemes  
+  for data exchange). It also defines 8/16/32-bit Unicode strings that are  
+  simply vectors of UTF-8/16/32 code units, i.e., such strings need not contain  
+  well-formed UTF-8/16/32 sequences during processing. <i>All of these <u>are</u> Unicode.  
+  They are simply different ways to deal with the <u>same</u> character set and 
+  repertoire in software. All of them <u>work</u>.</i></p> 
+
+  <p>For a good overview and illustration of the Unicode   
+  character model and encoding forms see <a href="http://oss.software.ibm.com/icu/docs/papers/forms_of_unicode/">Forms    
+  of Unicode</a>  [<a href="index.html#Forms_Unicode">FormsU</a>].</p>  
+
+  <p>The following sections briefly compare the Unicode encoding 
+  forms for processing, but the main argument of this document is that 
+  consistent use of the same form simplifies the development of software and 
+  related standards.</p> 
+
+  <h2>2 <a name="Optimized_16">Unicode is Optimized for 16 Bits</a></h2>
+  <p>The original Unicode design was for a fixed-width 16-bit encoding. Unicode  
+    2.0 extended the architecture, and later Unicode versions assigned supplementary  
+    characters, in a way that is designed to maintain high performance with 16-bit  
+    processing. (See for example “International Programming with Unicode  
+  Surrogates” [<a href="index.html#Programming_Surrogates">ProgSurr</a>].)</p>
+
+  <p>The optimization for 16-bit units consists mainly in the assignment of all commonly 
+    used characters and format controls on the BMP, reachable with one 16-bit unit. 
+    Therefore, supplementary code points are very 
+    rare in most text.</p> 
+
+  <p><i>Important: </i>Supplementary code points must be    
+  supported for full Unicode support, regardless of the encoding form. Many characters are assigned supplementary    
+  code points, and even whole scripts are entirely encoded    
+  outside of the BMP. The opportunity for optimization of 16-bit Unicode string    
+  processing is that the <u> most commonly used</u> characters are stored with single    
+  16-bit code units, so that it is useful to concentrate performance work on    
+  code paths for them, while also maintaining support and reasonable performance    
+  for supplementary code points.</p>   
+
+  <p>From a programming point of view it reduces the need for error handling that 
+    there are no invalid 16-bit words in 16-bit Unicode strings. By contrast, there are 
+    code unit values that are invalid in 8/32-bit Unicode strings. All pairs of 
+    lead/trail surrogates in UTF-16 represent valid supplementary code points, and 
+    reading 16-bit Unicode requires to look ahead at most one unit.</p> 
+
+  <p>Adapting existing software — where 8-bit strings were                       
+  used — to 16-bit Unicode strings requires to add or modify APIs. On the                       
+  other hand, good Unicode support requires at least a review of legacy code,                       
+  and often modifications to eliminate limiting assumptions. A different string                       
+  type for Unicode actually provides a useful demarcation between codepage-agnostic                       
+  and Unicode-aware parts of software.&nbsp;</p>                      
+
+  <h2>3 <a name="UTF8">UTF-8: Good for Compatibility</a></h2>                      
+  <p>UTF-8 was mainly designed to store Unicode filenames in an ASCII-friendly
+    way. It is suitable for processing, but it is significantly more complex to
+    process than UTF-16. Lead bytes have a relatively complex encoding, and up to three trail
+    bytes (or five to cope with the original definition) must be counted, read and
+    range-checked, then the resulting code point must be range-checked as well. (It
+    is possible to create a controlled environment where input strings are checked
+    for correct UTF-8 encoding and string operations guarantee to maintain it; only
+    in such an environment can a different set of processing functions be optimized
+    to avoid the per-byte error checking.)</p>
+
+  <p>UTF-8 is often preferred for storage and data exchange, removing a conversion step if it is
+    also used for processing. However, Unicode software almost always interfaces
+    with legacy applications and data and needs to be prepared for conversion
+    anyway. UTF-8 stores Latin text in a compact form compared to UTF-16 but does
+    not provide any advantages for other scripts or even uses more space. There are other Unicode charsets
+    (for example, SCSU and BOCU-1) that are more efficient for storage
+    and data exchange.</p>
+
+  <p>UTF-8 can be necessary to move Unicode strings through existing “agnostic” or only ASCII-aware APIs. On the other hand, programming 
+    for Windows has shown that separate APIs with a different text data type provide 
+    an easy way to separate legacy encoding data from Unicode and make it obvious 
+    where conversions are needed.</p> 
+
+  <p>Conventional wisdom suggests that Unix/Linux software always uses UTF-8 for 
+    Unicode processing (or UTF-32 with wchar_t), but the <a href="index.html#Software_16"> list</a> below shows 
+    that software with good Unicode support tends to use UTF-16 even there.</p> 
+
+  <h2>4 <a name="UTF32">UTF-32: Too Much Memory, Too Little Advantage</a></h2>
+  <p>UTF-32 has a trivial structure, but half of the memory usage and bandwidth is
+    wasted, which decreases performance.</p>
+
+  <p>Fixed-width processing for all code points including supplementary ones is good for very low-level algorithms, but multi-code 
+    point strings must be treated as units in many cases in order to deal with “user characters”. UTF-16 already allows fixed-width processing of BMP 
+    characters.</p>
+
+  <h2>5 <a name="Consistency">Consistency is Best</a></h2>
+  <p>For software development it is best to use the same internal form everywhere to avoid conversion. Conversion 
+    among UTFs is fast and reliable, but still takes some time and code. Conversion 
+    also needs to extend beyond the string representation itself to string indexes, 
+    offsets and lengths, which can be visible across a protocol (e.g., SQL) or a 
+    software boundary (e.g., Java/JNI).</p>
+
+  <p>Another potential problem is that while 
+    conversion between UTFs is lossless, conversion between 8/16/32-bit Unicode 
+    strings which are not well-formed UTF-8/16/32 strings is not defined. (See 
+  Encoding Forms and Unicode Strings in Unicode 4 chapter 2 [<a href="index.html#U4ch2">U4ch2</a>].) This means that strings 
+    would have to be well-formed at internal encoding form boundaries, instead of 
+    only at system boundaries to the outside. (For this reason, there have been 
+    proposals to standardize the conversion of malformed Unicode strings, especially 
+    between 8-bit and 16-bit Unicode.)</p> 
+
+  <p>Using the same form of Unicode results in seamless text handling without any 
+    conversions of strings or associated indexes. It simplifies the development and 
+    use of libraries and other reusable code and avoids the development of complex 
+    algorithms multiple times, each optimized for a different encoding form.</p> 
+
+  <h2>6 <a name="Software_16">Software Using UTF-16</a></h2>
+
+  <p>Most major software with good Unicode support uses UTF-16 (or 16-bit Unicode strings). Note that  
+    much of the software listed below runs on Unix/Linux systems as well as Windows  
+    and others.</p>  
+
+  <ul>
+    <li>Everything Microsoft — Windows (including Pocket PC) and applications</li> 
+    <li>MacOS X and applications</li>
+    <li>Symbian (phone/mobile OS) [<a href="index.html#Symbian">Symbian</a>]</li>
+    <li>SAP [<a href="index.html#SAP">SAP</a>]</li>
+    <li>Sybase [<a href="index.html#Symbian">Sybase</a>]</li>
+    <li>International Components for Unicode [<a href="index.html#ICU">ICU</a>]</li>
+    <li>Rosette Core Library for Unicode [<a href="index.html#Rosette">Rosette</a>]</li>
+    <li>Modern, widespread browsers: IE, Mozilla, Opera</li>
+    <li>XML DOM 2.0 API and popular parsers (e.g. Apache Xerces)</li>
+    <li>KDE/Qt and applications</li>
+    <li>OpenOffice</li>
+    <li>Modern programming languages      
+      <ul>
+        <li>Java</li>
+        <li>ECMAScript (JavaScript/JScript)</li>
+        <li>All .Net languages (C#, J#, VB.Net, etc.)</li>
+        <li>Python 1.6 (see Unicode in Python [<a href="index.html#Rosette">Python</a>])</li>
+        <li>Ada 95 [<a href="index.html#Ada95">Ada95</a>]</li>
+        <li>Enterprise Cobol [<a href="index.html#Cobol">Cobol</a>]</li> 
+      </ul>
+    </li>
+  </ul>
+
+  <p>The programming languages above support Unicode strings as 
+  part of the language and its standard functions. While an ISO Technical Report 
+  is being prepared for 16/32-bit string data types and string literals in C [<a href="index.html#ISO19769">ISO19769</a>], 
+  use of Unicode strings additionally requires Unicode libraries like [<a href="index.html#ICU">ICU</a>].
+
+  <p>Of course, there are also examples for software that supports Unicode and
+    uses UTF-8 and/or UTF-32 internally, sometimes even with good Unicode support,
+    like Perl.</p>
+
+  <h2>7 <a name="Conclusion">Conclusion</a></h2>
+  <p>Unicode is the best way to process and store text. While there are several  
+    forms of Unicode that are suitable for processing, it is best to use the same  
+    form everywhere in a system, and to use UTF-16 in particular for  
+  two reasons:</p> 
+
+  <ol>
+    <li>The vast majority of characters (by frequency of use) are on the BMP.</li>
+    <li>For seamless integration with the 
+    majority of existing software with good Unicode support.</li> 
+  </ol>
+
+  <h2><a name="References">References</a></h2>
+  <table class="noborder" style="border-collapse: collapse" cellpadding="8" cellspacing="0">
+    <tr>
+      <td width="1" class="noborder">[<a name="Ada95">Ada95</a>]</td>
+      <td class="noborder">Ada 95 Reference Manual, section 3.5.2 Character Types<br>   
+        <a href="http://www.grammatech.com/rm95html-1.0/rm9x-03-05-02.html">http://www.grammatech.com/rm95html-1.0/rm9x-03-05-02.html</a></td>
+    </tr>
+    <tr>
+      <td width="1" class="noborder">[<a name="Cobol">Cobol</a>]</td>
+      <td class="noborder">Enterprise Cobol for z/OS and OS/390<br>    
+        <a href="http://www.ibm.com/software/awdtools/cobol/zos/about/">http://www.ibm.com/software/awdtools/cobol/zos/about/</a><br>
+        <i>See Support for Unicode.</i></td>
+    </tr>
+    <tr>
+      <td width="1" class="noborder">[<a name="FAQ">FAQ</a>]</td>
+      <td class="noborder">Unicode Frequently Asked Questions<br>
+      <a href="http://www.unicode.org/faq/">http://www.unicode.org/faq/</a><br>
+      <i>For answers to common questions on technical issues.</i></td>
+    </tr>
+    <tr>
+      <td width="1" class="noborder">[<a name="Forms_Unicode">FormsU</a>]</td>
+      <td class="noborder">Forms of Unicode<br> 
+        <a href="http://www.icu-project.org/docs/papers/forms_of_unicode/">http://www.icu-project.org/docs/papers/forms_of_unicode/</a><br>
+        <i>Overview and illustration of the Unicode character model and encoding 
+        forms.</i></td>
+    </tr>
+    <tr>
+      <td width="1" class="noborder">[<a name="Glossary">Glossary</a>]</td>
+      <td class="noborder">Unicode Glossary<br>
+      <a href="http://www.unicode.org/glossary/">http://www.unicode.org/glossary/</a><br>
+      <i>For explanations of terminology used in this and other documents.</i></td>
+    </tr>
+    <tr>
+      <td width="1" class="noborder">[<a name="ICU">ICU</a>]</td>
+      <td class="noborder">International Components for Unicode<br> 
+        <a href="http://www.icu-project.org/userguide/strings.html">http://www.icu-project.org/userguide/strings.html</a></td>
+    </tr>
+    <tr>
+      <td width="1" class="noborder">[<a name="ISO19769">ISO19769</a>]</td>
+      <td class="noborder">ISO/IEC JTC1/SC22/WG14 - C is working on a Technical 
+        Report on new character types, including support for UTF-16. The title is: TR 19769 - Extensions for the programming language C to support new character data types.<br> 
+        <a href="http://std.dkuug.dk/JTC1/SC22/WG14/www/projects#19769">http://std.dkuug.dk/JTC1/SC22/WG14/www/projects#19769</a></td>
+    </tr>
+    <tr>
+      <td width="1" class="noborder">[<a name="Programming_Surrogates">ProgSurr</a>]</td>
+      <td class="noborder">International Programming with Unicode Surrogates<br> 
+        MultiLingual Computing &amp; Technology #47 Volume 13 Issue 3 pp. 51-55<br> 
+        <a href="http://www.multilingual.com/">http://www.multilingual.com/</a><br>
+        <i>
+        Brief overview of Unicode/UTF-16 and some optimization techniques.</i></td> 
+    </tr>
+    <tr>
+      <td width="1" class="noborder">[<a name="Python">Python</a>]</td>
+      <td class="noborder">Unicode in Python<br>
+        <a href="http://www.jorendorff.com/articles/unicode/python.html">http://www.jorendorff.com/articles/unicode/python.html</a><br>
+        <i>See u'' strings and \Uhhhhhhhh</i></td>
+    </tr>
+    <tr>
+      <td width="1" class="noborder">[<a name="Rosette">Rosette</a>]</td>
+      <td class="noborder">Rosette Core Library for Unicode<br>
+        <a href="http://www.basistech.com/products/rclu.html">http://www.basistech.com/products/rclu.html</a></td>
+    </tr>
+    <tr>
+      <td width="1" class="noborder">[<a name="SAP">SAP</a>]</td>
+      <td class="noborder">UTF-16 and C/C++ Language<br>                          
+        Presentation at IUC 18 by Keishiro Tanaka - Fujitsu Limited &amp; Markus Eble - SAP AG<br>                          
+        <a href="http://www.unicode.org/iuc/iuc18/a336.html">http://www.unicode.org/iuc/iuc18/a336.html</a><br>
+        <i>Mentions that SAP uses UTF-16 and discusses UTF-8/16/32 tradeoffs.</i><br>
+        <br>
+        Quote from Wilhelm Nüßer and Markus Eble from SAP in an email from                        
+        2001-07-12 (<a href="http://mail.nl.linux.org/linux-utf8/2001-07/msg00064.html">http://mail.nl.linux.org/linux-utf8/2001-07/msg00064.html</a>):<pre>for our sort of application (ie. high memory load, cross platform, 
+many, many strings in memory, networked etc.) utf16 based coding 
+is the most efficient - internal - presentation, i.e. the one 
+with the highest median information density, for the 
+great majority of characters.</pre>                       
+        (Quote authorized for this document by Markus Eble via email on 2003-10-01.)</td>                        
+    </tr>
+    <tr>
+      <td width="1" class="noborder">[<a name="Sybase">Sybase</a>]</td>
+      <td class="noborder">Sybase Unilib supports 16-bit string handling<br>
+        <a href="http://sybooks.sybase.com/onlinebooks/group-ucarc/ucg0200e/ulrefman/@Generic__BookTextView/178">http://sybooks.sybase.com/onlinebooks/group-ucarc/ucg0200e/ulrefman/@Generic__BookTextView/178</a></td>
+    </tr>
+    <tr>
+      <td width="1" class="noborder">[<a name="Symbian">Symbian</a>]</td>
+      <td class="noborder">Character Conversion Overview<br> 
+        <a href="http://www.symbian.com/developer/techlib/v70docs/sdl_v7.0/doc_source/devguides/cpp/base/characterconversion/characterconversionoverview.guide.html">http://www.symbian.com/developer/techlib/v70docs/sdl_v7.0/doc_source/devguides/cpp/base/characterconversion/characterconversionoverview.guide.html</a></td>
+    </tr>
+    <tr>
+      <td width="1" class="noborder">[<a name="U4ch2">U4ch2</a>]</td>
+      <td class="noborder">The Unicode Standard, Version 4.0.0, chapter 2 
+        General Structure<br>
+        <a href="http://www.unicode.org/versions/Unicode4.0.0/ch02.pdf">http://www.unicode.org/versions/Unicode4.0.0/ch02.pdf</a><br>
+        <i>See 2.5 Encoding Forms and 2.7 Unicode Strings</i></td>
+    </tr>
+    <tr>
+      <td width="1" class="noborder">[<a name="Versions">Versions</a>]</td>
+      <td class="noborder">Versions of the Unicode Standard<br>
+      <a href="http://www.unicode.org/standard/versions/">
+      http://www.unicode.org/standard/versions/<br>
+      </a><i>For details on the precise contents of each version of the Unicode 
+      Standard, and how to cite them.</i></td>
+    </tr>
+  </table>
+  
+  <h2><a name="Acknowledgments">Acknowledgments</a></h2>
+  <p>Thanks to Markus Eble and Nobuyoshi Mori for helpful information and to  
+  Mark Davis, Rick McGowan and Ken Whistler for 
+  their feedback on this document.</p> 
+  
+  <h2><a name="Modifications">Modifications</a></h2>
+  <p>The following summarizes modifications from the previous version of this 
+  document.</p>
+  <table class="noborder" style="border-collapse: collapse" cellpadding="8" cellspacing="0">
+    <tr>
+      <td class="noborder">2008-10-01</td>
+      <td class="noborder">Updated stale links in version 1</td>
+    </tr>
+    <tr>
+      <td class="noborder"><a name="TrackingNumber1">1</a></td>
+      <td class="noborder">Initial version</td>
+    </tr>
+  </table>
+  <p class="copyright">Copyright © 2004 Unicode, Inc. and Markus W. Scherer. All Rights Reserved. The     
+  Unicode Consortium and the author make no expressed or implied warranty of any     
+  kind, and assume no liability for errors or omissions. No liability is assumed  
+  for incidental and consequential damages in connection with or arising out of  
+  the use of the information or programs contained or accompanying this  
+  technical note. The Unicode <a href="http://www.unicode.org/copyright.html"> 
+  Terms of Use</a> apply.</p> 
+  <p class="copyright">Unicode and the Unicode logo are trademarks of Unicode, 
+  Inc., and are registered in some jurisdictions.</div>
+
+</body>
+
+</html>

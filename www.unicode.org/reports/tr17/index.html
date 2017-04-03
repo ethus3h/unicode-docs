@@ -1,0 +1,1753 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"      
+
+	"http://www.w3.org/TR/html4/loose.dtd"> 
+	
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta http-equiv="Content-Language" content="en-us">
+<link rel="stylesheet" href="../../unicode/reports/reports.css" type="text/css">
+
+<title>UTR#17: Unicode Character Encoding Model</title>
+
+</head>
+
+<body bgcolor="#FFFFFF">
+
+<table class="header" cellpadding="0" cellspacing="0" width="100%">
+  <tr>
+    <td class="icon"><a href="http://www.unicode.org"><img align="middle" alt="[Unicode]" border="0" src="../../webscripts/logo60s2.gif" width="34" height="33"></a>&nbsp;&nbsp;<a class="bar" href="../index.html">Technical
+      Reports</a></td>
+  </tr>
+  <tr>
+    <td class="gray">&nbsp;</td>
+  </tr>
+</table>
+<div class="body">
+ <!-- TR TITLE: -->
+ <!--
+  <h2 align="center"><span class="changedspan">Proposed Update</span></h2>
+ -->
+  <h2 align="center">Unicode Technical Report #17</h2>
+  <h1 align="center">Unicode Character Encoding Model</h1>
+  <table class="wide" border="1" cellspacing="2">
+    <tr>
+      <td height="27">Authors</td>
+      <td height="27">Ken Whistler (<a href="mailto:ken@unicode.org">ken@unicode.org</a>), 
+        Mark Davis (<a href="mailto:markdavis@google.com">markdavis@google.com</a>),
+        Asmus Freytag (<a href="mailto:asmus@unicode.org">asmus@unicode.org</a>)</td>
+    </tr>
+    <tr>
+      <td>Date</td>
+      <td>2008-11-11</td>
+    </tr>
+    <tr>
+      <td>This Version</td>
+      <td>
+      <a href="tr17-7.html">
+      http://www.unicode.org/reports/tr17/tr17-7.html</a></td>
+    </tr>
+    <tr>
+      <td>Previous Version</td>
+      <td>
+      <a href="tr17-5.html">
+      http://www.unicode.org/reports/tr17/tr17-5.html</a></td>
+    </tr>
+    <tr>
+      <td>Latest Version</td>
+      <td><a href="index.html">
+		http://www.unicode.org/reports/tr17/</a></td>
+    </tr>
+  	<tr>
+      <td>Revision</td>
+      <td><a href="index.html#Modifications">7</a></td>
+    </tr>
+  </table>
+	<!-- BEGIN OF DOCUMENT FRONT MATTER -->
+  <h4>Summary</h4>
+  <p><i>This document clarifies a number of the terms used to describe 
+  character encodings, and where the different forms of Unicode fit in. It 
+  elaborates the Internet Architecture Board (<a class="charclass" href="index.html#IAB">IAB</a>) three-layer 
+	“text stream” definitions into a four-layer structure.</i></p>
+  <h4>Status</h4>
+	<!-- NOT YET APPROVED
+	<p><i>This document is a <b><font color="#ff3333"> proposed update 
+	of a previously approved Unicode Technical Report</font></b>. This document 
+	may be updated, replaced, or superseded by other documents at any time. 
+	Publication does not imply endorsement by the Unicode Consortium. This 
+	is not a stable document; it is inappropriate to cite this document as other 
+	than a work in progress.</i></p>
+        END NOT YET APPROVED -->
+	<!-- APPROVED -->
+	<p><i>This document has been reviewed by Unicode members 
+	and other interested
+	parties, and has been approved for publication by the Unicode Consortium.
+	This is a stable document and may be used as reference material or cited as
+	a normative reference by other specifications.</i></p>
+	<!-- END APPROVED -->
+
+  <blockquote>
+    <p><i><b>A Unicode Technical Report (UTR)</b> contains informative material. 
+    Conformance to the Unicode Standard does not imply conformance to any UTR. 
+    Other specifications, however, are free to make normative references to a 
+    UTR.</i></p>
+  </blockquote>
+  <p><i>Please submit corrigenda and other comments with the online reporting 
+  form [<a href="index.html#Feedback">Feedback</a>]. Related information that is useful in 
+  understanding this document is found in the <a href="index.html#References">References</a>. 
+  For the latest version of the Unicode Standard see [<a href="index.html#Unicode">Unicode</a>]. 
+  For a list of current Unicode Technical Reports see [<a href="index.html#Reports">Reports</a>]. 
+  For more information about versions of the Unicode Standard, see [<a href="index.html#Versions">Versions</a>].</i></p>
+  <h4><i>Contents</i></h4>
+  <ol class="toc">
+    <li><a href="index.html#CharacterEncodingModel">The Character Encoding Model</a></li>
+    <li><a href="index.html#Repertoire">Abstract Character Repertoire</a>
+      <ul class="toc">
+        <li>2.1 <a href="index.html#Versioning">Versioning</a></li>
+        <li>2.2 <a href="index.html#CharactersVsGlyphs">Characters versus Glyphs</a></li>
+        <li>2.3 <a href="index.html#CompatibilityCharacters">Compatibility Characters</a></li>
+        <li>2.4 <a href="index.html#Subsets">Subsets</a></li>
+      </ul>
+    </li>
+    <li><a href="index.html#CodedCharacterSet">Coded Character Set (CCS)</a>
+      <ul class="toc">
+        <li>3.1 <a href="index.html#CharacterNaming">Character Naming</a></li>
+        <li>3.2 <a href="index.html#CodeSpaces">Code Spaces</a></li>
+      </ul>
+    </li>
+    <li><a href="index.html#CharacterEncodingForm">Character Encoding Form (CEF)</a></li>
+    <li><a href="index.html#CharacterEncodingScheme">Character Encoding Scheme (CES)</a>
+      <ul class="toc">
+        <li>5.1 <a href="index.html#ByteOrder">Byte Order</a></li>
+      </ul>
+    </li>
+    <li><a href="index.html#CharacterMaps">Character Maps</a></li>
+    <li><a href="index.html#TransferEncodingSyntax">Transfer Encoding Syntax</a></li>
+    <li><a href="index.html#APIBinding">Data Types and API Binding</a>
+      <ul class="toc">
+        <li>8.1 <a href="index.html#Strings" name="217">Strings</a></li>
+      </ul>
+    </li>
+    <li><a href="index.html#DefinitionsAndAcronyms">Definitions and Acronyms</a></li>
+  </ol>
+  <ul class="toc">
+    <li><a href="index.html#References">References</a></li>
+    <li><a href="index.html#Acknowledgements">Acknowledgements</a></li>
+    <li><a href="index.html#Modifications">Modifications</a></li>
+  </ul>
+  <hr>
+	<!-- BEGIN OF DOCUMENT CONTENTS PROPER -->
+  
+  <h2>1 <a name="CharacterEncodingModel">The Character Encoding Model</a></h2>
+  
+  <p>This report describes a model for the structure 
+  of character encodings. The Unicode Character Encoding Model places the Unicode 
+  Standard in the context of other character encodings of all types, as well as 
+  existing models such as the character architecture promoted by the Internet 
+  Architecture Board (<a class="charclass" href="index.html#IAB">IAB</a>) for use on the 
+	internet, or the Character Data Representation Architecture [<a href="index.html#CDRA-Ref">CDRA</a>] defined 
+  by IBM  for organizing and cataloging its own vendor-specific array of character 
+  encodings. This document focuses on how these models should be extended and 
+  clarified to cover all the aspects of the Unicode Standard and <a class="charclass" href="index.html#ISO">ISO</a>/<a class="charclass" href="index.html#IEC">IEC</a> 10646 
+	[<a href="index.html#10646">10646</a>].
+  (For a list of common acronyms used in this text, see 
+  Section 9 
+  <a href="index.html#DefinitionsAndAcronyms"><i>Definitions and Acronyms</i></a>).</p>
+  <p>The four levels of the Unicode Character Encoding Model
+  can be summarized as:</p>
+  <ul>
+    <li><b><a class="charclass" href="index.html#ACR">ACR</a>:</b> Abstract Character Repertoire
+      <ul style="list-style:none">
+        <li><i>the set of characters to be encoded, for example, some alphabet or 
+          symbol set</i></li>
+      </ul>
+    <li><b><a class="charclass" href="index.html#CCS">CCS</a>:</b> Coded Character Set
+      <ul style="list-style:none">
+        <li><i>a mapping from an abstract character repertoire to a set of 
+          nonnegative integers</i></li>
+      </ul>
+    <li><b><a class="charclass" href="index.html#CEF">CEF</a>:</b> Character Encoding Form
+      <ul style="list-style:none">
+        <li><i>a mapping from a set of nonnegative integers that are elements of a CCS 
+		to a 
+          set of sequences of particular code units of some specified width, 
+          such as 32-bit integers</i></li>
+      </ul>
+    <li><b><a class="charclass" href="index.html#CES">CES</a>:</b> Character Encoding Scheme
+      <ul style="list-style:none">
+        <li><i>a reversible transformation from a set of sequences of code units (from one or 
+          more CEFs to a serialized sequence of bytes)</i></li>
+      </ul>
+    </ul>
+  <p>In addition to the four individual levels, there are two other
+  useful concepts:</p>
+	<ul>
+		<li><b><a class="charclass" href="index.html#CM">CM</a>: </b>Character Map
+		  <ul style="list-style:none">
+        <li><i>a mapping from sequences of 
+	members of an abstract character repertoire to serialized sequences of bytes 
+		bridging all four levels in a single operation</i></ul></li>
+	<li><b><a class="charclass" href="index.html#TES">TES</a>:</b> Transfer Encoding Syntax
+      	<ul style="list-style:none">
+			<li><i>a reversible transform of encoded data, which may or may not 
+          contain textual data</i></li>
+		</ul>
+	</ul>
+  <p>The IAB model, as defined in [<a href="index.html#RFC2130">RFC 2130</a>], 
+  distinguishes three levels: <i>Coded Character Set</i> (<a class="charclass" href="index.html#CCS">CCS</a>), <i>Character 
+  Encoding Scheme</i> (<a class="charclass" href="index.html#CES">CES</a>), and <i>Transfer Encoding Syntax</i> (<a class="charclass" href="index.html#TES">TES</a>). 
+	However, <i>four</i> levels need to be 
+	defined to adequately cover the distinctions required for the Unicode 
+	character encoding model. One of these, the 
+  <i>Abstract Character Repertoire</i>, is implicit in 
+  the IAB model. The Unicode model also 
+	gives the TES a separate 
+	status outside the model, while adding an additional level between the CCS and the CES.</p>
+<p>The following sections give sample definitions, explanations and 
+  examples for each of the four levels, as well as the Character Map, and the Transfer Encoding 
+  Syntax. These are followed by a discussion of <a class="charclass" href="index.html#API">API</a> Binding issues 
+  and a  list of acronyms 
+  used in this document.</p>
+  
+<h2>2 Abstract Character <a name="Repertoire">Repertoire</a></h2>
+
+<p>A <i>character repertoire</i> is defined as 
+  an unordered 
+  set of abstract characters to be encoded. The word <i>abstract</i> means that these objects are defined by convention. In many cases a 
+  repertoire consists of a familiar alphabet or symbol set.</p>
+<p>Repertoires come in two types: <i>fixed</i> and <i>open</i>. 
+  In most character encodings, 
+  the repertoire is fixed, and often small. Once 
+  the repertoire is decided upon, it is never changed. Addition of a new 
+  abstract character to a given repertoire creates a new 
+  repertoire, which then will be given its own catalogue number, constituting a 
+  new object. For the Unicode Standard, on the other hand, the repertoire is inherently 
+  open. Because Unicode is intended to be the universal encoding, any abstract 
+  character that ever could be encoded is potentially a member of the set 
+  to be encoded, whether that character is currently known or not.</p>
+<p>Some other character sets use a limited 
+  notion of open repertoires. For example, Microsoft has
+  on occasion extended the repertoire of its Windows character sets
+  by adding a handful of characters to an existing 
+  repertoire. This occurred when the <span class="name">EURO SIGN</span> was added to the 
+  repertoire for a number of Windows character sets, for example. For suggestions on how to map the unassigned characters of open repertoires, see [<a href="index.html#CharMapML">CharMapML</a>].
+</p>
+<p>Repertoires are the entities that get <a class="charclass" href="index.html#CS">CS</a> 
+	(“character set” ) values in the IBM <a class="charclass" href="index.html#CDRA">CDRA</a> 
+	architecture.</p>
+<p>Examples of Character Repertoires:</p>
+<ul>
+	<li>the Japanese syllabaries and ideographs of 
+	<a class="charclass" href="index.html#JIS">JIS</a> X 0208 (CS 01058) 
+      [fixed]
+    <li>the Western European alphabets and symbols of Latin-1 (CS 00697) 
+      [fixed]
+    <li>the POSIX portable character repertoire [fixed]
+    <li>the IBM host Japanese repertoire (CS 01001) [fixed]
+    <li>the Windows Western European repertoire [open]
+    <li>the Unicode/10646 repertoire [open]
+  </ul>
+  
+<h3><a name="Versioning">2.1 Versioning</a></h3>
+
+<p>The Unicode Standard versions its repertoire by publication of major and 
+  minor editions of the standard: 1.0, 1.1, 2.0, 2.1, 3.0,... The repertoire for 
+  each version is defined by the enumeration of abstract characters included in 
+  that version.</p>
+<p>Repertoire extensions for the Unicode Standard are now strictly additive, 
+	even though there were several discontinuities to the earliest versions (1.0 
+	and 1.1) affecting
+  backwards compatibility to them, because of the merger 
+of [<a href="index.html#Unicode">Unicode</a>] with [<a href="index.html#10646">10646</a>].
+  As of Version 2.0 the Unicode Character Encoding Stability
+  Policy [<a href="index.html#Stability">Stability</a>] guarantees that no
+  character is ever removed from the repertoire.</p>
+<blockquote><p><b>Note:</b> The Unicode Character Encoding Stability Policy
+  also constrains changes to the standard in other ways. For example, many character
+  properties are subject to consistency constraints, and some properties cannot
+  be changed once they are assigned. Guarantees for the stability of normalization
+  prevent the change or addition of decomposition mappings for existing encoded characters,
+  and also constrain what kinds of characters can be added to the repertoire in future
+  versions.</p>
+</blockquote>
+<p>The versioning of the repertoire is different from the 
+  versioning of the Unicode Standard as a whole, in particular the Unicode Character
+  Database [<a href="index.html#UCD">UCD</a>], which defines Character Properties (see also 
+  [<a href="index.html#PropModel">PropModel</a>]). There are <i>update versions</i> of the text of the Unicode
+  Standard and of the Unicode Character Database between major and minor versions of
+  the Unicode Standard. While these update versions may amend character properties and
+  descriptions of character behavior, they do not add to the character repertoire. 
+  For more information about versions of the Unicode Standard see 
+  <a href="http://www.unicode.org/versions/">Versions of the Unicode Standard</a>
+  [<a href="index.html#Versions">Versions</a>].</p>
+<p>ISO/IEC 10646 extends its repertoire by a formal amendment process. As each individual 
+  amendment containing additional characters is published, it
+  extends the 10646 repertoire. 
+  The repertoires of the Unicode Standard and ISO/IEC 10646 are 
+  kept in alignment by coordinating the publication of major versions 
+  of the Unicode Standard with the publication of a well-defined list of amendments 
+  for 10646 or with a major revision and republication of 10646.</p>
+  
+<h3>2.2 <a name="CharactersVsGlyphs">Characters versus Glyphs</a></h3>
+
+<p>The elements of the character repertoire are abstract 
+  <i>characters</i>. Characters differ from <i>glyphs</i>, which are the
+  particular images representing a character or part of a 
+  character. Glyphs for the same character may have 
+  very different shapes, as shown in Figure 1 for the letter 
+  <b><i>a</i></b>.</p>
+<div align="left">
+	<table border="1" cellpadding="2" align="center">
+		<caption>Figure 1</caption>
+		<tr>
+			<th>Character</th>
+			<th colspan="6">Sample Glyphs</th>
+		</tr>
+		<tr>
+			<td align="center"><i>
+			<img alt="Times" border="0" src="A1.gif" width="49" height="50"></i></td>
+			<td><i>
+			<img alt="Figure" border="0" src="A2.gif" width="50" height="50"></i></td>
+			<td><i>
+			<img alt="Script" border="0" src="A3.gif" width="49" height="50"></i></td>
+			<td><i>
+			<img alt="Figure" border="0" src="A5.gif" width="48" height="50"></i></td>
+			<td><i>
+			<img alt="Decorative" border="0" src="A6.gif" width="49" height="50"></i></td>
+			<td><i>
+			<img alt="Fraktur" border="0" src="A10.gif" width="49" height="50"></i></td>
+			<td><i>
+			<img alt="Figure" border="0" src="A8.gif" width="49" height="50"></i></td>
+		</tr>
+	</table></div>
+<p>Glyphs do not correspond one-to-one with characters. For example, a 
+  sequence of <i>“f” </i>followed by<i> “i” </i>may be displayed with a single 
+  glyph, called an <i>fi ligature.</i> Notice that the shapes are merged 
+  together, and the dot is missing from the <i>“i” </i>
+  as shown in Figure 2.</p>
+<div align="left">
+	<table border="1" cellpadding="2" align="center">
+		<caption>Figure 2
+    </caption>
+		<tr>
+			<th>Character Sequence</th>
+			<th>Sample Glyph</th>
+		</tr>
+		<tr>
+			<td align="center">
+			<img alt="f" border="0" src="f.gif" width="49" height="50"><img alt="i" border="0" src="i.gif" width="49" height="50"></td>
+			<td>
+			<p align="center">
+			<img alt="fi-ligature" border="0" src="fi.gif" width="49" height="50"></p>
+			</td>
+		</tr>
+	</table></div>
+<p>On the other hand, the same image as the <i>fi ligature</i> could 
+  conceivably be 
+  achieved by a sequence of two glyphs with the right shapes, as in the 
+	hypothetical example shown in Figure 3. The choice of 
+  whether to use a single glyph or a sequence of two is determined by the font 
+  and the rendering software.</p>
+<div align="left">
+	<table border="1" cellpadding="2" align="center">
+		<caption>Figure 3
+    </caption>
+		<tr>
+			<th>Character Sequence</th>
+			<th>Possible Glyph Sequence</th>
+		</tr>
+		<tr>
+			<td align="center"><i>
+			<img alt="f" border="0" src="f.gif" width="49" height="50"><img alt="i" border="0" src="i.gif" width="49" height="50"></i></td>
+			<td>
+			<p align="center"><i>
+			<img alt="fi-ligature-left-half" border="0" src="fi1.gif" width="49" height="50"><img alt="fi-ligature-right-half" border="0" src="fi2.gif" width="49" height="50"></i></p>
+			</td>
+		</tr>
+	</table></div>
+<p>Similarly, an accented character could be represented by a single glyph, or 
+  by separate component glyphs positioned appropriately. In addition, any of the accents can also be considered characters in their own right, in 
+  which case a sequence of characters can also correspond to different possible 
+  glyph representations:</p>
+<div align="left">
+	<table border="1" cellpadding="2" align="center">
+		<caption>Figure 4
+    </caption>
+		<tr>
+			<th>Character Sequence</th>
+			<th colspan="3">Possible Glyph Sequences</th>
+		</tr>
+		<tr>
+			<td align="center"><i>
+			<img alt="o-circumflex-acute" border="0" src="o-circumflex-acute.gif" width="49" height="49"></i></td>
+			<td><i>
+			<img alt="o-circumflex-acute" border="0" src="o-circumflex-acute.gif" width="49" height="49"></i></td>
+			<td><i>
+			<img alt="o" border="0" src="o.gif" width="49" height="49"><img alt="circumflex" border="0" src="circumflex.gif" width="48" height="49"><img alt="acute" border="0" src="acute.gif" width="49" height="49"></i></td>
+			<td align="center">
+			<img alt="circumflex-acute" border="0" src="o.gif" width="49" height="49"><img alt="circumflex-acute" border="0" src="circumflex-acute.gif" width="48" height="49">
+			</td>
+		</tr>
+		<tr>
+			<td align="center">
+			<img alt="o" border="0" src="o.gif" width="49" height="49"><img alt="circumflex" border="0" src="circumflex.gif" width="48" height="49"><img alt="acute" border="0" src="acute.gif" width="49" height="49"></td>
+			<td align="center">
+			<img alt="o-circumflex-acute" border="0" src="o-circumflex-acute.gif" width="49" height="49"></td>
+			<td align="center">
+			<img alt="o" border="0" src="o.gif" width="49" height="49"><img alt="circumflex" border="0" src="circumflex.gif" width="48" height="49"><img alt="acute" border="0" src="acute.gif" width="49" height="49"></td>
+			<td align="center">
+			<img alt="o" border="0" src="o.gif" width="49" height="49"><img alt="circumflex-acute" border="0" src="circumflex-acute.gif" width="48" height="49">
+			</td>
+		</tr>
+	</table></div>
+<p>In non-Latin scripts, the connection between glyphs and characters 
+  is at times
+  even less direct. Glyphs may be required to change their shape, position and 
+  width depending on the surrounding glyphs. Such glyphs are called contextual 
+  forms. For example, the Arabic character <i>heh</i> has the four contextual glyphs 
+shown in Figure 5.</p>
+<table border="1" cellpadding="2" align="center">
+	<caption>Figure 5
+    </caption>
+	<tr>
+		<th>Character</th>
+		<th colspan="4">Contextual Glyph Shapes</th>
+	</tr>
+	<tr>
+		<td align="center">
+		<img alt="Arabic Heh" border="0" src="ArabicHeh.gif" width="49" height="50"></td>
+		<td>
+		<img alt="Isolated" border="0" src="ArabicHeh.gif" width="49" height="50"></td>
+		<td>
+		<img alt="Medial" border="0" src="ArabicHehMedial.gif" width="49" height="50"></td>
+		<td>
+		<img alt="Initial" border="0" src="ArabicHehInitial.gif" width="49" height="50"></td>
+		<td>
+		<img alt="Final" border="0" src="ArabicHehFinal.gif" width="49" height="50">
+		</td>
+	</tr>
+</table>
+<p>In Arabic and other scripts, text inside fixed margins is 
+justified by elongating
+the horizontal parts of certain glyphs, rather than by expanding the spaces between
+words. Ideally this is implemented by changing the shape of 
+  the glyph depending on the desired width. On some systems, this stretching is 
+approximated by inserting extra connecting, dash-shaped glyphs called <i>kashidas</i>, as 
+shown in Figure 6. In 
+  such a case, a single character may conceivably correspond to a whole 
+  sequence of <i>kashidas + glyphs + kashidas</i>.</p>
+<table border="1" cellpadding="2" align="center">
+	<caption>Figure 6
+    </caption>
+	<tr>
+		<th>Character</th>
+		<th>Sequence of glyphs</th>
+	</tr>
+	<tr>
+		<td align="center"><i>
+		<img alt="Figure" border="0" src="ArabicHeh.gif" width="49" height="50"></i></td>
+		<td>
+		<img alt="Figure" border="0" src="ArabicKashida.gif" width="49" height="50"><i><img alt="Figure" border="0" src="ArabicHehMedial.gif" width="49" height="50"></i><img alt="Figure" border="0" src="ArabicKashida.gif" width="49" height="50"></td>
+	</tr>
+</table>
+<p>In other cases, a single character must correspond to two glyphs, because 
+  those two glyphs are positioned <i>around</i> other letters. 
+	See the Tamil 
+  characters in Figure 7 below. If one of those glyphs forms a ligature with other 
+  characters, then a conceptual <i>part</i> of a 
+  character corresponds to visual <i>part</i> of a glyph. If a character (or any 
+  part of it) corresponds to a glyph (or any part of it), then one says that the 
+  character <i>contributes</i> to the glyph.</p>
+<div align="left">
+	<table border="1" cellpadding="2"  align="center">
+		<caption>Figure 7
+    </caption>
+		<tr>
+			<th>Character</th>
+			<th>Split Glyphs</th>
+		</tr>
+		<tr>
+			<td align="center"><i>
+			<img alt="Figure" border="0" src="TamilAU.gif" width="49" height="50"></i></td>
+			<td><i>
+			<img alt="Figure" border="0" src="TamilE.gif" width="49" height="50">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+			<img alt="Figure" border="0" src="TamilAULength.gif" width="49" height="50"></i></td>
+		</tr>
+	</table></div>
+<p>The 
+  correspondence between glyphs and characters is generally not 
+  one-to-one, and cannot be predicted from the text alone. Whether a 
+particular string of characters is rendered by a particular sequence of glyphs 
+will depend on the sophistication of the host operating system and the font. The 
+ordering of glyphs also does not necessarily correspond to the ordering of the 
+  characters. In particular the right-to-left scripts like Arabic and Hebrew 
+give rise to complex reordering. See UAX #9: <i>
+<a href="../tr9/index.html">Unicode Bidirectional Algorithm</a></i> 
+[<a href="index.html#Bidi">Bidi</a>].</p>
+
+<h3>2.3 <a name="CompatibilityCharacters">Compatibility Characters</a></h3>
+
+<p>For historical reasons, abstract character repertoires may include many 
+  entities not considered appropriate members of an abstract 
+  character repertoire. These so-called compatibility 
+  characters may include 
+  ligature glyphs, contextual form glyphs, glyphs that vary by width, sequences 
+  of characters, and adorned glyphs, such as circled numbers. Figure 8 lists 
+some 
+  examples in which these are encoded as single characters in Unicode. As with 
+  glyphs, there are not necessarily one-to-one relationships between characters 
+  and code points.</p>
+<p>What an end-user thinks of as a single character (also called a <i>grapheme cluster</i>
+in the context of Unicode) 
+  may in fact be represented by multiple code points; conversely, a single code 
+  point may correspond to multiple characters. Here are some examples:</p>
+<table border="1" cellpadding="2" align="center">
+	<caption>Figure 8</caption>
+	<tr>
+		<th>Characters</th>
+		<th colspan="4">Code Points</th>
+		<th>Notes</th>
+	</tr>
+	<tr>
+		<td align="center">
+		<img alt="Arabic Heh" border="0" src="ArabicHeh.gif" width="49" height="50"></td>
+		<td>
+		<img alt="Isolated" border="0" src="ArabicHeh.gif" width="49" height="50"></td>
+		<td>
+		<img alt="Medial" border="0" src="ArabicHehMedial.gif" width="49" height="50"></td>
+		<td>
+		<img alt="Initial" border="0" src="ArabicHehInitial.gif" width="49" height="50"></td>
+		<td>
+		<img alt="Final" border="0" src="ArabicHehFinal.gif" width="49" height="50">
+		</td>
+		<td><i>Arabic contextual form glyphs</i> encoded as compatibility 
+		characters in Unicode, also known as <i>presentation forms</i></td>
+	</tr>
+	<tr>
+		<td align="center"><i>
+		<img alt="f" border="0" src="f.gif" width="49" height="50"><img alt="i" border="0" src="i.gif" width="49" height="50"></i></td>
+		<td colspan="4" align="center"><i>
+		<img alt="fi ligature" border="0" src="fi.gif" width="49" height="50"></i></td>
+		<td align="left"><i>Ligature glyph</i> encoded as compatibility character in 
+		Unicode and several character sets</td>
+	</tr>
+	<tr>
+		<td align="center"><i>
+		<img alt="P" border="0" src="P.gif" width="49" height="50"><img alt="t" border="0" src="t.gif" width="49" height="50"><img alt="s" border="0" src="s.gif" width="48" height="50"></i></td>
+		<td colspan="4" align="center"><i>
+		<img alt="Pts" border="0" src="Pts.gif" width="49" height="50"></i></td>
+		<td align="left"><i>A single code point representing a sequence of three 
+        characters</i> encoded as compatibility character in Unicode and several character sets</td>
+	</tr>
+	<tr>
+		<td align="center"><i>
+		<img alt="KSHA" border="0" src="DevanagariKSHA.gif" width="49" height="50"></i></td>
+		<td colspan="4" align="center">
+		<img alt="KA" border="0" src="DevanagariKA.gif" width="49" height="50"><img alt="virama" border="0" src="DevanagariVirama.gif" width="49" height="50"><img alt="sha" border="0" src="DevanagariSHA.gif" width="49" height="50"></td>
+		<td align="left"><i>The Devanagari syllable</i> ksha <i>represented by three code 
+        points</i></td>
+	</tr>
+	<tr>
+		<td align="center">
+		<img alt="g-ring" border="0" src="g-ring.gif" width="46" height="46"></td>
+		<td colspan="4" align="center">
+		<img alt="g" border="0" src="g.gif" width="46" height="46"><img alt="ring above" border="0" src="ring.gif" width="47" height="46"></td>
+		<td align="left"><i>G-ring represented by two code points</i></td>
+	</tr>
+</table>
+<p>For more information on grapheme cluster boundaries see UAX# 29: 
+<a href="../tr29.1"><i>Unicode Text Segmentation</i></a> [<a href="index.html#Boundaries">Boundaries</a>].
+  </p>
+  
+<h3>2.4 <a name="Subsets">Subsets</a></h3>
+
+<p>Unlike most character repertoires, the synchronized repertoire 
+  of Unicode and 10646 is intended to be <i>universal</i> in coverage. Given the
+  complexity of many writing systems, in practice this implies that nearly all 
+  implementations will fully support only some subset of the 
+  total repertoire, rather than all the characters.</p>
+<p>Formal subset mechanisms are occasionally seen in implementations of some 
+  Asian character sets, where for example, the distinction between “Level 1 
+  JIS” and “Level 2 JIS” support refers to particular parts of 
+  the repertoire of the <a class="charclass" href="index.html#JIS">JIS</a> X 0208 kanji characters to be included in the 
+  implementation.</p>
+<p>Subsetting is a major formal aspect of <a class="charclass" href="index.html#ISO">ISO</a>/<a class="charclass" href="index.html#IEC">IEC</a> 10646. The standard 
+  includes a set of internal catalog numbers for named subsets, and further 
+  makes a distinction between subsets that are <i>fixed collections</i> and 
+  those that are <i>open collections</i>, defined by a range of code positions. 
+  Open collections are extended any time an 
+  addition to the repertoire gets encoded in a code position 
+  between the range limits defining the collection. When the last of its open code 
+  positions is filled, an open collection automatically becomes a fixed collection. 
+  </p>
+<p>The European Committee for Standardization (<a class="charclass" href="index.html#CEN">CEN</a>) 
+  has defined several multilingual European subsets of ISO/IEC 10646-1 (called MES-1, 
+  MES-2, MES-3A, and MES-3B). MES-1 and MES-2 have been added as named fixed collections
+  in 10646.</p>
+<p>The Unicode Standard specifies neither predefined subsets nor
+  a formal syntax for their definition. It is left to 
+  each implementation to define and support the subset of the 
+  universal repertoire that it wishes to interpret.</p>
+  
+<h2>3 <a name="CodedCharacterSet">Coded Character Set (CCS)</a></h2>
+
+<p>A <i>coded character set</i> is defined to be a mapping from a set of 
+  abstract characters to the set of nonnegative integers. This range of 
+  integers need not be contiguous.  In the Unicode Standard, the concept 
+  of the Unicode scalar value (see definition D76, in Chapter 3, &quot;Conformance&quot; of 
+[<a href="index.html#Unicode">Unicode</a>]) 
+  explicitly defines such a noncontiguous range of integers.</p>
+<p>An abstract character is defined to be <i>in a coded character set</i> if 
+  the coded character set maps from it to an integer. That integer is  
+  the <i>code point</i> to which the abstract character has been
+  <i>assigned</i>. That abstract character is then an <i>encoded character</i>.</p>
+<p>Coded character sets are the basic object that both 
+<a class="charclass" href="index.html#ISO">ISO</a> and 
+  vendor character encoding committees produce. They relate a defined repertoire 
+  to nonnegative integers, which then can be used unambiguously to refer to 
+  particular abstract characters from the repertoire.</p>
+<p>A coded character set may also be known as a <i>character encoding</i>, a <i>coded 
+  character repertoire</i>, a <i>character set definition</i>, or a <i>code page</i>.</p>
+<p>In the IBM <a class="charclass" href="index.html#CDRA">CDRA</a> architecture, 
+<a class="charclass" href="index.html#CP">CP</a> (“code page” ) values refer to coded 
+  character sets. Note that this use of the term <i>code page</i> is quite 
+  precise and limited. It should not be—but generally is—confused 
+  with the generic use of <i>code page</i> to refer to character 
+  encoding schemes.</p>
+<p>Examples of Coded Character Sets:</p>
+	<table class="gray">
+		<tr>
+			<th class="grayfirst">Name</th>
+		<th class="grayfirst">Repertoire</th>
+	</tr>
+	<tr>
+		<td class="graymiddle"><a class="charclass" href="index.html#JIS">JIS</a> X 0208 </td>
+			<td class="graymiddle">assigns pairs of integers known as <i>kuten</i> points</td>
+		</tr>
+		<tr>
+			<td class="graymiddle" style="border-top-style: solid; border-top-width: 1pt">ISO/IEC 8859-1 </td>
+		<td class="graymiddle" style="border-top-style: solid; border-top-width: 1pt">ASCII plus Latin-1</td>
+	</tr>
+	<tr>
+		<td class="graymiddle">ISO/IEC 8859-2 </td>
+			<td class="graymiddle">different repertoire than 8859-1, although both use the same 
+			code space </td>
+		</tr>
+		<tr>
+			<td class="graymiddle">Code Page 037</td>
+			<td class="graymiddle">same repertoire as 8859-1; different integers assigned to 
+			the same 
+			characters</td>
+		</tr>
+		<tr>
+			<td class="graymiddle">Code Page 500</td>
+			<td class="graymiddle">same repertoire as 8859-1 and Code Page 037; different integers</td>
+		</tr>
+		<tr>
+			<td class="graymiddle" style="border-top-style: solid; border-top-width: 1pt">The Unicode Standard, Version 2.0</td>
+		<td class="graymiddle" style="border-top-style: solid; border-top-width: 1pt" rowspan="2">
+		exactly the same repertoire and mapping</td>
+		</tr>
+		<tr>
+			<td class="graymiddle">ISO/IEC 10646-1:1993 <br>
+			plus amendments&nbsp;1-7</td>
+		</tr>
+		<tr>
+			<td class="graymiddle" style="border-top-style: solid; border-top-width: 1pt">The Unicode Standard, Version 3.0</td>
+			<td class="graymiddle" style="border-top-style: solid; border-top-width: 1pt" rowspan="2">
+			exactly the same repertoire and mapping</td>
+		</tr>
+		<tr>
+			<td class="graymiddle">ISO/IEC 10646-1:2000</td>
+		</tr>
+		<tr>
+			<td class="graymiddle" style="border-top-style: solid; border-top-width: 1pt">The Unicode Standard, Version 4.0</td>
+			<td class="graylast" style="border-top-style: solid; border-top-width: 1pt" rowspan="2">
+			exactly the same repertoire and mapping</td>
+		</tr>
+		<tr>
+			<td class="graylast">ISO/IEC 10646:2003</td>
+		</tr>
+	</table>
+<p>This document does not attempt to list all versions of
+  the Unicode Standard. See <a href="http://www.unicode.org/versions/">Versions of
+  the Unicode Standard</a> [<a href="index.html#Versions">Versions</a>] for the complete list 
+  of versions and for information how they match with particular versions and 
+  amendments of 10646.</p>
+  
+<h3>3.1 <a name="CharacterNaming">Character Naming</a></h3>
+
+<p>SC2, the <a href="index.html#JTC1">JTC1</a> subcommittee responsible 
+  for character coding, requires the assignment 
+  of a unique character name for each abstract character in the repertoire 
+ of its coded character sets. This practice is not generally followed in vendor coded character 
+  sets or in the encodings produced by standards committees outside SC2, in 
+which any 
+  names provided for characters are often variable and annotative, 
+  rather than normative parts of the character encoding.</p>
+<p>The main rationale for the SC2 practice of character naming is to provide 
+  a mechanism to unambiguously identify abstract characters across different 
+  repertoires given different mappings to integers in different coded character 
+  sets. Thus <span class="name">LATIN SMALL LETTER A WITH GRAVE</span> would be the 
+<i>same</i> 
+  abstract character, even though it occurs in different repertoires 
+  and is 
+assigned different integers in different coded character sets.</p>
+<p>The IBM CDRA [<a href="index.html#CDRA-Ref">CDRA</a>], on the other hand, ensures 
+character identity across different coded character sets (or <i>code pages</i> ) by assigning a catalogue number 
+  known as a <a class="charclass" href="index.html#GCGID">GCGID</a> (graphic character 
+  glyphic identifier), to every abstract character used in any of the 
+  repertoires accounted for by the <a class="charclass" href="index.html#CDRA">CDRA</a>. Abstract characters that have the same 
+  GCGID in two different coded character sets are by definition the same 
+  character. Other vendors have made use of similar internal identifier systems 
+  for abstract characters.</p>
+<p>The advent of Unicode/10646 has largely rendered such schemes obsolete. The 
+  identity of abstract characters in all other coded character sets is 
+  increasingly defined by reference to Unicode/10646. Part of the 
+  pressure to include every “character” from every existing coded 
+  character set into the Unicode Standard results from the desire to get 
+  rid of subsidiary mechanisms for tracking bits and pieces that 
+  are not part of Unicode, and instead just use the Unicode 
+  Standard as the universal catalog of characters.</p>
+  
+<h3>3.2 <a name="CodeSpaces">Code Spaces</a></h3>
+
+<p>The range of nonnegative integers used to map abstract 
+  characters defines a related concept of <i>code space</i>. Traditional 
+  boundaries for types of code spaces are closely tied to the encoding forms 
+  (see below), because the mappings of abstract characters to nonnegative integers 
+  are done with particular encoding forms in mind. Examples 
+  of significant code spaces are 0..7F, 0..FF, 0..FFFF, 0..10FFFF, 0..7FFFFFFF, 
+  0..FFFFFFFF.</p>
+<p>Code spaces can also have elaborate structures, depending on 
+  whether the range of integers is contiguous, or whether 
+  particular ranges of values are disallowed. Most complications result 
+  from considerations of the encoding form for characters. When an encoding form specifies that the 
+  integers being encoded are to be serialized as sequences of bytes, there are 
+  often constraints placed on the particular values that those bytes may have. 
+Most commonly such constraints disallow byte values corresponding to control functions. 
+In terms of code 
+  space, such constraints on byte values result in multiple non-contiguous ranges of integers that are disallowed for 
+  mapping a character repertoire. (See [<a href="index.html#Lunde">Lunde</a>] for 
+  two-dimensional diagrams of typical code spaces for East Asian coded character 
+  sets implementing such constraints.) </p>
+<blockquote><p><b>Note:</b> In <a class="charclass" href="index.html#ISO">ISO</a>
+  standards the term octet is used for an 8-bit byte. In this document, 
+	the term byte is used consistently for an 8-bit byte only.</p>
+	</blockquote>
+	
+<h2>4 <a name="CharacterEncodingForm">Character Encoding Form</a> (CEF)</h2>
+
+<p>A <i>character encoding form</i> is a mapping from the set of integers used 
+  in a <a class="charclass" href="index.html#CCS">CCS</a> to the set of sequences of code units. A 
+<i>code unit</i> is an 
+  integer occupying a specified binary width in a computer architecture, such as 
+  an 8-bit byte. The encoding form enables character representation as actual 
+  data in a computer. The sequences of code units do not necessarily have the 
+  same length.</p>
+<ul>
+	<li>A character encoding form whose sequences are all of the same length is 
+      known as <i>fixed width</i>.
+    <li>A character encoding form whose sequences are not all of the same length 
+      is known as <i>variable width</i>.
+  </ul>
+<p>A character encoding form <i>for a coded character set</i> is defined to be 
+  a character encoding form that maps all of the encoded characters for that 
+  coded character set.</p>
+<blockquote>
+	<p><b>Note:</b> In many cases, there is only one character encoding 
+    form for a given coded character set. In some such cases only the character 
+    encoding form has been specified. This leaves the coded character set 
+    implicitly defined, based on an implicit relation between the code unit 
+    sequences and integers.</p>
+</blockquote>
+<p>When interpreting a sequence of code units, there are three possibilities:</p>
+<ol>
+	<li>The sequence is <i>ill-formed</i>. 
+	<br>The sequence is 
+	<i>incomplete</i> or otherwise fails to match the
+	specification of the encoding form. For example,
+      <ul>
+		<li>0xA3 is incomplete in CP950.
+			Unless followed by another byte of the right form, it is 
+              ill-formed.</li>
+              
+		<li>0xD800 is incomplete in UTF-16.
+			Unless followed by another 16-bit value of the right form, it is 
+              ill-formed.</li>
+
+		<li>0xC0 is ill-formed in UTF-8. It cannot be the initial byte (or for that matter,
+		any byte) of a well-formed UTF-8 sequence.</li>
+              
+	</ul>
+	For details on ill-formed sequences for UTF-8 and UTF-16,
+	see Section 3.9, Unicode Encoding Forms, in [<a href="index.html#Unicode">Unicode</a>].
+      </li>
+	
+	<li>The sequence represents a valid code point, but is <i>unassigned</i>. 
+      This sequence may be given an assignment in some future, <i>evolved</i> 
+      version of the character encoding. For suggestions on how to 
+	handle unassigned characters in mapping, see [<a href="index.html#CharMapML">CharMapML</a>].
+	For example,
+      <ul>
+		<li>0xA3 0xBF is unassigned in CP950, as of the year 1999.</li>
+		<li>0x0EDE is unassigned in Unicode 5.0</li>
+	</ul></li>
+	<li>The source sequence is <i>assigned</i>: it represents a valid encoded 
+      character. There are three variants of this:<br>
+      First is a typical assigned character. For example,
+      <ul>
+		<li>0x0EDD is assigned in Unicode 5.0</li>
+	</ul>
+	The second variant is a user-defined character. For example,
+      <ul>
+		<li>0xE000 is an assigned user-defined character whose semantic 
+          interpretation is left to agreement between parties outside of the 
+          context of the standard.</li>
+	</ul>
+	The third type is peculiar to the Unicode Standard: the <i>noncharacter</i>. This is a
+	kind of internal-use user-defined character, not intended for public interchange. For example,
+      <ul>
+		<li>0xFFFF is an assigned noncharacter in Unicode 5.0</li>
+	</ul>
+	</li>
+</ol>
+<p>The encoding form for a <a class="charclass" href="index.html#CCS">CCS</a> may result in either fixed-width or 
+  variable-width sequences of code units 
+  associated with abstract characters. 
+  The encoding form may involve an arbitrary reversible mapping of the integers 
+  of the CCS to a set of code unit sequences.</p>
+<p>Encoding forms come in various types. Some of them are exclusive to the 
+  Unicode/10646, whereas others represent general patterns that are repeated 
+  over and over for hundreds of coded character sets. Some of the more important 
+	examples of encoding forms follow.</p>
+<p>Examples of fixed-width encoding forms:</p>
+<table class="gray">
+	<tr>
+		<th class="grayfirst">Type</th>
+		<th class="grayfirst">Each character<br>
+	encoded as</th>
+		<th class="grayfirst">Notes</th>
+	</tr>
+	<tr>
+		<td class="graymiddle" width="25%">&nbsp; 7-bit</td>
+		<td class="graymiddle">a single 7-bit quantity</td>
+		<td class="graymiddle">example: <a class="charclass" href="index.html#ISO">ISO</a> 646 </td>
+	</tr>
+	<tr>
+		<td class="graymiddle">&nbsp; 8-bit G0/G1
+      </td>
+		<td class="graymiddle">a single 8-bit quantity</td>
+		<td class="graymiddle">with constraints on use of C0 and C1 spaces</td>
+	</tr>
+	<tr>
+		<td class="graymiddle">&nbsp; 8-bit
+      </td>
+		<td class="graymiddle">a single 8-bit quantity </td>
+		<td class="graymiddle">with no constraints on use of C1 space</td>
+	</tr>
+	<tr>
+		<td class="graymiddle">&nbsp; 8-bit <a class="charclass" href="index.html#EBCDIC">EBCDIC</a>
+		</td>
+		<td class="graymiddle">a single 8-bit quantity </td>
+		<td class="graymiddle">with the EBCDIC conventions rather than 
+		<a class="charclass" href="index.html#ASCII">ASCII</a> conventions</td>
+	</tr>
+	<tr>
+		<td class="graymiddle">16-bit (<a class="charclass" href="index.html#UCS">UCS</a>-2)
+      	</td>
+		<td class="graymiddle">a single 16-bit quantity </td>
+		<td class="graymiddle">within a code space of 0..FFFF</td>
+	</tr>
+	<tr>
+		<td class="graymiddle">32-bit (<a class="charclass" href="index.html#UCS">UCS</a>-4)
+      	</td>
+		<td class="graymiddle">a single 32-bit quantity </td>
+		<td class="graymiddle">within a code space 0..7FFFFFFF</td>
+	</tr>
+	<tr>
+		<td class="graymiddle">32-bit (<a class="charclass" href="index.html#UTF">UTF</a>-32)
+      	</td>
+		<td class="graymiddle">a single 32-bit quantity </td>
+		<td class="graymiddle">within a code space of 0..10FFFF</td>
+	</tr>
+	<tr>
+		<td class="graymiddle">16-bit <a class="charclass" href="index.html#DBCS">DBCS</a> process code
+      	</td>
+		<td class="graymiddle">a single 16-bit quantity</td>
+		<td class="graymiddle">example: UNIX widechar implementations of Asian CCS's</td>
+	</tr>
+	<tr>
+		<td class="graymiddle">32-bit <a class="charclass" href="index.html#DBCS">DBCS</a> process code
+      	</td>
+		<td class="graymiddle">a single 32-bit quantity</td>
+		<td class="graymiddle">example: UNIX widechar implementations of Asian CCS's</td>
+	</tr>
+	<tr>
+		<td class="graylast"><a class="charclass" href="index.html#DBCS">DBCS</a> Host
+      	</td>
+		<td class="graylast">two 8-bit quantities</td>
+		<td class="graylast">following IBM host conventions</td>
+	</tr>
+</table>
+<p>Examples of variable-width encoding forms:</p>
+<table class="gray">
+	<tr>
+		<th class="grayfirst">Name</th>
+		<th class="grayfirst">Characters are encoded as</th>
+		<th class="grayfirst">Notes</th>
+	</tr>
+	<tr>
+		<td class="graymiddle" width="25%"><a class="charclass" href="index.html#UTF">UTF</a>-8
+      	</td>
+		<td class="graymiddle">a mix of one to four 8-bit code units 
+          in Unicode<br>and one to six code units in 10646</td>
+		<td class="graymiddle">used only with Unicode/10646</td>
+	</tr>
+	<tr>
+		<td class="graylast"><a class="charclass" href="index.html#UTF">UTF</a>-16
+      </td>
+		<td class="graylast">a mix of one to two 16 bit code units</td>
+		<td class="graylast">used only with Unicode/10646</td>
+	</tr>
+</table>
+<p>The encoding form defines one of the fundamental aspects 
+  of an encoding: how many <i>code units</i> are there for each character. The 
+number of code units per character is important to internationalized software. Formerly 
+this was equivalent to how many <i>bytes</i> each character 
+  was represented by. With the introduction by Unicode and 10646 of wider code 
+units for <a class="charclass" href="index.html#UCS">UCS</a>-2, 
+<a class="charclass" href="index.html#UTF">UTF</a>-16, 
+	UCS-4, and UTF-32, this is generalized to two pieces 
+  of information: a specification of the width of the code unit, and the 
+  number of code units used to represent each character.  
+  The UCS-2 encoding form, which is associated with 
+  ISO/IEC 10646 and can only express characters in the 
+<a class="charclass" href="index.html#BMP">BMP</a>, 
+  is a fixed-width encoding form. In contrast, UTF-16 uses either one or two code
+  units and is able to cover the entire code space of Unicode.</p>
+<p>UTF-8 provides a good example. In UTF-8, the fundamental code unit used for representing character data is 8 bits 
+      wide (that is, a byte or octet). The width map for UTF-8 is:</p>
+<blockquote>
+	<table border="0" cellspacing="2" cellpadding="2">
+		<tr>
+			<td height="24">0x00..0x7F</td>
+			<td>→</td>
+			<td>1 byte</td>
+		</tr>
+		<tr>
+			<td height="24">0x80..0x7FF</td>
+			<td>→</td>
+			<td>2 bytes</td>
+		</tr>
+		<tr>
+			<td height="24">0x800..0xD7FF, 0xE000..0xFFFF</td>
+			<td>→</td>
+			<td>3 bytes</td>
+		</tr>
+		<tr>
+			<td height="24">0x10000 .. 0x10FFFF</td>
+			<td>→</td>
+			<td>4 bytes</td>
+		</tr>
+	</table>
+</blockquote>
+<p>Examples of encoding forms as applied to particular coded character sets:</p>
+<table class="gray">
+	<tr>
+		<th class="grayfirst">Name</th>
+		<th class="grayfirst">Encoding forms</th>
+	</tr>
+	<tr>
+		<td class="graymiddle"><a class="charclass" href="index.html#JIS">JIS</a> X 0208 
+		</td>
+		<td class="graymiddle">generally transformed from the <i>kuten</i> notation to a 16-bit “JIS code” encoding form, for 
+	example &quot;nichi&quot;, 38 92 (kuten) → 0x467C JIS code</td>
+	</tr>
+	<tr>
+		<td class="graymiddle">ISO 8859-1 </td>
+		<td class="graymiddle">has the 8-bit G0/G1 encoding form </td>
+	</tr>
+	<tr>
+		<td class="graymiddle"><a class="charclass" href="index.html#CP">CP</a> 037 </td>
+		<td class="graymiddle">8-bit <a class="charclass" href="index.html#EBCDIC">EBCDIC</a> encoding form
+    	</td>
+	</tr>
+	<tr>
+		<td class="graymiddle">CP 500 </td>
+		<td class="graymiddle">8-bit <a class="charclass" href="index.html#EBCDIC">EBCDIC</a> encoding form
+    	</td>
+	</tr>
+	<tr>
+		<td class="graymiddle">US <a class="charclass" href="index.html#ASCII">ASCII</a></td>
+		<td class="graymiddle">7-bit encoding form</td>
+	</tr>
+	<tr>
+		<td class="graymiddle">ISO 646 </td>
+		<td class="graymiddle">7-bit encoding form</td>
+	</tr>
+	<tr>
+		<td class="graymiddle">Windows CP 1252 </td>
+		<td class="graymiddle">8-bit encoding form</td>
+	</tr>
+	<tr>
+		<td class="graymiddle">Unicode 4.0, 5.0</td>
+		<td class="graymiddle">UTF-16, UTF-8, or UTF-32 encoding form 
+		</td>
+	</tr>
+	<tr>
+		<td class="graymiddle">Unicode 3.0 </td>
+		<td class="graymiddle">either UTF-16 (default) or UTF-8 encoding form 
+		</td>
+	</tr>
+	<tr>
+		<td class="graymiddle">Unicode 1.1 </td>
+		<td class="graymiddle">either UCS-2 (default) or UTF-8 encoding form 
+		</td>
+	</tr>
+	<tr>
+		<td class="graymiddle">ISO/IEC 10646:2003</td>
+		<td class="graymiddle">depending on the declared implementation levels, may have UCS-2, 
+		UCS-4, UTF-16, or UTF-8. </td>
+	</tr>
+	<tr>
+		<td class="graylast">ISO/IEC 10646:2009</td>
+		<td class="graylast">UTF-8, UTF-16, or UTF-32</td>
+	</tr>
+</table>
+<blockquote>
+	<p><b>Note:</b> Shift-JIS is not an encoding form. It is discussed in the 
+      next section.</p>
+</blockquote>
+<blockquote>
+	<p><b>Note:</b> The pending republication of ISO/IEC 10646
+	2nd Edition (ISO/IEC 10646:2009) will drop implementation levels, and its
+	use and discussion of character encoding forms will be closely aligned with
+	Unicode 5.0.</p>
+</blockquote>
+
+<h2>5 <a name="CharacterEncodingScheme">Character Encoding Scheme (CES)</a></h2>
+
+<p>A <i>character encoding scheme</i> (CES) is a 
+	reversible transformation of sequences of code units to sequences of bytes in one of
+	three ways: </p>
+<blockquote>
+	<p>1. A <i>simple</i> CES uses a mapping of each 
+		code unit of a CEF into a unique serialized
+byte sequence in order. </p>
+	<p>2. A <i>compound</i> CES uses two or more simple CESs, plus a mechanism to shift
+between them. This mechanism includes bytes (for example single shifts, SI/SO, or
+escape sequences) that are not part of any of the simple CESs, but which are
+defined by the character encoding architecture and which may require an external
+registry of particular values (such as for the ISO 2022 escape sequences).
+	</p>
+	<p>The nature of a compound CES means there may be different sequences of bytes corresponding to the same 
+	sequence of code units. While these 
+		sequences are not unique, the original sequence of code units can be 
+		recovered unambiguously 
+		from any of these.</p>
+	<p>3. A <i>compressing 
+	</i>CES maps a code unit sequence to 
+		a byte sequence while minimizing the length of the byte sequence. Some 
+		compressing CESs are designed to produce a unique sequence of bytes for 
+		each sequence of code units, so that the compressed byte sequences can 
+		be compared for equality or ordered by binary comparison. Other 
+		compressing CESs are merely reversible.</p>
+</blockquote>
+<p>Character encoding schemes are relevant to the 
+  issue of cross-platform persistent data involving code units wider than a 
+  byte, where byte-swapping may be required to put data into the byte polarity 
+  which is used for a particular platform. In particular:</p>
+<ul>
+	<li>Most fixed-width byte-oriented encoding forms have a trivial mapping 
+      into a CES: each 7-bit or 8-bit quantity maps to a byte of the same value.</li>
+	<li>Most mixed-width byte-oriented encoding forms also simply serialize the 
+      sequence of CC-data-elements to bytes.
+      <ul>
+		<li>UTF-8 follows this pattern, because it is already a byte-oriented 
+		encoding form.</li>
+		<li>UTF-16 must specify byte-order for the byte serialization because it involves 16-bit quantities. 
+		Byte order is the sole difference between UTF-16BE, 
+          in which the two bytes of the 16-bit quantity are serialized in 
+          big-endian order, and UTF-16LE, in which they are serialized in 
+          little-endian order.</li>
+	</ul></li>
+</ul>
+<p>It is important not to confuse a Character Encoding Form (<a class="charclass" href="index.html#CEF">CEF</a>) and a CES.</p>
+<ol>
+	<li>The <a class="charclass" href="index.html#CEF">CEF</a> maps code points to code units, while the CES 
+	transforms sequences of code units to 
+      byte sequences. (For a direct mapping from characters to serialized bytes, see 
+      <a href="index.html#CharacterMaps">Section 6</a> <i>Character Maps</i>.)</li>
+	<li>The CES must take into account the byte-order serialization of all code 
+      units wider than a byte that are used in the CEF.</li>
+	<li>Otherwise identical CESs may differ in other aspects, such as the number of user-defined 
+      characters allowed. (This applies in particular to the IBM 
+	<a class="charclass" href="index.html#CDRA">CDRA</a> 
+      architecture, which may distinguish host 
+	<a class="charclass" href="index.html#CCSID">CCSID</a>s based on whether the set 
+      of <a class="charclass" href="index.html#UDC">UDC</a>'s is conformably convertible to the corresponding code page or 
+      not.) </li>
+</ol>
+<p>Some of the Unicode encoding schemes have the same labels as the
+	three Unicode
+	encoding forms. When used without qualification, the terms UTF-8, UTF-16, and 
+	UTF-32 are
+	ambiguous
+	between their sense as Unicode encoding forms and as Unicode encoding schemes.
+	This ambiguity is usually innocuous for UTF-8 because the UTF-8 encoding scheme is
+	trivially
+	derived from the byte sequences defined for the UTF-8 encoding form.
+	However, for UTF-16 and UTF-32, the ambiguity is more problematical. As encoding forms,
+	UTF-16 and
+	UTF-32 refer to code units as they 
+	are accessed from memory via 
+	16-bit or 32-bit data types; there is no associated byte
+	orientation, and a BOM
+	is never used. (Viewing memory in a 
+	debugger or casting wider data types to byte arrays is a byte serialization.)</p>
+<p>As encoding <i>schemes</i>, UTF-16 and UTF-32 refer to serialized
+	bytes, for example the serialized bytes for
+	streaming data or in files; they may have either byte orientation, and a
+	single BOM may be
+	present at the start of the data. When the usage of the 
+	abbreviated designators UTF-16 or UTF-32 might be
+	misinterpreted, and
+	where a distinction between their use as referring to Unicode encoding forms 
+	or to Unicode encoding schemes is important, the full terms should be used. For example, use 
+	<i>UTF-16 encoding form</i> or <i>UTF-16
+	encoding scheme</i>. They may also be abbreviated to UTF-16 CEF or UTF-16 CES,
+	respectively. </p>
+<p>Examples of Unicode Character Encoding Schemes:</p>
+<ul>
+	<li>The Unicode Standard has seven character encoding schemes: 
+      UTF-8, UTF-16, UTF-16BE, UTF-16LE, UTF-32, UTF-32BE, and UTF-32LE.
+      <ul>
+		<li>UTF-8, UTF-16BE, UTF-16LE, UTF-32BE and UTF32-LE are simple CESs.</li>
+		<li>
+		<p>UTF-16 and UTF-32 are compound CESs, consisting of an
+		single, optional <i>byte order mark </i>
+		at the start of the data followed by a simple CES.</p>
+		<table class="gray" border="1" align=center cellpadding="2">
+			<tr>
+				<th class="grayfirst">Name</th>
+				<th class="grayfirst" style="text-align: center">CEF</th>
+				<th class="grayfirst">CES</th>
+			</tr>
+			<tr>
+				<td class="graymiddle">UTF-8</td>
+				<td class="graymiddle" style="text-align: center">+</td>
+				<td class="graymiddle">simple</td>
+			</tr>
+			<tr>
+				<td class="graymiddle">UTF-16</td>
+				<td style="text-align: center" class="graymiddle">+</td>
+				<td class="graymiddle">compound</td>
+			</tr>
+			<tr>
+				<td class="graymiddle">UTF-16BE</td>
+				<td style="text-align: center" class="graymiddle">&nbsp;</td>
+				<td class="graymiddle">simple</td>
+			</tr>
+			<tr>
+				<td class="graymiddle">UTF-16LE</td>
+				<td style="text-align: center" class="graymiddle">&nbsp;</td>
+				<td class="graymiddle">simple</td>
+			</tr>
+			<tr>
+				<td class="graymiddle">UTF-32</td>
+				<td style="text-align: center" class="graymiddle">+</td>
+				<td class="graymiddle">compound</td>
+			</tr>
+			<tr>
+				<td class="graymiddle">UTF-32BE</td>
+				<td style="text-align: center" class="graymiddle">&nbsp;</td>
+				<td class="graymiddle">simple</td>
+			</tr>
+			<tr>
+				<td class="graylast">UTF-32LE</td>
+				<td class="graylast" style="text-align: center">&nbsp;</td>
+				<td class="graylast">simple</td>
+			</tr>
+		</table><br></li>
+	</ul>
+	<li>Unicode 1.1 had three character encoding schemes: UTF-8, UCS-2BE, and 
+	UCS-2LE, although the latter two were not named that way at the time.</ul>
+<p>Examples of Non-Unicode Character 
+	Encoding Schemes:</p>
+<ul>
+	<li>ISO 2022-based charsets (ISO-2022-JP, ISO-2022-KR, etc.), which use 
+      embedded escape sequences; these 
+	are compound CESs.<li><a class="charclass" href="index.html#DBCS">DBCS</a> 
+	Shift (mix of one single-byte CCS, for example 
+	<a class="charclass" href="index.html#JIS">JIS</a> X 0201 and a DBCS CCS, 
+      for example based on JIS X0208, with a numeric shift of the integer values), 
+	for 
+      example, Code Page 932 on Windows.
+    <li><a class="charclass" href="index.html#EUC">EUC</a> (similar to the DBCS Shift encodings, with the application of 
+      different numeric shift rules, and the introduction of single-shift bytes: 
+      0x8E and 0x8F, that may introduce 3-byte and 4-byte sequences), for 
+      example, EUC-JP or EUC-TW on UNIX.
+	<li>IBM host mixed code pages for Asian character sets, which formally mix two 
+      distinct CCSs with the SI/SO switching conventions, for example,
+	<a class="charclass" href="index.html#CCSID">CCSID</a> 
+      5035 on IBM Japanese host machines.
+  </ul>
+<p>Examples of compressing Character 
+	Encoding Schemes:</p>
+<ul>
+	<li><a class="charclass" href="index.html#BOCU">BOCU-1</a>, see 
+		  <a href="../../notes/tn6.1">Unicode Technical Note #6</a>: 
+		  <i>BOCU-1: <a class="charclass" href="index.html#MIME">MIME</a>-compatible Unicode Compression</i>. [<a href="index.html#BOCU-Ref">BOCU</a>]. 
+		  BOCU-1 maps each input string to a unique compressed string, but does not map each code unit to a unique series of bytes.</li>
+	<li>Punycode, defined in [<a href="index.html#RFC3492">RFC3492</a>], 
+  		like BOCU-1, is unique only on a string basis. </li>
+	<li><a class="charclass" href="index.html#SCSU">SCSU</a> (and 
+	<a class="charclass" href="index.html#RCSU">RCSU</a>): see 
+				<a href="../tr6.1">UTR #6: <i>A Standard Compression Scheme for Unicode</i></a> 
+     [<a href="index.html#SCSU-Ref">SCSU</a>]. The input to SCSU and RCSU is a stream of code units; the output is a compressed stream of bytes. 
+     Because of compression heuristics, the same input string may result in different byte sequences, but the schemes are fully 
+     reversible.</li>
+</ul>
+
+<h3>5.1 <a name="ByteOrder">Byte Order</a></h3>
+
+<p>Processor architectures differ in the way that multi-byte 
+  machine integers are mapped to storage locations. <i>Little Endian</i> architectures put
+  the least significant byte at the lower address, while <i>Big Endian</i> architectures
+  start with the most significant byte.</p>
+<p>This difference does not matter for operations on code units in memory, but 
+	the byte order becomes important when code units are serialized to sequences of bytes using a particular
+  <a class="charclass" href="index.html#CES">CES</a>. In terms of reading a data stream, there are two
+  types of byte order: <i>Same</i> <i>as</i> or <i>Opposite</i> <i>of</i> the byte order of the processor
+  reading the data. In the former case, no special operation needs to be taken; in the latter
+  case, the data needs to be byte reversed before processing.</p>
+<p>In terms of external designation of data streams, three 
+  types of byte orders can be distinguished: <i>Big Endian (<a class="charclass" href="index.html#BE">BE</a>)</i>, 
+<i>Little Endian (<a class="charclass" href="index.html#LE">LE</a>)</i> 
+  and <i>default</i> or <i>internally marked</i>.</p>
+<p>In Unicode, the character at code point U+FEFF is defined as the 
+  <i>byte order mark</i>, while its byte-reversed counterpart, U+FFFE is a 
+	noncharacter (U+FFFE) in <a class="charclass" href="index.html#UTF">UTF</a>-16 , or outside the code space (0xFFFE0000) for UTF-32. At the head of a data stream, 
+  the presence of a byte order mark can therefore be used to unambiguously signal the byte 
+  order of the code units.</p>
+  
+<h2>6 <a name="CharacterMaps">Character Maps</a></h2>
+
+<p>The mapping from a sequence of 
+	members of an abstract character repertoire to a serialized sequence 
+  of bytes is called a <i>Character Map</i> (CM). A <i>simple character map</i> 
+  thus implicitly includes a <a class="charclass" href="index.html#CCS">CCS</a>, a 
+<a class="charclass" href="index.html#CEF">CEF</a>, and a <a class="charclass" href="index.html#CES">CES</a>, mapping from abstract 
+  characters to code units to bytes. A <i>compound character map</i> includes a 
+  compound CES, and thus includes more than one CCS and CEF. In that case, the 
+  abstract character repertoire for the character map is the union of the 
+  repertoires covered by the coded character sets involved.</p>
+<p>Unicode Technical Report #22: <i>
+<a href="../tr22/index.html">Character Mapping Markup Language</a></i> [<a href="index.html#CharMapML">CharMapML</a>] defines an XML specification for 
+  representing the details of Character Maps. The text also contains a detailed discussion of issues in mapping
+  between character sets.</p>
+<p>Character Maps are the entities that get 
+	IANA<i> charset</i> 
+	[<a href="index.html#charset">Charset</a>] 
+  identifiers in the <a class="charclass" href="index.html#IAB">IAB</a> architecture. From the 
+<a class="charclass" href="index.html#IANA">IANA</a> charset point of view 
+	it is important that 
+  a sequence of encoded characters be unambiguously mapped onto a sequence 
+  of bytes by the charset. The charset must be specified in all instances, as in 
+  Internet protocols, where textual content is treated as an ordered sequence of 
+  bytes, and where the textual content must be reconstructible from that 
+  sequence of bytes.</p>
+<p>In the IBM <a class="charclass" href="index.html#CDRA">CDRA</a> architecture, 
+	Character Maps are the entities that get 
+  <a class="charclass" href="index.html#CCSID">CCSID</a> (coded character set identifier) values. A character map may also be 
+  known as a <i>charset</i>, a <i>character set</i>, a <i>code page</i> (broadly 
+  construed), or a <i>CHARMAP.</i></p>
+<p>In many cases, the same name is used for both a character map and for a 
+  character encoding scheme, such as UTF-16BE. Typically this is done for simple 
+  character mappings when such usage is clear from context.</p>
+  
+<h2>7 <a name="TransferEncodingSyntax">Transfer Encoding Syntax</a> (TES)</h2>
+
+<p>A <i>transfer encoding syntax</i> is a reversible transform of encoded <b>data</b> 
+  which may (or may not) include textual data represented in one or more 
+  character encoding schemes.</p>
+<p>Typically TESs are engineered to 
+	transform one byte stream into another, while avoiding particular byte values that would confuse one or more Internet or 
+      other transmission/storage protocols. Examples include base64, uuencode, BinHex, 
+	and 
+	quoted-printable. While data transfer protocols often incorporate data compressions to minimize the number of bits 
+      to be passed down a communication channel, compression is usually handled 
+	outside the TES, for example by protocols such as pkzip, gzip, or winzip.</p>
+<p>The Internet Content-Transfer-Encoding tags “7bit” and “8bit” are special cases. These are data width specifications 
+  which are relevant to mail protocols and which appear to predate true TESs 
+  like quoted-printable. Encountering a “7bit” tag does not 
+  imply any actual transform of data; it merely indicates that the 
+  charset of the data can be represented in 7 bits, and will pass 7-bit channels&#x2014;it really 
+  indicates the encoding form. In contrast, 
+  quoted-printable actually converts various characters (including 
+  some <a class="charclass" href="index.html#ASCII">ASCII</a>) to forms like “=2D” 
+	or “=20”, and should 
+  be reversed on receipt to regenerate legible text in the designated character 
+  encoding scheme.
+  </p>
+  
+<h2>8 <a name="APIBinding">Data Types and API Binding</a></h2>
+
+<p>Programming languages define specific data types for 
+  character data, using bytes or multi-byte code units. For example, the 
+  char data type in Java or C# always uses 16-bit code units, while the size of the char 
+  and wchar_t data types in C and C++ are, within quite flexible constraints, 
+  implementation defined. In Java or C#, the 16-bit code units are by definition 
+  <a class="charclass" href="index.html#UTF">UTF</a>-16 code units, while in C and C++, the binding to a specific character 
+  set is again up to the implementation. In Java, strings are an opaque data 
+  type, while in C (and at the lowest level also in C++) they are represented 
+  as simple arrays of char or wchar_t.</p>
+<p>The Java model supports portable programs, but external data in other 
+	encoding forms must first be converted to UTF-16. The C/C++ model is 
+	intended to support a byte serialized character set using the char data 
+	type, while supporting a character set with a single code unit per character 
+	with the wchar_t data type. These two character sets do not have to be the 
+	same, but the repertoire of the larger set must include the smaller set to 
+	allow mapping from one data type into the other. This allows implementations 
+	to support 
+  <a class="charclass" href="index.html#UTF">UTF</a>-8 as the char data type and 
+  <a class="charclass" href="index.html#UTF">UTF</a>-32 as the wchar_t 
+  data type, for example. In such use, the char data type corresponds to data that is serialized
+  for storage and interchange, and the wchar_t data type is used for internal
+  processing. There is no guarantee that 
+	wchar_t represent characters of a specific character set. However, a 
+	standard macro, __STDC_ISO_10646__ can be used by an environment to 
+	designate that it supports a specific version of 10646, indicated by year and 
+	month.</p>
+<p>However, the definition of the term <i>character</i>
+  in the <a class="charclass" href="index.html#ISO">ISO</a> C and C++ standard does not necessarily match the definition of abstract
+  character in this model. Many widely used libraries and operating systems define wchar_t to be 
+  UTF-16 code units. Other <a class="charclass" href="index.html#API">API</a>s supporting UTF-16 are often simply 
+  defined in terms of arrays of 16-bit unsigned integers, but this makes 
+  certain features of the programming language unavailable, such as string literals.</p>
+<p><a class="charclass" href="index.html#ISO">ISO</a>/<a class="charclass" href="index.html#IEC">IEC</a> 
+	TR 19769 extends the model used in ISO C and C++ by recommending the use of 
+	two typedefs and a minimal extension to the support for character literals 
+	and runtime library. The data types char16_t and char32_t are unsigned 
+	integers designed to hold one code unit for UTF-16 or UTF-32 respectively. 
+	Like wchar_t they can be used generically for any character set, but
+	predefined macros __STDC_UTF_16__ and __STDC_UTF_32__ can be used to 
+	indicate that the data type char16_t or char32_t holds code units that are 
+	in the respective Unicode encoding form.</p>
+<p>When 
+  character data types are passed as arguments in APIs, the byte order 
+  of the platform is generally not relevant for code 
+  units. The same API can be compiled on platforms with any byte 
+  polarity, and will simply expect character data (as for any integral-based 
+  data) to be passed to the API in the byte polarity for that platform. However, the size of the data type must correspond to the 
+  size of the code unit, or the results can be unpredictable, as when a byte 
+  oriented strcpy is used on UTF-16 data which may contain embedded NUL 
+  bytes.</p>
+<p>While there are many API functions 
+  that are designed not to care about which character set the code units 
+  correspond to (strlen or strcpy for example), many other operations require 
+  information about the character and its properties. As a 
+  result, portable programs may not be able to use the char or wchar_t 
+	data types in C/C++.</p>
+	
+<h3>8.1 <a name="Strings">Strings</a></h3>
+
+<p>A string data type is simply a
+  sequence of code units. Thus a Unicode 8-bit string is a sequence of 
+  8-bit Unicode code units; a Unicode 16-bit string is a sequence of 16-bit 
+  code units; a Unicode 32-bit string is a sequence of 32-bit code 
+  units.</p>
+<p>Depending on the programming environment, a Unicode 
+ string may or may not also be required to be in the corresponding Unicode encoding form. For example, strings
+in Java, C#, or <a class="charclass" href="index.html#ECMA">ECMA</a>Script are Unicode 16-bit strings, but are not necessarily
+well-formed UTF-16 sequences. In normal processing, there are many times where
+a string may be in a transient state that is not well-formed UTF-16.
+Because strings are such a fundamental component of every program, it can be
+far more efficient to postpone checking for well formedness.</p>
+<p>However, whenever strings are specified to be in a particular Unicode
+encoding—even one with the same code unit size—the string must not violate the
+requirements of that encoding form. For example, isolated surrogates in a Unicode 16-bit
+string are not allowed when that string is specified to be well-formed UTF-16.</p>
+
+<h2>9 <a name="DefinitionsAndAcronyms">Definitions and Acronyms</a></h2>
+
+<p>This section briefly defines some of the common 
+  acronyms related to character encoding and used in this text. More extensive definitions
+  for some of these terms can be found elsewhere in this document.</p>
+<table cellspacing="2" class="nb">
+	<tr>
+		<td class="nb" valign="top"><a name="ACR">ACR</a></td>
+		<td class="nb" valign="top">Abstract Character Repertoire</td>
+	</tr>
+	<tr>
+		<td class="nb" valign="top"><a name="API">API</a></td>
+		<td class="nb" valign="top">Application Programming Interface</td>
+	</tr>
+	<tr>
+		<td class="nb" valign="top"><a name="ASCII">ASCII</a></td>
+		<td class="nb" valign="top">American Standard Code for Information Interchange</td>
+	</tr>
+	<tr>
+		<td class="nb" valign="top"><a name="BE">BE</a></td>
+		<td class="nb" valign="top">Big-endian (most significant byte first)</td>
+	</tr>
+	<tr>
+		<td class="nb" valign="top"><a name="BMP">BMP</a></td>
+		<td class="nb" valign="top">Basic Multilingual Plane, the first 65,536 characters of 10646</td>
+	</tr>
+	<tr>
+		<td class="nb" valign="top"><a name="BOCU">BOCU</a></td>
+		<td class="nb" valign="top">Byte Ordered Compression for Unicode</td>
+	</tr>
+	<tr>
+		<td class="nb" valign="top"><a name="CCS">CCS</a></td>
+		<td class="nb" valign="top">Coded Character Set</td>
+	</tr>
+	<tr>
+		<td class="nb" valign="top"><a name="CCSID">CCSID</a></td>
+		<td class="nb" valign="top">Code Character Set Identifier</td>
+	</tr>
+	<tr>
+		<td class="nb" valign="top"><a name="CDRA">CDRA</a></td>
+		<td class="nb" valign="top">Character Data Representation Architecture from IBM</td>
+	</tr>
+	<tr>
+		<td class="nb" valign="top"><a name="CEF">CEF</a></td>
+		<td class="nb" valign="top">Character Encoding Form</td>
+	</tr>
+	<tr>
+		<td class="nb" valign="top"><a name="CEN">CEN</a></td>
+		<td class="nb" valign="top">European Committee for Standardization</td>
+	</tr>
+	<tr>
+		<td class="nb" valign="top"><a name="CES">CES</a></td>
+		<td class="nb" valign="top">Character Encoding Scheme</td>
+	</tr>
+	<tr>
+		<td class="nb" valign="top"><a name="CM">CM</a></td>
+		<td class="nb" valign="top">Character Map</td>
+	</tr>
+	<tr>
+		<td class="nb" valign="top"><a name="CP">CP</a></td>
+		<td class="nb" valign="top">Code Page</td>
+	</tr>
+	<tr>
+		<td class="nb" valign="top"><a name="CS">CS</a></td>
+		<td class="nb" valign="top">Character Set</td>
+	</tr>
+	<tr>
+		<td class="nb" valign="top"><a name="DBCS">DBCS</a></td>
+		<td class="nb" valign="top" height="24">Double-Byte Character Set</td>
+	</tr>
+	<tr>
+		<td class="nb" valign="top"><a name="ECMA">ECMA</a></td>
+		<td class="nb" valign="top">European Computer Manufacturers Association</td>
+	</tr>
+	<tr>
+		<td class="nb" valign="top"><a name="EBCDIC">EBCDIC</a></td>
+		<td class="nb" valign="top">Extended Binary Coded Decimal Interchange Code</td>
+	</tr>
+	<tr>
+		<td class="nb" valign="top"><a name="EUC">EUC</a></td>
+		<td class="nb" valign="top">Extended Unix Code</td>
+	</tr>
+	<tr>
+		<td class="nb" valign="top"><a name="GCGID">GCGID</a></td>
+		<td class="nb" valign="top">Graphic Character Set Glyphic Identifier</td>
+	</tr>
+	<tr>
+		<td class="nb" valign="top"><a name="IAB">IAB</a></td>
+		<td class="nb" valign="top">Internet Architecture Board</td>
+	</tr>
+	<tr>
+		<td class="nb" valign="top"><a name="IANA">IANA</a></td>
+		<td class="nb" valign="top">Internet Assigned Numbers Authority</td>
+	</tr>
+	<tr>
+		<td class="nb" valign="top"><a name="IEC">IEC</a></td>
+		<td class="nb" valign="top">International Electrotechnical 
+		Commission</td>
+	</tr>
+	<tr>
+		<td class="nb" valign="top"><a name="IETF">IETF</a></td>
+		<td class="nb" valign="top">Internet Engineering Taskforce</td>
+	</tr>
+	<tr>
+		<td class="nb" valign="top"><a name="ISO">ISO</a></td>
+		<td class="nb" valign="top">International Organization for Standardization</td>
+	</tr>
+	<tr>
+		<td class="nb" valign="top"><a name="JIS">JIS</a></td>
+		<td class="nb" valign="top">Japanese Industrial Standard</td>
+	</tr>
+	<tr>
+		<td class="nb" valign="top"><a name="JTC1">JTC1</a></td>
+		<td class="nb" valign="top">Joint Technical 
+		Committee 1 (responsible for ISO/IEC IT Standards)</td>
+	</tr>
+	<tr>
+		<td class="nb" valign="top"><a name="LE">LE</a></td>
+		<td class="nb" valign="top">Little-endian (least significant byte first)</td>
+	</tr>
+	<tr>
+		<td class="nb" valign="top"><a name="MBCS">MBCS</a></td>
+		<td class="nb" valign="top">Multiple-Byte Character Set (1 to n bytes per code point)</td>
+	</tr>
+	<tr>
+		<td class="nb" valign="top"><a name="MIME">MIME</a></td>
+		<td class="nb" valign="top">Multipurpose Internet Mail Extensions</td>
+	</tr>
+	<tr>
+		<td class="nb" valign="top"><a name="RFC">RFC</a></td>
+		<td class="nb" valign="top">Request For Comments (term used for an Internet standard)</td>
+	</tr>
+	<tr>
+		<td class="nb" valign="top"><a name="RCSU">RCSU</a></td>
+		<td class="nb" valign="top">Reuters Compression Scheme for Unicode 
+		(precursor to SCSU)</td>
+	</tr>
+	<tr>
+		<td class="nb" valign="top"><a name="SBCS">SBCS</a></td>
+		<td class="nb" valign="top">Single-Byte Character Set</td>
+	</tr>
+	<tr>
+		<td class="nb" valign="top"><a name="SCSU">SCSU</a></td>
+		<td class="nb" valign="top">Standard Compression Scheme for Unicode</td>
+	</tr>
+	<tr>
+		<td class="nb" valign="top"><a name="TES">TES</a></td>
+		<td class="nb" valign="top">Transfer Encoding Syntax</td>
+	</tr>
+	<tr>
+		<td class="nb" valign="top"><a name="UCS">UCS</a></td>
+		<td class="nb" valign="top">Universal Character Set; Universal Multiple-Octet Coded Character 
+      Set — the repertoire and encoding represented by ISO/IEC 10646:2003 and its amendments.</td>
+	</tr>
+	<tr>
+		<td class="nb" valign="top"><a name="UDC">UDC</a></td>
+		<td class="nb" valign="top">User-defined Character</td>
+	</tr>
+	<tr>
+		<td class="nb" valign="top"><a name="UTF">UTF</a></td>
+		<td class="nb" valign="top">Unicode (or UCS) Transformation Format</td>
+	</tr>
+</table>
+
+<h2><a name="References">References</a></h2>
+
+<table class="nbwide" cellspacing="6">
+	<tr>
+		<td class="nb" valign="top"><a name="10646">[10646]</a></td>
+		<td class="nb" valign="top">ISO/IEC 10646 — Universal Multiple-Octet Coded Character Set.<br>
+		For availability see 
+		<a href="http://www.iso.org">http://www.iso.org</a></td>
+	</tr>
+	<tr>
+      <td class="noborder" valign="top" width="1">[<a name="Bidi">Bidi</a>]</td>
+      <td class="noborder" valign="top">Unicode Standard Annex #9: <i>Unicode 
+		Bidirectional Algorithm<br>
+		</i><a href="../tr9/index.html">
+		http://www.unicode.org/reports/tr9/</a></td> 
+    </tr>
+	<tr>
+		<td class="nb" valign="top">[<a name="BOCU-Ref">BOCU</a>]</td>
+		<td class="nb" valign="top">Unicode Technical Note #6: <i>BOCU-1: MIME-Compatible Unicode Compression</i><br>
+		<a href="../../notes/tn6.1">http://www.unicode.org/notes/tn6/</a>
+		</td>
+	</tr>
+	<tr>
+		<td class="nb" valign="top"><a name="Boundaries">[Boundaries]</a></td>
+		<td class="nb" valign="top">Unicode Standard Annex #29: <i>Unicode Text Segmentation</i>
+		<a href="../tr29.1">http://www.unicode.org/reports/tr29/</a>
+		</td>
+	</tr>
+	<tr>
+		<td class="nb" valign="top"><a name="CDRA-Ref">[CDRA]</a></td>
+		<td class="nb" valign="top">Character Data Representation Architecture 
+  		Reference and Registry, IBM Corporation<br>
+		<a href="http://www.ibm.com/software/globalization/cdra/index.jsp">http://www.ibm.com/software/globalization/cdra/index.jsp</a></td>
+	</tr>
+	<tr>
+		<td class="nb" valign="top" width="1">[<a name="CharMapML">CharMapML</a>]</td>
+		<td class="nb" valign="top">Unicode Technical Report #22: <i>Character 
+		Mapping Markup Language</i> (CharMapML)<br>
+		<a href="../tr22/index.html">http://www.unicode.org/reports/tr22/</a></td>
+	</tr>
+	<tr>
+		<td class="nb" valign="top" width="1">[<a name="charset">Charset</a>]</td>
+		<td class="nb" valign="top">IANA charset assignments<br>
+		<a href="http://www.iana.org/assignments/character-sets">http://www.iana.org/assignments/character-sets</a></td>
+	</tr>
+	<tr>
+		<td class="nb" valign="top" width="1">[<a name="Charts">Charts</a>]</td>
+		<td class="nb" valign="top">The online code charts can be found 
+        at <a href="http://www.unicode.org/charts/">http://www.unicode.org/charts/</a>  
+        An index to characters names with links to the corresponding chart is  
+        found at <a href="http://www.unicode.org/charts/charindex.html">http://www.unicode.org/charts/charindex.html</a></td>
+	</tr>
+	<tr>
+		<td class="nb" valign="top" width="1">[<a name="FAQ">FAQ</a>]</td>
+		<td class="nb" valign="top">Unicode Frequently Asked Questions<br>
+		<a href="http://www.unicode.org/faq/">http://www.unicode.org/faq/<br>
+		</a><i>For answers to common questions on technical issues.</i></td>
+	</tr>
+	<tr>
+		<td class="nb" valign="top" width="1">[<a name="Feedback">Feedback</a>]</td>
+		<td class="nb" valign="top">Reporting Errors and Requesting  
+        Information Online<i><br></i>
+		<a href="http://www.unicode.org/reporting.html">http://www.unicode.org/reporting.html</a></td>
+	</tr>
+	<tr>
+		<td class="nb" valign="top" width="1">[<a name="Glossary">Glossary</a>]</td>
+		<td class="nb" valign="top">Unicode Glossary<a href="http://www.unicode.org/glossary/"><br>http://www.unicode.org/glossary/<br>
+		</a><i>For explanations of terminology used in this and other documents.</i></td>
+	</tr>
+	<tr>
+		<td class="nb" valign="top"><a name="Lunde">[Lunde]</a></td>
+		<td class="nb" valign="top">Lunde, Ken, <i>CJKV Information Processing, 
+		</i>O'Reilley, 1999, ISBN 1-565-92224-7
+      </td>
+	</tr>
+	<tr>
+		<td class="nb" valign="top"><a name="PropModel">[PropModel]</a></td>
+		<td class="nb" valign="top">Unicode Technical Report #23:<i>The Unicode Character Property Model</i><br>
+		<a href="../tr23.1">http://www.unicode.org/reports/tr23/</a>
+		</td>
+	</tr>
+	<tr>
+		<td class="nb" valign="top" width="1">[<a name="Reports">Reports</a>]</td>
+		<td class="nb" valign="top">Unicode Technical Reports<br>
+		<a href="../index.html">http://www.unicode.org/reports/</a><br>
+		<i>For information on the status and development process for 
+        technical reports, and for a list of technical reports.</i></td>
+	</tr>
+	<tr>
+		<td class="nb" valign="top"><a name="RFC2130">[RFC2130]</a></td>
+		<td class="nb" valign="top">The Report of the IAB Character Set 
+  Workshop held 29 February 1 March, 1996. C. Weider, et al., April 1997<br>
+			<a href="http://www.ietf.org/rfc/rfc2130.txt">
+			http://www.ietf.org/rfc/rfc2130.txt</a>
+	</tr>
+	<tr>
+		<td class="nb" valign="top"><a name="RFC2277">[RFC2277]</a></td>
+		<td class="nb" valign="top">IETF Policy on Character Sets and Languages, H. Alvestrand, January 1998<br>
+		<a href="http://www.ietf.org/rfc/rfc2277.txt">
+			http://www.ietf.org/rfc/rfc2277.txt</a> (BCP 18)</td>
+	</tr>
+	<tr>
+		<td class="nb" valign="top"><a name="RFC3492">[RFC3492]</a></td>
+		<td class="nb" valign="top">RFC 3492: <i>Punycode: A Bootstring encoding of 
+	Unicode for Internationalized Domain Names in Applications (IDNA)</i>, A. 
+	Costello, March 2003<br>
+		<a href="http://www.ietf.org/rfc/rfc3492.txt">
+		http://www.ietf.org/rfc/rfc3492.txt</a></td>
+	</tr>
+	<tr>
+		<td class="nb" valign="top">[<a name="SCSU-Ref">SCSU</a>]</td>
+		<td class="nb" valign="top">Unicode Technical Standard #6: A Standard Compression Scheme for Unicode<br>
+		<a href="../tr6.1">http://www.unicode.org/reports/tr6/</a>
+		</td>
+	</tr>
+	<tr>
+		<td class="nb" valign="top"><a name="Stability">[Stability]</a></td>
+		<td class="nb" valign="top">Unicode Character Encoding Stability Policy<br> 
+		<a href="http://www.unicode.org/policies/stability_policy.html">http://www.unicode.org/policies/stability_policy.html</a>
+		</td>
+	</tr>
+	<tr>
+		<td class="nb" valign="top" width="1">[<a name="UCD">UCD</a>]</td>
+		<td class="nb" valign="top">Unicode Character Database<br>
+		<a href="http://www.unicode.org/ucd/">http://www.unicode.org/ucd/</a><br>
+		<i>For an overview of the Unicode Character Database and a list of 
+        its associated files</i></td>
+	</tr>
+	<tr>
+		<td class="nb" valign="top" width="1">[<span><a name="Unicode">Unicode</a></span>]</td>
+		<td class="nb" valign="top">The Unicode Standard<i><br>For the latest version see:</i>
+		<a href="http://www.unicode.org/versions/latest/">http://www.unicode.org/versions/latest/</a>.<br>
+		<i>For the last major version see:</i> The Unicode Consortium. 
+		<a href="http://www.unicode.org/versions/Unicode5.0.0/">The  
+          Unicode Standard, Version 5.0</a>. Boston, MA, Addison-Wesley, 2007. 
+			ISBN 0-321-48091-0. 
+		<i>Or online as:</i>
+		<a href="http://www.unicode.org/versions/Unicode5.0.0/">http://www.unicode.org/versions/Unicode5.0.0/</a>
+		</td>
+	</tr>
+	<tr>
+		<td class="nb" valign="top" width="1">[<a name="Unicode50">Unicode5.0</a>]</td>
+		<td class="nb" valign="top">The Unicode Consortium. 
+		<a href="http://www.unicode.org/versions/Unicode5.0.0/">The  
+        Unicode Standard, Version 5.0</a>. Boston, MA, Addison-Wesley, 2007.  
+        ISBN 0-321-48091-0.</td>
+	</tr>
+	<tr>
+		<td class="nb" valign="top" width="1">[<a name="Versions">Versions</a>]</td>
+		<td class="nb" valign="top">Versions of the Unicode Standard<br>
+		<a href="http://www.unicode.org/standard/versions/">http://www.unicode.org/standard/versions/</a><br>
+		<i>For information on version numbering, and citing and referencing 
+        the Unicode Standard, the Unicode Character Database, and Unicode 
+        Technical Reports.</i></td>
+	</tr>
+	<tr>
+		<td class="nb" valign="top"><a name="W3CCharMod">[W3CCharMod]</a></td>
+		<td class="nb" valign="top"><i>Character Model for 
+		the World Wide Web 1.0: Fundamentals</i><br><a href="http://www.w3.org/TR/charmod/">http://www.w3.org/TR/charmod</a></td>
+	</tr>
+</table>
+
+<h2><a name="Acknowledgements">Acknowledgements</a></h2>
+
+<p>Thanks to Dr. Julie Allen for extensive copy-editing and many suggestions on 
+how to improve the readability, particularly of section 2.</p>
+
+<h2><a name="Modifications">Modifications</a></h2>
+
+	<p>The following summarizes modifications from the previous versions of this 
+	document.</p>
+<p>Revision 7 [KW]</p>
+<ul>
+	<li>Updated title to Unicode Character Encoding Model.</li>
+	<li>Updated all references.</li>
+	<li>Reorganized Modifications section into bulleted lists,
+	grouped by published revisions, to follow current technical report style.</li>
+	<li>Updated for Unicode 5.0 and 5.1.</li>
+	<li>Updated numbered bullets 1 and 3 in Section 4 to reflect
+	the updated model regarding ill-formed sequences and the concept of noncharacters.</li>
+	<li>Removed claim that UTF-16 is the "default" CEF for Unicode 4.0.</li>
+	<li>Updated table of encoding forms to indicate that ISO/IEC 10646:2009
+	will drop implementation levels and be closely aligned with Unicode 5.0.</li>
+	<li>Added note about other stability implications in Section 2.1.</li>
+	<li>Updated "grapheme" to "grapheme cluster" in Section 2.3.</li>
+	<li>Minor editing throughout.</li>
+</ul>
+<p>Revision 6 being a proposed update, only changes between revisions 5 and 7 are noted here.</p>
+<p>Revision 5 [AF]</p>
+<ul>
+	<li>Aligned the discussion of TES to more closely match 
+	common practice.</li>
+	<li>Improved the discussion of CES.</li>
+	<li>Edited the text for style and clarity throughout, labeled 
+	figures, changed some lists to tables, applied copy edits.</li>
+	<li>Improved the discussion of <a class="charclass" href="index.html#CES">CES</a>.</li>
+	<li>Updated for Unicode 4.0.</li>
+	<li>Added subsections on <a href="index.html#Versioning">Versioning</a>, 
+  	<a href ="index.html#ByteOrder">Byte Order</a> and <a href="index.html#Strings">Strings</a>.</li>
+  	<li>Expanded the discussion on <a href="index.html#APIBinding">Data Types and API Binding</a>.</li>
+  	<li>Migrated to current TR format.</li>
+</ul>
+<p>Revisions 3.3 and 4 being proposed updates, only changes between 
+revisions 3.2 and 5 are noted here.</p>
+<hr>
+<p><font size="-1">Copyright © 1999-2008 Unicode, Inc. All Rights Reserved. 
+  The Unicode Consortium makes no expressed or implied warranty of any kind, and 
+  assumes no liability for errors or omissions. No liability is assumed for 
+  incidental and consequential damages in connection with or arising out of the 
+  use of the information or programs contained or accompanying this technical 
+  report. The Unicode  <a href="http://www.unicode.org/copyright.html">Terms of Use</a> apply.</font></p>
+<p><font size="-1">Unicode and the Unicode logo are trademarks of Unicode, 
+  Inc., and are registered in some jurisdictions.</font></p>
+</div>
+</body>
+
+</html>

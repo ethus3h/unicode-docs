@@ -1,0 +1,4765 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+       "http://www.w3.org/TR/html4/loose.dtd">
+
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta http-equiv="Content-Language" content="en-us">
+<link rel="stylesheet" href="../reports-v2.css"
+	type="text/css">
+<title>UTS #18: Unicode Regular Expressions</title>
+
+<style type="text/css">
+<!--
+a:visited.plain,a:link.plain {
+	color: black;
+	text-decoration: none
+}
+
+a:hover.plain {
+	color: red;
+	text-decoration: underline;
+}
+
+.rule_head,.rule_body {
+	font-style: italic;
+	border-width: 0;
+	padding: 0.25em
+}
+
+.regex {
+	font-family: monospace;
+	font-weight: bold
+}
+
+.rule_head {
+	font-weight: bold
+}
+
+.gray_background {
+	background-color: #CCC;
+}
+
+-->
+</style>
+</head>
+
+<body>
+
+	<table class="header" width="100%">
+		<tr>
+			<td class="icon"><a href="http://www.unicode.org"><img
+					align="middle" alt="[Unicode]" border="0"
+					src="../../webscripts/logo60s2.gif" width="34"
+					height="33"></a>&nbsp; <a class="bar"
+				href="../index.html">Technical Reports</a></td>
+		</tr>
+		<tr>
+			<td class="gray">&nbsp;</td>
+		</tr>
+	</table>
+
+	<div class="body">
+		<h2 class="uaxtitle">Unicode® Technical Standard #18</h2>
+		<h1>Unicode Regular Expressions</h1>
+		<table class="simple" width="90%">
+			<tr>
+				<td width="20%">Version</td>
+				<td>19</td>
+			</tr>
+			<tr>
+				<td>Editors</td>
+				<td><a href="https://plus.google.com/114199149796022210033?rel=author">Mark Davis</a>, Andy Heninger</td>
+			</tr>
+			<tr>
+				<td>Date</td>
+				<td>2016-10-18</td>
+			</tr>
+			<tr>
+				<td>This Version</td>
+				<td>
+					<a href="tr18-19.html">http://www.unicode.org/reports/tr18/tr18-19.html</a></td>
+			</tr>
+			<tr>
+				<td>Previous Version</td>
+				<td><a href="tr18-17.html">http://www.unicode.org/reports/tr18/tr18-17.html</a></td>
+			</tr>
+			<tr>
+				<td>Latest Version</td>
+				<td><a href="../tr18.1">http://www.unicode.org/reports/tr18/</a></td>
+			</tr>
+			<tr>
+				<td valign="top">Latest Proposed Update</td>
+				<td valign="top"><a href="proposed.html">
+						http://www.unicode.org/reports/tr18/proposed.html</a></td>
+			</tr>
+			<tr>
+				<td>Revision</td>
+				<td><a href="tr18-19.html#Modifications">19</a></td>
+			</tr>
+		</table>
+		<p>
+			<br>
+		</p>
+		<h3>
+			<i>Summary</i>
+		</h3>
+		<p>
+			<i><em>This document describes guidelines for how to adapt
+					regular expression engines to use Unicode.</em></i>
+		</p>
+	<h3><i>Status</i></h3>
+	  <!-- NOT YET APPROVED
+	  <p class="changed"><i>This is a <b><font color="#ff3333">draft</font></b> document which
+      may be updated, replaced, or superseded by other documents at any time.
+      Publication does not imply endorsement by the Unicode Consortium. This is
+      not a stable document; it is inappropriate to cite this document as other
+      than a work in progress.</i></p>
+      END NOT YET APPROVED -->
+      <!-- APPROVED -->
+      <p><i>This document has been reviewed by Unicode members and other
+	  interested parties, and has been approved for publication by the Unicode
+	  Consortium. This is a stable document and may be used as reference
+	  material or cited as a normative reference by other specifications.</i></p>
+      <!-- END APPROVED -->
+	<blockquote>
+		<p><i><b>A Unicode Technical Standard (UTS)</b> is an independent specification. 
+		Conformance to the Unicode Standard does not imply conformance to any UTS.</i></p>
+	</blockquote>
+	<p><i>Please submit corrigenda and other comments with the online reporting 
+	form [<a href="http://www.unicode.org/reporting.html">Feedback</a>]. 
+	Related information that is useful in understanding this document is found in the
+	<a href="tr18-19.html#References">References</a>. 
+	For the latest version of the Unicode Standard, see [<a href="http://www.unicode.org/versions/latest/">Unicode</a>]. 
+	For a list of current Unicode Technical Reports, see [<a href="../index.html">Reports</a>]. 
+	For more information about versions of the Unicode Standard, see [<a href="http://www.unicode.org/versions/">Versions</a>].</i></p>
+
+
+
+		<h3>
+			<i>Contents</i>
+		</h3>
+		<ul class="toc">
+			<li>0 <a href="tr18-19.html#Introduction">Introduction</a>
+				<ul class="toc">
+					<li>0.1 <a href="tr18-19.html#Notation">Notation</a></li>
+					<li>0.2 <a href="tr18-19.html#Conformance">Conformance</a>
+				</ul>
+			</li>
+			<li>1 <a href="tr18-19.html#Basic_Unicode_Support">Basic Unicode
+					Support: Level 1</a>
+				<ul class="toc">
+					<li>1.1 <a href="tr18-19.html#Hex_notation">Hex Notation</a>
+						<ul class="toc">
+							<li>1.1.1 <a href="tr18-19.html#Hex_Notation_and_Normalization">Hex
+									Notation and Normalization</a></li>
+						</ul>
+					</li>
+					<li>1.2 <a href="tr18-19.html#Categories">Properties</a>
+						<ul class="toc">
+							<li>1.2.1 <a href="tr18-19.html#General_Category_Property">General
+									Category Property</a></li>
+							<li>1.2.2 <a href="tr18-19.html#Script_Property">Script Property</a></li>
+							<li>1.2.3 <a href="tr18-19.html#Other_Properties">Other Properties</a></li>
+							<li>1.2.4 <a href="tr18-19.html#Age">Age</a></li>
+							<li>1.2.5 <a href="tr18-19.html#Blocks">Blocks</a></li>
+						</ul>
+					</li>
+					<li>1.3 <a href="tr18-19.html#Subtraction_and_Intersection">Subtraction
+							and Intersection</a></li>
+					<li>1.4 <a href="tr18-19.html#Simple_Word_Boundaries">Simple Word
+							Boundaries</a></li>
+					<li>1.5 <a href="tr18-19.html#Simple_Loose_Matches">Simple Loose
+							Matches</a></li>
+					<li>1.6 <a href="tr18-19.html#Line_Boundaries">Line Boundaries</a></li>
+					<li>1.7 <a href="tr18-19.html#Supplementary_Characters">Code Points</a></li>
+				</ul>
+			</li>
+			<li>2 <a href="tr18-19.html#Extended_Unicode_Support">Extended Unicode
+					Support: Level 2</a>
+				<ul class="toc">
+					<li>2.1 <a href="tr18-19.html#Canonical_Equivalents">Canonical
+							Equivalents</a></li>
+					<li>2.2 <a href="tr18-19.html#Default_Grapheme_Clusters">Extended
+							Grapheme Clusters</a>
+						<ul class="toc">
+							<li>2.2.1 <a href="tr18-19.html#Grapheme_Cluster_Mode">Grapheme
+									Cluster Mode</a></li>
+						</ul>
+					</li>
+					<li>2.3 <a href="tr18-19.html#Default_Word_Boundaries">Default Word
+							Boundaries</a></li>
+					<li>2.4 <a href="tr18-19.html#Default_Loose_Matches">Default Case
+							Conversion</a></li>
+					<li>2.5 <a href="tr18-19.html#Name_Properties">Name Properties</a>
+						<ul class="toc">
+							<li>2.5.1 <a href="tr18-19.html#Individually_Named_Characters">Individually
+									Named Characters</a></li>
+						</ul>
+					</li>
+					<li>2.6 <a href="tr18-19.html#Wildcard_Properties">Wildcards in
+							Property Values</a></li>
+					<li>2.7 <a href="tr18-19.html#Full_Properties">Full Properties</a></li>
+				</ul>
+			</li>
+			<li>3 <a href="tr18-19.html#Tailored_Support">Tailored Support: Level 3</a>
+				<ul class="toc">
+					<li>3.1 <a href="tr18-19.html#Tailored_Properties">Tailored
+							Punctuation</a></li>
+					<li>3.2 <a href="tr18-19.html#Tailored_Graphemes_Clusters">Tailored
+							Grapheme Clusters</a></li>
+					<li>3.3 <a href="tr18-19.html#Tailored_Word_Boundaries">Tailored Word
+							Boundaries</a></li>
+					<li>3.4 <a href="tr18-19.html#Tailored_Loose_Matches">Tailored Loose
+							Matches (Retracted)</a></li>
+					<li>3.5 <a href="tr18-19.html#Tailored_Ranges">Tailored Ranges
+							(Retracted)</a></li>
+					<li>3.6 <a href="tr18-19.html#Context_Matching">Context Matching</a></li>
+					<li>3.7 <a href="tr18-19.html#Partial_Matches">Incremental Matches</a></li>
+					<li>3.8 <a href="tr18-19.html#Unicode_Set_Sharing">Unicode Set Sharing (Retracted)</a></li>
+					<li>3.9 <a href="tr18-19.html#Possible_Match_Sets">Possible Match Sets</a></li>
+					<li>3.10 <a href="tr18-19.html#Folded_Matching">Folded Matching
+							(Retracted)</a></li>
+					<li>3.11 <a href="tr18-19.html#Submatchers">Submatchers</a></li>
+				</ul>
+			</li>
+			<li><a href="tr18-19.html#Character_Blocks">Annex A: Character Blocks</a></li>
+			<li><a href="tr18-19.html#Sample_Collation_Character_Code">Annex B:
+					Sample Collation Grapheme Cluster Code</a></li>
+			<li><a href="tr18-19.html#Compatibility_Properties">Annex C:
+					Compatibility Properties</a></li>
+			<li><a href="tr18-19.html#References">References</a></li>
+			<li><a href="tr18-19.html#Acknowledgments">Acknowledgments</a></li>
+			<li><a href="tr18-19.html#Modifications">Modifications</a></li>
+		</ul>
+		<hr>
+		<h2>
+			0 <a name="Introduction" href="tr18-19.html#Introduction">Introduction</a>
+		</h2>
+		<p>The following describes general guidelines for extending
+			regular expression engines (Regex) to handle Unicode. The following
+			issues are involved in such extensions.</p>
+		<ul>
+			<li>Unicode is a large character set—regular expression engines
+				that are only adapted to handle small character sets will not scale
+				well.</li>
+			<li>Unicode encompasses a wide variety of languages which can
+				have very different characteristics than English or other western
+				European text.</li>
+		</ul>
+		<p>There are three fundamental levels of Unicode support that can
+			be offered by regular expression engines:</p>
+		<ul>
+			<li><b><a href="tr18-19.html#Basic_Unicode_Support">Level 1</a>: Basic
+					Unicode Support. </b>At this level, the regular expression engine
+				provides support for Unicode characters as basic logical units.
+				(This is independent of the actual serialization of Unicode as
+				UTF-8, UTF-16BE, UTF-16LE, UTF-32BE, or UTF-32LE.) This is a minimal
+				level for useful Unicode support. It does not account for end-user
+				expectations for character support, but does satisfy most low-level
+				programmer requirements. The results of regular expression matching
+				at this level are independent of country or language. At this level,
+				the user of the regular expression engine would need to write more
+				complicated regular expressions to do full Unicode processing.</li>
+			<li><b><a href="tr18-19.html#Extended_Unicode_Support">Level 2</a>:
+					Extended Unicode Support. </b>At this level, the regular expression
+				engine also accounts for extended grapheme clusters (what the
+				end-user generally thinks of as a character), better detection of
+				word boundaries, and canonical equivalence. This is still a default
+				level—independent of country or language—but provides much better
+				support for end-user expectations than the raw level 1, without the
+				regular-expression writer needing to know about some of the
+				complications of Unicode encoding structure.</li>
+			<li><b><a href="tr18-19.html#Tailored_Support">Level 3</a>: Tailored
+					Support. </b>At this level, the regular expression engine also provides
+				for tailored treatment of characters, including country- or
+				language-specific behavior. For example, the characters <i>ch</i>
+				can behave as a single character in Slovak or traditional Spanish.
+				The results of a particular regular expression reflect the
+				end-users&#39; expectations of what constitutes a character in their
+				language, and the order of the characters. However, there is a
+				performance impact to support at this level.</li>
+		</ul>
+		<p>In particular:</p>
+		<ol>
+			<li>Level 1 is the minimally useful level of support for
+				Unicode. All regex implementations dealing with Unicode should be at
+				least at Level 1.</li>
+			<li>Level 2 is recommended for implementations that need to
+				handle additional Unicode features. This level is achievable without
+				too much effort. However, some of the subitems in Level 2 are more
+				important than others: see <a href="tr18-19.html#Extended_Unicode_Support">Level
+					2</a>.
+			</li>
+			<li>Level 3 contains information about extensions only useful
+				for specific applications. Features at this level may require
+				further investigation for effective implementation.</li>
+		</ol>
+		<p>One of the most important requirements for a regular expression
+			engine is to document clearly what Unicode features are and are not
+			supported. Even if higher-level support is not currently offered,
+			provision should be made for the syntax to be extended in the future
+			to encompass those features.</p>
+		<blockquote>
+			<p>
+				<b>Note:</b> The Unicode Standard is constantly evolving: new 
+				characters will be added in the future. This means
+					that a regular expression that tests for currency symbols, for
+					example, has different results in Unicode 2.0 than in Unicode 2.1,
+					which added the euro sign currency symbol.
+			</p>
+		</blockquote>
+		<p>
+			At any level, efficiently handling properties or conditions based on
+			a large character set can take a lot of memory. A common mechanism
+			for reducing the memory requirements—while still maintaining
+			performance—is the two-stage table, discussed in Chapter 5 of <i>The
+				Unicode Standard </i>[<a href="tr18-19.html#Unicode">Unicode</a>]. For example, the
+			Unicode character properties required in <a href="tr18-19.html#Categories">RL1.2
+				Properties</a> can be stored in memory in a two-stage table with only 7
+			or 8 Kbytes. Accessing those properties only takes a small amount of
+			bit-twiddling and two array accesses.
+		</p>
+		<blockquote>
+			<p>
+				<b>Note:</b> For ease of reference, the section ordering for
+					this document is intended to be as stable as possible over
+					successive versions. That may lead, in some cases, to the ordering
+					of the sections being less than optimal.
+			</p>
+		</blockquote>
+		<h3>
+			0.1 <a name="Notation" href="tr18-19.html#Notation">Notation</a>
+		</h3>
+		<p>In order to describe regular expression syntax, an extended BNF
+			form is used:</p>
+		<div align="center">
+		<table class="subtle">
+			<tr>
+				<th>Syntax</th>
+				<th>Meaning</th>
+			</tr>
+			<tr>
+				<td style="text-align: center"><code>x y</code></td>
+				<td>the sequence consisting of x then y</td>
+			</tr>
+			<tr>
+				<td style="text-align: center"><code>x*</code></td>
+				<td>zero or more occurrences of x</td>
+			</tr>
+			<tr>
+				<td style="text-align: center"><code>x?</code></td>
+				<td>zero or one occurrence of x</td>
+			</tr>
+			<tr>
+				<td style="text-align: center"><code>x | y</code></td>
+				<td>either x or y</td>
+			</tr>
+			<tr>
+				<td style="text-align: center"><code>( x )</code></td>
+				<td>for grouping</td>
+			</tr>
+			<tr>
+				<td style="text-align: center"><code>&quot;XYZ&quot;</code></td>
+				<td>terminal character(s)</td>
+			</tr>
+		</table>
+		</div>
+		<p>The following syntax for character ranges is used in
+			successive examples.</p>
+		<blockquote>
+<pre>LIST := &quot;[&quot; NEGATION? ITEM (SEP? ITEM)* &quot;]&quot;
+
+ITEM := CODE_POINT2
+     := CODE_POINT2 &quot;-&quot; CODE_POINT2 // range
+
+CODE_POINT2 := ESCAPE CODE_POINT
+            := CODE_POINT
+
+NEGATION := &quot;^&quot;
+
+SEP := &quot;&quot;   // no separator = union
+    := &quot;||&quot; // union
+
+ESCAPE := &quot;\&quot;</pre>
+		</blockquote>
+		<p>CODE_POINT refers to any Unicode code point from U+0000 to
+			U+10FFFF, although typically the only ones of interest will be those
+			representing characters. Whitespace is allowed between any elements,
+			but to simplify the presentation the many occurrences of sequences
+			of spaces (&quot; &quot;*) are omitted.</p>
+		<p>
+			Code points that are syntax characters or whitespace are typically
+			escaped. For more information see [<a href="tr18-19.html#UAX31">UAX31</a>]. In
+			examples, the syntax &quot;\s&quot; is sometimes used to indicate whitespace. See
+			also <a href="tr18-19.html#Compatibility_Properties"><em>Annex C:
+					Compatibility Properties</em></a>.
+		</p>
+		<blockquote>
+			<p>
+				<strong>Note:</strong> This is only a <b>sample</b>
+					syntax for the purposes of examples in this document. Regular
+					expression syntax varies widely: the issues discussed here would
+					need to be adapted to the syntax of the particular implementation.
+					However, it is important to have a concrete syntax to correctly
+					illustrate the different issues. In general, the syntax here is
+					similar to that of <a
+					href="http://www.perl.com/pub/q/documentation">Perl Regular
+						Expressions</a> [<a href="tr18-19.html#Perl">Perl</a>].) In some cases, this gives
+					multiple syntactic constructs that provide for the same
+					functionality.
+			</p>
+		</blockquote>
+		<p>The following table gives examples of character ranges:</p>
+		<div align="center">
+		<table class="subtle">
+			<tr>
+				<th>Range</th>
+				<th>Matches</th>
+			</tr>
+			<tr>
+				<td><span class="regex">[a-z || A-Z || 0-9]</span></td>
+				<td rowspan="3" style="vertical-align:middle">ASCII alphanumerics</td>
+			</tr>
+			<tr>
+				<td><span class="regex">[a-z A-Z 0-9]</span></td>
+			</tr>
+			<tr>
+				<td><span class="regex">[a-zA-Z0-9]</span></td>
+			</tr>
+			<tr>
+				<td><span class="regex">[^a-z A-Z 0-9]</span></td>
+				<td>anything but ASCII alphanumerics</td>
+			</tr>
+			<tr>
+				<td><span class="regex">[\] \- \ ]</span></td>
+				<td>the literal characters ], -, &lt;space&gt;</td>
+			</tr>
+		</table>
+		</div>
+		<p>
+			Where string offsets are used in examples, they are from zero to n
+			(the length of the string), and indicate positions <i>between</i>
+			characters. Thus in &quot;abcde&quot;, the substring from 2 to 4
+			includes the two characters &quot;cd&quot;.
+		</p>
+		<p>The following additional notation is defined for use here and in other
+			Unicode specifications:</p>
+		<div align="center">
+		<table class="subtle">
+			<tr>
+				<th>Syntax</th>
+				<th>Meaning</th>
+				<th>Note</th>
+			</tr>
+			<tr>
+				<td><span class="regex">\n</span></td>
+				<td>As used within regular expressions, expands to the text
+					matching the <b>n</b><sup>th</sup> parenthesized group in the regular expression.
+					(à la Perl) 
+				</td>
+				<td>Note that most engines limit n
+					to be [1-9]; thus \456 would be the reference to the 4th group
+					followed by the literal &quot;56&quot;.
+				</td>
+			</tr>
+			<tr>
+				<td><span class="regex">$n</span></td>
+				<td>As used within replacement strings for regular expressions,
+					expands to the text matching the <b>n</b><sup>th</sup> parenthesized group in
+					a corresponding regular expression.  (à la Perl)
+				</td>
+				<td>The value of $0 is the entire expression.
+				</td>
+			</tr>
+			<tr>
+				<td><span class="regex">$xyz</span></td>
+				<td>As used within regular expressions or replacement strings,
+					expands to an assigned variable value. 
+				</td>
+				<td>The &quot;xyz&quot; is of the
+					form of an identifier. For example, given <span class="regex">$greek_lower
+						= [[:greek:]&amp;&amp;[:lowercase:]]</span>, the regular expression
+					pattern &quot;<span class="regex">ab$greek_lower</span>&quot; is
+					equivalent to 
+					&quot;<span class="regex">ab[[:greek:]&amp;&amp;[:lowercase:]]</span>&quot;.
+				</td>
+			</tr>
+		</table>
+		</div>
+			<p>
+				Because any character could occur as a literal
+					in a regular expression, when regular expression syntax is embedded
+					within other syntax it can be difficult to determine where the end
+					of the regex expression is. Common practice is to allow the user to
+					choose a delimiter like &#39;/&#39; in /ab(c)*/. The user can then
+					simply choose a delimiter that is not in the particular regular
+					expression.
+			</p>
+		<h3>
+			0.2 <a name="Conformance" href="tr18-19.html#Conformance">Conformance</a>
+		</h3>
+		<p>The following section describes the possible ways that an
+			implementation can claim conformance to this technical standard.</p>
+		<p>
+			All syntax and API presented in this document is <i>only</i> for the
+			purpose of illustration; there is absolutely no requirement to follow
+			such syntax or API. Regular expression syntax varies widely: the
+			features discussed here would need to be adapted to the syntax of the
+			particular implementation. In general, the syntax in examples is
+			similar to that of <a href="http://www.perl.com/pub/q/documentation">Perl
+				Regular Expressions</a> [<a href="tr18-19.html#Perl">Perl</a>], but it may not be
+			exactly the same. While the API examples generally follow <a
+				href="http://download.oracle.com/javase/6/docs/api/java/util/regex/package-summary.html">Java
+				style</a>, it is again <i>only</i> for illustration.
+		</p>
+		<table class="noborder">
+			<tr>
+				<td class="rule_head"><a name="C0" href="tr18-19.html#C0" class="plain">C0</a>.</td>
+				<td class="rule_body">An implementation claiming conformance to
+					this specification at any Level shall identify the version of this
+					specification and the version of the Unicode Standard.<br>
+					&nbsp;
+				</td>
+			</tr>
+		</table>
+		<table class="noborder">
+			<tr>
+				<td class="rule_head"><a name="C1" href="tr18-19.html#C1" class="plain">C1</a>.</td>
+				<td class="rule_body">An implementation claiming conformance to
+					Level 1 of this specification shall meet the requirements described
+					in the following sections:</td>
+			</tr>
+		</table>
+		<blockquote>
+			<dl>
+				<dd>
+					<a href="tr18-19.html#Hex_notation">RL1.1 Hex Notation</a>
+				</dd>
+				<dd>
+					<a href="tr18-19.html#Categories">RL1.2 Properties</a><br> <a
+						href="tr18-19.html#RL1.2a">RL1.2a Compatibility Properties</a>
+				</dd>
+				<dd>
+					<a href="tr18-19.html#Subtraction_and_Intersection">RL1.3 Subtraction and
+						Intersection</a>
+				</dd>
+				<dd>
+					<a href="tr18-19.html#Simple_Word_Boundaries">RL1.4 Simple Word Boundaries</a>
+				</dd>
+				<dd>
+					<a href="tr18-19.html#Simple_Loose_Matches">RL1.5 Simple Loose Matches</a>
+				</dd>
+				<dd>
+					<a href="tr18-19.html#Line_Boundaries">RL1.6 Line Boundaries</a>
+				</dd>
+				<dd>
+					<a href="tr18-19.html#Supplementary_Characters">RL1.7 Supplementary Code
+						Points</a>
+				</dd>
+			</dl>
+		</blockquote>
+		<table class="noborder">
+			<tr>
+				<td class="rule_head"><a name="C2" href="tr18-19.html#C2" class="plain">C2</a>.</td>
+				<td class="rule_body">An implementation claiming conformance to
+					Level 2 of this specification shall satisfy C1, and meet the
+					requirements described in the following sections:</td>
+			</tr>
+		</table>
+		<blockquote>
+			<dl>
+				<dd>
+					<a href="tr18-19.html#Canonical_Equivalents">RL2.1 Canonical Equivalents</a>
+				</dd>
+				<dd>
+					<a href="tr18-19.html#Default_Grapheme_Clusters">RL2.2 Extended Grapheme
+						Clusters</a>
+				</dd>
+				<dd>
+					<a href="tr18-19.html#Default_Word_Boundaries">RL2.3 Default Word
+						Boundaries</a>
+				</dd>
+				<dd>
+					<a href="tr18-19.html#Default_Loose_Matches">RL2.4 Default Case Conversion</a>
+				</dd>
+				<dd>
+					<a href="tr18-19.html#Name_Properties">RL2.5 Name Properties</a>
+				</dd>
+				<dd>
+					<a href="tr18-19.html#Wildcard_Properties">RL2.6 Wildcards in Property
+						Values</a>
+				</dd>
+				<dd>
+					<a href="tr18-19.html#Full_Properties">RL2.7 Full Properties</a>
+				</dd>
+			</dl>
+		</blockquote>
+		<table class="noborder">
+			<tr>
+				<td class="rule_head"><a name="C3" href="tr18-19.html#C3" class="plain">C3</a>.</td>
+				<td class="rule_body">An implementation claiming conformance to
+					Level 3 of this specification shall satisfy C1 and C2, and meet the
+					requirements described in the following sections:</td>
+			</tr>
+		</table>
+		<blockquote>
+			<dl>
+				<dd>
+					<a href="tr18-19.html#Tailored_Properties">RL3.1 Tailored Punctuation</a>
+				</dd>
+				<dd>
+					<a href="tr18-19.html#Tailored_Graphemes_Clusters">RL3.2 Tailored Grapheme
+						Clusters</a>
+				</dd>
+				<dd>
+					<a href="tr18-19.html#Tailored_Word_Boundaries">RL3.3 Tailored Word
+						Boundaries</a>
+				</dd>
+				<dd>
+					<a href="tr18-19.html#Context_Matching">RL3.6 Context Matching</a>
+				</dd>
+				<dd>
+					<a href="tr18-19.html#Partial_Matches">RL3.7 Incremental Matches</a>
+				</dd>
+				<dd>
+					<a href="tr18-19.html#Possible_Match_Sets">RL3.9 Possible Match Sets</a>
+				</dd>
+				<dd>
+					<a href="tr18-19.html#Submatchers">RL3.11 Submatchers</a>
+				</dd>
+				<dt>&nbsp;</dt>
+			</dl>
+		</blockquote>
+		<table class="noborder">
+			<tr>
+				<td class="rule_head"><a name="C4" href="tr18-19.html#C4" class="plain">C4</a>.</td>
+				<td class="rule_body">An implementation claiming <i>partial</i>
+					conformance to this specification shall clearly indicate which
+					levels are completely supported (C1-C3), plus any additional
+					supported features from higher levels.
+				</td>
+			</tr>
+		</table>
+		<blockquote>
+			<p>
+				For example, an implementation may claim conformance to Level 1,
+				plus <a href="tr18-19.html#Context_Matching">Context Matching</a>, and <a
+					href="tr18-19.html#Partial_Matches">Incremental Matches</a>. Another
+				implementation may claim conformance to Level 1, except for <a
+					href="tr18-19.html#Subtraction_and_Intersection"> Subtraction and
+					Intersection</a>.
+			</p>
+		</blockquote>
+		<p>
+			A regular expression engine may be operating in the context of a
+			larger system. In that case some of the requirements may be met by
+			the overall system. For example, the requirements of Section <a
+				href="tr18-19.html#Canonical_Equivalents">2.1 Canonical Equivalents</a> might be
+			best met by making normalization available as a part of the larger
+			system, and requiring users of the system to normalize strings where
+			desired before supplying them to the regular-expression engine. Such
+			usage is conformant, as long as the situation is clearly documented.
+		</p>
+		<p>A conformance claim may also include capabilities added by an
+			optional add-on, such as an optional library module, as long as this
+			is clearly documented.</p>
+		<p>For backwards compatibility, some of the functionality may only
+			be available if some special setting is turned on. None of the
+			conformance requirements require the functionality to be available by
+			default.</p>
+		<hr>
+		<h2>
+			1 <a name="Basic_Unicode_Support" href="tr18-19.html#Basic_Unicode_Support">
+				Basic Unicode Support: Level 1</a><a name="Level_1" href="tr18-19.html#Level_1"></a>
+		</h2>
+		<p>
+			Regular expression syntax usually allows for an expression to denote
+			a set of single characters, such as <span class="regex">[a-z
+				A-Z 0-9]</span>. Because there are a very large number of characters in the
+			Unicode Standard, simple list expressions do not suffice.
+		</p>
+		<h3>
+			1.1 <a name="Hex_notation" href="tr18-19.html#Hex_notation">Hex Notation</a>
+		</h3>
+		<p>The character set used by the regular expression writer may not
+			be Unicode, or may not have the ability to input all Unicode code
+			points from a keyboard.</p>
+		<table class="noborder">
+			<tr>
+				<td class="rule_head"><a name="RL1.1" href="tr18-19.html#RL1.1">RL1.1</a></td>
+				<td class="rule_head">Hex Notation</td>
+			</tr>
+			<tr>
+				<td class="rule_body"></td>
+				<td class="rule_body">To meet this requirement, an
+					implementation shall supply a mechanism for specifying any Unicode
+					code point (from U+0000 to U+10FFFF), using the hexadecimal code
+					point representation.</td>
+			</tr>
+		</table>
+		<p>
+			The syntax must use the code point in its hexadecimal representation.
+			For example, syntax such as \uD834\uDD1E or \xF0\x9D\x84\x9E does not
+			meet this requirement for expressing U+<strong>1D11E</strong> (𝄞)
+			because &quot;<strong>1D11E</strong>&quot; does not appear in the
+			syntax. In contrast, syntax such as \U000<strong>1D11E,</strong> \x{<strong>1D11E</strong>}
+			or \u{<strong>1D11E</strong>} does satisfy the requirement for
+			expressing U+<strong>1D11E</strong>.
+		</p>
+		<p>A sample notation for listing hex Unicode characters within
+			strings uses &quot;\u&quot; followed by four hex digits or
+			&quot;\u{&quot; followed by any number of hex digits and terminated
+			by &quot;}&quot;, with multiple characters indicated by separating
+			the hex digits by spaces. This would provide for the following
+			addition:</p>
+		<blockquote>
+		<pre>&lt;codepoint&gt;  := &lt;character&gt;
+&lt;codepoint&gt;  := &quot;\u&quot; HEX_CHAR HEX_CHAR HEX_CHAR HEX_CHAR
+&lt;codepoint&gt;  := &quot;\u{&quot; HEX_CHAR+ &quot;}&quot;
+&lt;codepoints&gt; := &quot;\u{&quot; HEX_CHAR+ (SEP HEX_CHAR+)* &quot;}&quot;
+&lt;sep&gt;        := \s+
+
+U_SHORT_MARK := &quot;u&quot; </pre>
+		</blockquote>
+		<p>
+			The following table gives examples of this hex notation:
+		</p>
+		<div align="center">
+		<table class="subtle">
+			<tr>
+				<th>Syntax</th>
+				<th>Matches</th>
+			</tr>
+			<tr>
+				<td><span class="regex">[\u{3040}-\u{309F} \u{30FC}]</span></td>
+				<td>Hiragana characters, plus prolonged sound sign</td>
+			</tr>
+			<tr>
+				<td><span class="regex">[\u{B2} \u{2082}]</span></td>
+				<td>superscript &#x00B2; and subscript &#x2082;</td>
+			</tr>
+			<tr>
+				<td><span class="regex">[a \u{10450}]</span></td>
+				<td>&quot;a&quot; and U+10450 SHAVIAN LETTER PEEP</td>
+			</tr>
+			<tr>
+				<td><span class="regex">ab\u{63 64}</span></td>
+				<td>&quot;abcd&quot;</td>
+			</tr>
+		</table>
+		</div>
+		<p>
+			More advanced regular expression engines can also offer the ability
+			to use the Unicode character name for readability. See <a
+				href="tr18-19.html#Name_Properties">2.5 Name Properties</a>.
+		</p>
+		<p>For comparison, the following table shows some additional, current examples of escape
+			syntax for Unicode code points:</p>
+		<div align="center">
+		<table class="subtle">
+			<tr>
+				<th>Type</th>
+				<th colspan="5">Escaped Characters</th>
+				<th>Escaped String</th>
+			</tr>
+			<tr class="gray_background">
+				<td>Unescaped</td>
+				<td>&#x1f47d;</td>
+				<td>€</td>
+				<td>£</td>
+				<td>a</td>
+				<td>&lt;tab&gt;</td>
+				<td>&#x1f47d;€£a&lt;tab&gt;</td>
+			</tr>
+			<tr>
+				<td>Code Point†</td>
+				<td>U+1F47D</td>
+				<td>U+20AC</td>
+				<td>U+00A3</td>
+				<td>U+0061</td>
+				<td>U+0009</td>
+				<td>U+1F47D U+20AC U+00A3 U+0061 U+0009</td>
+			</tr>
+			<tr>
+				<td>CSS†</td>
+				<td>\1F47D</td>
+				<td>\20AC</td>
+				<td>\A3</td>
+				<td>\61</td>
+				<td>\9</td>
+				<td>\1F47D \20AC \A3 \61 \9</td>
+			</tr>
+			<tr>
+				<td>UTS18, Ruby</td>
+				<td>\u{1F47D}</td>
+				<td>\u{20AC}</td>
+				<td>\u{A3}</td>
+				<td>\u{61}</td>
+				<td>\u{9}</td>
+				<td>\u{1F47D 20AC A3 61 9}</td>
+			</tr>
+			<tr>
+				<td>Perl</td>
+				<td>\x{1F47D}</td>
+				<td>\x{20AC}</td>
+				<td>\x{A3}</td>
+				<td>\x{61}</td>
+				<td>\x{9}</td>
+				<td>\x{1F47D}\x{20AC}\x{A3}\x{61}</td>
+			</tr>
+			<tr>
+				<td>XML/HTML</td>
+				<td>&amp;#x1F47D;</td>
+				<td>&amp;#x20AC;</td>
+				<td>&amp;#xA3;</td>
+				<td>&amp;#x61;</td>
+				<td>&amp;#x9;</td>
+				<td>&amp;#x1F47D;&amp;#x20AC;&amp;#xA3;&amp;#x61;&amp;#x9;</td>
+			</tr>
+			<tr>
+				<td>C++/Python/ICU</td>
+				<td>\U0001F47D</td>
+				<td>\u20AC</td>
+				<td>\u00A3</td>
+				<td>\u0061</td>
+				<td>\u0009</td>
+				<td>\U0001F47D\u20AC\u00A3\u0061\u0009</td>
+			</tr>
+			<tr>
+				<td>Java/JS/ICU*</td>
+				<td>\uD83D\uDC7D</td>
+				<td>\u20AC</td>
+				<td>\u00A3</td>
+				<td>\u0061</td>
+				<td>\u0009</td>
+				<td>\uD83D\uDC7D\u20AC\u00A3\u0061\u0009</td>
+			</tr>
+			<tr>
+				<td>URL*</td>
+				<td>%F0%9F%91%BD</td>
+				<td>%E2%82%AC</td>
+				<td>%C2%A3</td>
+				<td>%61</td>
+				<td>%09</td>
+				<td>%F0%9F%91%BD%E2%82%AC%C2%A3%61%09</td>
+			</tr>
+			<tr>
+				<td>XML/HTML*</td>
+				<td>&amp;#128125;</td>
+				<td>&amp;#8364;</td>
+				<td>&amp;#163;</td>
+				<td>&amp;#97;</td>
+				<td>&amp;#9;</td>
+				<td>&amp;#128125;&amp;#8364;&amp;#163;&amp;#97;&amp;#9;</td>
+			</tr>
+		</table>
+		</div>
+		<blockquote>
+		<p>
+			† Following whitespace is consumed.<br> 
+			* Does not satisfy <a href="tr18-19.html#RL1.1">RL1.1</a>
+		</p>
+		</blockquote>
+		<h4>
+			1.1.1 <a name="Hex_Notation_and_Normalization"
+				href="tr18-19.html#Hex_Notation_and_Normalization">Hex Notation and
+				Normalization</a>
+		</h4>
+		<p>The Unicode Standard treats certain sequences of characters as
+			equivalent, such as the following:</p>
+		<div align="center">
+		<table class="simple">
+			<tr>
+				<td>u + grave</td>
+				<td>U+0075 (&nbsp;u&nbsp;) LATIN SMALL LETTER U +<br> 
+						U+0300 (&nbsp;◌̀&nbsp;) COMBINING GRAVE ACCENT</td>
+			</tr>
+			<tr>
+				<td>u_grave</td>
+				<td>U+00F9 (&nbsp;ù&nbsp;) LATIN SMALL LETTER U WITH GRAVE</td>
+			</tr>
+		</table>
+		</div>
+		<p>
+			Literal text in regular expressions may be normalized (converted to
+			equivalent characters) in transmission, out of the control of the
+			authors of of that text. For example, a regular expression may
+			contain a sequence of literal characters &#39;u&#39; and <i>grave</i>,
+			such as the expression [aeiou◌̀◌́◌̈̈] (the last three character being
+			U+0300 (&nbsp;◌̀&nbsp;) COMBINING GRAVE ACCENT,
+			U+0301 (&nbsp;◌́&nbsp;) COMBINING ACUTE ACCENT, and
+			U+0308 (&nbsp;◌̈&nbsp;) COMBINING DIAERESIS. In transmission, the two
+			adjacent characters in Row 1 might be changed to the different
+			expression containing just one character in Row 2, thus changing the
+			meaning of the regular expression. Hex notation can be used to avoid
+			this problem. In the above example, the regular expression should be
+			written as <span class="regex">[aeiou\u{300 301 308}]</span> for
+			safety.
+		</p>
+		<p>
+			A regular expression engine may also enforce a single, uniform
+			interpretation of regular expressions by always normalizing input
+			text to Normalization Form NFC before interpreting that text. For
+			more information, see UAX #15, <i>Unicode Normalization Forms</i> [<a
+				href="tr18-19.html#UAX15">UAX15</a>].
+		</p>
+		<h3>
+			1.2 <a name="Categories" href="tr18-19.html#Categories">Properties</a>
+		</h3>
+		<p>Because Unicode is a large character set, a regular expression
+			engine needs to provide for the recognition of whole categories of
+			characters as well as simply ranges of characters; otherwise the
+			listing of characters becomes impractical and error-prone. This is
+			done by providing syntax for sets of characters based on the Unicode
+			character properties, and allowing them to be mixed with lists and
+			ranges of individual code points.</p>
+		<p>
+			There are a large number of Unicode Properties defined in the Unicode
+			Character Database (UCD), which also provides the official data for
+			mapping Unicode characters (and code points) to property values. See
+			Section 2.7, <a href="tr18-19.html#Full_Properties"><em>Full Properties</em></a>;
+			UAX #44, <em>Unicode
+					Character Database</em> [<a href="tr18-19.html#UAX44">UAX44</a>]; and Chapter 4 in <i>The
+				Unicode Standard</i> [<a href="tr18-19.html#Unicode">Unicode</a>]. The defined
+			Unicode string functions, such as isNFC() and isLowercase(), also
+			apply to single code points and are useful to support in regular
+			expressions.
+		</p>
+		<p align="left">
+			The recommended names for UCD properties and property values are in <a
+				href="http://www.unicode.org/Public/UCD/latest/ucd/PropertyAliases.txt">PropertyAliases.txt</a>
+			 and <a
+				href="http://www.unicode.org/Public/UCD/latest/ucd/PropertyValueAliases.txt">
+				PropertyValueAliases.txt</a>. There
+			are both abbreviated names and longer, more descriptive names. It is
+			strongly recommended that both names be recognized, and that loose
+			matching of property names be used, whereby the case distinctions,
+			whitespace, hyphens, and underbar are ignored.
+		</p>
+		<blockquote>
+			<p>
+				<b>Note:</b> It may be a useful implementation technique to
+					load the Unicode tables that support properties and other features
+					on demand, to avoid unnecessary memory overhead for simple regular
+					expressions that do not use those properties.
+			</p>
+		</blockquote>
+		<p>
+			Where a regular expression is expressed as much as possible in terms
+			of higher-level semantic constructs such as <i>Letter</i>, it makes
+			it practical to work with the different alphabets and languages in
+			Unicode. The following is an example of a syntax addition that
+			permits properties. Following Perl Syntax, the <i>p</i> is lowercase
+			to indicate a positive match, and uppercase to indicate a negative
+			match.
+		</p>
+		<blockquote>
+		<pre>ITEM := POSITIVE_SPEC | NEGATIVE_SPEC<br>
+POSITIVE_SPEC := (&quot;\p{&quot; PROP_SPEC &quot;}&quot;) | (&quot;[:&quot; PROP_SPEC &quot;:]&quot;)<br> 
+NEGATIVE_SPEC := (&quot;\P{&quot; PROP_SPEC &quot;}&quot;) | (&quot;[:^&quot; PROP_SPEC &quot;:]&quot;)<br> 
+PROP_SPEC&nbsp; := &lt;binary_unicode_property&gt;<br> 
+PROP_SPEC&nbsp; := &lt;unicode_property&gt; (&quot;:&quot; | &quot;=&quot; | &quot;≠&quot; | &quot;!=&quot; ) VALUE<br> 
+PROP_SPEC&nbsp; := &lt;script_or_category_property_value&gt;&nbsp;(&quot;|&quot; &lt;script_or_category_property_value&gt;)*<br> 
+PROP_VALUE :=&nbsp;&lt;unicode_property_value&gt; (&quot;|&quot; &lt;unicode_property_value&gt;)*
+		</pre>
+		</blockquote>
+		<p>The following table shows examples of this extended syntax to match properties:</p>
+		<div align="center">
+		<table class="subtle">
+			<tr>
+				<th>Syntax</th>
+				<th>Matches</th>
+			</tr>
+			<tr>
+				<td><span class="regex">[\p{L} \p{Nd}]</span></td>
+				<td rowspan="4" style="vertical-align:middle">all letters and decimal digits</td>
+			</tr>
+			<tr>
+				<td><span class="regex">[\p{letter} \p{decimal number}]</span></td>
+			</tr>
+			<tr>
+				<td><span class="regex">[\p{letter|decimal number}]</span></td>
+			</tr>
+			<tr>
+				<td><span class="regex">[\p{L|Nd}]</span></td>
+			</tr>
+			<tr>
+				<td><span class="regex">\P{script=greek}</span></td>
+				<td rowspan="6" style="vertical-align:middle">anything that does not have the Greek
+					script</td>
+			</tr>
+			<tr>
+				<td><span class="regex">\P{script:greek}</span></td>
+			</tr>
+			<tr>
+				<td><span class="regex">\p{script≠greek}</span></td>
+			</tr>
+			<tr>
+				<td><span class="regex">[:^script=greek:]</span></td>
+			</tr>
+			<tr>
+				<td><span class="regex">[:^script:greek:]</span></td>
+			</tr>
+			<tr>
+				<td><span class="regex">[:script≠greek:]</span></td>
+			</tr>
+			<tr>
+				<td><span class="regex">\p{East Asian Width:Narrow}</span></td>
+				<td>anything that has the enumerated property value East_Asian_Width = Narrow
+				</td>
+			</tr>
+			<tr>
+				<td><span class="regex">\p{Whitespace}</span></td>
+				<td>anything that has binary property value Whitespace = True</td>
+			</tr>
+		</table>
+		</div>
+		<p>
+			Some properties are binary: they are either true or false for a given
+			code point. In that case, only the property name is required. Others
+			have multiple values, so for uniqueness both the property name and
+			the property value need to be included.</p>
+		<p>For example, <b>Alphabetic</b>
+			is a binary property, but it is also a value of the enumerated Line_Break property.
+			So \p{Alphabetic} would refer to the binary property, whereas \p{Line
+			Break:Alphabetic} or \p{Line_Break=Alphabetic} would refer to the
+			enumerated Line_Break property.</p>
+		<p>There are two exceptions to the general rule that expressions involving properties
+			with multiple value should include both the property name and property value. The 
+			<b>Script</b> and <b>General_Category</b> properties commonly have their property
+			name omitted. Thus \p{Unassigned} is equivalent to
+			\p{General_Category = Unassigned},
+            and \p{Greek} is equivalent to \p{Script:Greek}.
+		</p>
+		<table class="noborder">
+			<tr>
+				<td class="rule_head"><a name="RL1.2" href="tr18-19.html#RL1.2">RL1.2</a></td>
+				<td class="rule_head">Properties</td>
+			</tr>
+			<tr>
+				<td class="rule_body"></td>
+				<td class="rule_body">To meet this requirement, an
+					implementation shall provide at least a minimal list of properties,
+					consisting of the following:
+					<ul>
+						<li><a
+							href="http://unicode.org/reports/tr44/#General_Category">General_Category</a></li>
+						<li><a href="http://unicode.org/reports/tr44/#Script">Script</a> and <a
+								href="http://unicode.org/reports/tr44/#Script_Extensions">Script_Extensions</a></li>
+						<li><a href="http://unicode.org/reports/tr44/#Alphabetic">Alphabetic</a></li>
+						<li><a href="http://unicode.org/reports/tr44/#Uppercase">Uppercase</a></li>
+						<li><a href="http://unicode.org/reports/tr44/#Lowercase">Lowercase</a></li>
+						<li><a href="http://unicode.org/reports/tr44/#White_Space">White_Space</a></li>
+						<li><a
+							href="http://unicode.org/reports/tr44/#Noncharacter_Code_Point">Noncharacter_Code_Point</a></li>
+						<li><a
+							href="http://unicode.org/reports/tr44/#Default_Ignorable_Code_Point">Default_Ignorable_Code_Point</a></li>
+						<li>ANY, ASCII, ASSIGNED</li>
+					</ul> The values for these properties must follow the Unicode
+					definitions, and include the property and property value aliases
+					from the UCD. Matching of Binary, Enumerated, Catalog, and Name
+					values, must follow the <a
+					href="http://unicode.org/reports/tr44/#Matching_Rules">Matching
+						Rules</a> from [<a href="tr18-19.html#UAX44">UAX44</a>] with one exception:
+                    implementations are not required to ignore an initial prefix string of "is" in property values.
+				</td>
+			</tr>
+			<tr>
+				<td class="rule_head"><a name="RL1.2a" href="tr18-19.html#RL1.2a">RL1.2a</a></td>
+				<td class="rule_head">Compatibility Properties</td>
+			</tr>
+			<tr>
+				<td class="rule_body">&nbsp;</td>
+				<td class="rule_body">To meet this requirement, an
+					implementation shall provide the properties listed in <a
+					href="tr18-19.html#Compatibility_Properties">Annex C: Compatibility
+						Properties</a>, with the property values as listed there. Such an
+					implementation shall document whether it is using the Standard
+					Recommendation or POSIX-compatible properties.
+				</td>
+			</tr>
+		</table>
+		<p>In order to meet requirements <a href="tr18-19.html#RL1.2">RL1.2</a> and <a href="tr18-19.html#RL1.2a">RL1.2a</a>, the
+			implementation must satisfy the Unicode definition of the properties
+			for the supported version of The Unicode Standard, rather than other
+			possible definitions. However, the names used by the implementation
+			for these properties may differ from the formal Unicode names for the
+			properties. For example, if a regex engine already has a property
+			called &quot;Alphabetic&quot;, for backwards compatibility it may
+			need to use a distinct name, such as &quot;Unicode_Alphabetic&quot;,
+			for the corresponding property listed in <a href="tr18-19.html#RL1.2">RL1.2</a>.</p>
+		<p>
+			Implementers may add aliases beyond those recognized in the UCD. For
+			example, in the case of the the Age property an implementation could
+			match the defined aliases <strong>&quot;3.0&quot;</strong> and <strong>&quot;V3_0&quot;</strong>,
+			but also match <strong>&quot;3&quot;, &quot;3.0.0&quot;,
+				&quot;V3.0&quot;</strong>, and so on. However, implementers must be aware
+			that such additional aliases may cause problems if they collide with
+			future UCD aliases for <em>different</em> values.
+		</p>
+        <p>
+            Ignoring an initial "is" in property values is optional.
+            Loose matching rule <a href="http://unicode.org/reports/tr44/#UAX44-LM3">UAX44-LM3</a>
+            in [<a href="tr18-19.html#UAX44">UAX44</a>] specifies that occurrences of an initial prefix of "is" are ignored,
+            so that, for example, "Greek" and "isGreek" are equivalent as property values.
+            Because existing implementations of regular expressions commonly make distinctions based
+            on the presence or absence of "is", this requirement from [<a href="tr18-19.html#UAX44">UAX44</a>]
+            is dropped.
+        </p>
+		<p>
+			For more information on properties, see UAX #44, <em>Unicode
+					Character Database</em> [<a href="tr18-19.html#UAX44">UAX44</a>].
+		</p>
+		<p>
+			Of the properties in <a href="tr18-19.html#RL1.2">RL1.2</a>, General_Category and Script have
+			enumerated property values with more than two values; the other
+			properties are binary. An implementation that does not support
+			non-binary enumerated properties can essentially &quot;flatten&quot;
+			the enumerated type. Thus, for example, instead of <span
+				class="regex">\p{script=latin}</span> the syntax could be <span
+				class="regex">\p{script_latin}</span>.
+		</p>
+		<p>
+			When property<sub>x</sub> is defined to have values that are sets of
+			other values, the notation \p{property<sub>x</sub>=value<sub>y</sub>}
+			represents the set of all code points whose property values <em>contain</em>
+			value<sub>y</sub>. For example, the Script_Extensions property value
+			for U+30FC ( ー ) is the set {Hiragana, Katakana}. So U+30FC ( ー ) is
+			contained in \p{Script_Extensions=Hiragana}, and is also contained in
+			\p{Script_Extensions=Katakana}.
+		</p>
+		<h4>
+			1.2.1 <a name="General_Category_Property"
+				href="tr18-19.html#General_Category_Property">General Category Property</a>
+		</h4>
+		<p>
+			The most basic overall character property is the General_Category,
+			which is a basic categorization of Unicode characters into: <i>Letters,
+				Punctuation, Symbols, Marks, Numbers, Separators, </i>and<i> Other</i>.
+			These property values each have a single letter abbreviation, which
+			is the uppercase first character except for separators, which use Z.
+			The official data mapping Unicode characters to the General_Category
+			value is in <a
+				href="http://www.unicode.org/Public/UCD/latest/ucd/UnicodeData.txt">UnicodeData.txt</a>.
+		</p>
+		<p>
+			Each of these categories has different subcategories. For example,
+			the subcategories for <i>Letter</i> are <i>uppercase</i>, <i>lowercase</i>,
+			<i>titlecase</i>, <i>modifier</i>, and <i>other</i> (in this case, <i>other</i>
+			includes uncased letters such as Chinese). By convention, the
+			subcategory is abbreviated by the category letter (in uppercase),
+			followed by the first character of the subcategory in lowercase. For
+			example, <i>Lu</i> stands for <i>Uppercase Letter</i>.
+		</p>
+		<blockquote>
+			<p>
+				<b>Note:</b> Because it is recommended that the property syntax be
+				lenient as to spaces, casing, hyphens and underbars, any of the
+				following should be equivalent: <span class="regex">\p{Lu}</span>, <span
+					class="regex">\p{lu}</span>, <span class="regex">\p{uppercase letter}</span>,
+                    <span class="regex">\p{Uppercase Letter}</span>, <span
+					class="regex">\p{Uppercase_Letter}</span>, and <span class="regex">\p{uppercaseletter}</span>
+			</p>
+		</blockquote>
+		<p>
+			The General_Category property values are listed below. For more
+			information on the meaning of these values, see see UAX #44, <em>Unicode
+					Character Database</em> [<a href="tr18-19.html#UAX44">UAX44</a>].
+		</p>
+		<div align="center">
+			<center>
+				<table border="0" cellspacing="0" cellpadding="4" class="noborder">
+					<tr>
+						<td width="33%" class="noborder">
+							<table class="subtle">
+								<tr>
+									<th>Abb.</th>
+									<th>Long form</th>
+								</tr>
+								<tr>
+									<td>L</td>
+									<td>Letter</td>
+								</tr>
+								<tr>
+									<td>Lu</td>
+									<td>Uppercase Letter</td>
+								</tr>
+								<tr>
+									<td>Ll</td>
+									<td>Lowercase Letter</td>
+								</tr>
+								<tr>
+									<td>Lt</td>
+									<td>Titlecase Letter</td>
+								</tr>
+								<tr>
+									<td>Lm</td>
+									<td>Modifier Letter</td>
+								</tr>
+								<tr>
+									<td>Lo</td>
+									<td>Other Letter</td>
+								</tr>
+								<tr>
+									<td>M</td>
+									<td>Mark</td>
+								</tr>
+								<tr>
+									<td>Mn</td>
+									<td>Non-Spacing Mark</td>
+								</tr>
+								<tr>
+									<td>Mc</td>
+									<td>Spacing Combining Mark</td>
+								</tr>
+								<tr>
+									<td>Me</td>
+									<td>Enclosing Mark</td>
+								</tr>
+								<tr>
+									<td>N</td>
+									<td>Number</td>
+								</tr>
+								<tr>
+									<td>Nd</td>
+									<td>Decimal Digit Number</td>
+								</tr>
+								<tr>
+									<td>Nl</td>
+									<td>Letter Number</td>
+								</tr>
+								<tr>
+									<td>No</td>
+									<td>Other Number</td>
+								</tr>
+							</table>
+						</td>
+						<td width="33%" class="noborder">
+							<table class="subtle">
+								<tr>
+									<th>Abb.</th>
+									<th>Long form</th>
+								</tr>
+								<tr>
+									<td>S</td>
+									<td>Symbol</td>
+								</tr>
+								<tr>
+									<td>Sm</td>
+									<td>Math Symbol</td>
+								</tr>
+								<tr>
+									<td>Sc</td>
+									<td>Currency Symbol</td>
+								</tr>
+								<tr>
+									<td>Sk</td>
+									<td>Modifier Symbol</td>
+								</tr>
+								<tr>
+									<td>So</td>
+									<td>Other Symbol</td>
+								</tr>
+								<tr>
+									<td>P</td>
+									<td>Punctuation</td>
+								</tr>
+								<tr>
+									<td>Pc</td>
+									<td>Connector Punctuation</td>
+								</tr>
+								<tr>
+									<td>Pd</td>
+									<td>Dash Punctuation</td>
+								</tr>
+								<tr>
+									<td>Ps</td>
+									<td>Open Punctuation</td>
+								</tr>
+								<tr>
+									<td>Pe</td>
+									<td>Close Punctuation</td>
+								</tr>
+								<tr>
+									<td>Pi</td>
+									<td>Initial Punctuation</td>
+								</tr>
+								<tr>
+									<td>Pf</td>
+									<td>Final Punctuation</td>
+								</tr>
+								<tr>
+									<td>Po</td>
+									<td>Other Punctuation</td>
+								</tr>
+							</table>
+						</td>
+						<td width="33%" class="noborder">
+							<table class="subtle">
+								<tr>
+									<th>Abb.</th>
+									<th>Long form</th>
+								</tr>
+								<tr>
+									<td>Z</td>
+									<td>Separator</td>
+								</tr>
+								<tr>
+									<td>Zs</td>
+									<td>Space Separator</td>
+								</tr>
+								<tr>
+									<td>Zl</td>
+									<td>Line Separator</td>
+								</tr>
+								<tr>
+									<td>Zp</td>
+									<td>Paragraph Separator</td>
+								</tr>
+								<tr>
+									<td>C</td>
+									<td>Other</td>
+								</tr>
+								<tr>
+									<td>Cc</td>
+									<td>Control</td>
+								</tr>
+								<tr>
+									<td>Cf</td>
+									<td>Format</td>
+								</tr>
+								<tr>
+									<td>Cs</td>
+									<td>Surrogate</td>
+								</tr>
+								<tr>
+									<td>Co</td>
+									<td>Private Use</td>
+								</tr>
+								<tr>
+									<td>Cn</td>
+									<td>Unassigned</td>
+								</tr>
+								<tr>
+									<td>-</td>
+									<td>Any*</td>
+								</tr>
+								<tr>
+									<td>-</td>
+									<td>Assigned*</td>
+								</tr>
+								<tr>
+									<td>-</td>
+									<td>ASCII*</td>
+								</tr>
+							</table>
+						</td>
+					</tr>
+				</table>
+			</center>
+		</div>
+		<p>Starred entries in the table are
+					not part of the enumeration of General_Category values. They are explained below.</p>
+		<div align="center">
+		<table class="subtle">
+			<tr>
+				<th>Value</th>
+				<th>Matches</th>
+				<th nowrap>Equivalent to</th>
+				<th>Notes</th>
+			</tr>
+			<tr>
+				<td>Any</td>
+				<td>all code points</td>
+				<td nowrap><span class="regex">[\u{0}-\u{10FFFF}]</span></td>
+				<td>In some regular expression languages, <span class="regex">\p{Any}</span>
+							may be expressed by a period (&quot;.&quot;), but that usage may exclude newline
+							characters.</td>
+			</tr>
+			<tr>
+				<td>Assigned</td>
+				<td>all assigned characters (for the target version of Unicode)</td>
+				<td><span class="regex">\P{Cn}</span></td>
+				<td>This also includes all private use characters. It is
+							useful for avoiding confusing double negatives. Note that <i>Cn</i>
+							includes noncharacters, so <i>Assigned</i> excludes them.</td>
+			</tr>
+			<tr>
+				<td>ASCII</td>
+				<td>all ASCII characters</td>
+				<td><span class="regex">[\u{0}-\u{7F}]</span></td>
+				<td>&nbsp;</td>
+			</tr>
+		</table>
+		</div>
+		<p>&nbsp;</p>
+		<h4>
+			1.2.2 <a name="Script_Property" href="tr18-19.html#Script_Property">
+				Script and Script Extensions Properties</a>
+		</h4>
+		<p>
+			A regular-expression mechanism may choose to offer the ability to
+			identify characters on the basis of other Unicode properties besides
+			the General Category. In particular, Unicode characters are also
+			divided into scripts as described in UAX #24, <em>Unicode
+					Script Property</em> [<a href="tr18-19.html#UAX24">UAX24</a>] (for the data file,
+			see <a href="http://www.unicode.org/Public/UCD/latest/ucd/Scripts.txt">Scripts.txt</a>). 
+			Using a property such as <span
+				class="regex">\p{sc=Greek}
+			</span> allows implementations to test whether letters are Greek or not.
+		</p>
+		<p>
+			Some characters, such as U+30FC ( ー ) KATAKANA-HIRAGANA PROLONGED SOUND MARK,
+			are regularly used with multiple scripts. For such characters the
+			Script_Extensions property (abbreviated as <strong>scx</strong>) identifies
+			the set of associated scripts.
+			 The following shows some sample characters
+			with their Script and Script_Extensions property values:
+		</p>
+		<div align="center">
+		<table class="subtle">
+			<tr>
+				<th>Code</th>
+				<th>Char</th>
+				<th>Name</th>
+				<th>sc</th>
+				<th>scx</th>
+			</tr>
+			<tr>
+				<td>U+3042</td>
+				<td style="text-align:center">あ</td>
+				<td>HIRAGANA LETTER A</td>
+				<td>Hira</td>
+				<td>{Hira}</td>
+			</tr>
+			<tr>
+				<td>U+30FC</td>
+				<td style="text-align:center">ー</td>
+				<td>KATAKANA-HIRAGANA PROLONGED SOUND MARK</td>
+				<td>Zyyy = Common</td>
+				<td>{Hira, Kana}</td>
+			</tr>
+			<tr>
+				<td>U+3099</td>
+				<td style="text-align:center">゙</td>
+				<td>COMBINING KATAKANA-HIRAGANA VOICED SOUND
+					MARK</td>
+				<td>Zinh = Inherited</td>
+				<td>{Hira, Kana}</td>
+			</tr>
+			<tr>
+				<td>U+30FB</td>
+				<td style="text-align:center">・</td>
+				<td>KATAKANA MIDDLE DOT</td>
+				<td>Zyyy = Common</td>
+				<td>{Bopo, Hang, Hani, Hira, Kana, Yiii}</td>
+			</tr>
+		</table>
+		</div>
+		<p>
+			The expression <span class="regex">\p{sc=Hira}</span> includes
+				those characters whose <em>Script</em> value <em>is</em> Hira, while
+			the expression <span class="regex">\p{scx=Hira}</span> includes all the characters whose <em>Script_Extensions</em>
+			value <em>contains</em> Hira. The
+				following table shows the difference:
+		</p>
+		<div align="center">
+		<table class="subtle">
+			<tr>
+				<th>Expression</th>
+				<th>Contents of Set</th>
+			</tr>
+			<tr>
+				<td><span class="regex">\p{sc=Hira}</span></td>
+				<td>[ぁ-ゖゝ-ゟ𛀁🈀]</td>
+			</tr>
+			<tr>
+				<td><span class="regex">\p{scx=Hira}</span></td>
+				<td>[、-〃〆〈-】〓-〟〰-〵〷〼-〿ぁ-ゖ
+					゙-゠・ー㆐-㆟㇀-㇣㈠-㉃㊀-㊰㋀-㋋㍘-㍰ ㍻-㍿㏠-㏾﹅﹆｡-･ｰﾞﾟ𛀁🈀]</td>
+			</tr>
+		</table>
+		</div>
+		<p>
+			The expression <span class="regex">\p{scx=Hira}</span> contains not
+				only the characters in <span class="regex">\p{script=Hira}</span>, but many other characters
+			such as U+30FC ( ー ), which are either Hiragana <em>or</em> Katakana.
+		</p>
+		<p>In most cases, script extensions are a superset of the script
+			values (<span class="regex">\p{scx=X}</span> ⊇ <span class="regex">\p{sc=X}</span>). 
+			However, in some cases that is not
+			true. For example, the Script property value for U+30FC ( ー ) is
+			Common, but the Script_Extensions value for U+30FC ( ー ) does not
+			contain the script value Common. In other words, <span class="regex">\p{scx=Common}</span> ⊉
+			<span class="regex">\p{sc=Common}</span>.</p>
+		<p>
+			The usage model for the Script and Script_Extensions properties normally requires that people construct
+			somewhat more complex regular expressions, because a great many
+			characters (Common and Inherited) are
+			shared between scripts. Documentation should point users to the
+			description in [<a href="tr18-19.html#UAX24">UAX24</a>]. The values for Script_Extensions are likely be extended over
+			time as new information is gathered on the use of characters with
+			different scripts. For more information, see <a
+				href="http://unicode.org/reports/tr24/#Script_Extensions">
+				        The Script_Extensions Property</a>
+                in UAX #24, <em>Unicode Script Property</em> 
+                [<a href="tr18-19.html#UAX24">UAX24</a>].
+		</p>
+		<h4>
+			1.2.3 <a name="Other_Properties" href="tr18-19.html#Other_Properties">Other Properties</a>
+		</h4>
+		<p align="left">
+			Other recommended properties are described in 2.7 <a
+				href="tr18-19.html#Full_Properties">Full Properties</a>. See also <a
+				href="tr18-19.html#Name_Properties">2.5 Name Properties</a> and <a
+				href="tr18-19.html#Wildcard_Properties">2.6 Wildcards in Property Values</a>.
+		</p>
+		<p>Implementations may also add other regular expression
+			properties based on Unicode data that are not listed under <a href="tr18-19.html#RL1.2">RL1.2</a>.
+			Some useful candidates include:</p>
+		<ul>
+			<li>isCased, isLowercase, toLowercase, and so on from [<a href="tr18-19.html#Case">Case</a>]
+			</li>
+			<li>cjkTraditionalVariant, cjkSimplifiedVariant, CJK_Radical
+				number from the Unihan data in the UCD [<a href="tr18-19.html#UAX38">UAX38</a>]
+			</li>
+			<li>isNFx, toNFx (x = D, C, KD, KC from [<a href="tr18-19.html#UAX15">UAX15</a>])
+			</li>
+			<li>toNFKC_Casefold from [<a href="tr18-19.html#Case">Case</a>]
+			</li>
+			<li>exemplar characters from [<a href="tr18-19.html#UTS35">UTS35</a>]
+			</li>
+			<li>IDNA status and mapping from [<a href="tr18-19.html#UTS46">UTS46</a>]
+			</li>
+			<li>identifier restriction status and type from [<a href="tr18-19.html#UTS39">UTS39</a>]
+			</li>
+			<li>DUCET primary values from [<a href="tr18-19.html#UTS10">UTS10</a>] </li>
+            <li>Emoji, Emoji_Presentation, Emoji_Modifier and Emoji_Modifier_Base from
+                [<a href="tr18-19.html#UTR51">UTR51</a>]</li>
+            <li>vertical orientation from [<a href="tr18-19.html#UTR50">UTR50</a>]
+		</ul>
+		<p >The following tables gives examples of such
+			properties in use:</p>
+		<div align="center">
+			<table class="subtle">
+				<tr>
+					<th>String properties</th>
+					<th>Description</th>
+				</tr>
+				<tr>
+					<td><a
+						href="http://unicode.org/cldr/utility/list-unicodeset.jsp?a=%5B:toNFC=%C3%85:%5D"
+						target="list">[:toNFC=Å:]</a></td>
+					<td>The set of all characters X such that toNFC(X) =
+						&quot;a&quot;</td>
+				</tr>
+				<tr>
+					<td><a
+						href="http://unicode.org/cldr/utility/list-unicodeset.jsp?a=%5B:toNFD=A%5Cu0300:%5D"
+						target="list">[:toNFD=A\u{300}:]</a></td>
+					<td>The set of all characters X such that toNFD(X) =
+						&quot;A\u{300}&quot;</td>
+				</tr>
+				<tr>
+					<td><a
+						href="http://unicode.org/cldr/utility/list-unicodeset.jsp?a=%5B:toNFKC=A:%5D"
+						target="list">[:toNFKC=A:]</a></td>
+					<td>The set of all characters X such that toNFKC(X) =
+						&quot;A&quot;</td>
+				</tr>
+				<tr>
+					<td><a
+						href="http://unicode.org/cldr/utility/list-unicodeset.jsp?a=%5B:toNFKD=A%5Cu0300:%5D"
+						target="list">[:toNFKD=A\u{300}:]</a></td>
+					<td>The set of all characters X such that toNFKD(X) =
+						&quot;a&quot;</td>
+				</tr>
+				<tr>
+					<td><a target="list"
+						href="http://unicode.org/cldr/utility/list-unicodeset.jsp?a=%5B:toLowercase=a:%5D">[:toLowercase=a:]</a></td>
+					<td>The set of all characters X such that toLowercase(X) =
+						&quot;a&quot;</td>
+				</tr>
+				<tr>
+					<td><a target="list"
+						href="http://unicode.org/cldr/utility/list-unicodeset.jsp?a=%5B:toUppercase=A:%5D">[:toUppercase=A:]</a></td>
+					<td>The set of all characters X such that toUppercase(X) =
+						&quot;A&quot;</td>
+				</tr>
+				<tr>
+					<td><a target="list"
+						href="http://unicode.org/cldr/utility/list-unicodeset.jsp?a=%5B:toTitlecase=A:%5D">[:toTitlecase=A:]</a></td>
+					<td>The set of all characters X such that toTitlecase(X) =
+						&quot;A&quot;</td>
+				</tr>
+				<tr>
+					<td><a target="list"
+						href="http://unicode.org/cldr/utility/list-unicodeset.jsp?a=%5B:toCaseFold=a:%5D">[:toCaseFold=a:]</a></td>
+					<td>The set of all characters X such that toCasefold(X) =
+						&quot;A&quot;</td>
+				</tr>
+				<tr>
+					<td>\p{exemplars=zh-Hant}</td>
+					<td>The exemplar characters from LDML.</td>
+				</tr>
+			</table>
+		</div>
+
+		<p>&nbsp;</p>
+
+		<div align="center">
+			<table class="subtle">
+				<tr>
+					<th>Binary properties</th>
+					<th>Description</th>
+				</tr>
+				<tr>
+					<td><a
+						href="http://unicode.org/cldr/utility/list-unicodeset.jsp?a=[:isNFC:]">[:isNFC:]</a></td>
+					<td>The set of all characters X such that toNFC(X) = X</td>
+				</tr>
+				<tr>
+					<td><a
+						href="http://unicode.org/cldr/utility/list-unicodeset.jsp?a=[:isNFD:]">[:isNFD:]</a></td>
+					<td>The set of all characters X such that toNFD(X) = X</td>
+				</tr>
+				<tr>
+					<td><a
+						href="http://unicode.org/cldr/utility/list-unicodeset.jsp?a=[:isNFKC:]">[:isNFKC:]</a></td>
+					<td>The set of all characters X such that toNFKC(X) = X</td>
+				</tr>
+				<tr>
+					<td><a
+						href="http://unicode.org/cldr/utility/list-unicodeset.jsp?a=[:isNFKD:]">[:isNFKD:]</a></td>
+					<td>The set of all characters X such that toNFKD(X) = X</td>
+				</tr>
+				<tr>
+					<td><a target="list"
+						href="http://unicode.org/cldr/utility/list-unicodeset.jsp?a=%5B:isLowercase:%5D">[:isLowercase:]</a></td>
+					<td>The set of all characters X such that toLowercase(X) = X</td>
+				</tr>
+				<tr>
+					<td><a target="list"
+						href="http://unicode.org/cldr/utility/list-unicodeset.jsp?a=%5B:isUppercase:%5D">[:isUppercase:]</a></td>
+					<td>The set of all characters X such that toUppercase(X) = X</td>
+				</tr>
+				<tr>
+					<td><a target="list"
+						href="http://unicode.org/cldr/utility/list-unicodeset.jsp?a=%5B:isTitlecase:%5D">[:isTitlecase:]</a></td>
+					<td>The set of all characters X such that toTitlecase(X) = X</td>
+				</tr>
+				<tr>
+					<td><a target="list"
+						href="http://unicode.org/cldr/utility/list-unicodeset.jsp?a=%5B:isCaseFolded:%5D">[:isCaseFolded:]</a></td>
+					<td>The set of all characters X such that toCasefo(X) = X</td>
+				</tr>
+				<tr>
+					<td><a target="list"
+						href="http://unicode.org/cldr/utility/list-unicodeset.jsp?a=%5B:isCased:%5D">[:isCased:]</a></td>
+					<td>The set of all cased characters.</td>
+				</tr>
+			</table>
+		</div>
+		<p>
+			<br>
+		</p>
+		<h4>
+			1.2.4 <a name="Age" href="tr18-19.html#Age">Age</a>
+		</h4>
+		<p>
+			As defined in the Unicode Standard, the Age property (in the <a
+				href="http://www.unicode.org/Public/UCD/latest/ucd/DerivedAge.txt">DerivedAge</a>
+			data file in the UCD) specifies the first version of the standard in
+			which each character was assigned. It does not refer to how long it
+			has been encoded, nor does it indicate the historic status of the
+			character.
+		</p>
+		<p>
+			In regex expressions, the Age property is used to indicate the
+			characters that were in a particular version of the Unicode Standard.
+			That is, a character has the Age property of that version or less.
+			Thus \p{age=3.0} includes the letter <i>a</i>, which was included in
+			Unicode 1.0. To get characters that are new in a particular version,
+			subtract off the previous version as described in <a
+				href="tr18-19.html#Subtraction_and_Intersection">1.3 Subtraction and
+				Intersection</a>. For example: <span class="regex">[\p{age=3.1} -- \p{age=3.0}]</span>.
+		</p>
+
+		<h4>
+			1.2.5 <a name="Blocks" href="tr18-19.html#Blocks">Blocks</a>
+		</h4>
+		<p>
+			Unicode blocks have an associated enumerated property, the Block
+			property. However, there are some very significant caveats to the use
+			of Unicode blocks for the identification of characters: see <a
+				href="tr18-19.html#Character_Blocks"><em>Annex A: Character Blocks</em></a>. If
+			blocks are used, some of the names can collide with Script names, so
+			they should be distinguished, with syntax such as <span class="regex">\p{Greek
+				Block}</span> or <span class="regex">\p{Block=Greek}</span>.
+		</p>
+		<h3>
+			1.3 <a name="Subtraction_and_Intersection"
+				href="tr18-19.html#Subtraction_and_Intersection">Subtraction and Intersection</a>
+		</h3>
+		<p>
+			As discussed earlier, character properties are essential with a large
+			character set. In addition, there needs to be a way to
+			&quot;subtract&quot; characters from what is already in the list. For
+			example, one may want to include all non-ASCII letters without having
+			to list every character in <span class="regex">\p{letter}</span> that
+			is not one of those 52.
+		</p>
+		<table class="noborder">
+			<tr>
+				<td class="rule_head"><a name="RL1.3" href="tr18-19.html#RL1.3">RL1.3</a></td>
+				<td class="rule_head">Subtraction and Intersection</td>
+			</tr>
+			<tr>
+				<td class="rule_body"></td>
+				<td class="rule_body">To meet this requirement, an
+					implementation shall supply mechanisms for union, intersection and
+					set-difference of 
+                    sets of characters within regular expression character class expressions.</td>
+			</tr>
+		</table>
+		<p>The following is an example of a syntax extension to handle set operations:</p>
+		<blockquote>
+			<pre>ITEM&nbsp;&nbsp;&nbsp;&nbsp; := &quot;[&quot; ITEM &quot;]&quot; // for grouping<br>
+OPERATOR := &quot;&quot;   // no separator = union<br>
+         := &quot;||&quot; // union: A∪B<br>
+         := &quot;&amp;&amp;&quot; // intersection: A∩B<br>
+         := &quot;--&quot; // set difference: A-B<br>
+         := &quot;~~&quot; // symmetric difference: A⊖B = (A∪B)-(A∩B)<br></pre>
+		</blockquote>
+		<p>
+			Implementations may also choose to offer other set operations. The <a
+				href="http://mathworld.wolfram.com/SymmetricDifference.html">symmetric
+				difference</a> of two sets is particularly useful. It is defined as
+			being the union minus the intersection. Thus <span class="regex">[\p{letter}~~\p{ascii}]</span>
+			is equivalent to <span class="regex">[[\p{letter}\p{ascii}]--[\p{letter}&amp;&amp;\p{ascii}]]</span>.
+		</p>
+		<p>
+			For compatibility with industry practice, symbols are doubled in the
+			above notation. This practice provides for better backwards
+			compatibility with expressions using older syntax, because they are
+			unlikely to contain doubled characters. It also allows the operators
+			to appear adjacent to ranges without ambiguity, such as <span
+				class="regex">[\p{letter}--a-z]</span>.
+		</p>
+		<p>
+			Binding or precedence may vary by regular expression engine, so it is
+			safest to always disambiguate using brackets to be sure. In
+			particular, precedence may put all operators on the same level, or
+			may take union as binding more closely. For example, where A..E stand for expressions, not characters:
+		</p>
+		<div align="center">
+		<table class="subtle">
+			<tr>
+				<th>Expression</th>
+				<th nowrap>Interpreted as</th>
+				<th>Precedence</th>
+				<th>Means</th>
+			</tr>
+			<tr>
+				<td rowspan="2" style="vertical-align:middle" nowrap><span class="regex">[ABC--DE]</span></td>
+				<td nowrap><span class="regex">[[AB]C]--[DE]]</span></td>
+				<td>Union binds more closely</td>
+				<td>Form the union of A, B, and C, and then subtract the union
+						of D and E.</td>
+			</tr>
+			<tr>
+				<td nowrap><span class="regex">[[[[[AB]C]--D]E]]</span></td>
+				<td>Union binds at the same level</td>
+				<td>Form the union of A, B, and C, and then subtract D, and then
+						add E.</td>
+			</tr>
+		</table>
+		</div>
+		<p>Even where an expression is not ambiguous, extra grouping
+			brackets may be useful for clarity.</p>
+		<p>The following table shows various examples of set subtraction:</p>
+		<div align="center">
+		<table class="subtle">
+			<tr>
+				<th>Expression</th>
+				<th>Matches</th>
+			<tr>
+				<td><span class="regex">[\p{L}--QW]</span></td>
+				<td>all letters but Q and W</td>
+			</tr>
+			<tr>
+				<td><span class="regex">[\p{N}--[\p{Nd}--0-9]]</span></td>
+				<td>all non-decimal numbers, plus 0-9</td>
+			</tr>
+			<tr>
+				<td><span class="regex">[\u{0}-\u{7F}--\P{letter}]</span></td>
+				<td>all letters in the ASCII range, by subtracting
+					non-letters</td>
+			</tr>
+			<tr>
+				<td><span class="regex">[\p{Greek}--\N{GREEK SMALL
+						LETTER ALPHA}]</span></td>
+				<td>Greek letters except alpha</td>
+			</tr>
+			<tr>
+				<td><span class="regex">[\p{Assigned}--\p{Decimal Digit
+						Number}--a-fA-Fａ-ｆＡ-Ｆ]</span></td>
+				<td>all assigned characters except for hex digits (using
+					a broad definition)</td>
+			</tr>
+		</table>
+		</div>
+		<p>&nbsp;</p>
+		<h3>
+			1.4 <a name="Simple_Word_Boundaries"
+				href="tr18-19.html#Simple_Word_Boundaries">Simple Word Boundaries</a>
+		</h3>
+		<p>
+			Most regular expression engines allow a test for word boundaries
+			(such as by &quot;\b&quot; in Perl). They generally use a very simple
+			mechanism for determining word boundaries: one example of that would
+			be having word boundaries between any pair of characters where one is
+			a <span class="regex">&lt;word_character&gt;</span> and the other is
+			not, or at the start and end of a string. This is not adequate for
+			Unicode regular expressions.
+		</p>
+		<table class="noborder">
+			<tr>
+				<td class="rule_head"><a name="RL1.4" href="tr18-19.html#RL1.4">RL1.4</a></td>
+				<td class="rule_head">Simple Word Boundaries</td>
+			</tr>
+			<tr>
+				<td class="rule_body"></td>
+				<td class="rule_body">To meet this requirement, an
+					implementation shall extend the word boundary mechanism so that:
+					<ol>
+						<li>The class of <span class="regex">&lt;word_character&gt;</span>
+							includes all the Alphabetic values from the Unicode character
+							database, from <a
+							href="http://www.unicode.org/Public/UCD/latest/ucd/UnicodeData.txt">UnicodeData.txt</a>, plus the decimals
+							(General_Category=Decimal_Number, or equivalently
+							Numeric_Type=Decimal), and the U+200C ZERO WIDTH NON-JOINER and
+							U+200D ZERO WIDTH JOINER (Join_Control=True). See also <a
+							href="tr18-19.html#Compatibility_Properties">Annex C: Compatibility
+								Properties</a>.
+						</li>
+						<li>Nonspacing marks are never divided from their base
+							characters, and otherwise ignored in locating boundaries.</li>
+					</ol>
+				</td>
+			</tr>
+		</table>
+		<p>Level 2 provides more general support for word boundaries
+			between arbitrary Unicode characters which may override this
+			behavior.</p>
+		<h3>
+			1.5 <a name="Simple_Loose_Matches" href="tr18-19.html#Simple_Loose_Matches">
+				Simple Loose Matches</a>
+		</h3>
+		<p>Most regular expression engines offer caseless matching as the
+			only loose matching. If the engine does offers this, then it needs to
+			account for the large range of cased Unicode characters outside of
+			ASCII.</p>
+		<table class="noborder">
+			<tr>
+				<td class="rule_head"><a name="RL1.5" href="tr18-19.html#RL1.5">RL1.5</a></td>
+				<td class="rule_head">Simple Loose Matches</td>
+			</tr>
+			<tr>
+				<td class="rule_body"></td>
+				<td class="rule_body">To meet this requirement, if an
+					implementation provides for case-insensitive matching, then it
+					shall provide at least the simple, default Unicode case-insensitive
+					matching, and specify which properties are closed and which are
+					not.
+					<p>To meet this requirement, if an implementation provides for
+						case conversions, then it shall provide at least the simple,
+						default Unicode case folding.
+				</td>
+			</tr>
+		</table>
+		<p>
+			In addition, because of the vagaries of natural language, there are
+			situations where two different Unicode characters have the same
+			uppercase or lowercase. To meet this requirement, implementations
+			must implement these in accordance with the Unicode Standard. For
+			example, the Greek U+03C3 &quot;σ&quot; <i>small sigma,</i> U+03C2
+			&quot;ς&quot; <i>small final sigma,</i> and U+03A3 &quot;Σ&quot; <i>capital
+				sigma</i> all match.
+		</p>
+		<p>
+			Some caseless matches may match one character against two: for
+			example, U+00DF &quot;ß&quot; matches the two characters
+			&quot;SS&quot;. And case matching may vary by locale. However,
+			because many implementations are not set up to handle this, at Level
+			1 only simple case matches are necessary. To correctly implement a
+			caseless match, see<i> Chapter 3, Conformance</i> of [<a
+				href="tr18-19.html#Unicode">Unicode</a>]. The data file supporting caseless
+			matching is [<a href="tr18-19.html#CaseData">CaseData</a>].
+		</p>
+		<p>
+			To meet this requirement, where an implementation also offers case
+			conversions, these must also follow <i>Chapter 3, Conformance</i> of
+			[<a href="tr18-19.html#Unicode">Unicode</a>]. The relevant data files are [<a
+				href="tr18-19.html#SpecialCasing">SpecialCasing</a>] and [<a href="tr18-19.html#UData">UData</a>].
+		</p>
+		<p>Matching case-insensitively is one example of matching under an
+			equivalence relation:</p>
+		<blockquote>
+			<p>
+				A regular expression R matches<em> under an equivalence
+					relation E</em> whenever for all strings S and T:
+			</p>
+			<blockquote>
+				<p>If S is equivalent to T under E, then R matches S if and only
+					if R matches T.</p>
+			</blockquote>
+		</blockquote>
+		<p>In the Unicode Standard, the relevant equivalence relation
+			for case-insensitivity is established according to whether two
+			strings case fold to the same value. The case folding can either
+			be simple (a 1:1 mapping of code points) or full (with some 1:n
+			mappings).</p>
+
+		<ul>
+			<li>&ldquo;ABC&rdquo; and &ldquo;Abc&rdquo; are equivalent under
+				both full and simple case folding.</li>
+			<li>&ldquo;cliﬀ&rdquo; (with the &ldquo;ff&rdquo; ligature) and
+				&ldquo;CLIFF&rdquo; are equivalent under full case folding, but not
+				under simple case folding.</li>
+		</ul>
+		<p>
+			In practice, regex APIs are not set up to match parts of characters.
+			For this reason, full case equivalence is difficult to handle with
+			regular expressions. For more information, see <em>Section 2.1,
+				<a href="tr18-19.html#Canonical_Equivalents">Canonical Equivalents</a>
+			</em>.
+		</p>
+		<p>For case-insensitive matching:</p>
+		<ol>
+			<li value="1">Each string literal is matched
+				case-insensitively. That is, it is <em>logically</em> expanded into
+				a sequence of OR expressions, where each OR expression lists all of
+				the characters that have a simple case-folding to the same value.
+				<ul>
+					<li>For example, /Dåb/ matches as if it were expanded into
+						/(?:d|D)(?:å|Å|\u{212B})(?:b|B)/.<br> (The \u{212B} is an
+						angstrom sign, identical in appearance to Å.)
+					</li>
+					<li>Back references are subject to this logical expansion,
+						such as /(?i)(a.c)\1/, where \1 matches what is in the first
+						grouping.</li>
+				</ul>
+			</li>
+			<li value="2"><strong>(optional) </strong>Each character class
+				is closed under case. That is, it is logically expanded into a set
+				of code points, and then closed by adding all simple case
+				equivalents of each of those code points.
+				<ul>
+					<li>For example, <span class="regex">[\p{Block=Phonetic_Extensions} [A-E]]</span> is a
+						character class that matches 133 code points (under Unicode 6.0).
+						Its case-closure adds 7 more code points: a-e, Ᵽ, and Ᵹ, for a
+						total of 140 code points.</li>
+				</ul></li>
+		</ol>
+		<p>For condition #2, in both property character classes and
+			explicit character classes, closing under simple case-insensitivity
+			means including characters not in the set. For example:</p>
+		<ul>
+			<li>The case-closure of <span class="regex">\p{Block=Phonetic_Extensions}</span> includes
+				two characters not in that set, namely Ᵽ and Ᵹ.</li>
+			<li>The case-closure of <span class="regex">[A-E]</span> includes five characters not in
+				that set, namely <span class="regex">[a-e]</span>.</li>
+		</ul>
+		<p>Conformant implementations can choose whether and how to apply
+			condition #2: the only requirement is that they declare what they do.
+			For example, an implementation may:</p>
+		<ol type="A">
+			<li>uniformly apply condition #2 to all property and explicit
+				character classes</li>
+			<li>uniformally not apply condition #2 to any property or
+				explicit character classes</li>
+			<li>apply condition #2 only within the scope of a switch</li>
+			<li>apply condition #2 to just specific properties and/or
+				explicit character classes</li>
+		</ol>
+		<h3>
+			1.6 <a name="Line_Boundaries" href="tr18-19.html#Line_Boundaries">Line Boundaries</a>
+		</h3>
+		<p>Most regular expression engines also allow a test for line
+			boundaries: end-of-line or start-of-line. This presumes that lines of
+			text are separated by line (or paragraph) separators.</p>
+		<table class="noborder">
+			<tr>
+				<td class="rule_head"><a name="RL1.6" href="tr18-19.html#RL1.6">RL1.6</a></td>
+				<td class="rule_head">Line Boundaries</td>
+			</tr>
+			<tr>
+				<td class="rule_body"></td>
+				<td class="rule_body">To meet this requirement, if an
+					implementation provides for line-boundary testing, it shall
+					recognize not only CRLF, LF, CR, but also NEL (U+0085), PARAGRAPH
+					SEPARATOR (U+2029) and LINE SEPARATOR (U+2028).</td>
+			</tr>
+		</table>
+		<p>
+			Formfeed (U+000C) also normally indicates an end-of-line. For more
+			information, see Chapter 3 of [<a href="tr18-19.html#Unicode">Unicode</a>].
+		</p>
+		<p>These characters should be uniformly handled in determining
+			logical line numbers, start-of-line, end-of-line, and
+			arbitrary-character implementations. Logical line number is useful
+			for compiler error messages and the like. Regular expressions often
+			allow for SOL and EOL patterns, which match certain boundaries. Often
+			there is also a &quot;non-line-separator&quot; arbitrary character
+			pattern that excludes line separator characters.</p>
+		<p>
+			The behavior of these characters may also differ depending on whether
+			one is in a &quot;multiline&quot; mode or not. For more information,
+			see <i>Anchors and Other &quot;Zero-Width Assertions&quot;</i> in
+			Chapter 3 of [<a href="tr18-19.html#Friedl">Friedl</a>].
+		</p>
+		<p>A newline sequence is defined to be any of the following:</p>
+		<p align="center">
+			<span class="regex">\u{A} | \u{B} | \u{C} | \u{D} | \u{85} |
+				\u{2028} | \u{2029} | \u{D A}</span>
+		</p>
+		<ol>
+			<li><b>Logical line number</b>
+				<ul>
+					<li>The line number is increased by one for each occurrence of
+						a newline sequence.</li>
+					<li>Note that different implementations may call the first
+						line either line zero or line one.</li>
+				</ul></li>
+			<li><b>Logical beginning of line (often &quot;^&quot;)</b>
+				<ul>
+					<li>SOL is at the start of a file or string, and depending on
+						matching options, also immediately following any occurrence of a
+						newline sequence.</li>
+				</ul>
+				<ul>
+					<li>There is no empty line within the sequence <span
+						class="regex">\u{D A}</span>, that is, between the first and
+						second character.
+					</li>
+					<li>Note that there may be a separate pattern for
+						&quot;beginning of text&quot; for a multiline mode, one which
+						matches only at the beginning of the first line. For example, in
+						Perl this is \A.</li>
+				</ul></li>
+			<li><b>Logical end of line (often &quot;$&quot;)</b>
+				<ul>
+					<li>EOL at the end of a file or string, and depending on
+						matching options, also immediately preceding a final occurrence of
+						a newline sequence.</li>
+					<li>There is no empty line within the sequence <span
+						class="regex">\u{D A}</span>, that is, between the first and
+						second character.
+					</li>
+					<li>SOL and EOL are not symmetric because of multiline mode:
+						EOL can be interpreted in at least three different ways:
+						<ol type="a">
+							<li>EOL matches at the end of the string</li>
+							<li>EOL matches before final newline</li>
+							<li>EOL matches before any newline</li>
+						</ol>
+					</li>
+				</ul></li>
+			<li><b>Arbitrary character pattern (often &quot;.&quot;)</b>
+				<ul>
+					<li>Where the &#39;arbitrary character pattern&#39; matches a
+						newline sequence, it must match all of the newline sequences, and
+						<span class="regex">\u{D A}</span> (CRLF)<i> should</i> match as
+						if it were a single character. (The recommendation that CRLF match
+						as a single character is, however, not required for conformance to
+						RL1.6.)
+					</li>
+					<li>Note that ^$ (an empty line pattern) should not match the
+						empty string within the sequence <span class="regex">\u{D
+							A}</span>, but should match the empty string within the reversed
+						sequence <span class="regex">\u{A D}</span>.
+					</li>
+				</ul></li>
+		</ol>
+		<p>It is strongly recommended that there be a regular expression
+			meta-character, such as &quot;\R&quot;, for matching all line ending
+			characters and sequences listed above (for example, in #1). This
+			would correspond to something equivalent to the following expression.
+			That expression is slightly complicated by the need to avoid backup.</p>
+		<p align="center">
+			<span class="regex">(?:\u{D A}|(?!\u{D A})[\u{A}-\u{D}\u{85}\u{2028}\u{2029}]</span>
+		</p>
+
+		<blockquote>
+			<p>
+				<b>Note:</b> For some implementations, there may be a performance
+				impact in recognizing CRLF as a single entity, such as with an
+				arbitrary pattern character (&quot;.&quot;). To account for that, an
+				implementation may also satisfy R1.6 if there is a mechanism
+				available for converting the sequence CRLF to a single line boundary
+				character before regex processing.
+			</p>
+		</blockquote>
+		<p>
+			For more information on line breaking, see [<a href="tr18-19.html#UAX14">UAX14</a>].
+		</p>
+		<h3>
+			1.7 <a name="Supplementary_Characters" href="tr18-19.html#Supplementary_Characters">
+				Code Points</a>
+		</h3>
+		<p>A fundamental requirement is that Unicode text be interpreted
+			semantically by code point, not code units.</p>
+		<table class="noborder">
+			<tr>
+				<td class="rule_head"><a name="RL1.7" href="tr18-19.html#RL1.7">RL1.7</a></td>
+				<td class="rule_head">Supplementary Code Points</td>
+			</tr>
+			<tr>
+				<td class="rule_body"></td>
+				<td class="rule_body">To meet this requirement, an
+					implementation shall handle the full range of Unicode code points,
+					including values from U+FFFF to U+10FFFF. In particular, where
+					UTF-16 is used, a sequence consisting of a leading surrogate
+					followed by a trailing surrogate shall be handled as a single code
+					point in matching.</td>
+			</tr>
+		</table>
+		<p>
+			UTF-16 uses pairs of Unicode code units to express code points above
+			FFFF<sub>16</sub>. Surrogate pairs (or their equivalents in other
+			encoding forms) are be handled internally as single code point
+			values. In particular, <span class="regex">[\u{0}-\u{10000}]</span>
+			will match all the following sequence of code units:
+		</p>
+		<div align="center">
+		<table class="subtle">
+			<tr>
+				<th>Code Point</th>
+				<th>UTF-8 Code Units</th>
+				<th>UTF-16 Code Units</th>
+				<th>UTF-32 Code Units</th>
+			</tr>
+			<tr>
+				<td>7F</td>
+				<td>7F</td>
+				<td>007F</td>
+				<td>0000007F</td>
+			</tr>
+			<tr>
+				<td>80</td>
+				<td>C2 80</td>
+				<td>0080</td>
+				<td>00000080</td>
+			</tr>
+			<tr>
+				<td>7FF</td>
+				<td>DF BF</td>
+				<td>07FF</td>
+				<td>000007FF</td>
+			</tr>
+			<tr>
+				<td>800</td>
+				<td>E0 A0 80</td>
+				<td>0800</td>
+				<td>00000800</td>
+			</tr>
+			<tr>
+				<td>FFFF</td>
+				<td>EF BF BF</td>
+				<td>FFFF</td>
+				<td>0000FFFF</td>
+			</tr>
+			<tr>
+				<td>10000</td>
+				<td>F0 90 80 80</td>
+				<td>D800 DC00</td>
+				<td>00010000</td>
+			</tr>
+		</table>
+		</div>
+		<blockquote>
+		<p>
+			<strong>Note:</strong> It is permissible, but not required, to match
+			an isolated surrogate code point (such as \u{D800}), which may occur
+			in Unicode Strings. See <a
+				href="http://www.unicode.org/glossary/#unicode_string">Unicode
+				String</a> in the Unicode [<a href="tr18-19.html#Glossary">Glossary</a>].
+		</p>
+		</blockquote>
+		<hr>
+		<h2>
+			2 <a name="Extended_Unicode_Support" href="tr18-19.html#Extended_Unicode_Support">
+				Extended Unicode Support: Level 2</a><a name="Level_2" href="tr18-19.html#Level_2"></a>
+		</h2>
+		<p>
+			Level 1 support works well in many circumstances. However, it does
+			not handle more complex languages or extensions to the Unicode
+			Standard very well. Particularly important cases are canonical
+			equivalence, word boundaries, extended grapheme cluster boundaries,
+			and loose matches. (For more information about boundary conditions,
+			see UAX #29, <em>Unicode
+					Text Segmentation</em> [<a href="tr18-19.html#UAX29">UAX29</a>].)
+		</p>
+		<p>Level 2 support matches much more what user expectations are
+			for sequences of Unicode characters. It is still locale-independent
+			and easily implementable. However, for compatibility with Level 1, it
+			is useful to have some sort of syntax that will turn Level 2 support
+			on and off.</p>
+		<p>The features comprising Level 2 are not in order of importance.
+			In particular, the most useful and highest priority features in
+			practice are:</p>
+		<ul>
+			<li><a href="tr18-19.html#Default_Word_Boundaries">RL2.3 Default Word
+					Boundaries</a></li>
+			<li><a href="tr18-19.html#Name_Properties">RL2.5 Name Properties</a></li>
+			<li><a href="tr18-19.html#Wildcard_Properties">RL2.6 Wildcards in
+					Property Values</a></li>
+			<li><a href="tr18-19.html#Full_Properties">RL2.7 Full Properties</a></li>
+		</ul>
+		<h3>
+			2.1 <a name="Canonical_Equivalents" href="tr18-19.html#Canonical_Equivalents">
+				Canonical Equivalents</a>
+		</h3>
+		<p>The equivalence relation for canonical equivalence is
+			established by whether two strings are identical when normalized to
+			NFD.</p>
+		<p>For most full-featured regular expression engines, it is quite
+			difficult to match under canonical equivalence, which may involve
+			reordering, splitting, or merging of characters. For example, all of
+			the following sequences are canonically equivalent:</p>
+		<ol type="A">
+			<li>o + horn + dot_below
+				<ol>
+					<li>U+006F ( o ) LATIN SMALL LETTER O</li>
+					<li>U+031B ( ◌̛ ) COMBINING HORN</li>
+					<li>U+0323 ( ◌̣ ) COMBINING DOT BELOW</li>
+				</ol>
+			</li>
+			<li>o + dot_below + horn
+
+				<ol>
+					<li>U+006F ( o ) LATIN SMALL LETTER O</li>
+					<li>U+0323 ( ◌̣ ) COMBINING DOT BELOW</li>
+					<li>U+031B ( ◌̛ ) COMBINING HORN</li>
+				</ol>
+			</li>
+			<li>o-horn + dot_below
+				<ol>
+					<li>U+01A1 ( ơ ) LATIN SMALL LETTER O WITH HORN</li>
+					<li>U+0323 ( ◌̣ ) COMBINING DOT BELOW</li>
+				</ol>
+			</li>
+			<li>o-dot_below + horn
+
+				<ol>
+					<li>U+1ECD ( ọ ) LATIN SMALL LETTER O WITH DOT BELOW</li>
+					<li>U+031B ( ◌̛ ) COMBINING HORN</li>
+				</ol>
+			</li>
+			<li>o-horn-dot_below
+
+				<ol>
+					<li>U+1EE3 ( ợ ) LATIN SMALL LETTER O WITH HORN AND DOT BELOW</li>
+				</ol>
+			</li>
+		</ol>
+		<p>The regular expression pattern <span class="regex">/o\u{31B}/</span> matches the first two
+			characters of A, the first and third characters of B, the first
+			character of C, part of the first character together with the third
+			character of D, and part of the character in E.</p>
+		<p>In practice, regex APIs are not set up to match parts of
+			characters or handle discontiguous selections. There are many other
+			edge cases: a combining mark may come from some part of the pattern
+			far removed from where the base character was, or may not explicitly
+			be in the pattern at all. It is also unclear what <span class="regex">/./</span> should match
+			and how back references should work.</p>
+		<p>It is feasible, however, to construct patterns that will match
+			against NFD (or NFKD) text. That can be done by:</p>
+		<ol>
+			<li>Putting the text to be matched into a defined normalization
+				form (NFD or NFKD).</li>
+			<li>Having the user design the regular expression pattern to
+				match against that defined normalization form. For example, the
+				pattern should contain no characters that would not occur in that
+				normalization form, nor sequences that would not occur.</li>
+			<li>Applying the matching algorithm on a code point by code
+				point basis, as usual.</li>
+		</ol>
+
+		<h3>
+			2.2 <a name="Default_Grapheme_Clusters" href="tr18-19.html#Default_Grapheme_Clusters">
+				Extended Grapheme Clusters</a>
+		</h3>
+		<p>
+			One or more Unicode characters may make up what the user thinks of as
+			a character. To avoid ambiguity with the computer use of the term <i>character,</i>
+			this is called a <i>grapheme cluster</i>. For example, &quot;G&quot;
+			+ <i>acute-accent</i> is a grapheme cluster: it is thought of as a
+			single character by users, yet is actually represented by two Unicode
+			characters. The Unicode Standard defines <i>extended grapheme
+				clusters</i> that keep Hangul syllables together and do not break
+			between base characters and combining marks. The precise definition
+			is in UAX #29, <em>Unicode
+					Text Segmentation</em> [<a href="tr18-19.html#UAX29">UAX29</a>]. These <i>extended</i>
+			grapheme clusters are not the same as <i>tailored</i> grapheme
+			clusters, which are covered in <em>Section 3.2, <a
+				href="tr18-19.html#Tailored_Graphemes_Clusters">Tailored Grapheme Clusters</a></em>.
+		</p>
+		<table class="noborder">
+			<tr>
+				<td class="rule_head"><a name="RL2.2" href="tr18-19.html#RL2.2">RL2.2</a></td>
+				<td class="rule_head">Extended Grapheme Clusters</td>
+			</tr>
+			<tr>
+				<td class="rule_body"></td>
+				<td class="rule_body"><i>To meet this requirement, an
+						implementation shall provide a mechanism for matching against an
+						arbitrary extended grapheme cluster, a literal cluster, and
+						matching extended grapheme cluster boundaries.</i></td>
+			</tr>
+		</table>
+		<p>
+			For example, an implementation could interpret <span class="regex">\X</span>
+			as matching any extended grapheme cluster, while interpreting "." as
+			matching any single code point. It could interpret <span
+				class="regex">\b{g}</span> as a zero-width match against any
+			extended grapheme cluster boundary, and <span class="regex">\B{g}</span>
+			as the negation of that.
+		</p>
+		<p>
+			More generally, it is useful to have zero width boundary detections
+			for each of the different kinds of segment boundaries defined by
+			Unicode ([<a href="tr18-19.html#UAX29">UAX29</a>] and [<a href="tr18-19.html#UAX14">UAX14</a>]).
+			For example:
+		</p>
+
+		<div align="center">
+		<table class="subtle">
+			<tr>
+				<th>Syntax</th>
+				<th>Zero-width Match at</th>
+			</tr>
+			<tr>
+				<td><span class="regex">\b{g}</span></td>
+				<td>a Unicode extended grapheme cluster
+					boundary</td>
+			<tr>
+				<td><span class="regex">\b{w}</span></td>
+				<td>a Unicode word boundary. Note that this
+					is different than <span class="regex">\b</span> alone, which
+					corresponds to <span class="regex">\w</span> and <span
+					class="regex">\W</span>. See <a href="tr18-19.html#Compatibility_Properties">Annex
+						C: Compatibility Properties</a>.
+				</td>
+			</tr>
+			<tr>
+				<td><span class="regex">\b{l}</span></td>
+				<td>a Unicode line break boundary</td>
+			</tr>
+			<tr>
+				<td><span class="regex">\b{s}</span></td>
+				<td>a Unicode sentence boundary</td>
+			</tr>
+		</table>
+		</div>
+
+		<p>
+			Thus <span class="regex">\X</span> is equivalent to <span
+				class="regex">.+?\b{g}</span>; proceed the minimal number of
+			characters (but at least one) to get to the next extended grapheme
+			cluster boundary.
+		</p>
+
+
+		<p>Regular expression engines should also provide some mechanism
+			for easily matching against literal clusters, because they are more
+			likely to match user expectations for many languages. One mechanism
+			for doing that is to have explicit syntax for literal clusters, as in
+			the following syntax:</p>
+		<blockquote>
+			<pre>ITEM := &quot;\q{&quot; CODE_POINT + &quot;}&quot;</pre>
+		</blockquote>
+		<p>
+			This syntax can also be used for tailored grapheme clusters (see <a
+				href="tr18-19.html#Tailored_Graphemes_Clusters">Tailored Grapheme Clusters</a>).
+		</p>
+		<p>The following table shows examples of use of the \q syntax:</p>
+		<div align="center">
+		<table class="subtle">
+			<tr>
+				<th>Expression</th>
+				<th>Matches</th>
+			</tr>
+			<tr>
+				<td><span class="regex">[a-z\q{x\u{323}}]</span></td>
+				<td>a-z, and x with an under-dot (used in American Indian
+					languages)</td>
+			</tr>
+			<tr>
+				<td><span class="regex">[a-z\q{aa}]</span></td>
+				<td>a-z, and aa (treated as a single character in
+					Danish)</td>
+			</tr>
+			<tr>
+				<td><span class="regex">[a-z ñ \q{ch} \q{ll} \q{rr}]</span></td>
+				<td>some lowercase characters in traditional Spanish</td>
+			</tr>
+		</table>
+		</div>
+		<p>
+			In implementing extended grapheme clusters, the expression <span
+				class="regex">/[a-m \q{ch} \q{rr}]/</span> should behave roughly
+			like <span class="regex">/(?: ch | rr | [a-m])/</span>. That is, the
+			expression would:
+		</p>
+		<ul>
+			<li>match ch or rr and advance by two code points, or</li>
+			<li>match a-m and advance one code point, or</li>
+			<li>fail to match</li>
+		</ul>
+		<p>
+			Note that the strings need to be ordered as longest first to work
+			correctly in arbitrary regex engines, because some regex engines try
+			the leftmost matching alternative first. For example, the expression
+			<span class="regex">/[a-m {ch} {chh}]/</span> would need to behave
+			like <span class="regex">/(?: chh | ch | [a-m])/</span>, with "chh"
+			before "ch".
+		</p>
+
+		<p>
+			Matching a <i>complemented</i> set containing strings like \q{ch} may
+			behave differently in the two different modes: the normal mode where
+			code points are the unit of matching, or the mode where extended
+			grapheme clusters are the unit of matching. That is, the expression <span
+				class="regex">[^ a-m \q{ch} \q{rr}]</span> should behave in the
+			following way:
+		</p>
+		<div align="center">
+		<table class="subtle">
+			<tr>
+				<th>Mode</th>
+				<th>Behavior</th>
+				<th>Description</th>
+			</tr>
+			<tr>
+				<td>normal</td>
+				<td nowrap><span class="regex">(?! ch | rr | [a-m] )<br>
+						[\u{0}-\u{10FFFF}]</span></td>
+				<td>failing with strings starting with a-m, ch, or rr, and
+					otherwise advancing by one code point</td>
+			</tr>
+			<tr>
+				<td>grapheme cluster</td>
+				<td nowrap><span class="regex">(?! ch | rr | [a-m] )<br>
+						\X</span></td>
+				<td>failing with strings starting with a-m, ch, or rr, and
+					otherwise advancing by one extended grapheme cluster</td>
+			</tr>
+		</table>
+		</div>
+		<p>
+			A complex character set containing strings like <span class="regex">\q{ch}</span>
+			plus embedded complement operations is interpreted as if the
+			complement were pushed up to the top of the expression, using the
+			following rewrites recursively:
+		</p>
+		<div align="center">
+			<table class="subtle">
+				<tr>
+					<th>Original</th>
+					<th>Rewrite</th>
+				</tr>
+				<tr>
+					<td align="center" bgcolor="#eeeeee" style="text-align: center">^^x
+					</td>
+					<td align="center" style="text-align: center">x</td>
+				</tr>
+				<tr>
+					<td align="center" bgcolor="#eeeeee" style="text-align: center">^x
+						|| ^y</td>
+					<td align="center" style="text-align: center">^(x &amp;&amp;
+						y)</td>
+				</tr>
+				<tr>
+					<td align="center" bgcolor="#eeeeee" style="text-align: center">^x
+						|| y</td>
+					<td align="center" style="text-align: center">^(x -- y)</td>
+				</tr>
+				<tr>
+					<td align="center" bgcolor="#eeeeee" style="text-align: center">x
+						|| ^y</td>
+					<td align="center" style="text-align: center">^(y -- x)</td>
+				</tr>
+				<tr>
+					<td align="center" bgcolor="#eeeeee" style="text-align: center">^x
+						&amp;&amp; ^y</td>
+					<td align="center" rowspan="2"
+						style="vertical-align: middle; text-align: center">^(x || y)
+					</td>
+				</tr>
+				<tr>
+					<td align="center" bgcolor="#eeeeee" style="text-align: center">^x
+						-- y</td>
+				</tr>
+				<tr>
+					<td align="center" bgcolor="#eeeeee" style="text-align: center">^x
+						&amp;&amp; y</td>
+					<td align="center" rowspan="2"
+						style="vertical-align: middle; text-align: center">y -- x</td>
+				</tr>
+				<tr>
+					<td align="center" bgcolor="#eeeeee" style="text-align: center">^x
+						-- ^y</td>
+				</tr>
+				<tr>
+					<td align="center" bgcolor="#eeeeee" style="text-align: center">x
+						&amp;&amp; ^y</td>
+					<td align="center" style="text-align: center">x -- y</td>
+				</tr>
+				<tr>
+					<td align="center" bgcolor="#eeeeee" style="text-align: center">x
+						-- ^y</td>
+					<td align="center" style="text-align: center">x &amp;&amp; y</td>
+				</tr>
+				<tr>
+					<td align="center" bgcolor="#eeeeee" style="text-align: center">^x
+						~~ ^y</td>
+					<td align="center" style="text-align: center">x ~~ y</td>
+				</tr>
+				<tr>
+					<td align="center" bgcolor="#eeeeee" style="text-align: center">^x
+						~~ y</td>
+					<td align="center" rowspan="2"
+						style="vertical-align: middle; text-align: center">^(x ~~ y)</td>
+				</tr>
+				<tr>
+					<td align="center" bgcolor="#eeeeee" style="text-align: center">x
+						~~ ^y</td>
+				</tr>
+			</table>
+		</div>
+		<p>Applying these rewrites results in a simplification of the
+			regex expression. Either the complement operations will be completely
+			eliminated, or a single remaining complement operation will remain at
+			the top level of the expression. Logically, then, the rest of the
+			expression consists of a flat list of characters and/or
+			multi-character strings; matching strings can then can be handled as
+			described above.</p>
+
+		<h4>
+			2.2.1 <a name="Grapheme_Cluster_Mode" href="tr18-19.html#Grapheme_Cluster_Mode">Grapheme
+				Cluster Mode</a>
+		</h4>
+
+		<p>
+			A grapheme cluster mode behaves more like users' expectations for
+			character boundaries, and is especially useful for handling
+			canonically equivalent matching. In a grapheme cluster mode, matches
+			are guaranteed to be on extended grapheme cluster boundaries. Each
+			atomic literal of the pattern matches complete extended grapheme
+			clusters, and thus behaves as if followed by <span class="regex">\b{g}</span>.
+			Atomic literals include: a dot, a character class (like <span
+				class="regex">[a-m]</span>), a sequence of characters (perhaps with
+			some being escaped) that matches as a unit, or syntax that is
+			equivalent to these. Note that in <span class="regex">/abc?/</span>,
+			the <span class="regex">"abc"</span> is not matching as a unit; the <span
+				class="regex">?</span> modifier is only affecting the last
+			character, and thus the <span class="regex">ab</span> and the <span
+				class="regex">c</span> are separate atomic literals. To summarize:
+		</p>
+
+		<div align="center">
+		<table class="subtle">
+			<tr>
+				<th>Syntax</th>
+				<th>Behaves Like
+				<th>Description</th>
+			</tr>
+			<tr>
+				<td><span class="regex">.</span></td>
+				<td><span class="regex">\X</span></td>
+				<td>
+					matches a full extended grapheme cluster going forward
+				</td>
+			</tr>
+			<tr>
+				<td><span class="regex">[abc{gh}]</span></td>
+				<td><span class="regex">[abc{gh}]\b{g}</span></td>
+				<td>matches only if the end point of the match is at a
+					grapheme cluster boundary
+				</td>
+			</tr>
+			<tr>
+				<td><span class="regex">abcd</span></td>
+				<td><span class="regex">abcd\b{g}</span></td>
+				<td>
+					matches only if the end point of the match is at a grapheme cluster
+					boundary
+				</td>
+			</tr>
+		</table>
+		</div>
+
+		<p>
+			Note that subdivisions can modify the behavior in this mode. Normally
+			<span class="regex">/(xy)/</span> is equivalent to <span
+				class="regex">/(x)(y)/</span> in terms of matching (where x and y
+			are arbitrary literal character strings); that is, only the grouping
+			is different. That is not true in grapheme cluster mode, where each
+			atomic literal acts as if it is followed by <span class="regex">\b{g}</span>.</p>
+			<p>For example, <span class="regex">/(x\u{308})/</span> is not the same
+			as <span class="regex">/(x)(\u{308})/</span> in matching. The former
+			behaves like <span class="regex">/(x\u{308}\b{g})/</span> while the
+			latter behaves like <span class="regex">/(x\b{g})(\u{308}\b{g})/</span>.
+			The latter will never match in grapheme cluster mode, since it would
+			only match if there were a grapheme cluster boundary after the x and
+			if x is followed by \u{308}, but that can never happen
+			simultaneously.
+		</p>
+
+
+		<h3>
+			2.3 <a name="Default_Word_Boundaries" href="tr18-19.html#Default_Word_Boundaries">
+				Default Word Boundaries</a>
+		</h3>
+		<table class="noborder">
+			<tr>
+				<td class="rule_head"><a name="RL2.3" href="tr18-19.html#RL2.3">RL2.3</a></td>
+				<td class="rule_head">Default Word Boundaries</td>
+			</tr>
+			<tr>
+				<td class="rule_body"></td>
+				<td class="rule_body"><i>To meet this requirement, an
+						implementation shall provide a mechanism for matching Unicode
+						default word boundaries.</i></td>
+			</tr>
+		</table>
+		<p>
+			The simple Level 1 support using simple <span class="regex">&lt;word_character&gt;</span>
+			classes is only a very rough approximation of user word boundaries. A
+			much better method takes into account more context than just a single
+			pair of letters. A general algorithm can take care of character and
+			word boundaries for most of the world&#39;s languages. For more
+			information, see UAX #29, <em>Unicode Text Segmentation</em>
+			 [<a href="tr18-19.html#UAX29">UAX29</a>].
+		</p>
+		<blockquote>
+			<p>
+				<b>Note:</b> Word boundaries and &quot;soft&quot; line-break
+				boundaries (where one could break in line wrapping) are not
+				generally the same; line breaking has a much more complex set of
+				requirements to meet the typographic requirements of different
+				languages. See UAX #14, Line Breaking Properties [<a href="tr18-19.html#UAX14">UAX14</a>] for more
+				information. However, soft line breaks are not generally relevant to
+				general regular expression engines.
+			</p>
+		</blockquote>
+		<p>
+			A fine-grained approach to languages such as Chinese or Thai—languages that 
+			do not use spaces—requires information that is
+			beyond the bounds of what a Level 2 algorithm can provide.
+		</p>
+		<h3>
+			2.4 <a name="Default_Loose_Matches" href="tr18-19.html#Default_Loose_Matches">
+				Default Case Conversion</a>
+		</h3>
+		<table class="noborder">
+			<tr>
+				<td class="rule_head"><a name="RL2.4" href="tr18-19.html#RL2.4">RL2.4</a></td>
+				<td class="rule_head">Default Case Conversion</td>
+			</tr>
+			<tr>
+				<td class="rule_body"></td>
+				<td class="rule_body">To meet this requirement,
+						if an implementation provides for case conversions, then
+							it shall provide at least the full, default Unicode case folding.
+				</td>
+			</tr>
+		</table>
+		<p>
+			Previous versions of RL2.4 included full default Unicode
+			case-insensitive matching. For most full-featured regular expression
+			engines, it is quite difficult to match under code point equivalences
+			that are not 1:1. For more discussion of this, see 1.5 <a
+				href="tr18-19.html#Simple_Loose_Matches">Simple Loose Matches</a> and 2.1 <a
+				href="tr18-19.html#Canonical_Equivalents">Canonical Equivalents</a>. Thus that
+			part of RL2.4 has been retracted.
+		</p>
+		<p>Instead, it is recommended that implementations provide for
+			full, default Unicode case conversion, allowing users to provide both
+			patterns and target text that has been fully case folded. That allows
+			for matches such as between U+00DF &quot;ß&quot; and the two
+			characters &quot;SS&quot;. Some implementations may choose to have a
+			mixed solution, where they do full case matching on literals such as
+			&quot;Strauß&quot;, but simple case folding on character classes such
+			as [ß].</p>
+		<p>
+			To correctly implement case conversions, see [<a href="tr18-19.html#Case">Case</a>].
+			For ease of implementation, a complete case folding file is supplied
+			at [<a href="tr18-19.html#CaseData">CaseData</a>]. Full case mappings use the
+			data files [<a href="tr18-19.html#SpecialCasing">SpecialCasing</a>] and [<a
+				href="tr18-19.html#UData">UData</a>].
+		</p>
+		<h3>
+			2.5 <a name="Name_Properties" href="tr18-19.html#Name_Properties">Name
+				Properties</a>
+		</h3>
+		<table class="noborder">
+			<tr>
+				<td class="rule_head"><a name="RL2.5" href="tr18-19.html#RL2.5">RL2.5</a></td>
+				<td class="rule_head">Name Properties</td>
+			</tr>
+			<tr>
+				<td class="rule_body"></td>
+				<td class="rule_body"><i>To meet this requirement, an
+						implementation shall support individually named characters.</i></td>
+			</tr>
+		</table>
+		<p>
+			When using names in regular expressions, the data is supplied in both
+			the <strong>Name (na)</strong> and <strong>Name_Alias</strong>
+			properties in the UCD, as described in UAX #44, <em>Unicode
+					Character Database</em> [<a href="tr18-19.html#UAX44">UAX44</a>], or computed as in
+			the case of CJK Ideographs or Hangul Syllables. Name matching rules
+			follow <a href="http://unicode.org/reports/tr44/#Matching_Rules">Matching
+				Rules</a> from [<a href="tr18-19.html#UAX44">UAX44</a>].
+		</p>
+		<p>The following provides examples of usage:</p>
+		<div align="center">
+		<table class="subtle">
+			<tr>
+				<th>Syntax</th>
+				<th>Set</th>
+				<th>Note</th>
+			</tr>
+			<tr>
+				<td><span class="regex">\p{name=ZERO WIDTH NO-BREAK SPACE}</span></td>
+				<td>[\u{FEFF}]</td>
+				<td>using the Name property</td>
+			<tr>
+				<td><span class="regex">\p{name=zerowidthno breakspace}</span></td>
+				<td>[\u{FEFF}]</td>
+				<td>using the Name property, and <a
+					href="http://unicode.org/reports/tr44/#Matching_Rules">Matching
+						Rules</a> [<a href="tr18-19.html#UAX44">UAX44</a>]
+				</td>
+			<tr>
+				<td><span class="regex">\p{name=BYTE ORDER MARK}</span></td>
+				<td>[\u{FEFF}]</td>
+				<td>using the Name_Alias property</td>
+			<tr>
+				<td><span class="regex">\p{name=BOM}</span></td>
+				<td>[\u{FEFF}]</td>
+				<td>using the Name_Alias property (a second value)</td>
+			<tr>
+				<td><span class="regex">\p{name=HANGUL SYLLABLE GAG}</span></td>
+				<td>[\u{AC01}]</td>
+				<td>with a computed name</td>
+			<tr>
+				<td><span class="regex">\p{name=BEL}</span></td>
+				<td>[\u{7}]</td>
+				<td>the control character</td>
+			<tr>
+				<td><span class="regex">\p{name=BELL}</span></td>
+				<td>[\u{1F514}</td>
+				<td>the graphic symbol 🔔</td>
+		</table>
+		</div>
+		<p>
+			Certain code points are not assigned names or name aliases in the
+			standard. With the exception of &quot;reserved&quot;, these should be
+			given names based on <em><a
+				href="../tr44/index.html#Label_Tags_Table">Code
+					Point Label Tags</a></em> table in [<a href="tr18-19.html#UAX44">UAX44</a>],
+					as shown in the following examples:
+		</p>
+		<div align="center">
+		<table class="subtle">
+			<tr>
+				<th>Syntax</th>
+				<th>Set</th>
+				<th>Note</th>
+			</tr>
+			<tr>
+				<td><span class="regex">\p{name=private-use-E000}</span></td>
+				<td>[\u{E000}]</td>
+				<td>&nbsp;</td>
+			</tr>
+			<tr>
+				<td><span class="regex">\p{name=surrogate-D800}</span></td>
+				<td>[\u{D800}]</td>
+				<td>would only apply to isolated surrogate
+				code points</td>
+			</tr>
+			<tr>
+				<td><span class="regex">\p{name=noncharacter-FDD0}</span></td>
+				<td>[\u{FDD0}]</td>
+				<td>&nbsp;</td>
+			</tr>
+			<tr>
+				<td><span class="regex">\p{name=control-0007}</span></td>
+				<td>[\u{7}]</td>
+				<td>&nbsp;</td>
+			</tr>
+		</table>
+		</div>
+		<p>
+			Characters with the &lt;reserved&gt; tag in the <a
+				href="../tr44/index.html#Label_Tags_Table">Code
+				Point Label Tags</a> table of [<a href="tr18-19.html#UAX44">UAX44</a>] are <em>excluded</em>:
+			the syntax \p{reserved-058F} would mean that the code point U+058F is
+			unassigned. While this code point was unassigned in Unicode 6.0, it <em>is</em>
+			assigned in Unicode 6.1 and thus no longer &quot;reserved&quot;.
+		</p>
+		<p>Implementers may add aliases beyond those recognized in the
+			UCD. They must be aware that such additional aliases may cause
+			problems if they collide with future character names or aliases. For
+			example, implementations that used the name &quot;BELL&quot; for
+			U+0007 broke when the new character U+1F514 ( 🔔 ) BELL was
+			introduced.</p>
+		<p>Previous versions of this specification recommended supporting
+			ISO control names from the Unicode 1.0 name field. These names are
+			now covered by the name aliases. In four cases, the name field
+			included both the ISO control name as well as an abbreviation in
+			parentheses.</p>
+		<p>
+				U+000A LINE FEED (LF)<br> 
+				U+000C FORM FEED (FF)<br>
+				U+000D CARRIAGE RETURN (CR)<br> 
+				U+0085 NEXT LINE (NEL)
+		</p>
+		<p>These abbreviations were intended as alternate aliases, not as
+			part of the name, but the documentation did not make this
+			sufficiently clear. As a result, some implementations supported the
+			entire field as a name. Those implementations might benefit from
+			continuing to support them for compatibility. Beyond that, their use
+			is not recommended.</p>
+		<h4>
+			2.5.1 <a name="Individually_Named_Characters"
+				href="tr18-19.html#Individually_Named_Characters">Individually Named
+				Characters</a>
+		</h4>
+		<p>The following provides syntax for specifying a code point by
+			supplying the precise name. This syntax specifies a single code
+			point, which can thus be used in ranges.</p>
+		<blockquote>
+			<pre>&lt;codepoint&gt; := &quot;\N{&quot; &lt;character_name&gt; &quot;}&quot;</pre>
+		</blockquote>
+		<p>The \N syntax is related to the syntax \p{name=...}, but there
+			are three important distinctions:</p>
+		<ol>
+			<li>\N matches a single character or a sequence, while \p
+				matches a set of characters.</li>
+			<li>The \p{name=&lt;character_name&gt;} may silently fail, if no
+				character exists with that name. The \N syntax should instead cause
+				a syntax error for an undefined name.</li>
+			<li>The \p{name=...} syntax can be used meaningfully with
+				wildcards (see <em>Section 2.6 <a href="tr18-19.html#Wildcard_Properties">Wildcards
+						in Property Values</a></em>). For example, in Unicode 6.1, \p{name=/ALIEN/}
+				would designate a set of two characters:
+				<ul>
+					<li>U+1F47D ( 👽 ) EXTRATERRESTRIAL ALIEN,</li>
+					<li>U+1F47E ( 👾 ) ALIEN MONSTER</li>
+				</ul>
+			</li>
+			<li>The namespace for the \p{name=...} syntax is the namespace
+				for character names plus name aliases. The namespace for the \N
+				syntax includes named sequences defined in NamedSequences.txt, such
+				as \N{KHMER CONSONANT SIGN COENG KA}. Sequences behave as a single
+				element, so \N{KHMER CONSONANT SIGN COENG KA}* should be treated as
+				if it were the expression (\u{17D2 1780})*.</li>
+		</ol>
+		<p>As with other property values, names should use a loose match,
+			disregarding case, spaces and hyphen (the underbar character
+			&quot;_&quot; cannot occur in Unicode character names). An
+			implementation may also choose to allow namespaces, where some prefix
+			like &quot;LATIN LETTER&quot; is set globally and used if there is no
+			match otherwise.</p>
+		<p>There are, however, three instances that require special-casing
+			with loose matching, where an extra test shall be made for the
+			presence or absence of a hyphen.</p>
+		<ul>
+			<li>U+0F68 TIBETAN LETTER A and<br> U+0F60 TIBETAN
+					LETTER <b>-A</b>
+			</li>
+			<li>U+0FB8 TIBETAN SUBJOINED LETTER A and<br> U+0FB0
+					TIBETAN SUBJOINED LETTER <b>-A</b>
+			</li>
+			<li>U+116C HANGUL JUNGSEONG OE and<br> U+1180 HANGUL
+					JUNGSEONG <b>O-E</b></li>
+		</ul>
+		<p>The following table gives examples of the \N syntax:</p>
+		<div align="center">
+			<table class="subtle">
+				<tr>
+					<th>Expression</th>
+					<th>Equivalent to</th>
+				</tr>
+				<tr>
+					<td><span class="regex">\N{WHITE SMILING FACE}</span></td>
+					<td rowspan="2" style="vertical-align:middle"><span class="regex">\u{263A}</span></td>
+				</tr>
+				<tr>
+					<td><span class="regex">\N{whitesmilingface}</span></td>
+				</tr>
+				<tr>
+					<td><span class="regex">\N{GREEK SMALL LETTER ALPHA}</span></td>
+					<td><span class="regex">\u{3B1}</span></td>
+				</tr>
+				<tr>
+					<td><span class="regex">\N{FORM FEED}</span></td>
+					<td><span class="regex">\u{C}</span></td>
+				</tr>
+				<tr>
+					<td><span class="regex">\N{SHAVIAN LETTER PEEP}</span></td>
+					<td><span class="regex">\u{10450}</span></td>
+				</tr>
+				<tr>
+					<td><span class="regex">[\N{GREEK SMALL LETTER
+					ALPHA}-\N{GREEK SMALL LETTER BETA}]</span></td>
+					<td><span class="regex">[\u{3B1}-\u{3B2}]</span></td>
+				</tr>
+			</table>
+		</div>
+		<p>&nbsp;</p>
+		<h3>
+			2.6 <a name="Wildcard_Properties" href="tr18-19.html#Wildcard_Properties">Wildcards
+				in Property Values</a>
+		</h3>
+		<table class="noborder">
+			<tr>
+				<td class="rule_head"><a name="RL2.6" href="tr18-19.html#RL2.6">RL2.6</a></td>
+				<td class="rule_head">Wildcards in Property Values</td>
+			</tr>
+			<tr>
+				<td class="rule_body"></td>
+				<td class="rule_body"><i>To meet this requirement, an
+						implementation shall support wildcards in Unicode property values.</i></td>
+			</tr>
+		</table>
+		<p>Instead of a single property value, this feature allows the use
+			of a regular expression to pick out a set of characters based on
+			whether the property values match the regular expression. The regular
+			expression must support at least wildcards; other regular expressions
+			features are recommended but optional.</p>
+		<blockquote>
+			<pre>PROP_VALUE := &lt;value&gt;
+            | &quot;/&quot; &lt;regex expression&gt; &quot;/&quot;
+            | &quot;@&quot; &lt;unicode_property&gt; &quot;@&quot;</pre>
+		</blockquote>
+		<blockquote>
+			<p>
+				<b>Note:</b> Where regular expressions are used in matching, the
+				case, spaces, hyphen, and underbar are significant; it is presumed
+				that users will make use of regular-expression features to ignore
+				these if desired.
+			</p>
+		</blockquote>
+		<p>
+			The @…@ syntax is used to compare property values, and is primarily
+			intended for string properties. It allows for expressions such as
+			[:^toNFKC_Casefold=@toNFKC@:], which expresses the set of all and
+			only those code points <strong>CP</strong> such that <strong>toNFKC_Casefold(CP)</strong>
+			= <strong>toNFKC(CP)</strong>. The value <em>identity</em> can be
+			used in this context. For example, \p{toLowercase≠@identity@}
+			expresses the set of all characters that are changed by the
+			toLowercase mapping.
+		</p>
+		<p>The following table shows examples of the use of wildcards:</p>
+		<div align="center">
+		<table class="subtle">
+			<tr>
+				<th>Expression</th>
+				<th>Matched Set</th>
+			</tr>
+			<tr>
+				<td colspan="2" class="gray_background">Characters whose NFD form contains a &quot;b&quot;
+						(U+0062) in the value:</td>
+			</tr>
+			<tr>
+				<td nowrap><a
+					href="http://unicode.org/cldr/utility/list-unicodeset.jsp?a=\p{toNfd=/b/}">\p{toNfd=/b/}</a></td>
+				<td>U+0062 ( b ) LATIN SMALL LETTER B<br>
+						U+1E03 ( ḃ ) LATIN SMALL LETTER B WITH DOT ABOVE<br> 
+						U+1E05 ( ḅ ) LATIN SMALL LETTER B WITH DOT BELOW<br> 
+						U+1E07 ( ḇ ) LATIN SMALL LETTER B WITH LINE BELOW</td>
+			</tr>
+			<tr>
+				<td colspan="2" class="gray_background">Characters with names starting with &quot;LATIN
+						LETTER&quot; and ending with &quot;P&quot;:</td>
+			</tr>
+			<tr>
+				<td nowrap><a
+					href="http://unicode.org/cldr/utility/list-unicodeset.jsp?a=\p{name=/^LATIN%20LETTER.*P$/}">
+                             \p{name=/^LATIN LETTER.*P$/}</a></td>
+				<td>U+01AA ( ƪ ) LATIN LETTER REVERSED ESH LOOP<br> 
+					U+0294 ( ʔ ) LATIN LETTER GLOTTAL STOP<br> 
+					U+0296 ( ʖ ) LATIN LETTER INVERTED GLOTTAL STOP<br> 
+					U+1D18 ( ᴘ ) LATIN LETTER SMALL CAPITAL P</td>
+			</tr>
+			<tr>
+				<td colspan="2" class="gray_background">Characters with names containing
+						&quot;VARIATION&quot; or &quot;VARIANT&quot;:</td>
+			</tr>
+			<tr>
+				<td nowrap><a
+					href="http://unicode.org/cldr/utility/list-unicodeset.jsp?a=\p{name=/VARIA(TION|NT)/}">\p{name=/VARIA(TION|NT)/}</a></td>
+				<td>U+180B (&nbsp; ) MONGOLIAN FREE VARIATION SELECTOR ONE<br> 
+					… U+180D (&nbsp; ) MONGOLIAN FREE VARIATION SELECTOR THREE<br> 
+					U+299C ( ⦜ ) RIGHT ANGLE VARIANT WITH SQUARE<br> 
+					U+303E ( 〾 ) IDEOGRAPHIC VARIATION INDICATOR<br> 
+					U+FE00 (&nbsp; ) VARIATION SELECTOR-1<br> 
+					… U+FE0F (&nbsp; ) VARIATION SELECTOR-16<br> 
+					U+121AE ( 𒆮 ) CUNEIFORM SIGN KU4 VARIANT FORM<br> 
+					U+12425 ( 𒐥 ) CUNEIFORM NUMERIC SIGN THREE SHAR2 VARIANT FORM<br> 
+					U+1242F ( 𒐯 ) CUNEIFORM NUMERIC SIGN THREE SHARU VARIANT FORM<br> 
+					U+12437 ( 𒐷 ) CUNEIFORM NUMERIC SIGN THREE BURU VARIANT FORM<br> 
+					U+1243A ( 𒐺 ) CUNEIFORM NUMERIC SIGN THREE VARIANT FORM ESH16<br> 
+					… U+12449 ( 𒑉 ) CUNEIFORM NUMERIC SIGN NINE VARIANT FORM ILIMMU A<br>
+					U+12453 ( 𒑓 ) CUNEIFORM NUMERIC SIGN FOUR BAN2 VARIANT FORM<br> 
+					U+12455 ( 𒑕 ) CUNEIFORM NUMERIC SIGN FIVE BAN2 VARIANT FORM<br> 
+					U+1245D ( 𒑝 ) CUNEIFORM NUMERIC SIGN ONE THIRD VARIANT FORM A<br> 
+					U+1245E ( 𒑞 ) CUNEIFORM NUMERIC SIGN TWO THIRDS VARIANT FORM A<br> 
+					U+E0100 (&nbsp; ) VARIATION SELECTOR-17<br> 
+					… U+E01EF (&nbsp; ) VARIATION SELECTOR-256
+				</td>
+			</tr>
+			<tr>
+				<td colspan="2" class="gray_background">Characters in the Letterlike symbol block
+						with different toLowercase values:</td>
+			</tr>
+			<tr>
+				<td nowrap>[\p{toLowercase≠@cp@}<br> &amp;
+					\p{Block=Letterlike Symbols}]</td>
+				<td>U+2126 ( Ω ) OHM SIGN<br> 
+					U+212A ( K ) KELVIN SIGN<br>
+					U+212B ( Å ) ANGSTROM SIGN<br> 
+					U+2132 ( Ⅎ ) TURNED CAPITAL F
+				</td>
+			</tr>
+		</table>
+		</div>
+		<p>The lists in the examples above were extracted on the basis of Unicode 5.0; different
+			Unicode versions may produce different results.</p>
+		<p>The following table some additional samples, illustrating various sets. A
+			click on the link will use the online Unicode utilities on the
+			Unicode website to show the contents of the sets. Note that these
+			online utilities curently use single-letter operations.</p>
+		<div align="center">
+		<table class="subtle">
+			<tr>
+				<th>Expression</th>
+				<th><b>Description</b></th>
+			</tr>
+			<tr>
+				<td nowrap><span class="regex"><a target="list"
+						href="http://unicode.org/cldr/utility/list-unicodeset.jsp?a=%5B%5B:name=/CJK/:%5D-%5B:ideographic:%5D%5D">[[:name=/CJK/:]-[:ideographic:]]</a></span></td>
+				<td>The set of all characters with names that contain CJK that
+					are not Ideographic</td>
+			</tr>
+			<tr>
+				<td nowrap><span class="regex"><a target="list"
+						href="http://unicode.org/cldr/utility/list-unicodeset.jsp?a=%5B:name=/%5CbDOT$/:%5D">[:name=/\bDOT$/:]</a></span></td>
+				<td>The set of all characters with names that end with the word
+					DOT</td>
+			</tr>
+			<tr>
+				<td nowrap><span class="regex"><a target="list"
+						href="http://unicode.org/cldr/utility/list-unicodeset.jsp?a=%5B:block=/%28?i%29arab/:%5D">[:block=/(?i)arab/:]</a></span></td>
+				<td>The set of all characters in blocks that contain the
+					sequence of letters &quot;arab&quot; (case-insensitive)</td>
+			</tr>
+			<tr>
+				<td nowrap><span class="regex"><a target="list"
+						href="http://unicode.org/cldr/utility/list-unicodeset.jsp?a=%5B:toNFKC=/%5C./:%5D">[:toNFKC=/\./:]</a></span></td>
+				<td>the set of all characters with toNFKC values that contain a
+					literal period</td>
+			</tr>
+		</table>
+		</div>
+		<br>
+		<h3>
+			2.7 <a name="Full_Properties" href="tr18-19.html#Full_Properties">Full
+				Properties</a>
+		</h3>
+		<table class="noborder">
+			<tr>
+				<td class="rule_head"><a name="RL2.7" href="tr18-19.html#RL2.7">RL2.7</a></td>
+				<td class="rule_head">Full Properties</td>
+			</tr>
+			<tr>
+				<td class="rule_body"></td>
+				<td><i>To meet this requirement, an implementation shall
+						support all of the properties listed below that are in the
+						supported version of Unicode, with values that match the Unicode
+						definitions for that version.</i></td>
+			</tr>
+		</table>
+		<p>To meet requirement RL2.7, the implementation must satisfy the
+			Unicode definition of the properties for the supported version of
+			Unicode, rather than other possible definitions. However, the names
+			used by the implementation for these properties may differ from the
+			formal Unicode names for the properties. For example, if a regex
+			engine already has a property called &quot;Alphabetic&quot;, for
+			backwards compatibility it may need to use a distinct name, such as
+			&quot;Unicode_Alphabetic&quot;, for the corresponding property listed
+			in <a href="tr18-19.html#RL1.2">RL1.2</a>.
+		<p>
+			The list excludes provisional, contributory, obsolete, and deprecated
+			properties. It also excludes specific properties: Unicode_1_Name,
+			Unicode_Radical_Stroke, and the Unihan properties. The properties shown in the table with a
+			<span class="gray_background">gray background</span> are covered by <a href="tr18-19.html#RL1.2">RL1.2</a> Properties. For
+			more information on properties, see UAX #44, <em>Unicode
+					Character Database</em> [<a href="tr18-19.html#UAX44">UAX44</a>].
+		</p>
+		<div align="center">
+			<table class="subtle">
+				<tr>
+					<th width="33%">General</th>
+					<th>Case</th>
+					<th>Shaping and Rendering</th>
+				</tr>
+				<tr>
+					<td><a href="http://unicode.org/reports/tr44/#Name">Name</a> (<a
+						href="http://unicode.org/reports/tr44/#Name_Alias">Name_Alias</a>)</td>
+					<td><a href="http://unicode.org/reports/tr44/#Uppercase"
+						class="gray_background">Uppercase</a></td>
+					<td><a href="http://unicode.org/reports/tr44/#Join_Control">Join_Control</a></td>
+				</tr>
+				<tr>
+					<td><a href="http://unicode.org/reports/tr44/#Block">Block</a></td>
+					<td><a href="http://unicode.org/reports/tr44/#Lowercase"
+						class="gray_background">Lowercase</a></td>
+					<td><a href="http://unicode.org/reports/tr44/#Joining_Group">Joining_Group</a></td>
+				</tr>
+				<tr>
+					<td><a href="http://unicode.org/reports/tr44/#Age">Age</a></td>
+					<td><a
+						href="http://unicode.org/reports/tr44/#Lowercase_Mapping">Lowercase_Mapping</a></td>
+					<td><a href="http://unicode.org/reports/tr44/#Joining_Type">Joining_Type</a></td>
+				</tr>
+				<tr>
+					<td><a
+						href="http://unicode.org/reports/tr44/#General_Category"
+						class="gray_background">General_Category</a></td>
+					<td><a
+						href="http://unicode.org/reports/tr44/#Titlecase_Mapping">Titlecase_Mapping</a></td>
+					<td><a href="http://unicode.org/reports/tr44/#Line_Break">Line_Break</a></td>
+				</tr>
+				<tr>
+					<td><a href="http://unicode.org/reports/tr44/#Script"
+						class="gray_background">Script</a> (<a
+						href="http://unicode.org/reports/tr44/#Script_Extensions"
+						class="gray_background">Script_Extensions</a>)</td>
+					<td><a
+						href="http://unicode.org/reports/tr44/#Uppercase_Mapping">Uppercase_Mapping</a></td>
+					<td><a
+						href="http://unicode.org/reports/tr44/#Grapheme_Cluster_Break">Grapheme_Cluster_Break</a></td>
+				</tr>
+				<tr>
+					<td><a href="http://unicode.org/reports/tr44/#White_Space"
+						class="gray_background">White_Space</a></td>
+					<td><a href="http://unicode.org/reports/tr44/#Case_Folding">Case_Folding</a></td>
+					<td><a href="http://unicode.org/reports/tr44/#Sentence_Break">Sentence_Break</a></td>
+				</tr>
+				<tr>
+					<td><a href="http://unicode.org/reports/tr44/#Alphabetic"
+						class="gray_background">Alphabetic</a></td>
+					<td><a
+						href="http://unicode.org/reports/tr44/#Simple_Lowercase_Mapping">Simple_Lowercase_Mapping</a></td>
+					<td><a href="http://unicode.org/reports/tr44/#Word_Break">Word_Break</a></td>
+				</tr>
+				<tr>
+					<td><a
+						href="http://unicode.org/reports/tr44/#Hangul_Syllable_Type">Hangul_Syllable_Type</a></td>
+					<td><a
+						href="http://unicode.org/reports/tr44/#Simple_Titlecase_Mapping">Simple_Titlecase_Mapping</a></td>
+					<td><a
+						href="http://unicode.org/reports/tr44/#East_Asian_Width">East_Asian_Width</a></td>
+				</tr>
+				<tr>
+					<td><a
+						href="http://unicode.org/reports/tr44/#Noncharacter_Code_Point"
+						class="gray_background">Noncharacter_Code_Point</a></td>
+					<td><a
+						href="http://unicode.org/reports/tr44/#Simple_Uppercase_Mapping">Simple_Uppercase_Mapping</a></td>
+					<td><a 
+						href="http://unicode.org/reports/tr44/#Prepended_Concatenation_Mark">Prepended_Concatenation_Mark</a></td>
+				</tr>
+				<tr>
+					<td><a
+						href="http://unicode.org/reports/tr44/#Default_Ignorable_Code_Point"
+						class="gray_background">Default_Ignorable_Code_Point</a></td>
+					<td><a href="http://unicode.org/reports/tr44/#Simple_Case_Folding">Simple_Case_Folding</a></td>
+					<td>&nbsp;</td>
+				</tr>
+				<tr>
+					<td><a href="http://unicode.org/reports/tr44/#Deprecated">Deprecated</a></td>
+					<td><a href="http://unicode.org/reports/tr44/#Soft_Dotted">Soft_Dotted</a></td>
+					<th>Bidirectional</th>
+				</tr>
+				<tr>
+					<td><a href="http://unicode.org/reports/tr44/#Logical_Order_Exception">Logical_Order_Exception</a></td>
+					<td><a href="http://unicode.org/reports/tr44/#Cased">Cased</a></td>
+					<td><a href="http://unicode.org/reports/tr44/#Bidi_Class">Bidi_Class</a></td>
+				</tr>
+				<tr>
+					<td><a href="http://unicode.org/reports/tr44/#Variation_Selector">Variation_Selector</a></td>
+					<td><a href="http://unicode.org/reports/tr44/#Case_Ignorable">Case_Ignorable</a></td>
+					<td><a href="http://unicode.org/reports/tr44/#Bidi_Control">Bidi_Control</a></td>
+				</tr>
+				<tr>
+					<td>&nbsp;</td>
+					<td><a href="http://unicode.org/reports/tr44/#CWL">Changes_When_Lowercased</a></td>
+					<td><a href="http://unicode.org/reports/tr44/#Bidi_Mirrored">Bidi_Mirrored</a></td>
+				</tr>
+				<tr>
+					<th>Numeric</th>
+					<td><a href="http://unicode.org/reports/tr44/#CWU">Changes_When_Uppercased</a></td>
+					<td><a href="http://unicode.org/reports/tr44/#Bidi_Mirroring_Glyph">Bidi_Mirroring_Glyph</a></td>
+				</tr>
+				<tr>
+					<td><a href="http://unicode.org/reports/tr44/#Numeric_Value">Numeric_Value</a></td>
+					<td><a href="http://unicode.org/reports/tr44/#CWT">Changes_When_Titlecased</a></td>
+					<td><a href="http://unicode.org/reports/tr44/#Bidi_Paired_Bracket">Bidi_Paired_Bracket</a></td>
+				</tr>
+				<tr>
+					<td><a href="http://unicode.org/reports/tr44/#Numeric_Type">Numeric_Type</a></td>
+					<td><a href="http://unicode.org/reports/tr44/#CWCF">Changes_When_Casefolded</a></td>
+					<td><a href="http://unicode.org/reports/tr44/#Bidi_Paired_Bracket_Type">Bidi_Paired_Bracket_Type</a></td>
+				</tr>
+				<tr>
+					<td><a href="http://unicode.org/reports/tr44/#Hex_Digit">Hex_Digit</a></td>
+					<td><a href="http://unicode.org/reports/tr44/#CWCM">Changes_When_Casemapped</a></td>
+					<td>&nbsp;</td>
+				</tr>
+				<tr>
+					<td><a href="http://unicode.org/reports/tr44/#ASCII_Hex_Digit">ASCII_Hex_Digit</a></td>
+					<td>&nbsp;</td>
+					<th>Miscellaneous</th>
+				</tr>
+				<tr>
+					<td>&nbsp;</td>
+					<th>Normalization</th>
+					<td><a href="http://unicode.org/reports/tr44/#Math">Math</a></td>
+				</tr>
+				<tr>
+					<th>Identifiers</th>
+					<td><a href="http://unicode.org/reports/tr44/#Canonical_Combining_Class">Canonical_Combining_Class</a></td>
+					<td><a href="http://unicode.org/reports/tr44/#Quotation_Mark">Quotation_Mark</a></td>
+				</tr>
+				<tr>
+					<td><a href="http://unicode.org/reports/tr44/#ID_Continue">ID_Continue</a></td>
+					<td><a href="http://unicode.org/reports/tr44/#Decomposition_Type">Decomposition_Type</a></td>
+					<td><a href="http://unicode.org/reports/tr44/#Dash">Dash</a></td>
+				</tr>
+				<tr>
+					<td><a href="http://unicode.org/reports/tr44/#ID_Start">ID_Start</a></td>
+					<td><a href="http://unicode.org/reports/tr44/#NFC_Quick_Check">NFC_Quick_Check</a></td>
+					<td><a href="http://unicode.org/reports/tr44/#STerm">Sentence_Terminal</a></td>
+				</tr>
+				<tr>
+					<td><a href="http://unicode.org/reports/tr44/#XID_Continue">XID_Continue</a></td>
+					<td><a href="http://unicode.org/reports/tr44/#NFKC_Quick_Check">NFKC_Quick_Check</a></td>
+					<td><a href="http://unicode.org/reports/tr44/#Terminal_Punctuation">Terminal_Punctuation</a></td>
+				</tr>
+				<tr>
+					<td><a href="http://unicode.org/reports/tr44/#XID_Start">XID_Start</a></td>
+					<td><a href="http://unicode.org/reports/tr44/#NFD_Quick_Check">NFD_Quick_Check</a></td>
+					<td><a href="http://unicode.org/reports/tr44/#Diacritic">Diacritic</a></td>
+				</tr>
+				<tr>
+					<td><a href="http://unicode.org/reports/tr44/#Pattern_Syntax">Pattern_Syntax</a></td>
+					<td><a href="http://unicode.org/reports/tr44/#NFKD_Quick_Check">NFKD_Quick_Check</a></td>
+					<td><a href="http://unicode.org/reports/tr44/#Extender">Extender</a></td>
+				</tr>
+				<tr>
+					<td><a href="http://unicode.org/reports/tr44/#Pattern_White_Space">Pattern_White_Space</a></td>
+					<td><a href="http://unicode.org/reports/tr44/#NFKC_Casefold">NFKC_Casefold</a></td>
+					<td><a href="http://unicode.org/reports/tr44/#Grapheme_Base">Grapheme_Base</a></td>
+				</tr>
+				<tr>
+					<td>&nbsp;</td>
+					<td><a href="http://unicode.org/reports/tr44/#CWKCF">Changes_When_NFKC_Casefolded</a></td>
+					<td><a href="http://unicode.org/reports/tr44/#Grapheme_Extend">Grapheme_Extend</a></td>
+				</tr>
+				<tr>
+					<th>CJK</th>
+					<td>&nbsp;</td>
+					<td>&nbsp;</td>
+				</tr>
+				<tr>
+					<td><a href="http://unicode.org/reports/tr44/#Ideographic">Ideographic</a></td>
+					<td>&nbsp;</td>
+					<td>&nbsp;</td>
+				</tr>
+				<tr>
+					<td><a href="http://unicode.org/reports/tr44/#Unified_Ideograph">Unified_Ideograph</a></td>
+					<td>&nbsp;</td>
+					<td>&nbsp;</td>
+				</tr>
+				<tr>
+					<td><a href="http://unicode.org/reports/tr44/#Radical">Radical</a></td>
+					<td></td>
+				</tr>
+				<tr>
+					<td><a href="http://unicode.org/reports/tr44/#IDS_Binary_Operator">IDS_Binary_Operator</a></td>
+					<td>&nbsp;</td>
+					<td>&nbsp;</td>
+				</tr>
+				<tr>
+					<td><a href="http://unicode.org/reports/tr44/#IDS_Trinary_Operator">IDS_Trinary_Operator</a></td>
+					<td>&nbsp;</td>
+					<td>&nbsp;</td>
+				</tr>
+			</table>
+		</div>
+		<p>
+			The <a href="http://unicode.org/reports/tr44/#Name">Name</a> and <a
+				href="http://unicode.org/reports/tr44/#Name_Alias">Name_Alias</a>
+			properties are used in \p{name=…} and \N{…}. The data in
+			NamedSequences.txt is also used in \N{…}. For more information see <em>Section
+				2.5, <a href="tr18-19.html#Name_Properties">Name Properties</a>
+			</em>. The <a href="http://unicode.org/reports/tr44/#Script">Script</a>
+			and <a href="http://unicode.org/reports/tr44/#Script_Extensions">Script_Extensions</a>
+			properties are used in \p{scx=…}. For more information, see <em>Section
+				1.2.2, <a href="tr18-19.html#Script_Property">Script_Property</a>.
+			</em>
+		</p>
+		<hr>
+		<h2>
+			3 <a name="Tailored_Support" href="tr18-19.html#Tailored_Support">Tailored
+				Support: Level 3</a><a name="Level_3" href="tr18-19.html#Level_3"></a>
+		</h2>
+		<p>All of the above deals with a default specification for a
+			regular expression. However, a regular expression engine also may
+			want to support tailored specifications, typically tailored for a
+			particular language or locale. This may be important when the regular
+			expression engine is being used by end-users instead of programmers,
+			such as in a word-processor allowing some level of regular
+			expressions in searching.</p>
+		<p>
+			For example, the order of Unicode characters may differ substantially
+			from the order expected by users of a particular language. The
+			regular expression engine has to decide, for example, whether the
+			list <span class="regex">[a-ä]</span> means:
+		</p>
+		<ul>
+			<li>the Unicode characters in binary order between <span
+				class="regex">0061<sub>16</sub></span> and <span class="regex">00E5<sub>16</sub></span>
+				(including &#39;<span class="regex">z</span>&#39;, &#39;<span
+				class="regex">Z</span>&#39;, &#39;[&#39;, and &#39;<span
+				class="regex">¼</span>&#39;), <i>or</i>
+			</li>
+			<li>the letters in that order in the users&#39; locale (which <i>does
+					not</i> include &#39;<span class="regex">z</span>&#39; in English, but
+				<i>does</i> include it in Swedish).
+			</li>
+		</ul>
+		<p>If both tailored and default regular expressions are supported,
+			then a number of different mechanism are affected. There are two main
+			alternatives for control of tailored support:</p>
+		<ul>
+			<li><i>coarse-grained support:</i> the whole regular expression
+				(or the whole script in which the regular expression occurs) can be
+				marked as being tailored.</li>
+			<li><i>fine-grained support:</i> any part of the regular
+				expression can be marked in some way as being tailored.</li>
+		</ul>
+		<p>
+			For example, fine-grained support could use some syntax such as the
+			following to indicate tailoring to a locale within a certain range:</p>
+		<blockquote>
+			<pre>\T{&lt;locale_id&gt;}..\E</pre>
+		</blockquote>
+			<p>Locale (or language) IDs should use the syntax from locale identifier
+			definition in [<a href="tr18-19.html#UTS35">UTS35</a>], <i>Section 3. <a
+				href="http://unicode.org/reports/tr35/#Identifiers">Identifiers</a>
+			</i>. Note that the locale id of &quot;root&quot; or &quot;und&quot;
+			indicates the root locale, such as in the CLDR root collation.
+		</p>
+		<p>There must be some sort of syntax that will allow Level 3
+			support to be turned on and off, for two reasons. Level 3 support may
+			be considerably slower than Level 2, and most regular expressions may
+			require Level 1 or Level 2 matches to work properly. The syntax
+			should also specify the particular locale or other tailoring
+			customization that the pattern was designed for, because tailored
+			regular expression patterns are usually quite specific to the locale,
+			and will generally not work across different locales.</p>
+		<p>Sections 3.6 and following describe some additional
+			capabilities of regular expression engines that are very useful in a
+			Unicode environment, especially in dealing with the complexities of
+			the large number of writing systems and languages expressible in
+			Unicode.</p>
+		<h3>
+			3.1 <a name="Tailored_Properties" href="tr18-19.html#Tailored_Properties">
+				Tailored Punctuation</a>
+		</h3>
+		<p>
+			The Unicode character properties for punctuation may vary from
+			language to language or from country to country. In most cases, the
+			effects of such changes will be apparent in other operations, such as
+			a determination of word breaks. But there are other circumstances
+			where the effects should be apparent in the general APIs, such as
+			when testing whether a curly quotation mark is <i>opening</i> or <i>closing</i>
+			punctuation.
+		</p>
+		<table class="noborder">
+			<tr>
+				<td class="rule_head"><a name="RL3.1" href="tr18-19.html#RL3.1">RL3.1</a></td>
+				<td class="rule_head">Tailored Punctuation</td>
+			</tr>
+			<tr>
+				<td class="rule_body"></td>
+				<td class="rule_body"><i>To meet this requirement, an
+						implementation shall allow for punctuation properties to be
+						tailored according to locale, using the </i>locale identifier
+					definition in [<a href="tr18-19.html#UTS35">UTS35</a>], <i>Section 3. <a
+						href="http://unicode.org/reports/tr35/#Identifiers">Identifiers</a>.
+				</i></td>
+			</tr>
+		</table>
+		<p>As just described, there must be the capability of turning this
+			support on or off.</p>
+		<h3>
+			3.2 <a name="Tailored_Graphemes_Clusters"
+				href="tr18-19.html#Tailored_Graphemes_Clusters">Tailored Grapheme
+				Clusters</a>
+		</h3>
+		<table class="noborder">
+			<tr>
+				<td class="rule_head"><a name="RL3.2" href="tr18-19.html#RL3.2">RL3.2</a></td>
+				<td class="rule_head">Tailored Grapheme Clusters</td>
+			</tr>
+			<tr>
+				<td class="rule_body"></td>
+				<td class="rule_body"><i>To meet this requirement, an
+						implementation shall provide for collation grapheme clusters
+						matches based on a locale&#39;s collation order.</i></td>
+			</tr>
+		</table>
+		<p>
+			Tailored grapheme clusters may be somewhat different than the
+			extended grapheme clusters discussed in Level 2. They are coordinated
+			with the collation ordering for a given language in the following
+			way. A collation ordering determines a <i>collation grapheme
+				cluster</i>, which is a sequence of characters that is treated as a unit
+			by the ordering. For example, <i>ch</i> is a collation grapheme
+			cluster for a traditional Spanish ordering.
+		</p>
+		<p>The tailored grapheme clusters for a particular locale are the
+			collation grapheme clusters for the collation ordering for that
+			locale. The determination of tailored grapheme clusters requires the
+			regular expression engine to either draw upon the platform&#39;s
+			collation data, or incorporate its own tailored data for each
+			supported locale.</p>
+		<p>
+			For example, an implementation could interpret <span class="regex">\X{es-u-co-trad}</span>
+			as matching a collation grapheme cluster for a traditional Spanish
+			ordering, or use a switch to change the meaning of <strong>\X</strong>
+			during some span of the regular expression.
+		</p>
+		<p>
+			See <em>Section 6.9, Handling Collation Graphemes</em> in UTS #10, <em>Unicode
+				Collation Algorithm</em> [<a href="tr18-19.html#UTS10">UTS10</a>] for the definition
+			of collation grapheme clusters, and <a
+				href="tr18-19.html#Sample_Collation_Character_Code"><em>Annex B: Sample
+					Collation Grapheme Cluster Code</em></a> for sample code.
+		</p>
+		<h3>
+			3.3 <a name="Tailored_Word_Boundaries" href="tr18-19.html#Tailored_Word_Boundaries">
+				Tailored Word Boundaries</a>
+		</h3>
+		<table class="noborder">
+			<tr>
+				<td class="rule_head"><a name="RL3.3" href="tr18-19.html#RL3.3">RL3.3</a></td>
+				<td class="rule_head">Tailored Word Boundaries</td>
+			</tr>
+			<tr>
+				<td class="rule_body"></td>
+				<td class="rule_body"><i>To meet this requirement, an
+						implementation shall allow for the ability to have word boundaries
+						to be tailored according to locale.</i></td>
+			</tr>
+		</table>
+		<p>
+			For example, an implementation could interpret <span class="regex">\b{x:…}</span>
+			as matching the word break positions according to the locale
+			information in CLDR [<a href="tr18-19.html#UTS35">UTS35</a>] (which are
+			tailorings of word break positions in [<a href="tr18-19.html#UAX29">UAX29</a>]).
+			Thus it could interpret expressions as show here:
+		</p>
+		<div align="center">
+			<table class="subtle">
+				<tr>
+					<th>Expression</th>
+					<th>Matches</th>
+				</tr>
+				<tr>
+					<td><span class="regex">\b{w:und}</span></td>
+					<td rowspan="2" style="vertical-align:middle">a <em>root</em> word break</td>
+				</tr>
+				<tr>
+					<td><span class="regex">\b{w}</span></td>
+				</tr>
+				<tr>
+					<td><span class="regex">\b{w:ja}</span></td>
+					<td>a Japanese word break</td>
+				</tr>
+				<tr>
+					<td><span class="regex">\b{l:ja}</span></td>
+					<td>a Japanese line break</td>
+				</tr>
+			</table>
+		</div>
+		<p>
+			Alternatively, it could use a switch to change the meaning of <strong>\b</strong>
+			and <strong>\B</strong> during some span of the regular expression.
+		</p>
+		<p>Semantic analysis may be required for correct word boundary
+			detection in languages that do not require spaces, such as Thai. This
+			can require fairly sophisticated support if Level 3 word boundary
+			detection is required, and usually requires drawing on platform OS
+			services.</p>
+		<h3>
+			3.4 <a name="Tailored_Loose_Matches" href="tr18-19.html#Tailored_Loose_Matches">
+				Tailored Loose Matches</a> (Retracted)
+		</h3>
+		<table class="noborder">
+			<tr>
+				<td class="rule_head"><a name="RL3.4" href="tr18-19.html#RL3.4">RL3.4</a></td>
+				<td class="rule_head">Tailored Loose Matches (Retracted)</td>
+			</tr>
+		</table>
+		<p>
+			Previous versions of RL3.4 described loose matches based on collation
+			order. However, for most full-featured regular expression engines, it
+			is quite difficult to match under code point equivalences that are
+			not 1:1. For more discussion of this, see 1.5 <a
+				href="tr18-19.html#Simple_Loose_Matches">Simple Loose Matches</a> and 2.1 <a
+				href="tr18-19.html#Canonical_Equivalents">Canonical Equivalents</a>. Thus RL3.4
+			has been retracted.
+		</p>
+		<h3>
+			3.5 <a name="Tailored_Ranges" href="tr18-19.html#Tailored_Ranges">Tailored
+				Ranges</a> (Retracted)
+		</h3>
+		<table class="noborder">
+			<tr>
+				<td class="rule_head"><a name="RL3.5" href="tr18-19.html#RL3.5">RL3.5</a></td>
+				<td class="rule_head">Tailored Ranges (Retracted)</td>
+			</tr>
+		</table>
+		<p>
+			Previous versions of RL3.5 described ranges based on collation order.
+			However, tailored ranges can be quite difficult to implement
+			properly, and can have very unexpected results in practice. For
+			example, languages may also vary whether they consider lowercase
+			below uppercase or the reverse. This can have some surprising
+			results: <span class="regex">[a-Z]</span> may not match anything if <i>Z
+				&lt; a</i> in that locale. Thus RL3.5 has been retracted.
+		</p>
+		<h3>
+			3.6 <a name="Context_Matching" href="tr18-19.html#Context_Matching">Context
+				Matching</a>
+		</h3>
+		<table class="noborder">
+			<tr>
+				<td class="rule_head"><a name="RL3.6" href="tr18-19.html#RL3.6">RL3.6</a></td>
+				<td class="rule_head">Context Matching</td>
+			</tr>
+			<tr>
+				<td class="rule_body"></td>
+				<td class="rule_body"><i>To meet this requirement, an
+						implementation shall provide for a restrictive match against input
+						text, allowing for context before and after the match.</i></td>
+			</tr>
+		</table>
+		<p>
+			For parallel, filtered transformations, such as those involved in
+			script transliteration, it is important to restrict the matching of a
+			regular expression to a substring of a given string, and yet allow
+			for context before and after the affected area. Here is a sample API
+			that implements such functionality, where m is an extension of a
+			Regex <a
+				href="http://download.oracle.com/javase/6/docs/api/java/util/regex/Matcher.html">Matcher</a>.
+		</p>
+		<blockquote>
+		<pre>if (m.matches(text, contextStart, targetStart, targetLimit, contextLimit)) {
+  int end = p.getMatchEnd();
+}</pre>
+  		</blockquote>
+		<p>
+			The range of characters between <span class="regex">contextStart</span>
+			and <span class="regex">targetStart</span> define a <i>precontext</i>;
+			the characters between <span class="regex">targetStart</span> and <span
+				class="regex">targetLimit</span> define a <i>target</i>, and the
+			offsets between <span class="regex">targetLimit</span> and <span
+				class="regex">contextLimit</span> define a <i>postcontext</i>. Thus
+			<span class="regex">contextStart</span> ≤ <span class="regex">targetStart</span>
+			≤ <span class="regex">targetLimit</span> ≤ <span class="regex">contextLimit</span>.
+			The meaning of this function is that:
+		</p>
+		<ul>
+			<li>a match is attempted beginning at <span class="regex">targetStart</span>.
+			</li>
+			<li>the match will only succeed with an endpoint at or less than
+				<span class="regex">targetLimit</span>.
+			</li>
+			<li>any zero-width look-arounds (look-aheads or look-behinds)
+				can match characters inside or outside of the target, but cannot
+				match characters outside of the context.</li>
+		</ul>
+		<p>
+			Examples are shown in the following table. In these examples, the text in the pre- and postcontext is italicized
+			and the target is underlined. In the output column, the text 
+			shown with a <span class="gray_background">gray background</span>
+			is the matched portion. The pattern syntax &quot;(←x)&quot; means a
+			backwards match for <i>x</i> (without moving the cursor) This would
+			be <span class="regex">(?&lt;=x)</span> in Perl. The pattern
+			&quot;(→x)&quot; means a forwards match for <i>x</i> (without moving
+			the cursor). This would be <span class="regex">(?=x)</span> in Perl.
+		</p>
+		<div align="center">
+				<table class="subtle">
+					<tr>
+						<th>Pattern</th>
+						<th>Input</th>
+						<th>Output</th>
+						<th>Comment</th>
+					</tr>
+					<tr>
+						<td nowrap>/(←a) (bc)* (→d)/</td>
+						<td>1<i>a</i><u>bcbc</u><i>d</i>2
+						</td>
+						<td>1<i>a</i><u><span class="gray_background">bcbc</span></u><i>d</i>2
+						</td>
+						<td>matching with context</td>
+					</tr>
+					<tr>
+						<td nowrap>/(←a) (bc)* (→bcd)/</td>
+						<td>1<i>a</i><u>bcbc</u><i>d</i>2
+						</td>
+						<td>1<i>a</i><u><span class="gray_background">bc</span>bc</u><i>d</i>2
+						</td>
+						<td>stops early, because otherwise &#39;d&#39;
+							would not match</td>
+					</tr>
+					<tr>
+						<td>/(bc)*d/</td>
+						<td>1<i>a</i><u>bcbc</u><i>d</i>2
+						</td>
+						<td><i>no match</i></td>
+						<td>'d' cannot be matched in the
+							target, only in the postcontext</td>
+					</tr>
+					<tr>
+						<td nowrap>/(←a) (bc)* (→d)/</td>
+						<td>1a<u>bcbc</u><i>d</i>2
+						</td>
+						<td><i>no match</i></td>
+						<td>'a' cannot be matched, because it
+							is before the precontext (which is zero-length, in this case)</td>
+					</tr>
+				</table>
+		</div>
+		<p>While it would be possible to simulate this API call with other
+			regular expression calls, it would require subdividing the string and
+			making multiple regular expression engine calls, significantly
+			affecting performance.</p>
+		<p>
+			There should also be pattern syntax for matches (like ^ and $) for
+			the <span class="regex">contextStart</span> and <span class="regex">contextLimit</span>
+			positions.
+		</p>
+		<blockquote>
+			<p>
+				Internally, this can be implemented by modifying the regular
+				expression engine so that all matches are limited to characters
+				between <span class="regex">contextStart</span> and <span
+					class="regex">contextLimit</span>, and so that all matches that are
+				not zero-width look-arounds are limited to the characters between <span
+					class="regex">targetStart</span> and <span class="regex">targetLimit</span>.
+			</p>
+		</blockquote>
+		<h3>
+			3.7 <a name="Partial_Matches" href="tr18-19.html#Partial_Matches">Incremental
+				Matches</a>
+		</h3>
+		<table class="noborder">
+			<tr>
+				<td class="rule_head"><a name="RL3.7" href="tr18-19.html#RL3.7">RL3.7</a></td>
+				<td class="rule_head">Incremental Matches</td>
+			</tr>
+			<tr>
+				<td class="rule_body"></td>
+				<td class="rule_body"><i>To meet this requirement, an
+						implementation shall provide for incremental matching.</i></td>
+			</tr>
+		</table>
+		<p>
+			For buffered matching, one needs to be able to return whether there
+			is a partial match; that is, whether there <i>would be</i> a match if
+			additional characters were added after the <span class="regex">targetLimit</span>.
+			This can be done with a separate method having an enumerated return
+			value: <i>match</i>, <i>no_match</i>, or <i>partial_match</i>.
+		</p>
+		<blockquote>
+		<pre>if (m.incrementalmatches(text, cs, ts, tl, cl) == Matcher.MATCH) {
+  ...
+}</pre>
+  		</blockquote>
+		<p>
+			Thus performing an incremental match of <span class="regex">/bcbce(→d)/</span>
+			against &quot;1a<u>bcbc</u><i>d</i>2&quot; would return a <i>partial_match</i>
+			because the addition of an <i>e</i> to the end of the target would
+			allow it to match. Note that <span class="regex">/(bc)*(→d)/</span>
+			would <i> also</i> return a partial match, because if <i>bc</i> were
+			added at the end of the target, it would match.
+		</p>
+		<p>The following table shows the same patterns as shown above in 
+			<i>Section 3.6, <a href="tr18-19.html#Context_Matching">Context Matching</a></i>, but with the results for when an incremental match method is
+			called:</p>
+		<div align="center">
+		<table class="subtle">
+			<tr>
+				<th>Pattern</th>
+				<th>Input</th>
+				<th>Output</th>
+				<th>Comment</th>
+			</tr>
+			<tr>
+				<td nowrap>/(←a) (bc)* (→d)/</td>
+				<td>1<i>a</i><u>bcbc</u><i>d</i>2
+				</td>
+				<td><i>partial match</i></td>
+				<td>&#39;bc&#39; could be inserted</td>
+			</tr>
+			<tr>
+				<td nowrap>/(←a) (bc)* (→bcd)/</td>
+				<td>1<i>a</i><u>bcbc</u><i>d</i>2</td>
+				<td><i>partial match</i></td>
+				<td>&#39;bc&#39; could be inserted</td>
+			</tr>
+			<tr>
+				<td>/(bc)*d/</td>
+				<td>1<i>a</i><u>bcbc</u><i>d</i>2</td>
+				<td><i>partial match</i></td>
+				<td>&#39;d&#39; could be inserted</td>
+			</tr>
+			<tr>
+				<td nowrap>/(←a) (bc)* (→d)/</td>
+				<td>1a<u>bcbc</u><i>d</i>2</td>
+				<td><i>no match</i></td>
+				<td>as with the matches function; the backwards
+					search for &#39;a&#39; fails</td>
+			</tr>
+		</table>
+		</div>
+		<p>The typical usage of incremental matching is to make a series
+			of incremental match calls, marching through a buffer with each
+			successful match. At the end, if there is a partial match, one loads
+			another buffer (or waits for other input). When the process
+			terminates (no more buffers or input are available), then a regular
+			match call is made.</p>
+		<p>
+			Internally, incremental matching can be implemented in the regular
+			expression engine by detecting whether the matching process ever
+			fails when the current position is at or after <span class="regex">targetLimit</span>,
+			and setting a flag if so. If the overall match fails, and this flag
+			is set, then the return value is set to <i>partial_match</i>.
+			Otherwise, either <i>match</i> or <i>no_match</i> is returned, as
+			appropriate.
+		</p>
+		<p>
+			The return value <i>partial_match</i> indicates that there was a
+			partial match: if further characters were added there could be a
+			match to the resulting string. It may be useful to divide this return
+			value into two, instead:
+		</p>
+		<ul>
+			<li><i>extendable_match</i>: in addition to there being a
+				partial match, there was also a match somewhere in the string. For
+				example, when matching /(ab)*/ against &quot;aba&quot;, there is a
+				match, <i>and</i> if other characters were added (&quot;a&quot;,
+				&quot;aba&quot;,...) there could also be another match.</li>
+			<li><i>only_partial_match</i>: there was no other match in the
+				string. For example, when matching /abcd/ against &quot;abc&quot;,
+				there is only a partial match; there would be no match unless
+				additional characters were added.</li>
+		</ul>
+		<h3>
+			3.8 <a name="Unicode_Set_Sharing" href="tr18-19.html#Unicode_Set_Sharing">Unicode
+				Set Sharing</a> (Retracted)
+		</h3>
+		<p>
+			Previous versions described a technique to reduce memory consumption
+			by sharing the underlying implementation data structures for character classes.
+			That technique has been retracted because it assumed a very specific implementation environment and
+			did not specify any Unicode related pattern or matching features.
+		</p>
+		<h3>
+			3.9 <a name="Possible_Match_Sets" href="tr18-19.html#Possible_Match_Sets">Possible
+				Match Sets</a>
+		</h3>
+		<table class="noborder">
+			<tr>
+				<td class="rule_head"><a name="RL3.9" href="tr18-19.html#RL3.9">RL3.9</a></td>
+				<td class="rule_head">Possible Match Sets</td>
+			</tr>
+			<tr>
+				<td class="rule_body"></td>
+				<td class="rule_body"><i>To meet this requirement, an
+						implementation shall provide for the generation of possible match
+						sets from any regular expression pattern.</i></td>
+			</tr>
+		</table>
+		<p>There are a number of circumstances where additional functions
+			on regular expression patterns can be useful for performance or
+			analysis of those patterns. These are functions that return
+			information about the sets of characters that a regular expression
+			can match.</p>
+		<p>When applying a list of regular expressions (with replacements)
+			against a given piece of text, one can do that either serially or in
+			parallel. With a serial application, each regular expression is
+			applied the text, repeatedly from start to end. With parallel
+			application, each position in the text is checked against the entire
+			list, with the first match winning. After the replacement, the next
+			position in the text is checked, and so on.</p>
+		<p>For such a parallel process to be efficient, one needs to be
+			able to winnow out the regular expressions that simply could not
+			match text starting with a given code point. For that, it is very
+			useful to have a function on a regular expression pattern that
+			returns a set of all the code points that the pattern would partially
+			or fully match.</p>
+		<pre>   myFirstMatchingSet = pattern.getFirstMatchSet(Regex.POSSIBLE_FIRST_CODEPOINT);</pre>
+		<p>
+			For example, the pattern <span class="regex">/[[\u{0}-\u{FF}]
+				&amp;&amp; [:Latin:]] * [0-9]/</span> would return the set {0..9, A..Z,
+			a..z}. Logically, this is the set of all code points that would be at
+			least partial matches (if considered in isolation).
+		</p>
+		<blockquote>
+			<p>
+				<b>Note:</b> An additional useful function would be one that
+				returned the set of all code points that could be matched at any
+				point. Thus a code point outside of this set cannot be in any part
+				of a matching range.
+			</p>
+		</blockquote>
+		<p>The second useful case is the set of all code points that could
+			be matched in any particular group, that is, that could be set in the
+			standard $0, $1, $2, ... variables.</p>
+		<pre>   myAllMatchingSet = pattern.getAllMatchSet(Regex.POSSIBLE_IN$0);</pre>
+		<p>
+			Internally, this can be implemented by analysing the regular
+			expression (or parts of it) recursively to determine which characters
+			match. For example, the first match set of an alternation <i>(a |
+				b)</i> is the union of the first match sets of the terms <i>a</i> and <i>b</i>.
+		</p>
+		<p>
+			The set that is returned is only guaranteed to <i>include</i> all
+			possible first characters; if an expression gets too complicated it
+			could be a proper superset of all the possible characters.
+		</p>
+		<h3>
+			3.10 <a name="Folded_Matching" href="tr18-19.html#Folded_Matching">Folded
+				Matching</a> (Retracted)
+		</h3>
+		<table class="noborder">
+			<tr>
+				<td class="rule_head"><a name="RL3.10" href="tr18-19.html#RL3.10">RL3.10</a></td>
+				<td class="rule_head">Folded Matching</td>
+			</tr>
+		</table>
+		<p>
+			Previous versions of RL3.10 described tailored folding. However, for
+			most full-featured regular expression engines, it is quite difficult
+			to match under folding equivalences that are not 1:1. For more
+			discussion of this, see 1.5 <a href="tr18-19.html#Simple_Loose_Matches">Simple
+				Loose Matches</a> and 2.1 <a href="tr18-19.html#Canonical_Equivalents">Canonical
+				Equivalents</a>. Thus RL3.10 has been retracted.
+		</p>
+		<h3>
+			3.11 <a name="Submatchers" href="tr18-19.html#Submatchers">Submatchers</a>
+		</h3>
+		<table class="noborder">
+			<tr>
+				<td class="rule_head"><a name="RL3.11" href="tr18-19.html#RL3.11">RL3.11</a></td>
+				<td class="rule_head">Submatchers</td>
+			</tr>
+			<tr>
+				<td class="rule_body"></td>
+				<td class="rule_body"><i>To meet this requirement, an
+						implementation shall provide for general registration of matching
+						functions for providing matching for general linguistic features.</i></td>
+			</tr>
+		</table>
+		<p>There are over 70 properties in the Unicode character database,
+			yet there are many other sequences of characters that users may want
+			to match, many of them specific to given languages. For example,
+			characters that are used as vowels may vary by language. This goes
+			beyond single-character properties, because certain sequences of
+			characters may need to be matched; such sequences may not be easy
+			themselves to express using regular expressions. Extending the
+			regular expression syntax to provide for registration of arbitrary
+			properties of characters allows these requirements to be handled.</p>
+		<p>The following provides an example of this. The actual function
+			is just for illustration.</p>
+		<pre>class MultipleMatcher implements RegExSubmatcher {
+<span class="CComment">// from RegExFolder, must be overridden in subclasses
+  /**
+   * Returns -1 if there is no match; otherwise returns the endpoint;
+   * an offset indicating how far the match got.
+   * The endpoint is always between targetStart and targetLimit, inclusive.
+   * Note that there may be zero-width matches.
+   */</span>
+int match(String text, int contextStart, int targetStart, int targetLimit, int contextLimit) {
+<span class="CComment">// code for matching numbers according to numeric value.</span>
+}
+
+<span class="CComment">// from RegExFolder, may be overridden for efficiency
+  /**
+   * The parameter is a number. The match will match any numeric value that is a multiple.
+   * Example: for &quot;2.3&quot;, it will match &quot;0002.3000&quot;, &quot;4.6&quot;, &quot;11.5&quot;, and any non-Western
+   * script variants, like Indic numbers.
+   */</span>
+RegExSubmatcher clone(String parameter, Locale locale) {...}
+}
+  ...
+
+  RegExSubmatcher.registerMatcher(&quot;multiple&quot;, new MultipleMatcher());
+
+  ...
+
+  p = Pattern.compile(&quot;xxx<span style="color: #0000FF">\M{multiple=2.3}</span>xxx&quot;);</pre>
+		<p>In this example, the match function can be written to parse
+			numbers according to the conventions of different locales, based on
+			OS functions available for such parsing. If there are mechanisms for
+			setting a locale for a portion of a regular expression, then that
+			locale would be used; otherwise the default locale would be used.</p>
+		<blockquote>
+			<p align="left">
+				<b>Note:</b> It might be advantageous to make the Submatcher API
+				identical to the Matcher API; that is, only have one base class
+				&quot;Matcher&quot;, and have user extensions derive from the base
+				class. The base class itself can allow for nested matchers.
+			</p>
+		</blockquote>
+		<hr>
+		<h2>
+			<a name="Character_Blocks" href="tr18-19.html#Character_Blocks">Annex A:
+				Character Blocks</a>
+		</h2>
+		<p>
+			The Block property from the Unicode Character Database can be a
+			useful property for quickly describing a set of Unicode characters.
+			It assigns a name to segments of the Unicode codepoint space; for
+			example, <span class="regex">[\u{370}-\u{3FF}]</span> is the Greek
+			block.
+		</p>
+		<p>However, block names need to be used with discretion; they are
+			very easy to misuse because they only supply a very coarse view of
+			the Unicode character allocation. For example:</p>
+		<ul>
+			<li><b>Blocks are not at all exclusive.</b> There are many
+				mathematical operators that are not in the Mathematical Operators
+				block; there are many currency symbols not in Currency Symbols, and
+				so on.</li>
+			<li><b>Blocks may include characters not assigned in the
+					current version of Unicode. </b>This can be both an advantage and
+				disadvantage. Like the General Property, this allows an
+				implementation to handle characters correctly that are not defined
+				at the time the implementation is released. However, it also means
+				that depending on the current properties of assigned characters in a
+				block may fail. For example, all characters in a block may currently
+				be letters, but this may not be true in the future.</li>
+			<li><b>Writing systems may use characters from multiple
+					blocks: </b>English uses characters from Basic Latin and General
+				Punctuation, Syriac uses characters from both the Syriac and Arabic
+				blocks, various languages use Cyrillic plus a few letters from
+				Latin, and so on.</li>
+			<li><b>Characters from a single writing system may be split
+					across multiple blocks.</b> See the following table on Writing Systems
+				versus Blocks. Moreover, presentation forms for a number of
+				different scripts may be collected in blocks like Alphabetic
+				Presentation Forms or Halfwidth and Fullwidth Forms.</li>
+		</ul>
+		<p>The following table illustrates the mismatch between writing
+			systems and blocks. These are only examples; this table is not a
+			complete analysis. It also does not include common punctuation used
+			with all of these writing systems.</p>
+		<p class="caption">Writing Systems Versus Blocks</p>
+		<div align="center">
+		<table class="subtle">
+			<tr>
+				<th nowrap>Writing System</th>
+				<th>Associated Blocks</th>
+			</tr>
+			<tr>
+				<td>Latin</td>
+				<td>Basic Latin, Latin-1 Supplement, Latin Extended-A, Latin
+					Extended-B, Latin Extended-C, Latin Extended-D, 
+					Latin Extended-E, Latin Extended Additional, Combining Diacritical Marks</td>
+			</tr>
+			<tr>
+				<td>Greek</td>
+				<td>Greek, Greek Extended, Combining Diacritical Marks</td>
+			</tr>
+			<tr>
+				<td>Arabic</td>
+				<td>Arabic, Arabic Supplement, Arabic Extended-A, Arabic
+					Presentation Forms-A, Arabic Presentation Forms-B</td>
+			</tr>
+			<tr>
+				<td>Korean</td>
+				<td>Hangul Jamo, Hangul Jamo Extended-A, Hangul Jamo
+					Extended-B, Hangul Compatibility Jamo, Hangul Syllables, CJK
+					Unified Ideographs, CJK Unified Ideographs Extension A, CJK
+					Compatibility Ideographs, CJK Compatibility Forms, Enclosed CJK
+					Letters and Months, Small Form Variants</td>
+			</tr>
+			<tr>
+				<td>Yi</td>
+				<td>Yi Syllables, Yi Radicals</td>
+			</tr>
+			<tr>
+				<td>Chinese</td>
+				<td>CJK Unified Ideographs, CJK Unified Ideographs Extension A,
+					CJK Unified Ideographs Extension B, CJK Unified Ideographs
+					Extension C, CJK Unified Ideographs Extension D, 
+					CJK Unified Ideographs Extension E, CJK Compatibility
+					Ideographs, CJK Compatibility Ideographs Supplement,
+					CJK Compatibility Forms, Kangxi Radicals, CJK Radicals Supplement,
+					Enclosed CJK Letters and
+					Months, Small Form Variants, Bopomofo, Bopomofo Extended</td>
+			</tr>
+		</table>
+		</div>
+		<p>
+			For the above reasons, Script values are generally preferred to Block
+			values. Even there, they should be used in accordance with the
+			guidelines in UAX
+				#24, <em>Unicode Script Property</em> [<a href="tr18-19.html#UAX24">UAX24</a>].
+		</p>
+		<h2>
+			<a name="Sample_Collation_Character_Code"
+				href="tr18-19.html#Sample_Collation_Character_Code">Annex B: Sample
+				Collation Grapheme Cluster Code</a>
+		</h2>
+		<p>The following provides sample code for doing Level 3 collation
+			grapheme cluster detection. This code is meant to be illustrative,
+			and has not been optimized. Although written in Java, it could be
+			easily expressed in any programming language that allows access to
+			the Unicode Collation Algorithm mappings.</p>
+		<pre>
+			<span style="color: #0000FF">/**
+ * Return the end of a collation grapheme cluster.
+ * @param s         the source string
+ * @param start     the position in the string to search
+ *                  forward from
+ * @param collator  the collator used to produce collation elements.
+ * This can either be a custom-built one, or produced from
+ * the factory method Collator.getInstance(someLocale).
+ * @return          the end position of the collation grapheme cluster
+ */</span>
+
+static int getLocaleCharacterEnd(String s,
+  int start, RuleBasedCollator collator) {
+    int lastPosition = start;
+    CollationElementIterator it
+      = collator.getCollationElementIterator(
+          s.substring(start, s.length()));
+    it.next(); <span style="color: #0000FF">// discard first collation element</span>
+int primary;
+
+<span style="color: #0000FF">// accumulate characters until we get to a non-zero primary</span>
+
+do {
+        lastPosition = it.getOffset();
+        int ce = it.next();
+        if (ce == CollationElementIterator.NULLORDER) break;
+        primary = CollationElementIterator.primaryOrder(ce);
+    } while (primary == 0);
+    return lastPosition;
+}</pre>
+		<h2>
+			<a name="Compatibility_Properties" href="tr18-19.html#Compatibility_Properties">Annex
+				C: Compatibility Properties</a>
+		</h2>
+		<p>The following table shows recommended assignments for compatibility
+			property names, for use in Regular Expressions. The standard recommendation
+			is shown in the column labeled "Standard"; applications should use
+			this definition wherever possible. If populated with a different
+			value, the column labeled "POSIX Compatible"
+			shows modifications to the standard recommendation
+			required to meet the formal requirements of [<a href="tr18-19.html#POSIX">POSIX</a>], and
+			also to maintain (as much as possible) compatibility with the POSIX
+			usage in practice. That modification involves some compromises, because POSIX does
+			not have as fine-grained a set of character properties as in the
+			Unicode Standard, and also has some additional constraints. So, for
+			example, POSIX does not allow more than 20 characters to be
+			categorized as digits, whereas there are many more than 20 digit
+			characters in Unicode.</p>
+		<p class="caption">Compatibility Property Names</p>
+		<div align="center">
+		<table class="subtle">
+			<tr>
+				<th>Property</th>
+				<th>Standard</th>
+				<th>POSIX Compatible</th>
+				<th>Comments</th>
+			</tr>
+			<tr>
+				<td><b><a name="alpha" href="tr18-19.html#alpha">alpha</a></b></td>
+				<td colspan="2"><span class="regex">\p{Alphabetic}</span></td>
+				<td>Alphabetic includes more than gc = Letter. Note that combining marks
+					(Me, Mn, Mc) are required for words of many languages. While they
+					could be applied to non-alphabetics, their principal use is on
+					alphabetics. See <a
+					href="http://www.unicode.org/Public/UCD/latest/ucd/DerivedCoreProperties.txt">
+						DerivedCoreProperties</a> for
+					Alphabetic. See also <a
+					href="http://www.unicode.org/Public/UCD/latest/ucd/extracted/DerivedGeneralCategory.txt">DerivedGeneralCategory</a>. Alphabetic should <i>not</i>
+					be used as an approximation for word boundaries: see <a
+					href="tr18-19.html#word">word</a> below.
+				</td>
+			</tr>
+			<tr>
+				<td><b><a name="lower" href="tr18-19.html#lower">lower</a></b></td>
+				<td colspan="2" class="recommended"><span class="regex">\p{Lowercase}</span></td>
+				<td>Lowercase includes more than gc = Lowercase_Letter (Ll).
+					See <a
+					href="http://www.unicode.org/Public/UCD/latest/ucd/DerivedCoreProperties.txt">DerivedCoreProperties</a>.
+				</td>
+			</tr>
+			<tr>
+				<td><b><a name="upper" href="tr18-19.html#upper">upper</a></b></td>
+				<td colspan="2"><span class="regex">\p{Uppercase}</span></td>
+				<td>Uppercase includes more than gc = Uppercase_Letter (Lu).</td>
+			</tr>
+			<tr>
+				<td><b><a name="punct" href="tr18-19.html#punct">punct</a></b></td>
+				<td><span class="regex">\p{gc=Punctuation}</span></td>
+				<td><span class="regex">\p{gc=Punctuation}<br>
+						\p{gc=Symbol}<br> -- \p{alpha}
+				</span></td>
+				<td>POSIX adds symbols. Not recommended generally, due to the
+					confusion of having <i>punct</i> include non-punctuation marks.
+				</td>
+			</tr>
+			<tr>
+				<td><b><a name="digit" href="tr18-19.html#digit">digit</a> (\d)</b></td>
+				<td><span class="regex">\p{gc=Decimal_Number}</span></td>
+				<td><span class="regex">[0..9]</span></td>
+				<td>Non-decimal numbers (like Roman numerals) are normally
+					excluded. In U4.0+, the recommended column is the same as gc =
+					Decimal_Number (Nd). See <a
+					href="http://www.unicode.org/Public/UCD/latest/ucd/extracted/DerivedNumericType.txt">DerivedNumericType</a>.
+				</td>
+			</tr>
+			<tr>
+				<td><b><a name="xdigit" href="tr18-19.html#xdigit">xdigit</a></b><br></td>
+				<td><span class="regex">\p{gc=Decimal_Number}<br>
+						\p{Hex_Digit}
+				</span></td>
+				<td><span class="regex">[0-9 A-F
+						a-f]</span></td>
+				<td>Hex_Digit contains 0-9 A-F, fullwidth and halfwidth, upper
+					and lowercase.</td>
+			</tr>
+			<tr>
+				<td><b><a name="alnum" href="tr18-19.html#alnum">alnum</a></b></td>
+				<td colspan="2"><span class="regex">\p{alpha}<br>
+						\p{digit}
+				</span></td>
+				<td>Simple combination of other properties</td>
+			</tr>
+			<tr>
+				<td><b><a name="space" href="tr18-19.html#space">space</a> (\s)</b></td>
+				<td colspan="2"><span class="regex">\p{Whitespace}</span></td>
+				<td>See <a
+					href="http://www.unicode.org/Public/UCD/latest/ucd/PropList.txt">PropList</a>
+					 for the definition of Whitespace.
+				</td>
+			</tr>
+			<tr>
+				<td><b><a name="blank" href="tr18-19.html#blank">blank</a></b></td>
+				<td colspan="2"><span class="regex">\p{gc=Space_Separator}<br>
+					\N{CHARACTER TABULATION}</span>
+				</td>
+				<td>&quot;horizontal&quot; whitespace: space separators plus U+0009
+					<em>tab.</em> Engines implementing older versions of the Unicode
+						Standard may need to use the longer formulation:<br>
+					<span class="regex">\p{Whitespace} --<br> [\N{LF} \N{VT} \N{FF} \N{CR} \N{NEL}
+					\p{gc=Line_Separator} \p{gc=Paragraph_Separator}]</span>
+				</td>
+			</tr>
+			<tr>
+				<td><b><a name="cntrl" href="tr18-19.html#cntrl">cntrl</a></b></td>
+				<td colspan="2"><span class="regex">\p{gc=Control}</span></td>
+				<td>The characters in <span class="regex">\p{gc=Format}</span>
+					share some, but not all aspects of control characters. Many format
+					characters are required in the representation of plain text.
+				</td>
+			</tr>
+			<tr>
+				<td><b><a name="graph" href="tr18-19.html#graph">graph</a></b></td>
+				<td colspan="2" class="recommended"><span class="regex">[^<br>
+						\p{space}<br> \p{gc=Control}<br> \p{gc=Surrogate}<br>
+						\p{gc=Unassigned}]
+				</span></td>
+				<td><i>Warning: </i>the set shown here is defined by <i>excluding
+				</i>space, controls, and so on with ^.</td>
+			</tr>
+			<tr>
+				<td><b>print</b></td>
+				<td colspan="2"><span class="regex">\p{graph}<br>
+						\p{blank}<br> -- \p{cntrl}
+				</span></td>
+				<td>Includes graph and space-like characters.</td>
+			</tr>
+			<tr>
+				<td><b><a name="word" href="tr18-19.html#word">word</a> (\w)</b></td>
+				<td><span class="regex">\p{alpha}<br>
+						\p{gc=Mark}<br> \p{digit}<br>
+						\p{gc=Connector_Punctuation}<br> \p{Join_Control}
+				</span></td>
+				<td>n/a</td>
+				<td>This is only an approximation to Word Boundaries (see <a
+					href="tr18-19.html#b">b</a> below). The Connector Punctuation is added in for
+					programming language identifiers, thus adding &quot;_&quot; and
+					similar characters.
+				</td>
+			</tr>
+			<tr>
+				<td><b>\<a name="X" href="tr18-19.html#X">X</a></b></td>
+				<td>Extended Grapheme Clusters</td>
+				<td>n/a</td>
+				<td>See [<a href="tr18-19.html#UAX29">UAX29</a>]. Other functions are used for programming language identifier
+					boundaries.
+				</td>
+			</tr>
+			<tr>
+				<td><b>\<a name="b" href="tr18-19.html#b">b</a></b></td>
+				<td>Default Word Boundaries</td>
+				<td>n/a</td>
+				<td>If there is a requirement that \b align with \w, then it
+					would use the approximation above instead. See [<a href="tr18-19.html#UAX29">UAX29</a>].
+						Note that different functions are used for programming language
+						identifier boundaries. See also [<a href="tr18-19.html#UAX31">UAX31</a>].
+				</td>
+			</tr>
+		</table>
+		</div>
+		<p>&nbsp;</p>
+		<hr>
+		<h2>
+			<a name="References" href="tr18-19.html#References">References</a>
+		</h2>
+		<table class="noborder" cellpadding="4">
+			<tr>
+				<td width="1" class="noborder">[<a name="Case" href="tr18-19.html#Case">Case</a>]
+				</td>
+				<td class="noborder">Section 3.13, <em>Default Case
+						Algorithms</em> in [<a href="tr18-19.html#Unicode">Unicode</a>]</td>
+			</tr>
+			<tr>
+				<td width="1" class="noborder">[<a name="CaseData"
+					href="tr18-19.html#CaseData">CaseData</a>]
+				</td>
+				<td class="noborder"><a
+					href="http://www.unicode.org/Public/UCD/latest/ucd/CaseFolding.txt">
+						http://www.unicode.org/Public/UCD/latest/ucd/CaseFolding.txt</a></td>
+			</tr>
+			<tr>
+				<td width="1" class="noborder">[<a name="Friedl" href="tr18-19.html#Friedl">Friedl</a>]
+				</td>
+				<td class="noborder">Jeffrey Friedl, &quot;Mastering Regular
+					Expressions&quot;, 2nd Edition 2002, O&#39;Reilly and Associates,
+					ISBN 0-596-00289-0</td>
+			</tr>
+			<tr>
+				<td class="nb" valign="top">[<a name="Glossary"
+					href="tr18-19.html#Glossary">Glossary</a>]
+				</td>
+				<td class="nb" valign="top">Unicode Glossary<a
+					href="http://www.unicode.org/glossary/"><br>
+						http://www.unicode.org/glossary/</a><br> <i>For explanations
+						of terminology used in this and other documents.</i></td>
+			</tr>
+			<tr>
+				<td width="1" class="noborder">[<a name="Perl" href="tr18-19.html#Perl">Perl</a>]
+				</td>
+				<td class="noborder"><a href="http://perldoc.perl.org/">http://perldoc.perl.org/<br>
+				</a>See especially:<br> <a
+					href="http://perldoc.perl.org/charnames.html">http://perldoc.perl.org/charnames.html</a><br>
+					<a href="http://perldoc.perl.org/perlre.html">http://perldoc.perl.org/perlre.html</a><br>
+					<a href="http://perldoc.perl.org/perluniintro.html">http://perldoc.perl.org/perluniintro.html</a><br>
+					<a href="http://perldoc.perl.org/perlunicode.html">http://perldoc.perl.org/perlunicode.html</a></td>
+			</tr>
+			<tr>
+				<td width="1" class="noborder">[<a name="POSIX" href="tr18-19.html#POSIX">POSIX</a>]
+				</td>
+				<td class="noborder">The Open Group Base Specifications Issue
+					6, IEEE Std 1003.1, 2004 Edition, &quot;Locale&quot; chapter<br>
+					<a
+					href="http://www.opengroup.org/onlinepubs/009695399/basedefs/xbd_chap07.html">
+						http://www.opengroup.org/onlinepubs/009695399/basedefs/xbd_chap07.html</a>
+				</td>
+			</tr>
+			<tr>
+				<td width="1" class="noborder">[<a name="Prop" href="tr18-19.html#Prop">Prop</a>]
+				</td>
+				<td class="noborder"><a
+					href="http://www.unicode.org/Public/UCD/latest/ucd/PropertyAliases.txt">
+						http://www.unicode.org/Public/UCD/latest/ucd/PropertyAliases.txt</a></td>
+			</tr>
+			<tr>
+				<td width="1" class="noborder">[<a name="PropValue"
+					href="tr18-19.html#PropValue">PropValue</a>]
+				</td>
+				<td class="noborder"><a
+					href="http://www.unicode.org/Public/UCD/latest/ucd/PropertyValueAliases.txt">
+						http://www.unicode.org/Public/UCD/latest/ucd/PropertyValueAliases.txt</a></td>
+			</tr>
+			<tr>
+				<td width="1" class="noborder">[<a name="ScriptData"
+					href="tr18-19.html#ScriptData">ScriptData</a>]
+				</td>
+				<td class="noborder"><a
+					href="http://www.unicode.org/Public/UCD/latest/ucd/Scripts.txt">
+						http://www.unicode.org/Public/UCD/latest/ucd/Scripts.txt</a></td>
+			</tr>
+			<tr>
+				<td width="1" class="noborder">[<a name="SpecialCasing"
+					href="tr18-19.html#SpecialCasing">SpecialCasing</a>]
+				</td>
+				<td class="noborder"><a
+					href="http://www.unicode.org/Public/UCD/latest/ucd/SpecialCasing.txt">
+						http://www.unicode.org/Public/UCD/latest/ucd/SpecialCasing.txt</a></td>
+			</tr>
+			<tr>
+				<td class="noborder" valign="top">[<a name="UAX14"
+					href="tr18-19.html#UAX14">UAX14</a>]
+				</td>
+				<td class="noborder" valign="top">UAX #14, <i>Unicode Line
+						Breaking Algorithm</i><br> <a
+					href="../tr14/index.html">http://www.unicode.org/reports/tr14/</a></td>
+			</tr>
+			<tr>
+				<td class="noborder" valign="top">[<a name="UAX15"
+					href="tr18-19.html#UAX15">UAX15</a>]
+				</td>
+				<td class="noborder" valign="top">UAX #15, <i>Unicode
+						Normalization Forms</i><br> <a
+					href="../tr15.1">http://www.unicode.org/reports/tr15/</a></td>
+			</tr>
+			<tr>
+				<td class="noborder" valign="top">[<a name="UAX24"
+					href="tr18-19.html#UAX24">UAX24</a>]
+				</td>
+				<td class="noborder" valign="top">UAX #24, <i>Unicode
+						Script Property</i><br> <a
+					href="../tr24/index.html">http://www.unicode.org/reports/tr24/</a></td>
+			</tr>
+			<tr>
+				<td class="noborder" valign="top">[<a name="UAX29"
+					href="tr18-19.html#UAX29">UAX29</a>]
+				</td>
+				<td class="noborder" valign="top">UAX #29, <i>Unicode Text
+						Segmentation</i><br> <a
+					href="../tr29.1">http://www.unicode.org/reports/tr29/</a></td>
+			</tr>
+			<tr>
+				<td class="noborder" valign="top">[<a name="UAX31"
+					href="tr18-19.html#UAX31">UAX31</a>]
+				</td>
+				<td class="noborder" valign="top">UAX #31, <i>Unicode
+						Identifier and Pattern Syntax</i><br> <a
+					href="../tr31/index.html">http://www.unicode.org/reports/tr31/</a></td>
+			</tr>
+			<tr>
+				<td class="noborder" valign="top">[<a name="UAX38"
+					href="tr18-19.html#UAX38">UAX38</a>]
+				</td>
+				<td class="noborder" valign="top">UAX #38, <i>Unicode
+						Han Database (Unihan)</i><br> <a
+					href="../tr38/index.html">http://www.unicode.org/reports/tr38/</a></td>
+			</tr>
+			<tr>
+				<td class="nb" valign="top">[<a name="UAX44" href="tr18-19.html#UAX44">UAX44</a>]
+				</td>
+				<td class="nb" valign="top">UAX #44, <em>Unicode Character
+						Database<br>
+				</em><a href="../tr44/index.html">http://www.unicode.org/reports/tr44/</a></td>
+			</tr>
+			<tr>
+				<td class="nb">[<a name="UData" href="tr18-19.html#UData">UData</a>]
+				</td>
+				<td class="nb"><a
+					href="http://www.unicode.org/Public/UCD/latest/ucd/UnicodeData.txt">
+						http://www.unicode.org/Public/UCD/latest/ucd/UnicodeData.txt</a></td>
+			</tr>
+			<tr>
+				<td class="nb" valign="top">[<a name="Unicode" href="tr18-19.html#Unicode">Unicode</a>]
+				</td>
+				<td class="nb" valign="top">The Unicode Standard<em><br>
+						For the latest version, see:<br> </em><a
+					href="http://www.unicode.org/versions/latest/">http://www.unicode.org/versions/latest/</a></td>
+			</tr>
+			<tr>
+      <td class="nb" valign="top" noWrap>[<a name="UTR50" href="tr18-19.html#UTR50">UTR50</a>]</td>
+      <td class="nb" valign="top">
+        UTR #50, Unicode Vertical Text Layout<br>
+        <a href="../tr50/index.html">http://www.unicode.org/reports/tr50/</a>
+      </td>
+    		</tr>
+			<tr>
+      <td class="nb" valign="top" noWrap>[<a name="UTR51" href="tr18-19.html#UTR51">UTR51</a>]</td>
+      <td class="nb" valign="top">
+        UTR #51, Unicode Emoji<br>
+        <a href="../tr51.1">http://www.unicode.org/reports/tr51/</a>
+      </td>
+    		</tr>
+			<tr>
+				<td class="nb" valign="top">[<a name="UTS10" href="tr18-19.html#UTS10">UTS10</a>]
+				</td>
+				<td class="nb" valign="top">UTS #10, <i>Unicode Collation
+						Algorithm (UCA)<br>
+				</i> <a href="../tr10/index.html">
+						http://www.unicode.org/reports/tr10/</a></td>
+			</tr>
+			<tr>
+				<td class="nb" valign="top">[<a name="UTS35" href="tr18-19.html#UTS35">UTS35</a>]
+				</td>
+				<td class="nb" valign="top">UTS #35, <i>Unicode Locale Data
+						Markup Language (LDML)</i><br> <a
+					href="../tr35/index.html">http://www.unicode.org/reports/tr35/</a></td>
+			</tr>
+			<tr>
+				<td class="nb" valign="top">[<a name="UTS39" href="tr18-19.html#UTS39">UTS39</a>]
+				</td>
+				<td class="nb" valign="top">UTS #39, Unicode Security
+					Mechanisms<br> <a href="../tr39/index.html">http://www.unicode.org/reports/tr39/</a>
+				</td>
+			</tr>
+			<tr>
+				<td class="nb" valign="top">[<a name="UTS46" href="tr18-19.html#UTS46">UTS46</a>]
+				</td>
+				<td class="nb" valign="top">UTS #46, Unicode IDNA Compatibility
+					Processing<br> <a href="../tr46/index.html">http://www.unicode.org/reports/tr46/</a>
+				</td>
+			</tr>
+		</table>
+		<p>&nbsp;</p>
+		<h2>
+			<a name="Acknowledgments" href="tr18-19.html#Acknowledgments">Acknowledgments</a>
+		</h2>
+		<p>Mark Davis created the initial version of this annex and
+			maintains the text, with significant contributions from Andy
+			Heninger.</p>
+		<p>Thanks to Julie Allen, Tom Christiansen, Michael D’Errico,
+			Asmus Freytag, Jeffrey Friedl, Norbert Lindenberg, Peter Linsley,
+			Alan Liu, Kent Karlsson, Jarkko Hietaniemi, Gurusamy Sarathy, Xueming
+			Shen, Henry Spencer, Kento Tamura, Philippe Verdy, Tom Watson, 
+			Ken Whistler, and
+			Karl Williamson for their feedback on the document.</p>
+
+
+		<h2 class="nonumber">
+			<a name="Modifications" href="tr18-19.html#Modifications">Modifications</a>
+		</h2>
+
+		<p>The following summarizes modifications from the previous
+			revision of this document.</p>
+
+		<p>
+			<b>Revision 19</b>
+		</p>
+		<p>
+			<i>Revision 18 being a Proposed Update, only changes between
+				Revision 17 and 19 are listed here.</i>
+		</p>
+
+		<ul>
+			<li>Major format cleanup for the entire document. [KW]</li> 
+			<li>Section 1.2, fixed typographical errors.</li>
+            <li>Section 1.2, changed "Not_Assigned" to "Unassigned".</li>
+            <li>Section RL1.2, ignoring an "is" prefix is optional.</li>
+			<li>Section 1.2.2, revised description of Script Extension property.</li>
+            <li>Section 1.2.3, Other Properties, added emoji properties and vertical orientation property.</li>
+			<li>RL1.3, revised description of set operations to remove use of the term "Unicode Set".</li>
+			<li>Section 2.7 Full Properties, added new property Prepended_Concatenation_Mark,
+				and renamed STerm to Sentence_Terminal.
+                Removed Decomposition_Mapping, Composition_Exclusion and Full_Composition_Exclusion.</li>
+			<li>Retracted Section 3.8, Unicode Set Sharing.</li>
+		</ul>
+
+		<p>
+			<b>Revision 17</b>
+		</p>
+
+		<p>
+			<i>Revision 16 being a Proposed Update, only changes between
+				Revision 15 and 17 are listed here.</i>
+		</p>
+
+		<ul>
+			<li>Added new Unicode 6.3 properties in <i>Section
+					2.7 <a href="tr18-19.html#Full_Properties">Full Properties</a>
+			</i>: Bidi_Paired_Bracket and Bidi_Paired_Bracket_Type
+			</li>
+			<li>Expanded the discussion of Script_Extensions
+				in Section <i>1.2.2 <a href="tr18-19.html#Script_Property">Script
+						Property</a></i>, and changed &quot;Script&quot; in <a href="tr18-19.html#RL1.2">RL1.2
+					Properties</a> to &quot;Script and Script_Extensions&quot;
+			</li>
+			<li>Dropped two links to specific versions of
+				Unicode in the references, and to two versioned files in Annex C.</li>
+			<li>Minor edits.</li>
+		</ul>
+		<p>
+			<b>Revision 15</b>
+		</p>
+
+		<p>
+			<i>Revision 14 being a Proposed Update, only changes between
+				Revision 13 and 15 are listed here.</i>
+		</p>
+
+		<ul>
+			<li>Allowed case-folding to optionally close under character
+				classes.</li>
+			<li>Retracted clauses involving equivalences that were not 1:1.</li>
+			<li>Added Name_Alias matching, and clarified the text,
+				distinguishing \N{somename} from \p{name=somename}</li>
+			<li>Fixed the table of &quot;general category&quot; names.</li>
+			<li>Cited the <a
+				href="http://unicode.org/reports/tr44/#Matching_Rules">Matching
+					Rules</a> from [<a href="tr18-19.html#UAX44">UAX44</a>].
+			</li>
+			<li>Added new properties in <a
+				href="http://unicode.org/reports/tr44/#Property_Index_Table">UAX
+					#44 Table 7. Property Index by Scope of Use</a></li>
+			<li>Added compact form of \u{...} for multiple characters. For
+				example, using \u{1234 1235 4567} instead of
+				\u{1234\u{1235}\u{4567}, and used in examples.</li>
+			<li>Aligned RL1.4 with Annex C \w.</li>
+			<li>Added the @ syntax for wildcards.</li>
+			<li>Made changes from PRI #<strong>179</strong> <a
+				href="http://unicode.org/review/pri179/">Changes to Unicode
+					Regular Expression Guidelines</a> to the following.
+				<ul>
+					<li><a href="tr18-19.html#Default_Loose_Matches">RL2.4 Default Case
+							Conversion</a></li>
+					<li><a href="tr18-19.html#Canonical_Equivalents">RL2.1 Canonical
+							Equivalents</a></li>
+					<li><a href="tr18-19.html#Simple_Loose_Matches">RL1.5 Simple Loose
+							Matches</a></li>
+				</ul>
+			</li>
+			<li>Added new conformance clause at Level 2: <a
+				href="tr18-19.html#Full_Properties">RL2.7 Full Properties</a>.
+			</li>
+			<li>Clarified syntax requirements in <a href="tr18-19.html#Hex_notation">RL1.1
+					Hex Notation</a>.
+			</li>
+			<li>Added note clarifying matching of isolated surrogates in <a
+				href="tr18-19.html#Supplementary_Characters">RL1.7 Supplementary Code Points</a>.
+			</li>
+			<li>Made it clear that the Unicode property definitions must be
+				used to satisfy <a href="tr18-19.html#Categories">RL1.2 Properties</a> and <a
+				href="tr18-19.html#Categories">RL1.2a Compatibility Properties</a>.
+			</li>
+			<li>Replaced use of [UCD] and [UCDDoc] by [<a href="tr18-19.html#UAX44">UAX44</a>].
+			</li>
+			<li>Added updates for the new Script Extensions [scx] property
+				under <a href="tr18-19.html#Categories">RL1.2 Properties</a> and <a
+				href="tr18-19.html#Full_Properties">RL2.7 Full Properties</a>.
+			</li>
+			<li>Simplified the definition of \p{blank} in Annex C <a
+				href="tr18-19.html#Compatibility_Properties">Compatibility Properties</a>.
+			</li>
+			<li>Added clarification on use of the Age property.</li>
+			<li>Changed &quot;collation character&quot; to &quot;collation
+				grapheme cluster&quot; to match [<a href="tr18-19.html#UTS10">UTS10</a>] usage.
+				Instances are not highlighted.
+			</li>
+			<li>Misc editing and clarifications.</li>
+		</ul>
+
+		<p>
+			<b>Revision 13</b>
+		</p>
+		<p>
+			<i>Revision 12 being a Proposed Update, only changes between
+				Revision 11 and 13 are listed here.</i>
+		</p>
+
+		<ul>
+			<li>Revised Section 2.2 handling of Extended Grapheme Clusters</li>
+			<li>Added Section 2.2.1, Grapheme Cluster Mode</li>
+			<li>Tailored Loose Matches, add example of matching Traditional
+				and Simplified Chinese characters</li>
+			<li>Clearer discussion of the importance of levels, and features
+				within level 2.</li>
+			<li>Updated syntax</li>
+			<li>Fixed precedence to be neutral, just noting the two main
+				alternatives.</li>
+			<li>Discussion of the use of hex notation to prevent unwanted
+				normalization in literals</li>
+			<li>Examples of normalization and casing properties</li>
+			<li>Improved end-of-line treatment</li>
+			<li>Revised treatment of (extended) grapheme clusters (U5.1),
+				and the connection to normalization support. (Instances of changes
+				from "default" to "extended" are not flagged.)</li>
+			<li>Clearer description of the use of wildcards in property
+				values</li>
+			<li>Clarified conformance requirements for &quot;.&quot; and
+				CRLF.</li>
+			<li>Pointed to LDML for the locale ID syntax</li>
+			<li>Made the importance of the levels (and sublevels) clearer.</li>
+			<li>Added ≠ in property expressions, ~~ for symmetric difference</li>
+			<li>Changed operators to use doubled characters: --, &amp;&amp;,
+				||, ~~</li>
+			<li>Added multiple property values. \p{gc=L|M|Nd} is equivalent
+				to [\p{gc=L}\p{gc=M}\p{gc=Nd}]</li>
+			<li>Fixed case where &#39;arbitrary character pattern&#39;
+				matches a newline sequence</li>
+			<li>Added order of priority for level 2 items</li>
+			<li>Described implementation of canonical equivalence through
+				extended grapheme clusters</li>
+			<li>Moved extended grapheme clusters (2.2) to level 3.</li>
+			<li>Added named sequences, such as \N{KHMER CONSONANT SIGN COENG
+				KA}</li>
+			<li>Added some example links to Unicode utilities.</li>
+		</ul>
+
+		<p>
+			<b>Revision 11</b>
+		</p>
+		<ul>
+			<li>Annex C:
+				<ul>
+					<li>Clarified first paragraph and removed review notes.</li>
+					<li>Changed <i>upper</i> definition in Annex C, because the
+						UTC has changed the properties so that it will always be the case
+						(from 4.1.0 onward) that Alphabetic ⊇ Uppercase and Alphabetic ⊇
+						Lowercase
+					</li>
+					<li>Added \p{gc=Format} to graph, for better compatibility
+						with POSIX usage.</li>
+				</ul>
+			</li>
+			<li>Added a caution about use of Tailored Ranges, and a note
+				about the option of pre-normalization with newlines.</li>
+			<li>Removed conformance clause for Unicode Set Sharing</li>
+			<li>Misc Edits, including:
+				<ul>
+					<li>Added note on limit of 1-9 for \n</li>
+					<li>Fixed ^.*$ to ^$</li>
+					<li>Added parentheses to ([a-z ä] | (a \u{308}))</li>
+				</ul>
+			</li>
+		</ul>
+
+		<p>
+			<b>Revision 10</b>
+		</p>
+		<ul>
+			<li>R1.4, item 2 changed for ZW(N)J</li>
+			<li>Added conformance clause to allow a claim of conformance to
+				the Compatibility properties.</li>
+			<li>Split the Compatibility properties into two, to allow for
+				regular vs. strict POSIX properties.</li>
+			<li>Added other notation for use here and in other Unicode
+				Standards</li>
+			<li>Added vertical tab to newline sequences. Reorganized text
+				slightly to only list codepoints once.</li>
+			<li>Minor Editing</li>
+		</ul>
+
+
+		<p>
+			<b>Revision 9</b>
+		</p>
+		<ul>
+			<li>Split 2.5 into two sections, expanding latter.</li>
+			<li>Misc. editing and clarifications.</li>
+		</ul>
+
+
+		<p>
+			<b>Revision 8</b>
+		</p>
+		<ul>
+			<li>Renumbered sections to match levels</li>
+			<li>Introduced &quot;RL&quot; numbering on clauses</li>
+			<li>Misc. editing and clarifications.</li>
+		</ul>
+
+		<p>
+			<b>Revision 7</b>
+		</p>
+		<ul>
+			<li>Now proposed as a UTS, adding <a href="tr18-19.html#Conformance">Conformance</a>
+				and specific wording in each relevant section.
+			</li>
+			<li>Move hex notation for surrogates from <a
+				href="tr18-19.html#Supplementary_Characters">1.7 Surrogates</a> into <a
+				href="tr18-19.html#Hex_notation">1.1 Hex notation</a>.
+			</li>
+			<li>Added <a href="tr18-19.html#Context_Matching">3.6 Context Matching</a>
+				and following.
+			</li>
+			<li>Updated to Unicode 4.0</li>
+			<li>Minor editing</li>
+			<li><b>Note:</b> paragraphs with major changes are highlighted
+				in this document; less substantive wording changes may not be.</li>
+		</ul>
+
+		<p>
+			<b>Revision 6</b>
+		</p>
+		<ul>
+			<li>Fixed 16-bit reference, moved Supplementary characters
+				support (surrogates) to level 1.</li>
+			<li>Generally changed &quot;locale-dependent&quot; to
+				&quot;default&quot;, &quot;locale-independent&quot; to
+				&quot;tailored&quot; and &quot;grapheme&quot; to &quot;grapheme
+				cluster&quot;</li>
+			<li>Changed syntax slightly to be more like Perl</li>
+			<li>Added explicit table of General Category values</li>
+			<li>Added clarifications about scripts and blocks</li>
+			<li>Added descriptions of other properties, and a pointer to the
+				default names</li>
+			<li>Referred to TR 29 for grapheme cluster and word boundaries</li>
+			<li>Removed old annex B (word boundary code)</li>
+			<li>Removed spaces from anchors</li>
+			<li>Added references, modification sections</li>
+			<li>Rearranged property section</li>
+			<li>Minor editing</li>
+		</ul>
+
+	<hr width="50%">
+		<p class="copyright">
+			Copyright © 2016 Unicode, Inc. All
+			Rights Reserved. The Unicode Consortium makes no expressed or implied
+			warranty of any kind, and assumes no liability for errors or
+			omissions. No liability is assumed for incidental and consequential
+			damages in connection with or arising out of the use of the
+			information or programs contained or accompanying this technical
+			report. The Unicode <a href="http://www.unicode.org/copyright.html">Terms
+				of Use</a> apply.
+		</p>
+		<p class="copyright">Unicode and the Unicode logo are trademarks
+			of Unicode, Inc., and are registered in some jurisdictions.
+	</div>
+
+</body>
+
+</html>

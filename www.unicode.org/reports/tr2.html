@@ -1,0 +1,937 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<html>
+
+<head>
+<meta name="GENERATOR" content="Microsoft FrontPage 3.0">
+<title>Unicode Technical Report Number 2</title>
+</head>
+
+<body bgcolor="#FFFFFF" text="#000000" link="#FF0000" vlink="#808080" alink="#0000FF">
+
+<h1>Unicode Technical Report #2</h1>
+
+<h2>Sinhala <br>
+Tibetan <br>
+Mongolian </h2>
+
+<table border="1" width="100%" height="212">
+  <tr>
+    <td height="22">Revision</td>
+    <td height="22"></td>
+  </tr>
+  <tr>
+    <td height="66">Authors </td>
+    <td height="66">The Mongolian proposal was written by Joe Becker.<br>
+    The Sinhala proposal was written by Andy Daniels.<br>
+    The Tibetan proposal is a revision of the one in Unicode 1.0, Vol 1.</td>
+  </tr>
+  <tr>
+    <td height="22">Date </td>
+    <td height="22">1992</td>
+  </tr>
+  <tr>
+    <td height="22">This Version</td>
+    <td height="22"><a href="http://www.unicode.org/unicode/reports/tr2.html">http://www.unicode.org/unicode/reports/tr2.html</a></td>
+  </tr>
+  <tr>
+    <td height="22">Previous Version</td>
+    <td height="22"></td>
+  </tr>
+  <tr>
+    <td height="22">Latest Version</td>
+    <td height="22"><a href="http://www.unicode.org/unicode/reports/tr2.html">http://www.unicode.org/unicode/reports/tr2.html</a></td>
+  </tr>
+</table>
+
+<p>Technical Reports contain material that has been approved by the Unicode Consortium for
+publication, but that is not necessarily considered part of the Unicode Standard. Often,
+technical reports are superseded by later standardization, or the informative material
+that they contain is incorporated into explanatory chapters in subsequent editions of The
+Unicode Standard. &nbsp; Sometimes minor updates to the Unicode Standard itself are
+published as Technical Reports.&nbsp; Some Technical Reports are not available for
+downloading.</p>
+
+<hr>
+
+<p align="center"><strong><font size="4">Technical Report #2 </font><font size="5">- </font><font
+size="4">Sinhala, Tibetan, and Mongolian</font></strong></p>
+
+<p align="center">ASCII plain text version without charts</p>
+
+<p align="left">This Technical Report is comprised of three preliminary draft proposals
+that the Unicode Technical Committee wishes to present for initial public review and
+commentary. These are: Sinhala, Mongolian, and Tibetan.</p>
+
+<p><em><strong>Status of this document</strong></em></p>
+
+<p><em>This document has been considered and approved by the Unicode Technical Committee
+for publication as a Technical Report. At the current time, the specifications in this
+technical report are provided as information and guidance to implementers of the Unicode
+Standard, but do not form part of the standard itself. The Unicode Technical Committee may
+decide to incorporate all or part of the material of this technical report into a future
+version of the Unicode Standard, either as informative or as normative specification.
+Please mail corrigenda and other comments to <a href="mailto:unicore@unicode.org">errata@unicode.org</a>.</em></p>
+
+<hr>
+
+<h1>Document</h1>
+
+<p><br>
+<font size="5"><strong>Introduction</strong></font><br>
+<br>
+These proposals represent the committee's strong technical recommendation for the basic
+approach to these scripts, but some degree of further feedback is needed to complete them.
+At this time, the committee is interested in suggestions for improvement. The committee is
+recommending that these eventually be assigned to particular blocks of codepoints as
+follows: <br>
+Sinhala U+0D80 U+0DFF<br>
+Tibetan U+1000 U+105F<br>
+Mongolian U+1060 U+109F<br>
+<br>
+Specific open issues for each of these are addressed in the respective draft block
+introductions.</p>
+
+<hr>
+
+<p><font size="5"><strong>Sinhala</strong></font></p>
+
+<p>Sinhala U+0D80 - U+0DFF<br>
+<br>
+Sinhala (or Sinhalese) is used to write Sinhala, the majority language of Sri<br>
+Lanka (formerly Ceylon). It is also used to write Pali and Sanskrit. The<br>
+script is a descendant of Brahmi and resembles the scripts of South India in<br>
+form and structure. Sinhala differs from the other Indo-Aryan languages in<br>
+that is has a series of prenasalized stops which are distinguished from the<br>
+combination of a nasal followed by a stop. In addition, Sinhala has signs for<br>
+both a short and long low front vowel, similar to the one in the English word<br>
+'hat.' Because of these extra letters, the encoding for Sinhala does not<br>
+follow the pattern established for the other Indic scripts (e.g., Devanagari),<br>
+but does use the same ordering patterns, making use of phonetic order,<br>
+matra-reordering, and use of the virama to indicate conjunct consonant<br>
+clusters.<br>
+<br>
+Neither the Sinhala numerals nor the Kundaliya are in general use today,<br>
+having been replaced by Arabic digits and Western-style punctuation. They are<br>
+included in Unicode for scholarly use.<br>
+<br>
+Encoding Structure. The code assignments for Sinhala depart from the general<br>
+Indic pattern established by Unicode Devanagari because of the abovementioned<br>
+additional letters. The general layout of the block, however, retains the<br>
+basic Indic layout.<br>
+<br>
+U+0D80 to U+0D81 Vowel modifiers<br>
+U+0D82 to U+0D93 Independent Vowels<br>
+U+0D94 to U+0DBB Consonants<br>
+U+0DBC to U+0DCC Vowel Signs<br>
+U+0DCD Virama<br>
+U+0DCE to U+0DCF Unassigned<br>
+U+0DD0 to U+0DDA Numerals<br>
+U+0DDB Punctuation (kundaliya)<br>
+U+0DDC to U+0DFF Unassigned<br>
+<br>
+Issues:<br>
+<br>
+Colloquial Sinhala has no prenasalized palatal stop. Minimal pairs abound for<br>
+the other prenasalized stops, (e.g. /aN.da/ &quot;sound&quot; vs. /a.n.da/
+&quot;egg,&quot;<br>
+/siNdu/ &quot;horse&quot; vs. /sindu/ &quot;ballads,&quot; /saNgara/ &quot;ointment&quot;
+vs. /sanggara/<br>
+&quot;battle&quot;), but examples have not been found for SINHALA LETTER NJA (U+0D9F).<br>
+This is perhaps simply a ligature for NYA+JA, and so should not be given a<br>
+code point of its own. If this is dropped, it is recommended that the code<br>
+point remain unassigned.<br>
+<br>
+A Sinhala avagraha has been attested. If required, it should be assigned to<br>
+U+0DCF.<br>
+<br>
+There is a standard extant for Sinhala described in A Standard Code for<br>
+Information Interchange in Sinhalese by V.K. Samaranayake and S.T. Nandasara<br>
+(ISO-IEC JTC1/SCL/WG2 N 673, Oct. 1990). The coding proposed in it was found<br>
+to be an inadequate basis for a modern, computer-based interchange code,<br>
+though it is adequate to handle the capabilities of a Sinhala typewriter for<br>
+representing contemporary colloquial Sinhala. In addition, the document is<br>
+ambiguous as to coding order -- presumably, given the graphic decomposition<br>
+in the code set, the text stream is to be coded in visual, not phonetic order.<br>
+An additional problem is that there is no provision to handle exceptional<br>
+cases. For example, RA+U/UU is, as is common in the Brahmi family, written in<br>
+a non-standard way. The vowel is represented by the matra that is normally<br>
+used for the low front vowels, i.e, E/EE. RA+E/EE, however, is written with<br>
+ligatures in which the matra is attached to the stem of the RA. In light of<br>
+the above, the technical recommendatio<br>
+<br>
+<strong>DRAFT 03 Nov 1992<br>
+<br>
+SINHALA DRAFT CHARACTER NAMES<br>
+</strong><br>
+@ Vowel modifiers<br>
+0D80 SINHALA SIGN ANUSVARA<br>
+0D81 SINHALA SIGN VISARGA<br>
+<br>
+@ Independent Vowels<br>
+0D82 SINHALA LETTER A<br>
+0D83 SINHALA LETTER AA<br>
+0D84 SINHALA LETTER E<br>
+0D85 SINHALA LETTER EE<br>
+0D86 SINHALA LETTER I<br>
+0D87 SINHALA LETTER II<br>
+0D88 SINHALA LETTER U<br>
+0D89 SINHALA LETTER UU<br>
+0D8A SINHALA LETTER RI<br>
+= SINHALA LETTER VOCALIC R<br>
+0D8B SINHALA LETTER RII<br>
+= SINHALA LETTER VOCALIC RR<br>
+0D8C SINHALA LETTER LU<br>
+= SINHALA LETTER VOCALIC L<br>
+0D8D SINHALA LETTER LUU<br>
+= SINHALA LETTER VOCALIC LL<br>
+0D8E SINHALA LETTER EY<br>
+0D8F SINHALA LETTER EEY<br>
+0D90 SINHALA LETTER AI<br>
+0D91 SINHALA LETTER O<br>
+0D92 SINHALA LETTER OO<br>
+0D93 SINHALA LETTER AU<br>
+<br>
+@ Consonants<br>
+0D94 SINHALA LETTER KA<br>
+0D95 SINHALA LETTER KHA<br>
+0D96 SINHALA LETTER GA<br>
+0D97 SINHALA LETTER GHA<br>
+0D98 SINHALA LETTER NGA<br>
+0D99 SINHALA LETTER NGGA<br>
+prenasalized GA<br>
+0D9A SINHALA LETTER CA<br>
+0D9B SINHALA LETTER CHA<br>
+0D9C SINHALA LETTER JA<br>
+0D9D SINHALA LETTER JHA<br>
+0D9E SINHALA LETTER NYA<br>
+0D9F SINHALA LETTER NJA<br>
+prenasalized JA?<br>
+0DA0 SINHALA LETTER TTA<br>
+0DA1 SINHALA LETTER TTHA<br>
+0DA2 SINHALA LETTER DDA<br>
+0DA3 SINHALA LETTER DDHA<br>
+0DA4 SINHALA LETTER NNA<br>
+0DA5 SINHALA LETTER NDDA<br>
+prenasalized DDA<br>
+0DA6 SINHALA LETTER TA<br>
+0DA7 SINHALA LETTER THA<br>
+0DA8 SINHALA LETTER DA<br>
+0DA9 SINHALA LETTER DHA<br>
+0DAA SINHALA LETTER NA<br>
+0DAB SINHALA LETTER NDA<br>
+prenasalized DA<br>
+0DAC SINHALA LETTER PA<br>
+0DAD SINHALA LETTER PHA<br>
+0DAE SINHALA LETTER BA<br>
+0DAF SINHALA LETTER BHA<br>
+0DB0 SINHALA LETTER MA<br>
+0DB1 SINHALA LETTER MBA<br>
+prenasalized BA<br>
+0DB2 SINHALA LETTER YA<br>
+0DB3 SINHALA LETTER RA<br>
+0DB4 SINHALA LETTER LA<br>
+0DB5 SINHALA LETTER VA<br>
+0DB6 SINHALA LETTER SHA<br>
+0DB7 SINHALA LETTER SSA<br>
+0DB8 SINHALA LETTER SA<br>
+0DB9 SINHALA LETTER HA<br>
+0DBA SINHALA LETTER LLA<br>
+0DBB SINHALA LETTER FA<br>
+<br>
+@ Vowel Signs<br>
+0DBC SINHALA VOWEL SIGN AA<br>
+0DBD SINHALA VOWEL SIGN E<br>
+0DBE SINHALA VOWEL SIGN EE<br>
+0DBF SINHALA VOWEL SIGN I<br>
+0DC0 SINHALA VOWEL SIGN II<br>
+0DC1 SINHALA VOWEL SIGN U<br>
+0DC2 SINHALA VOWEL SIGN UU<br>
+0DC3 SINHALA VOWEL SIGN RI<br>
+= SINHALA VOWEL SIGN VOCALIC R<br>
+0DC4 SINHALA VOWEL SIGN RII<br>
+= SINHALA VOWEL SIGN VOCALIC RR<br>
+0DC5 SINHALA VOWEL SIGN LU<br>
+= SINHALA VOWEL SIGN VOCALIC L<br>
+0DC6 SINHALA VOWEL SIGN LUU<br>
+= SINHALA VOWEL SIGN VOCALIC LL<br>
+0DC7 SINHALA VOWEL SIGN EY<br>
+0DC8 SINHALA VOWEL SIGN EEY<br>
+0DC9 SINHALA VOWEL SIGN AI<br>
+0DCA SINHALA VOWEL SIGN O<br>
+0DCB SINHALA VOWEL SIGN OO<br>
+0DCC SINHALA VOWEL SIGN AU<br>
+<br>
+@ Virama<br>
+0DCD SINHALA SIGN VIRAMA<br>
+<br>
+0DCE<br>
+0DCF<br>
+<br>
+@ Numerals<br>
+0DD0 SINHALA DIGIT ONE<br>
+0DD1 SINHALA DIGIT TWO<br>
+0DD2 SINHALA DIGIT THREE<br>
+0DD3 SINHALA DIGIT FOUR<br>
+0DD4 SINHALA DIGIT FIVE<br>
+0DD5 SINHALA DIGIT SIX<br>
+0DD6 SINHALA DIGIT SEVEN<br>
+0DD7 SINHALA DIGIT EIGHT<br>
+0DD8 SINHALA DIGIT NINE<br>
+0DD9 SINHALA NUMBER TEN<br>
+0DDA SINHALA NUMBER ONE HUNDRED<br>
+<br>
+@ Punctuation<br>
+0DDB SINHALA KUNDALIYA<br>
+<br>
+0DDC<br>
+0DDD<br>
+0DDE<br>
+0DDF<br>
+</p>
+
+<hr>
+
+<p><font size="5"><strong>Tibetan</strong></font> </p>
+
+<p>Tibetan(U+1000 - U+105F)<br>
+<br>
+The Tibetan script is used for writing the Tibetan language in Tibet proper<br>
+and for Tibetan and related languages spoken elsewhere in the Himalayan<br>
+region, including Bhutan, India, and Nepal. The Tibetan script is a member<br>
+of the Indic family of scripts descended from Brahmi. The original Brahmi<br>
+letter shapes can still be clearly discerned in Tibetan, but Tibetan removes<br>
+the Brahmi voiced aspirates and adds letters for Tibetan sounds not found in<br>
+Brahmi.<br>
+<br>
+General Principles of the Script: As in all Indic scripts, each Tibetan<br>
+letter is a consonant containing an inherent vowel sound. Tibetan letters<br>
+each also contain an inherent tone related to the voicing or non-voicing of<br>
+the original Brahmi letters, but this is not marked in the script. The<br>
+inherent vowels are modified by means of floating marks associated with the<br>
+base letter. Removal of the inherent vowel is not always marked in Tibetan<br>
+words and must be determined from context. Consonant clusters are sometimes<br>
+rendered as conjuncts formed by stacking letters along a vertical axis.<br>
+Conjuncts are represented in the text stream by placing a conjunct marker<br>
+(virama called srog-med in Tibetan) between letters to be conjoined. Three<br>
+letters (YA, RA, WA) normally change shape when they are members of conjuncts.<br>
+<br>
+Punctuation: Common Tibetan punctuation includes shad U+104B to mark phrases.<br>
+Shad is doubled to mark full stops (U+104E). Tseg (U+104A) is a syllable<br>
+delimiter normally occurring after each syllable. Automatic line wrapping<br>
+processes can wrap after occurrences of tseg that are also word boundaries.<br>
+There are no interword spaces in Tibetan, a zero-width space might be used to<br>
+set off word boundaries for automatic line-wrap algorithms (in the worst case,<br>
+a break after tseg is better than between letters). U+104C and U+104B are a<br>
+decorative variants of shad sometimes used at the beginning or end of a text.<br>
+The character U+104F is an honorific flourish, double (Swasti) and triple<br>
+forms of which are used at the beginnings of texts. It normally joins with<br>
+one or two more occurrences of the same character to form ligatures, and is<br>
+almost never used alone usually being followed by a decorative or doubled<br>
+shad.<br>
+<br>
+Transcription of Sanskrit: The Sanskrit retroflex letters are retained in<br>
+the Tibetan script. In this proposal, the voiced aspirates are represented<br>
+by conjuncts formed of simple consonants placed above the letter HA U+1021<br>
+(they could also be included as precomposed entities). U+103B is the visarga<br>
+(see Devanagari), and (U+1038) is the anusvara.<br>
+<br>
+The letter AA (U+101A, called ah-chung) is used as a subscript below another<br>
+consonant, with or without a vowel sign, to indicate a long vowel. The<br>
+Ah-chung subscript is represented explicitly by U+1025. The long vowels<br>
+incorporating ah-chung in typical fonts are sometimes written in other ways<br>
+(e.g., the Landtsa font style uses double vowel signs exclusively to indicate<br>
+vowel length). Hence, these long vowels have been encoded atomically.<br>
+<br>
+When the Tibetan script is used to write Sanskrit, consonants are frequently<br>
+stacked vertically in ways that do not occur in native Tibetan words; this<br>
+usually indicates deletion of one or more vowel sounds. This behaviour is<br>
+indicated in Unicode by insertion of a virama U+1030 between the consonants<br>
+to be stacked, in a manner similar to the way virama functions in Devanagari.<br>
+<br>
+Unicode does not encode the superscript and subscript forms for the letters<br>
+WA, RA, and YA, as these shape changes can be algorithmically determined from<br>
+context by the typographical rules for Tibetan; these shape changes are<br>
+signalled by presence of the virama. Examples of these modified forms are<br>
+ra-ta (ra subjoined) and ra-go (ra head). (The normal rules for form changes<br>
+in written Tibetan are contained in various grammatical treatises on the<br>
+Tibetan language and cannot be covered here in detail.)<br>
+<br>
+The reversed gigu and long reversed gigu (U+102A, U+102B) are used in<br>
+conjunction with the consonants RA and LA to represent Sanskrit vocalic /r/<br>
+and /l/, respectively. If these vowels are in initial position, the<br>
+consonant+{gigu} combination is used, e.g. U+101C, U+102A for syllable-initial<br>
+short vocalic /r/. When the vowel is used in a syllable with an initial<br>
+consonant, the RA or LA forms a conjunct with the consonant. E.g., the<br>
+sequence U+1000, U+1030, U+101C, U+102A codes the syllable /kr/ (with vocalic<br>
+/r/).<br>
+<br>
+Stacking Behaviour and Other Issues: In some exceptional cases, especially<br>
+with transliterations from Sanskrit in mantras, arbitrary stacks of letters<br>
+may occur. YA, RA, and WA may appear in stacks without the normal shape<br>
+changing. This usage requires some type of stacking code or ligature making<br>
+code distinct from the virama. There is currently no such control code in<br>
+Unicode, and Tibetan is one example in which it is necessary for correct<br>
+plaintext rendering.<br>
+<br>
+In Unicode (Unicode 1.0), the Tibetan block introduction indicated that a Zero<br>
+Width Joiner (U+200D) could be used to induce this type of stacking, but this<br>
+usage has been disallowed due to the narrower interpretation of the ZWJ<br>
+character.<br>
+<br>
+There may be some use for the ``lenition mark'' (a non-spacing mark) that<br>
+appeared in Unicode 1.0. It has been removed here, and the two precomposed<br>
+forms FA and VA added (these are apparently used for transcribing foreign<br>
+words). It is not known at this time whether the diacritic is ever used with<br>
+other letters. (Letters U+1014 through U+1016 are primordial, and hence not<br>
+an issue; the issue is with letters beyond FA and VA.)<br>
+<br>
+The punctuation marks U+1034 through U+1037 are new, taken from the British<br>
+proposal of July 1992 presented in commentary to the UK vote on DIS 10646.<br>
+Atomic encoding of the long vowels does leave open the possibility of<br>
+alternate spellings for long vowels. The order given here, especially after<br>
+U+1022, is somewhat different than the Unicode 1.0 order.<br>
+<br>
+Encoding Structure: The Tibetan script block is divided into the following<br>
+ranges:<br>
+U+1000 to 1024 Consonant Letters<br>
+U+1025 to 102F Non-Spacing Vowel Signs<br>
+U+1030 to 1039 Other non-Spacing Marks<br>
+U+1040 to 1049 Digits<br>
+U+104A to 104F Symbols<br>
+U+1050 to 105F Reserved for Tibetan<br>
+<br>
+<strong>DRAFT TIBETAN CHARACTER NAMES</strong><br>
+<br>
+1000 TIBETAN LETTER KA<br>
+1001 TIBETAN LETTER KHA<br>
+1002 TIBETAN LETTER GA<br>
+1003 TIBETAN LETTER NGA<br>
+1004 TIBETAN LETTER CA<br>
+1005 TIBETAN LETTER CHA<br>
+1006 TIBETAN LETTER JA<br>
+1007 TIBETAN LETTER NYA<br>
+1008 TIBETAN LETTER REVERSED TA<br>
+1009 TIBETAN LETTER REVERSED THA<br>
+100A TIBETAN LETTER REVERSED DA<br>
+100B TIBETAN LETTER REVERSED NA<br>
+100C TIBETAN LETTER TA<br>
+100D TIBETAN LETTER THA<br>
+100E TIBETAN LETTER DA<br>
+100F TIBETAN LETTER NA<br>
+1010 TIBETAN LETTER PA<br>
+1011 TIBETAN LETTER PHA<br>
+1012 TIBETAN LETTER BA<br>
+1013 TIBETAN LETTER MA<br>
+1014 TIBETAN LETTER TSA<br>
+1015 TIBETAN LETTER TSHA<br>
+1016 TIBETAN LETTER DZA<br>
+1017 TIBETAN LETTER WA<br>
+1018 TIBETAN LETTER ZHA<br>
+1019 TIBETAN LETTER ZA<br>
+101A TIBETAN LETTER AA<br>
+101B TIBETAN LETTER YA<br>
+101C TIBETAN LETTER RA<br>
+101D TIBETAN LETTER LA<br>
+101E TIBETAN LETTER SHA<br>
+101F TIBETAN LETTER REVERSED SHA<br>
+1020 TIBETAN LETTER SA<br>
+1021 TIBETAN LETTER HA<br>
+1022 TIBETAN LETTER A<br>
+1023 TIBETAN LETTER FA<br>
+1024 TIBETAN LETTER VA<br>
+1025 TIBETAN AH CHUNG SUBSCRIPT<br>
+vowel length mark<br>
+1026 TIBETAN VOWEL SIGN I<br>
+1027 TIBETAN VOWEL SIGN II<br>
+1028 TIBETAN VOWEL SIGN U<br>
+1029 TIBETAN VOWEL SIGN UU<br>
+102A TIBETAN VOWEL SIGN REVERSED GIGU<br>
+102B TIBETAN VOWEL SIGN LONG REVERSED GIGU<br>
+102C TIBETAN VOWEL SIGN E<br>
+102D TIBETAN VOWEL SIGN EE<br>
+102E TIBETAN VOWEL SIGN O<br>
+102F TIBETAN VOWEL SIGN AU<br>
+1030 TIBETAN VIRAMA<br>
+= srog med<br>
+1031 TIBETAN CANDRABINDU<br>
+= kladkor (lekhor)<br>
+1032 TIBETAN CANDRABINDU WITH ORNAMENT<br>
+= datsekthikley<br>
+1033 TIBETAN HONORIFIC UNDER RING<br>
+1034 TIBETAN LANGCHEN NYOBUM<br>
+1035 TIBETAN JNIM TWO<br>
+1036 TIBETAN JNIM ONE<br>
+1037 TIBETAN HONORIFIC PREFIX<br>
+1038 TIBETAN ANUSVARA<br>
+1039 TIBETAN UNDER RING<br>
+103A TIBETAN CHUCHENYIGE<br>
+103B TIBETAN VISARGA<br>
+= mambcad (namchey)<br>
+103C TIBETAN COMMA<br>
+= tertsek (also used as Tibetan visarga)<br>
+103D TIBETAN DITTO<br>
+= duyik<br>
+103E TIBETAN LEFT BRACE<br>
+103F TIBETAN RIGHT BRACE<br>
+1040 TIBETAN DIGIT ZERO<br>
+1041 TIBETAN DIGIT ONE<br>
+1042 TIBETAN DIGIT TWO<br>
+1043 TIBETAN DIGIT THREE<br>
+1044 TIBETAN DIGIT FOUR<br>
+1045 TIBETAN DIGIT FIVE<br>
+1046 TIBETAN DIGIT SIX<br>
+1047 TIBETAN DIGIT SEVEN<br>
+1048 TIBETAN DIGIT EIGHT<br>
+1049 TIBETAN DIGIT NINE<br>
+104A TIBETAN TSEG<br>
+104B TIBETAN SHAD<br>
+104C TIBETAN RINCHANPHUNGSHAD<br>
+= rinchen pung shey<br>
+104D TIBETAN RGYANSHAD<br>
+= druishey<br>
+104E TIBETAN DOUBLE SHAD<br>
+X Devanagari double danda -&gt; 0965<br>
+104F TIBETAN SINGLE ORNAMENT<br>
+= nyizla<br>
+= goyik ( honorific; marks beginning of texts)<br>
+</p>
+
+<hr>
+
+<p><font size="5"><strong>Proposal for Mongolian Encoding</strong></font><br>
+<br>
+The Mongolian draft proposal consists of a draft chart, a draft character<br>
+names list, and a discussion in the form of a draft block introduction<br>
+highlighting unresolved questions/issues. The content is based on the<br>
+document &quot;General Information on Mongolian Characters&quot; registered by China as<br>
+ISO-IEC JTC1/SC2/WG2 N628, May 1990. A great deal of useful input and<br>
+materials were supplied by Lloyd Anderson of Ecological Linguistics, Professor<br>
+John Krueger of Indiana University, Professor John Street of University of<br>
+Wisconsin, Mr. Ochir of Inner Mongolian University, and Wayne Richter of<br>
+Western Washington University.<br>
+<br>
+Meta-Issue: Although the basic Mongolian alphabet which forms the core of<br>
+this draft proposal can be easily laid out, there are important reasons for<br>
+waiting perhaps one more year before freezing it into an encoding standard:<br>
+<br>
+* A few of the remaining open issues are not minor, but rather address<br>
+the basic relationship between the encoding of the language and the<br>
+representation of the script.<br>
+<br>
+* The native and scholarly communities who will be most affected by a<br>
+future encoding standard are actively in the midst of attempting to resolve<br>
+these issues.<br>
+<br>
+* To ensure both logical soundness and practical acceptability of a<br>
+chosen encoding design, we need to insist on possession of at least one<br>
+reference implementation of any proposed encoding system; to date no such<br>
+implementation is in hand.<br>
+<br>
+<strong>Draft January 13, 1993<br>
+<br>
+Mongolian (U+1060 - U+109F)<br>
+</strong><br>
+Development of the Mongolian script began in the 12th century, along with the<br>
+enormous spread of Mongolian influence under Genghis Khan. The script has<br>
+been in continuous use in the area which is now the Mongolian Autonomous<br>
+Region of China (Inner Mongolia), and is now being taught again in the<br>
+Mongolian People's Republic of the former USSR (Outer Mongolia) where it had<br>
+been supplanted by Cyrillic in the 1930's. The script is used to write<br>
+classical Mongolian, it serves to represent modern dialects in the areas just<br>
+mentioned, and it is extended with additional letters for the Manchu and<br>
+related Sibo languages.<br>
+<br>
+The Mongolian script originated ultimately from the Aramaic, a right-to-left<br>
+Semitic script. At some point the whole page underwent a rotation through 90<br>
+degrees counterclockwise, with the result that Mongolian is traditionally<br>
+written vertically in columns advancing from left to right. (In recent usage<br>
+in China, when Mongolian is to be integrated with left-to-right horizontal<br>
+text, the Mongolian lines may be rotated a further 90 degrees.) Although<br>
+there is a non-accidental resemblance between Mongolian script and rotated<br>
+Arabic script, the Mongolian language is not related to Arabic.<br>
+<br>
+Encoding Difficulties. The relation between language and script in Mongolian<br>
+is not at all simple. It is in some ways similar to that of English, in that<br>
+the script retains archaisms not reflected in modern dialects (viz. English<br>
+spellings such as &quot;knight&quot;). Thus the elements of the script do not correlate<br>
+well with modern pronunciation. Further, some elements of the Mongolian<br>
+script apply to more than one phoneme, somewhat as the English letter &quot;c&quot;<br>
+applies to the disparate sounds [k] and [s]. The situation is further<br>
+complicated by the fact that Mongolian letters assume contextual forms<br>
+according to a variety of rules. The visible glyph forms do not constitute<br>
+the proper &quot;Mongolian alphabet&quot;, yet neither do modern phonetic elements.<br>
+The recent Cyrillic-based alphabet is a phonetic representation of a modern<br>
+dialect and does not correspond cleanly with the traditional script. Finally,<br>
+the Mongolians themselves often present the traditional script in the form of<br>
+a syllabary, but this is not a fruitful<br>
+<br>
+Standards Activity. Work has been done and is ongoing on Mongolian<br>
+standardization, but no firm standard definitions of the script's elements<br>
+and their encoding have yet emerged. In DP 10646 a Mongolian chart appeared,<br>
+based on the Chinese standard GB 8045-1987, which attempts to fit both<br>
+underlying letters and glyphic fragments into the 96-cell framework of a 7-<br>
+and 8-bit encoding. The result is a mixture of letters and glyphs in no<br>
+discernible order, with too many entities to be an alphabet and too few to be<br>
+a usable glyph set. Later China withdrew that proposal, and submitted ISO<br>
+WG2 N628 of May 1990, which lists a sound enumeration of the basic alphabet.<br>
+That list is taken as the basis of the current proposal.<br>
+<br>
+Language Coverage. The primary focus of standardization is a set of letters<br>
+sufficient to cover modern Mongolian usage of the traditional script,<br>
+including the representation of foreign words. A secondary focus is basic<br>
+coverage of classical Mongolian. Left for later are ancillary features of<br>
+classical Mongolian (e.g. the classical numerals) and additional letters<br>
+required to extend the script to other languages, particularly Manchu.<br>
+<br>
+* Question: What is the full set of letters and features required for<br>
+classical Mongolian?<br>
+<br>
+* Question: What is the precise set of extension letters required for Manchu?<br>
+(We currently have two listings, which do not agree.)<br>
+<br>
+Encoding Principles. Ultimately, analytical sources such as dictionaries and<br>
+textbooks provide a near-concensus on an underlying &quot;basic Mongolian<br>
+alphabet&quot;. This alphabet could be regarded an approximation to the phonetic<br>
+repertoire of classical Mongolian, or from a modern perspective it could be<br>
+regarded as a somewhat arbitrary collection of elements. (Likewise, English<br>
+spelling in the Latin alphabet could either be analyzed historically, or<br>
+simply considered as rather arbitrary from the modern viewpoint). In any<br>
+case, as with the encoding of the Arabic script, the visible glyphic forms of<br>
+Mongolian are *not* taken to be the basic encoding elements. Those entities<br>
+given in ISO WG2 N628 and in DP 10646 that are merely presentation forms are<br>
+considered to be resources for the rendering process, and not part of the<br>
+encoding. It is intended that they be excluded from Unicode/10646BMP.<br>
+<br>
+Basic Alphabet. A collation of two dozen reference sources reveals that the<br>
+list of 29 letters supplied in ISO WG2 N628 can serve well as the basis for<br>
+an alphabetic Mongolian encoding, both in its content and in its ordering.<br>
+Therefore, the present proposal consists precisely of that list, plus the<br>
+interposition of two variant forms (U+106D, U+106F) and three somewhat<br>
+marginal additional letters (U+1080, U+1081, U+1082).<br>
+<br>
+Encoding Structure. The Unicode block for the Mongolian script is divided<br>
+into the following ranges:<br>
+U+1060 to U+1062 Punctuation<br>
+U+1062 to U+1068 Vowels<br>
+U+1069 to U+107A Basic consonants<br>
+U+107B to U+107F Consonants for foreign words<br>
+U+1080 to U+1083 Additional letters<br>
+U+1084 to U+109F Currently unassigned<br>
+<br>
+The &quot;Punctuation&quot;, &quot;Vowels&quot;, and &quot;Basic consonants&quot; groups
+form the core<br>
+alphabet used in representing the Mongolian language. The &quot;Consonants for<br>
+foreign words&quot; group are modern additions used represent important foreign<br>
+sources such as Chinese and Russian. Taken together, these two groups form<br>
+the well-attested basic alphabet of the modern script. The following<br>
+&quot;Additional letters&quot; group contains forms whose usage (or status as an<br>
+independent letter) is less well-attested, but which nevertheless are listed<br>
+in many sources as independent letters. It is intended that the &quot;Currently<br>
+unassigned&quot; space will accommodate later additions for classical Mongolian,<br>
+Manchu, and any other rare necessities.<br>
+<br>
+Alphabetical Order. The order of letters as assigned in the code chart is<br>
+used in many modern sources from Inner Mongolia and China, although others<br>
+use a slight variant in which L comes before M, and H comes before C.<br>
+Traditional sources often arrange the main groups of consonants a bit<br>
+differently:<br>
+modern: N B P Q/K GAMMA/G M L S SH T D CH ...<br>
+traditional: N Q/K GAMMA/G B P S SH T D L M CH ...<br>
+<br>
+As generally, Mongolian implementations are expected to handle sorting via<br>
+explicit processing, rather than relying on the code order to implicitly<br>
+provide a desired alphabetical collation.<br>
+<br>
+Glyphs Representing Individual Letters. Like many connected scripts,<br>
+Mongolian has basic initial, medial, and final contextual forms of letters.<br>
+However, the individual Mongolian letters are not normally presented alone in<br>
+isolated forms (rather, the script is generally presented as a syllabary).<br>
+To indicate the alphabetic letters in isolation or in abstraction, as in our<br>
+code charts, by convention the initial-form glyphs are used.<br>
+<br>
+Latin Letter Names. There is a fairly well established tradition of Latin<br>
+transliteration for Mongolian, which is here adapted for the character names.<br>
+The alternative Latin transcriptions given in the names list are generally<br>
+self-explanatory, except that the equivalence Q = X should be noted. The<br>
+foreign K' or K* is denoted here by KK; this doubling is merely an artifice<br>
+to avoid using ' or * in the name. The RH is a Chinese retroflex R.<br>
+<br>
+Cyrillic Transcription. The generic mappings to the Cyrillic orthography are<br>
+also given in the names list, even though the correspondence is not always<br>
+unique in either direction. Although correlation of the traditional-script<br>
+encoding system with the modern Cyrillic-based alphabet is desirable, it does<br>
+not appear possible to design the encoding so as to permit algorithmic (or at<br>
+least, simple) transcription between the two scripts. Thus, script<br>
+convertibility is not taken as a goal of the current encoding system.<br>
+<br>
+Character Shaping Behavior. An absolute requirement on any script encoding<br>
+is that it be possible for a computer to take any valid sequence of underlying<br>
+character codes and algorithmically render the appropriate visual form, given<br>
+a repertoire of surface glyphs. In the case of the Mongolian traditional<br>
+script, the required character shaping rules are particularly complex.<br>
+Mongolian rendering systems have been built, but not yet in conjunction with<br>
+the particular encoding approach proposed here. Until a reference<br>
+implementation is thoroughly tested, there is no way to be certain that this<br>
+proposed encoding is actually workable in all cases.<br>
+<br>
+Issues of Alphabet Content and Spelling. Because the relationship between<br>
+alphabetic letters and their rendition into glyphs is complex, often<br>
+many-to-many, there are several cases where the choice of underlying spelling<br>
+needs to be made clear. All of the following items are implicit questions<br>
+for the reader, as to whether the model proposed here is accurate and<br>
+workable.<br>
+<br>
+* Content-based spelling. It is intended that the encoded spelling of<br>
+Mongolian words be based on their underlying alphabetic content, not on their<br>
+visual appearance. For example, the words ADA &quot;devil&quot; and ENDE &quot;here&quot;
+happen<br>
+to appear identical, but they nevertheless should be spelled differently as<br>
+indicated. The motivations for specifying content-based spelling are to avoid<br>
+unnecessary arbitrariness, to preserve content for text processes such as<br>
+search, and to align the spelling system insofar as possible with the more<br>
+phonetic Cyrillic orthography.<br>
+<br>
+* Spelling of vowels in non-initial syllables. This is a particular<br>
+case of the preceding. The vowels A and E are written differently only in<br>
+the first syllable, not in later syllables, likewise the vowel pair O and OE<br>
+and the pair U and UE. Since the encoding is based on content and not<br>
+appearance, the correct letter should be spelled regardless of how it might<br>
+be rendered. Thus NARAN &quot;sun&quot; is a correct spelling, and *NAREN should be<br>
+treated as a spelling error, regardless of the fact that *NAREN might be<br>
+rendered with the same shape as NARAN.<br>
+<br>
+* Spelling of vowel pairs O and U, OE and UE. This is another case of<br>
+content-based spelling. The vowels O and U are always written identically,<br>
+likewise the pair OE and UE. However, they are distinguished in the<br>
+underlying alphabet, so the correct letters should be used in spelling.<br>
+<br>
+* Spelling of consonant pairs Q and K, GAMMA and G. The sounds Q and<br>
+K are in complementary distribution (in modern native Mongolian words), as<br>
+are those represented by the pair GAMMA and G. Mongolian sources divide about<br>
+evenly on whether to regard each pair as a single entity or two entities. In<br>
+this encoding, each pair is resolved into two separate entities, primarily so<br>
+that they can be distinguished if need be in spelling foreign or classical<br>
+Mongolian words. In this system, all four characters are to be considered<br>
+distinct in content-based spelling; this stricture also takes care of the fact<br>
+that the initial glyphs for K and G appear identical.<br>
+<br>
+* Spelling of digraphs NG and LH. There two digraphs NG (= N + G) and<br>
+LH (= L + H). Mongolian sources divide about evenly on whether to regard each<br>
+digraph as a single entity or two entities. In this encoding, each digraph<br>
+is treated as a separate single letter, primarily because this makes it easier<br>
+to accommodate to sources (e.g. dictionary listings) that so treat them.<br>
+<br>
+* Spelling of consonants T and D. Although most listings of the<br>
+Mongolian alphabet simply show a T letter and a D letter (as reflected in the<br>
+current proposal), it appears that these are firmly distinguished only in<br>
+foreign words, and that a content-based spelling for native Mongolian words<br>
+should use instead a combined &quot;Mongolian T/D&quot;. This distinction may surface<br>
+in the assertion that initial &quot;Mongolian T/D&quot; has the appearance of U+1074 in<br>
+our chart, while initial &quot;foreign D&quot; has the appearance of U+1075 in our<br>
+chart. If this is true, then there would be even stronger reason for adding<br>
+a separate &quot;Mongolian T/D&quot; letter, with the separate T and D then being<br>
+reserved for transliteration of foreign words.<br>
+<br>
+Possible Additional Letters. Various sources occasionally show other<br>
+letterforms, which may perhaps be needed for classical Mongolian or for<br>
+representing other languages. Any information on potential additional letters<br>
+would be appreciated, below are a few of those under consideration.<br>
+<br>
+* Aleph. Is it a rule of Mongolian spelling that every word must begin<br>
+with a consonant? If so, as in semitic alphabets having this rule, there<br>
+should be a &quot;silent consonant&quot; (aleph) to start words that phonetically begin<br>
+with vowels. It could be said that the form of such an aleph is seen in our<br>
+chart as the &quot;cap&quot; on the heads of the initial vowel forms U+1062 -&gt; U+1068.<br>
+<br>
+* &quot;Left-tail&quot; final forms of vowels A and E. Do there need to be<br>
+separate letters for the foot-shaped leftward final forms of vowels A and/or<br>
+E? This question means, does the occurrence of these forms depend on<br>
+linguistic factors, such that if they were spelled via U+1062 MONGOLIAN LETTER<br>
+A or U+1063 MONGOLIAN LETTER E, a computer could not algorithmically know how<br>
+to render the appropriate visual form?<br>
+<br>
+* Additional &quot;z&quot; consonant. Some sources show a form of U+107E<br>
+MONGOLIAN LETTER Z that has its &quot;toe&quot; curling out-and-upward rather than<br>
+down-and-inward. Is this a glyphic variant of U+107E MONGOLIAN LETTER Z, or<br>
+is it a separate additional letter?<br>
+<br>
+Separation and Concatenation of Word Components. The ASCII character U+0020<br>
+SPACE is intended to be used as the normal Mongolian wordspace. Also, a gap<br>
+of white space often appears between a word and its endings, and sometimes<br>
+even within a stem-morpheme. We need a fuller understanding of the semantics<br>
+of Mongolian white spaces and the contextual-form behavior of the letters<br>
+adjoining them. There is no doubt that some sort of special encodings will<br>
+be needed at these junctures, the open *** question is whether one or more<br>
+special &quot;suffix-break&quot; character(s) need be added, or whether the special<br>
+mechanisms already available in the standard can suffice to represent these<br>
+situations with reasonable semantics. Some of the relevant special characters<br>
+already contained in the standard include:<br>
+<br>
+* U+00A0 NON-BREAKING SPACE. Indicates a white space within a word,<br>
+but does not break the word in two.<br>
+<br>
+* U+200C ZERO WIDTH NON-JOINER. Invisible character that is regarded<br>
+by adjacent letters as if it were a word boundary, causing them to assume the<br>
+corresponding non-joining contextual form even in the middle of a word.<br>
+<br>
+* U+200D ZERO WIDTH JOINER. Invisible character that is regarded by<br>
+adjacent letters as if it were an ordinary letter, causing them to assume the<br>
+corresponding joining contextual form even at the boundaries of a word. So,<br>
+for example, if the spelling sequence is (reading down):<br>
+<br>
+...<br>
+some letter<br>
+last letter before gap<br>
+U+200C ZERO WIDTH NON-JOINER<br>
+U+00A0 NON-BREAKING SPACE<br>
+U+200D ZERO WIDTH JOINER<br>
+first letter after gap<br>
+some letter<br>
+some letter<br>
+...<br>
+<br>
+then the word would remain logically unbroken but it would contain a white<br>
+gap, the last letter before the gap would assume final contextual form, and<br>
+the first letter after the gap would assume medial contextual form. The<br>
+question is whether such mechanisms are workable for Mongolian, and if so,<br>
+appropriate.<br>
+<br>
+<strong>DRAFT MONGOLIAN CHARACTER NAMES LIST</strong><br>
+<br>
+@ Punctuation<br>
+1060 MONGOLIAN COMMA<br>
+1061 MONGOLIAN PERIOD<br>
+<br>
+@ Vowels<br>
+1062 MONGOLIAN LETTER A<br>
+= Cyrillic A<br>
+1063 MONGOLIAN LETTER E<br>
+= Cyrillic REVERSED E<br>
+1064 MONGOLIAN LETTER I<br>
+= Cyrillic II<br>
+1065 MONGOLIAN LETTER O<br>
+= Cyrillic O<br>
+1066 MONGOLIAN LETTER U<br>
+[= WG2 N628 # 5 &quot;UO&quot;]<br>
+= Cyrillic U<br>
+1067 MONGOLIAN LETTER OE<br>
+[= WG2 N628 # 6 &quot;UE&quot;]<br>
+= Cyrillic LATIN SMALL LETTER BARRED O (U+0275)<br>
+alternative Latin transcription: O UMLAUT<br>
+1068 MONGOLIAN LETTER UE<br>
+[= WG2 N628 # 7 &quot;U&quot;]<br>
+= Cyrillic STRAIGHT U<br>
+alternative Latin transcription: U UMLAUT<br>
+<br>
+@ Basic consonants<br>
+1069 MONGOLIAN LETTER N<br>
+= Cyrillic EN<br>
+106A MONGOLIAN LETTER B<br>
+= Cyrillic BE<br>
+106B MONGOLIAN LETTER P<br>
+= Cyrillic PE<br>
+106C MONGOLIAN LETTER Q<br>
+[= WG2 N628 #11 &quot;H&quot;]<br>
+= Cyrillic KHA (which is also used for 107F)<br>
+alternative Latin transcription: X<br>
+back vowel harmony correspondent to the following<br>
+106D MONGOLIAN LETTER K<br>
+front vowel harmony correspondent to the preceding<br>
+106E MONGOLIAN LETTER GAMMA<br>
+[= WG2 N628 #12 &quot;G&quot;]<br>
+= Cyrillic GE<br>
+back vowel harmony correspondent to the following<br>
+106F MONGOLIAN LETTER G<br>
+front vowel harmony correspondent to the preceding<br>
+1070 MONGOLIAN LETTER M<br>
+= Cyrillic EM<br>
+1071 MONGOLIAN LETTER L<br>
+= Cyrillic EL<br>
+1072 MONGOLIAN LETTER S<br>
+= Cyrillic ES<br>
+1073 MONGOLIAN LETTER SH<br>
+= Cyrillic SHA<br>
+alternative Latin transcription: S CARON<br>
+1074 MONGOLIAN LETTER T<br>
+= Cyrillic TE<br>
+1075 MONGOLIAN LETTER D<br>
+= Cyrillic DE<br>
+1076 MONGOLIAN LETTER CH<br>
+= Cyrillic CHE<br>
+= Cyrillic TSE (which is also used for 107D)<br>
+alternative Latin transcription: C CARON<br>
+1077 MONGOLIAN LETTER JH<br>
+[= WG2 N628 #20 &quot;ZH&quot;]<br>
+= Cyrillic ZHE (which is also used for 1083)<br>
+= Cyrillic ZE (which is also used for 107E)<br>
+alternative Latin transcriptions: J CARON, ZH<br>
+1078 MONGOLIAN LETTER Y<br>
+= Cyrillic SHORT II<br>
+1079 MONGOLIAN LETTER R<br>
+= Cyrillic ER<br>
+107A MONGOLIAN LETTER V<br>
+[= WG2 N628 #23 &quot;W&quot;]<br>
+= Cyrillic VE<br>
+alternative Latin transcription: W<br>
+<br>
+@ Consonants for foreign words<br>
+107B MONGOLIAN LETTER F<br>
+= Cyrillic EF<br>
+107C MONGOLIAN LETTER KK<br>
+[= WG2 N628 #25 &quot;K&quot;]<br>
+= Cyrillic KA<br>
+alternative Latin transcriptions: K', K*<br>
+107D MONGOLIAN LETTER C<br>
+[= WG2 N628 #26 &quot;TS&quot;]<br>
+= Cyrillic TSE (which is also used for 1076)<br>
+alternative Latin transcription: TS<br>
+107E MONGOLIAN LETTER Z<br>
+[= WG2 N628 #27 &quot;DS&quot;]<br>
+= Cyrillic ZE (which is also used for 1077)<br>
+alternative Latin transcription: DZ<br>
+<br>
+107F MONGOLIAN LETTER H<br>
+= Cyrillic KHA (which is also used for 106C)<br>
+<br>
+@ Additional letters<br>
+1080 MONGOLIAN LETTER NG<br>
+1081 MONGOLIAN LETTER LH<br>
+1082 MONGOLIAN LETTER EH<br>
+1083 MONGOLIAN LETTER RH<br>
+[= WG2 N628 #29 &quot;R&quot;]<br>
+= Cyrillic ZHE (which is also used for 1077)<br>
+alternative Latin transcriptions: Z CARON, ZH<br>
+<br>
+</p>
+
+<hr>
+
+<h2>Acknowledgments</h2>
+
+<p><font size="3">The following individuals contributed greatly to the production of
+Technical Report #2: Lloyd Anderson, Ken Whistler, Peter Lofting, Rick McGowan</font></p>
+
+<p><font size="3">The content of the Mongolian proposal is s based on the document
+&quot;General Information on Mongolian Characters&quot; registered by China as ISO-IEC
+JTC1/SC2/WG2 N628, May 1990. A great deal of useful input and materials were supplied by
+Lloyd Anderson of Ecological Linguistics, Professor John Krueger of Indiana University,
+Professor John Street of University of Wisconsin, Mr. Ochir of Inner Mongolian University,
+and Wayne Richter of Western Washington University. </font><br>
+</p>
+
+<h2>Copyright</h2>
+
+<p>Copyright © 1992-1998 Unicode, Inc. All Rights Reserved. The Unicode Consortium makes
+no expressed or implied warranty of any kind, and assumes no liability for errors or
+omissions. No liability is assumed for incidental and consequential damages in connection
+with or arising out of the use of the information or programs contained or accompanying
+this technical report. </p>
+
+<p>Unicode and the Unicode logo are trademarks of Unicode, Inc., and are registered in
+some jurisdictions.</p>
+
+<hr>
+
+<p>&nbsp;</p>
+</body>
+</html>

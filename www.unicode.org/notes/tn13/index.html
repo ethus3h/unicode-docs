@@ -1,0 +1,253 @@
+<!doctype HTML 
+PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta http-equiv="Content-Language" content="en-us">
+<meta name="GENERATOR" content="Microsoft FrontPage 6.0">
+<meta name="ProgId" content="FrontPage.Editor.Document">
+<link rel="stylesheet" href="../../unicode/reports/reports.css" 
+type="text/css">
+<title>UTN #13: GDP by Language</title>
+</head>
+
+<body bgcolor="#ffffff">
+
+<table class="header">
+  <tr>
+    <td class="icon"><a href="http://www.unicode.org"><img align="middle" 
+    alt="[Unicode]" border="0" 
+    src="../../webscripts/logo60s2.gif" width="34" height="33"></a>&nbsp;&nbsp;
+    <font size="3"><a class="bar" href="../index.html">Technical 
+    Notes</a></font></td>
+  </tr>
+  <tr>
+    <td class="gray">&nbsp;</td>
+  </tr>
+</table>
+<div style="margin: 2em">
+  <h2 align="center">Unicode Technical Note #13</h2>
+  <h1 align="center">GDP by Language</h1>
+  <table class="wide">
+    <tr>
+      <td>Version</td>
+      <td><a href="index.html#TrackingNumber1">1</a></td>
+    </tr>
+    <tr>
+      <td>Authors</td>
+      <td><a href="http://www.unicode.org/reporting.html">Mark Davis</a></td>
+    </tr>
+    <tr>
+      <td>Date</td>
+      <td>2003-01-22</td>
+    </tr>
+    <tr>
+      <td>This Version</td>
+      <td><a href="tn13-1.html">http://www.unicode.org/notes/tn13/tn13-1.html</a></td>
+    </tr>
+    <tr>
+      <td>Previous Version</td>
+      <td>none</td>
+    </tr>
+    <tr>
+      <td>Latest Version</td>
+      <td><a href="index.html">http://www.unicode.org/notes/tn13</a></td>
+    </tr>
+  </table>
+ 
+  <h3>&nbsp;</h3>
+ 
+  <h3><i>Summary</i></h3>
+  <p><i>While English is a major language, it only accounts for around 30% of 
+  the world Gross Domestic Product (GDP), and is likely to account for less in 
+  the future.</i></p>
+  <h3><i>Status</i></h3>
+  <p><i>This document is a <b>Unicode Technical Note</b>. It is supplied purely 
+  for informational purposes and publication does not imply any endorsement by 
+  the Unicode Consortium. For general information on Unicode Technical Notes, 
+  see <a href="../index.html">http://www.unicode.org/notes</a>.</i></p>
+  
+<h3><i>Contents</i></h3>
+  <ol>
+    <li><a href="index.html#GDP_by_Language">GDP by Language</a></li>
+    <li><a href="index.html#Sources">Sources</a></li>
+    <li><a href="index.html#Projections">Projections</a></li>
+    <li><a href="index.html#Acknowledgements">Acknowledgements</a></li>
+    <li><a href="index.html#References">References</a></li>
+  </ol>
+ 
+ 
+  <p>&nbsp;</p>
+ 
+ <h2>1 <a name="GDP_by_Language">GDP by Language</a></h2>
+
+ <p>Many people in the software industry don't realize how important it is
+to localize products for different languages around the world. While English
+is a major language, it only accounts for around 30% of the world Gross Domestic
+Product (GDP), and is likely to account for less in the future. Neglecting
+other languages means ignoring quite significant potential markets.</p>
+<p>This short article provides one picture of the economic significance of
+different languages, with a breakdown of the percentages of world GDP by
+language. Not only does it show the current breakdown, but it also provides
+data for the years 1975 to 2002 to show modern trends. The most notable feature
+is the steady rise of Chinese and slow relative decline of Japanese and most
+European languages. Korean and Indic languages also show growth over that
+period, though slower than Chinese.</p>
+<p align="center"><b>Figure 1: GDP by Language 1975-2002</b></p>
+<p align="center"><img border="0" src="fig1-gdp-ppp-by-lang.gif" width="848" height="536"></p>
+<p>The GDP values are expressed in terms of Purchasing Power Parity (PPP),
+which accounts for price differences between countries; for more about PPP,
+see [<a href="index.html#WorldBank">WorldBank</a>].</p>
+<p>The <i>Other</i> field is the accumulated total for languages for which
+there is data, but where each has less than 0.9% of the world GDP. It is
+provided below. While each language separately corresponds to a small percentage,
+their total is significant (about the same as Chinese). In general, the data
+is less reliable for smaller languages, so the order should not be taken
+as significant.</p>
+<blockquote>
+  <p>Tagalog, Afrikaans, Persian, Swedish, Ukrainian, Malay,
+Telugu, Greek, Marathi, Tamil, Vietnamese, Cantonese, Urdu, Norwegian, Danish,
+Czech, Hebrew, Catalan, Romanian,   Hungarian, Gujarati, Finnish, Turkic,
+Punjabi, Kannada, Other Indic, Malayalam, Oriya, Slovak, Galician, Bulgarian,
+Byelorussian, Croatian, Amharic, Sindhi, Sinhalese, Assamese,   Nepali, Kurdish,
+Kazakh, Uzbek, Slovenian, Pashto (Pushto), Luxembourgish, Azerbaijani, Latvian
+(Lettish), Cambodian, Turkmen, Basque, Estonian, Albanian, Balochi, Malagasy, 
+  Lithuanian, Armenian, Kinyarwanda, Swahili, Laothian, Macedonian, Icelandic,
+Luri, Georgian, Serbian, Tajik, Hindko, Moldavian, Konkani, Sesotho, Mongolian,
+Manipuri, Kirghiz,   Maltese, Brahui, Chichewa, Croatian, Kirundi, Afar,
+Rhaeto-Romance, Samoan, Tonga,...</p>
+</blockquote>
+<h2>2 <a name="Sources">Sources</a></h2>
+<p>Ideally, one would determine the proportion of world GDP allocated to
+each person in the world, and apportion that to different languages on the
+basis of the languages that person speaks during average working hours. One
+can approximate that process with the available data: GDP for countries and
+proportions of language speakers in each country.</p>
+<p>The GDP data for different countries comes from the World Bank [<a href="index.html#WorldBank">WorldBank</a>].
+Where data is missing for a given year, it is interpolated on the basis of 
+the percentage of world GDP before and/or after the missing year (all of
+these are for countries with relatively small GDPs, so they don't materially
+affect the data for the top languages shown above).</p>
+<p>The assignment of GDP to languages is based on the percentage of language speakers within each country. 
+This was based on the [<a href="index.html#Factbook">Factbook</a>] where it had
+available data, and supplemented with other sources such as [<a href="index.html#CensusIndia">CensusIndia</a>] or 
+[<a href="index.html#Ethnologue">Ethnologue</a>] where it did not. For example, the
+GDP of India is split as follows:</p>
+<blockquote>
+  <p>Hindi 40.22% Bengali 8.30% Telugu 7.87% Marathi 7.45% Tamil 6.32% Urdu 5.18% Gujarati 4.85% Kannada 3.90%...</p>
+</blockquote>
+<p>Apportionment by speakers is clearly an approximation, since it is unlikely
+that economic activity would be evenly distributed by language. Multinational
+companies that contribute significantly to the economy may use a different
+working company language; for example, the working language of the Finnish
+company Nokia is English. In particular, the economic activity ascribed to
+English is probably somewhat low, because of the leading role it plays in
+global commerce as a second language. It is not, for example, listed in [<a href="index.html#CensusIndia">CensusIndia</a>] 
+even though it clearly plays a key economic role in India. Similarly, French
+plays an important role in the Maghreb countries (both in business and government),
+as does Russian in former-USSR countries.</p>
+<p>Yet despite these caveats, the information is accurate enough that the
+above chart can give an overall picture of the relative levels of economic
+activity in different languages, and their growth over time.</p>
+<h2>3 <a name="Projections">Projections</a></h2>
+<p>An interesting recent paper from Goldman Sachs [<a href="index.html#Brics2050">Brics2050</a>]
+does project that the combined GDP of the BRIC countries (Brazil, Russia,
+India, and China) will exceed that of the current G6 (United States, Japan,
+Germany, France, United Kingdom, and Italy) before the year 2050. The following
+chart uses that data to extrapolate what the <i>GDP by Language</i> breakdown would be over the coming years. Chinese
+would have increasing weight, as in the following chart; Russian, Portuguese,
+and Indic would all increase as well, but most significantly after 2010.</p>
+<blockquote>
+  <p><b>Caution: </b>this data is much more speculative:</p>
+  <ul>
+    <li>Because [<a href="index.html#Brics2050">Brics2050</a>]  doesn't have data for languages outside of the BRIC and G6 
+    countries, the values for those languages are interpolated.</li>
+    <li>The data from [<a href="index.html#Brics2050">Brics2050</a>] is in constant dollars, not PPP. Because internal costs will 
+    presumably rise with growth, this would cause the projected
+      PPP of a high-growth country like China to be overstated in the chart.</li>
+    <li>Because of these issues with the data, the chart only covers the next few years, not all the way out to 2050.</li>
+  </ul>
+</blockquote>
+<p align="center"><b>Figure 2: GDP by Language 2003-2010</b></p>
+<p align="center"><img border="0" src="fig2-gdp-ppp-by-lang.gif" width="836" height="532"></p>
+<h2>4 <a name="Acknowledgements">Acknowledgements</a></h2>
+<p>Thanks to Patrick Andries, Alan Liu, Markus Scherer, Marcia Stockton,
+Sue Williams, and François Yergeau for their comments on versions of this
+document or data.</p>
+
+  <h2>5 <a name="References">References</a></h2>
+  <table class="noborder" style="border-collapse: collapse" cellpadding="8" 
+  cellspacing="0">
+<tr>
+    <td valign="top">[<a name="Brics2050">Brics2050</a>]</td>
+    <td valign="top">Dreaming With BRICs: The Path to 2050<br>
+      Goldman Sachs, Global Economics Paper No: 99<br>
+      <a href="http://www.gs.com/insight/research/reports/99.pdf">http://www.gs.com/insight/research/reports/99.pdf</a></td>
+  </tr>
+  <tr>
+    <td valign="top">[<a name="CensusIndia">CensusIndia</a>]</td>
+    <td valign="top">Census of India, Govt. of India - Ministry of Home Affairs<br>
+      <a href="http://www.censusindia.net/">http://www.censusindia.net/</a></td>
+  </tr>
+  <tr>
+    <td valign="top">[<a name="Factbook">Factbook</a>]</td>
+    <td valign="top">CIA - The World Factbook<br>
+      <a href="http://www.cia.gov/cia/publications/factbook/">http://www.cia.gov/cia/publications/factbook/</a></td>
+  </tr>
+  <tr>
+    <td valign="top">[<a name="Ethnologue">Ethnologue</a>]</td>
+    <td valign="top">Ethnologue, Languages of the World<br>
+      <a href="http://www.ethnologue.com/">http://www.ethnologue.com/</a></td>
+  </tr>
+  <tr>
+    <td valign="top">[<a name="GDP">GDP</a>]</td>
+    <td valign="top">GDP (PPP) by Language (this paper)<br>
+      <a href="http://www.macchiato.com/economy/GDP_PPP_by_language.html">http://www.macchiato.com/economy/GDP_PPP_by_language.html</a></td>
+  </tr>
+  <tr>
+    <td valign="top">[ICU]</td>
+    <td valign="top">IBM's International Components for Unicode (for more on software globalization)<br>
+      <a href="http://www.icu-project.org/">http://www.icu-project.org/</a></td>
+  </tr>
+  <tr>
+    <td valign="top">[Unicode]</td>
+    <td valign="top">The Unicode Consortium (for more on software globalization)<br>
+      <a href="http://www.unicode.org/">http://www.unicode.org</a></td>
+  </tr>
+  <tr>
+    <td valign="top">[<a name="WorldBank">WorldBank</a>]</td>
+    <td valign="top">World Bank Group: Data and Statistics<br>
+      <a href="http://www.worldbank.org/data/">http://www.worldbank.org/data/</a></td>
+  </tr>
+
+  </table>
+  <p><br>
+  </p>
+  <h2><a name="Modifications">Modifications</a></h2>
+  <p>The following summarizes modifications from the previous version of this 
+  document.</p>
+  <table class="noborder" style="border-collapse: collapse" cellpadding="8" 
+  cellspacing="0">
+    <tr>
+      <td class="noborder">2008-10-01</td>
+      <td class="noborder">Updated stale links in version 1</td>
+    </tr>
+    <tr>
+      <td class="noborder"><a name="TrackingNumber1">1</a></td>
+      <td class="noborder">Initial version</td>
+    </tr>
+  </table>
+  <p class="copyright">Copyright © 2004 Unicode, Inc and Mark Davis. All Rights Reserved. The 
+  Unicode Consortium and Mark Davis make no expressed or implied warranty of any 
+  kind, and assume no liability for errors or omissions. No liability is assumed 
+  for incidental and consequential damages in connection with or arising out of 
+  the use of the information or programs contained or accompanying this 
+  technical note. The Unicode <a href="http://www.unicode.org/copyright.html">
+  Terms of Use</a> apply.</p>
+  <p class="copyright">Unicode and the Unicode logo are trademarks of Unicode, 
+  Inc., and are registered in some jurisdictions.</div>
+
+</body>
+
+</html>

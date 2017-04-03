@@ -1,0 +1,1423 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
+       "http://www.w3.org/TR/REC-html40/loose.dtd"> 
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta http-equiv="Content-Language" content="en-us">
+<meta name="GENERATOR" content="Microsoft FrontPage 4.0">
+<meta name="ProgId" content="FrontPage.Editor.Document">
+<link rel="stylesheet" href="../../unicode/reports/reports.css" type="text/css">
+<title>UTR #18: Unicode Regular Expression Guidelines</title>
+</head>
+
+<body bgcolor="#ffffff">
+
+<table class="header" width="100%">
+  <tr>
+    <td class="icon"><a href="http://www.unicode.org"><img align="middle" alt="[Unicode]" border="0" src="../../webscripts/logo60s2.gif" width="34" height="33"></a>&nbsp;&nbsp;<a class="bar" href="http://www.unicode.org/reports">Technical 
+      Reports</a></td>
+  </tr>
+  <tr>
+    <td class="gray">&nbsp;</td>
+  </tr>
+</table>
+<div class="body">
+  <h2 align="center">Unicode Technical Report #18</h2>
+  <h1 align="right">Unicode Regular Expression Guidelines</h1>
+  <table class="wide" border="1" width="100%">
+    <tr>
+      <td>Version</td>
+      <td>6</td>
+    </tr>
+    <tr>
+      <td>Authors</td>
+      <td>Mark Davis (<a href="mailto:mark.davis@us.ibm.com">mark.davis@us.ibm.com</a>)</td>
+    </tr>
+    <tr>
+      <td>Date</td>
+      <td>2002-04-21</td>
+    </tr>
+    <tr>
+      <td>This Version</td>
+      <td><a href="tr18-6">http://www.unicode.org/reports/tr18/tr18-6</a></td>
+    </tr>
+    <tr>
+      <td>Previous Version</td>
+      <td><a href="tr18-5.1.html">http://www.unicode.org/reports/tr18/tr18-5.1</a></td>
+    </tr>
+    <tr>
+      <td>Latest Version</td>
+      <td><a href="../tr18.1">http://www.unicode.org/reports/tr18</a></td>
+    </tr>
+    <tr>
+      <td>Tracking Number</td>
+      <td><a href="tr18-6#TrackingNumber6">6</a></td>
+  </table>
+  <br>
+  <h3><i>Summary</i></h3>
+  <p><i><em>This document describes guidelines for how to adapt regular 
+  expression engines to use Unicode. </em>The document is in initial phase, and 
+  has not gone through the editing process. We welcome review feedback and 
+  suggestions on the content.</i></p>
+  <h3><i>Status</i></h3>
+  <p><i>This document has been reviewed by Unicode members and other interested 
+  parties, and has been approved by the Unicode Technical Committee as a <b>Unicode 
+  Technical Report</b>. It is a stable document and may be used as reference 
+  material or cited as a normative reference from another document.</i></p>
+  <blockquote>
+    <p><i>A <b>Unicode Technical Report</b> (UTR) may contain either informative 
+    material or normative specifications, or both. Each UTR may specify a base 
+    version of the Unicode Standard. In that case, conformance to the UTR 
+    requires conformance to that version or higher.</i></p>
+  </blockquote>
+  <p><i>A list of current Unicode Technical Reports is found on [<a href="tr18-6#Reports">Reports</a>]. 
+  For more information about versions of the Unicode Standard, see [<a href="tr18-6#Versions">Versions</a>]. 
+  Please mail corrigenda and other comments to the author(s).</i></p>
+  <h3><i>Contents</i></h3>
+  <ul>
+    <li><a href="tr18-6#Introduction">1 Introduction</a>
+      <ul>
+        <li><a href="tr18-6#Notation">1.1 Notation</a></li>
+      </ul>
+    </li>
+    <li><a href="tr18-6#Basic_Unicode_Support">2 Basic Unicode Support: Level 1</a>
+      <ul>
+        <li><a href="tr18-6#Hex_notation">2.1 Hex notation</a></li>
+        <li><a href="tr18-6#Categories">2.2 Properties</a></li>
+        <li><a href="tr18-6#Subtraction_and_Intersection">2.3 Subtraction and 
+          Intersection</a></li>
+        <li><a href="tr18-6#Simple_Word_Boundaries">2.4 Simple Word Boundaries</a></li>
+        <li><a href="tr18-6#Simple_Loose_Matches">2.5 Simple Loose Matches</a></li>
+        <li><a href="tr18-6#End_Of_Line">2.6 End Of Line</a></li>
+        <li><a href="tr18-6#Surrogates">2.7 Surrogates</a></li>
+      </ul>
+    </li>
+    <li><a href="tr18-6#Extended_Unicode_Support">3 Extended Unicode Support: Level 2</a>
+      <ul>
+        <li><a href="tr18-6#Canonical_Equivalents">3.1 Canonical Equivalents</a></li>
+        <li><a href="tr18-6#Default_Grapheme_Clusters">3.2 Default Grapheme Clusters</a></li>
+        <li><a href="tr18-6#Default_Word_Boundariess">3.3 Default Words</a></li>
+        <li><a href="tr18-6#Default_Loose_Matches">3.4 Default Loose Matches</a></li>
+      </ul>
+    </li>
+    <li><a href="tr18-6#Tailored_Support">4 Tailored Support: Level 3</a>
+      <ul>
+        <li><a href="tr18-6#Tailored_Properties">4.1 Tailored Properties</a></li>
+        <li><a href="tr18-6#Tailored_Graphemes_Clusters">4.2 Tailored Grapheme 
+          Clusters</a></li>
+        <li><a href="tr18-6#Tailored_Word_Boundaries">4.3 Tailored Words</a></li>
+        <li><a href="tr18-6#Tailored_Loose_Matches">4.4 Tailored Loose Matches</a></li>
+        <li><a href="tr18-6#Tailored_Ranges">4.5 Tailored Ranges</a></li>
+      </ul>
+    </li>
+    <li><a href="tr18-6#Character_Blocks">Annex A. Character Blocks</a></li>
+    <li><a href="tr18-6#Sample_Collation_Character_Code">Annex B. Sample Collation 
+      Character Code</a></li>
+    <li><a href="tr18-6#References">References</a></li>
+    <li><a href="tr18-6#Acknowledgments">Acknowledgments</a></li>
+    <li><a href="tr18-6#Modifications">Modifications</a></li>
+  </ul>
+  <h2>1 <a name="Introduction">Introduction</a></h2>
+  <p>The following describes general guidelines for extending regular expression 
+  engines to handle Unicode. The following issues are involved in such 
+  extensions.</p>
+  <ul>
+    <li>Unicode is a large character set—regular expression engines that are 
+      only adapted to handle small character sets will not scale well.
+    <li>Unicode encompasses a wide variety of languages which can have very 
+      different characteristics than English or other western European text.
+  </ul>
+  <p>There are three fundamental levels of Unicode support that can be offered 
+  by regular expression engines:</p>
+  <ul>
+    <li><b>Level 1: Basic Unicode Support. </b>At this level, the regular 
+      expression engine provides support for Unicode characters as basic logical 
+      units. (This is independent of the actual serialization of Unicode as 
+      UTF-8, UTF-16BE, UTF-16LE, or UTF-32.) This is a minimal level for useful 
+      Unicode support. It does not account for end-user expectations for 
+      character support, but does satisfy most low-level programmer 
+      requirements. The results of regular expression matching at this level is 
+      independent of country or language. At this level, the user of the regular 
+      expression engine would need to write more complicated regular expressions 
+      to do full Unicode processing.</li>
+    <li><b>Level 2: Extended Unicode Support. </b>At this level, the regular 
+      expression engine also accounts for grapheme clusters (what the end-user 
+      generally thinks of as a character), better word-break, and canonical 
+      equivalence. This is still a default level—independent of country or 
+      language—but provides much better support for end-user expectations than 
+      the raw level 1, without the regular-expression writer needing to know 
+      about some of the complications of Unicode encoding structure.</li>
+    <li><b>Level 3: Tailored Support. </b>At this level, the regular expression 
+      engine also provides for tailored treatment of characters (including 
+      country- or language-specific behavior), for example, whereby the 
+      characters <i>ch</i> can behave as a single character (in Slovak or 
+      traditional Spanish). The results of a particular regular expression 
+      reflect the end-users expectations of what constitutes a character in 
+      their language, and what order the characters are in. However, there is a 
+      performance impact to support at this level.</li>
+  </ul>
+  <p>One of the most important requirements for a regular expression engine is 
+  to document clearly what Unicode features are and are not supported. Even if 
+  higher-level support is not currently offered, provision should be made for 
+  the syntax to be extended in the future to encompass those features.</p>
+  <p><b><i>Note: </i></b><i>Unicode is a constantly evolving standard: new 
+  characters will be added in the future. This means that a regular expression 
+  that tests for, say, currency symbols will have different results in Unicode 
+  2.0 than in Unicode 2.1 (where the Euro currency symbol was added.)</i></p>
+  <p>At any level, efficiently handling properties or conditions based on a 
+  large character set can take a lot of memory. A common mechanism for reducing 
+  the memory requirements — while still maintaining performance — is the 
+  two-stage table, discussed in <i><a href="http://www.unicode.org/uni2book/ch05.pdf">Section 
+  5.1 Transcoding to Other Standards</a></i> [Chap5] of <i>The Unicode Standard</i>. 
+  For example, the Unicode character properties can be stored in memory in a 
+  two-stage table with only 7 or 8Kbytes. Accessing those properties only takes 
+  a small amount of bit-twiddling and two array accesses.</p>
+  <h3>1.1 <a name="Notation">Notation</a></h3>
+  <p>In order to describe regular expression syntax, we will use an extended BNF 
+  form:</p>
+  <table class="syntax">
+    <tr>
+      <td><code>x y</code></td>
+      <td>the sequence consisting of x then y</td>
+    </tr>
+    <tr>
+      <td><code>x*</code></td>
+      <td>zero or more occurences of x</td>
+    </tr>
+    <tr>
+      <td><code>x?</code></td>
+      <td>zero or one occurence of x</td>
+    </tr>
+    <tr>
+      <td><code>x | y</code></td>
+      <td>either x or y</td>
+    </tr>
+    <tr>
+      <td><code>( x )</code></td>
+      <td>for grouping</td>
+    </tr>
+    <tr>
+      <td><code>&quot;XYZ&quot;</code></td>
+      <td>terminal character(s)</td>
+    </tr>
+  </table>
+  <p>The following syntax for character ranges will be used in successive 
+  examples.</p>
+  <blockquote>
+    <p>Note: <i>This is only a <b>sample</b> syntax for the purposes of examples 
+    in this paper.</i> (Regular expression syntax varies widely: the issues 
+    discussed here would need to be adapted to the syntax of the particular 
+    implementation. In general, the syntax here is similar to that of <a href="http://www.perl.com/pub/q/documentation">Perl 
+    Regular Expressions</a> [<a href="tr18-6#Perl">Perl</a>].)</p>
+  </blockquote>
+  <table class="syntax">
+    <tr>
+      <td width="100%">
+        <pre>LIST := &quot;[&quot; NEGATION? ITEM (SEP? ITEM)* &quot;]&quot;
+ITEM := CODE_POINT
+       := &lt;character&gt; &quot;-&quot; CODE_POINT // range
+       := ESCAPE CODE_POINT
+
+NEGATION := &quot;^&quot;
+SEP := &quot;&quot;  // no separator = union 
+    := &quot;|&quot; // union
+ESCAPE := &quot;\&quot;</pre>
+      </td>
+    </tr>
+  </table>
+  <p>Code_point refers to any Unicode code point from U+0000 to U+10FFFF, 
+  although typically the only ones of interest will be those representing 
+  characters. Whitespace is allowed between any elements, but to simplify the 
+  presentation the many occurances of &quot; &quot;* are omitted.</p>
+  <p><i>Examples:</i></p>
+  <table class="example">
+    <tr>
+      <td><code>[a-z | A-Z | 0-9]</code></td>
+      <td rowspan="3">Match ASCII alphanumerics</td>
+    </tr>
+    <tr>
+      <td><code>[a-z A-Z 0-9]</code></td>
+    </tr>
+    <tr>
+      <td><code>[a-zA-Z0-9]</code></td>
+    </tr>
+    <tr>
+      <td><code>[^a-z A-Z 0-9]</code></td>
+      <td>Match anything but ASCII alphanumerics</td>
+    </tr>
+    <tr>
+      <td><code>[\] \- \ ]</code></td>
+      <td>Match the literal characters ], -, ','</td>
+    </tr>
+  </table>
+  <br>
+  <h2><a name="Basic_Unicode_Support">2 Basic Unicode Support</a>: <a name="Level_1">Level 
+  1</a></h2>
+  <p>Regular expression syntax usually allows for an expression to denote a set 
+  of single characters, such as <code>[a-z,A-Z,0-9]</code>. Since there are a 
+  very large number of characters in the Unicode standard, simple list 
+  expressions do not suffice.</p>
+  <h3><a name="Hex_notation">2.1 Hex notation</a></h3>
+  <p>The character set used by the regular expression writer may not be Unicode, 
+  so there needs to be some way to specify arbitrary Unicode characters. The 
+  most standard notation for listing hex Unicode characters within strings is by 
+  prefixing with &quot;\u&quot;. Making this change results in the following 
+  addition:</p>
+  <table class="syntax">
+    <tr>
+      <td width="100%">
+        <pre>&lt;character&gt; := &lt;simple_character&gt;
+&lt;character&gt; := ESCAPE UTF16_MARK
+               HEX_CHAR HEX_CHAR HEX_CHAR HEX_CHAR
+
+UTF16_MARK := &quot;u&quot; </pre>
+      </td>
+    </tr>
+  </table>
+  <p><i>Examples:</i></p>
+  <table class="example">
+    <tr>
+      <td><code>[\u3040-\u309F \u30FC]</code></td>
+      <td>Match Hiragana characters, plus prolonged sound sign</td>
+    </tr>
+    <tr>
+      <td><code>[\u00B2 \u2082]</code></td>
+      <td>Match superscript and subscript 2</td>
+    </tr>
+  </table>
+  <ul>
+    <li><b>Note:</b> instead of <code>[...\u3040...]</code>, one possible 
+      alternate syntax is <code>[...\x{3040}...]</code>, as in Perl 5.6.</li>
+    <li><b>Note: </b>more advanced regular expression engines can also offer the 
+      ability to use the Unicode character name in braces for readability. For 
+      control characters (marked with &quot;&lt;control&gt;&quot; in the Unicode 
+      Character Database), the Unicode 1.0 name can be used. Examples:
+      <ul>
+        <li><code>\N{WHITE SMILING FACE}</code> instead of <code>\u263A</code></li>
+        <li><code>\N{GREEK SMALL LETTER ALPHA}</code> instead of <code>\u03B1</code></li>
+        <li><code>\N{FORM FEED}</code> instead of <code>\u000C</code></li>
+      </ul>
+    </li>
+  </ul>
+  <h3><a name="Categories">2.2 Properties</a></h3>
+  <p>Since Unicode is a large character set, a regular expression engine needs 
+  to provide for the recognition of whole categories of characters; otherwise 
+  the listing of characters becomes impractical and error-prone. Engines should 
+  be extended using the Unicode character properties. For example, what the 
+  regular expression means by a <i>digit</i> should match to any of the Unicode 
+  digits, etc.</p>
+  <p>The official data mapping Unicode characters (and code points) to 
+  properties is the <a href="http://www.unicode.org/ucd/">Unicode Character 
+  Database</a> [<a href="http://www.unicode.org/ucd/">UCD</a>]. See also <a href="http://www.unicode.org/uni2book/ch04.pdf">Chapter 
+  4: Character Properties</a> [<a href="tr18-6#Chap4">Chap4</a>] in <i>The Unicode 
+  Standard.</i></p>
+  <p align="left">The recommended names for UCD properties and property values 
+  are in <a href="http://www.unicode.org/Public/UNIDATA/PropertyAliases.txt">PropertyAliases.txt</a> 
+  [<a href="tr18-6#Prop">Prop</a>] and <a href="http://www.unicode.org/Public/UNIDATA/PropertyValueAliases.txt">PropertyValueAliases.txt</a> 
+  [<a href="tr18-6#PropValue">PropValue</a>]. There are both abbreviated names and 
+  longer, more descriptive names. It is strongly recommended that both names be 
+  recognized, and that loose matching of property names be used, whereby the 
+  case distinctions, whitespace, hyphens, and underbar are ignored.</p>
+  <blockquote>
+    <b>Note:</b> it may be a useful implementation technique to load the Unicode 
+    tables that support properties and other features on demand, to avoid 
+    unnecessary memory overhead for simple regular expressions that don't use 
+    those properties.
+  </blockquote>
+  <p>Where a regular expression is expressed as much as possible in terms of 
+  higher-level semantic constructs such as <i>Letter</i>, it makes it practical 
+  to work with the different alphabets and languages in Unicode. Here is an 
+  example of a syntax addition that permits properties:</p>
+  <table class="syntax">
+    <tr>
+      <td width="100%"><code>ITEM := &quot;\p{&quot; NEGATION? PROP_SPEC 
+        &quot;}&quot;<br>
+        PROP_SPEC := &lt;binary_unicode_property&gt;<br>
+        PROP_SPEC := &lt;unicode_property&gt; (&quot;:&quot; | &quot;=&quot;) 
+        &lt;unicode_property_value&gt;<br>
+        PROP_SPEC := &lt;script_or_category_property_value&gt;</code></td>
+    </tr>
+  </table>
+  <p><i>Examples:</i></p>
+  <table class="example">
+    <tr>
+      <td><code>[\p{L} \p{Nd}]</code></td>
+      <td rowspan="2">Match all letters and decimal digits</td>
+    </tr>
+    <tr>
+      <td><code>[\p{letter} \p{decimal number}]</code></td>
+    </tr>
+    <tr>
+      <td><code>\p{^L}</code></td>
+      <td rowspan="2">Match anything that is not a letter</td>
+    </tr>
+    <tr>
+      <td><code>\p{^letter}</code></td>
+    </tr>
+    <tr>
+      <td><code>\p{Line_Break:Alphabetic}</code></td>
+      <td>Match anything that has the Line Break property value of Alphabetic</td>
+    </tr>
+    <tr>
+      <td><code>\p{Whitespace}</code></td>
+      <td>Match anything that has the binary property Whitespace</td>
+    </tr>
+  </table>
+  <p>Some properties are binary: they are either true or false for a given code 
+  point. In that case, only the property name is required. Others have multiple 
+  values, so for uniqueness both the property name and the property value need 
+  to be included. For example, <i>Alphabetic</i> is both a binary property and a 
+  value of the Line_Break enumeration, so \p{Alphabetic} would mean the binary 
+  property, and \p{Line Break:Alphabetic} or \p{Line_Break=Alphabetic} would 
+  mean the enumerated property. There are two exceptions to this: the properties 
+  <i>Script</i> and <i>General Category</i> commonly have the property name 
+  omitted. Thus \p{Not_Assigned} is equivalent to \p{General_Category = 
+  Not_Assigned}, and \p{Greek} is equivalent to \p{Script:Greek}.</p>
+  <h4>General Category Property</h4>
+  <p>The most basic overall character property is the General Category, which is 
+  a basic categorization of Unicode characters into: <i>Letters, Punctuation, 
+  Symbols, Marks, Numbers, Separators, </i>and<i> Other</i>. These property 
+  values each have a single letter abbreviation, which is the uppercase first 
+  character except for separators, which use Z. The official data mapping 
+  Unicode characters to the General Category value is in <a href="http://www.unicode.org/Public/UNIDATA/UnicodeData.html">UnicodeData.txt</a> 
+  [<a href="tr18-6#UData">UData</a>].</p>
+  <p>Each of these categories has different subcategories. For example, the 
+  subcategories for <i>Letter</i> are <i>uppercase</i>, <i>lowercase</i>, <i>titlecase</i>, 
+  <i>modifier</i>, and <i>other</i> (in this case, <i>other</i> includes uncased 
+  letters such as Chinese). By convention, the subcategory is abbreviated by the 
+  category letter (in uppercase), followed by the first character of the 
+  subcategory in lowercase. For example, <i>Lu</i> stands for <i>Uppercase 
+  Letter</i>.</p>
+  <blockquote>
+    <p><b>Note: </b>Since it is recommended that the property syntax be lenient 
+    as to spaces, casing, hyphens and underbars, any of the following should be 
+    equivalent: \p{Lu}, \p{lu}, \p{uppercase letter}, \p{uppercase letter}, \p{Uppercase_Letter}, 
+    and \p{uppercaseletter}</p>
+  </blockquote>
+  <p>The General Category property values are listed below. For more information 
+  on the meaning of these values, see <a href="http://www.unicode.org/Public/UNIDATA/UnicodeData.html">UnicodeData.html</a> 
+  [<a href="tr18-6#UDataDoc">UDataDoc</a>].</p>
+  <div align="center">
+    <center>
+    <table border="0" cellspacing="0" cellpadding="4" class="noborder">
+      <tr>
+        <td width="33%" class="noborder">
+          <table class="values">
+            <tr>
+              <th align="left">Abb.</th>
+              <th align="left">Long form</th>
+            </tr>
+            <tr>
+              <td align="middle">L</td>
+              <td>Letter</td>
+            </tr>
+            <tr>
+              <td align="middle">Lu</td>
+              <td>Uppercase Letter</td>
+            </tr>
+            <tr>
+              <td align="middle">Ll</td>
+              <td>Lowercase Letter</td>
+            </tr>
+            <tr>
+              <td align="middle">Lt</td>
+              <td>Titlecase Letter</td>
+            </tr>
+            <tr>
+              <td align="middle">Lm</td>
+              <td>Modifier Letter</td>
+            </tr>
+            <tr>
+              <td align="middle">Lo</td>
+              <td>Other Letter</td>
+            </tr>
+            <tr>
+              <td align="middle">M</td>
+              <td>Mark</td>
+            </tr>
+            <tr>
+              <td align="middle">Mn</td>
+              <td>Non-Spacing Mark</td>
+            </tr>
+            <tr>
+              <td align="middle">Mc</td>
+              <td>Spacing Combining Mark</td>
+            </tr>
+            <tr>
+              <td align="middle">Me</td>
+              <td>Enclosing Mark</td>
+            </tr>
+            <tr>
+              <td align="middle">N</td>
+              <td>Number</td>
+            </tr>
+            <tr>
+              <td align="middle">Nd</td>
+              <td>Decimal Digit Number</td>
+            </tr>
+            <tr>
+              <td align="middle">Nl</td>
+              <td>Letter Number</td>
+            </tr>
+            <tr>
+              <td align="middle">No</td>
+              <td>Other Number</td>
+            </tr>
+          </table>
+        </td>
+        <td width="33%" class="noborder">
+          <table class="values">
+            <tr>
+              <th align="left">Abb.</th>
+              <th align="left">Long form</th>
+            </tr>
+            <tr>
+              <td align="middle">S</td>
+              <td>Symbol</td>
+            </tr>
+            <tr>
+              <td align="middle">Sm</td>
+              <td>Math Symbol</td>
+            </tr>
+            <tr>
+              <td align="middle">Sc</td>
+              <td>Currency Symbol</td>
+            </tr>
+            <tr>
+              <td align="middle">Sk</td>
+              <td>Modifier Symbol</td>
+            </tr>
+            <tr>
+              <td align="middle">So</td>
+              <td>Other Symbol</td>
+            </tr>
+            <tr>
+              <td align="middle">P</td>
+              <td>Punctuation</td>
+            </tr>
+            <tr>
+              <td align="middle">Pc</td>
+              <td>Connector Punctuation</td>
+            </tr>
+            <tr>
+              <td align="middle">Pd</td>
+              <td>Dash Punctuation</td>
+            </tr>
+            <tr>
+              <td align="middle">Ps</td>
+              <td>Open Punctuation</td>
+            </tr>
+            <tr>
+              <td align="middle">Pe</td>
+              <td>Close Punctuation</td>
+            </tr>
+            <tr>
+              <td align="middle">Pi</td>
+              <td>Initial Punctuation</td>
+            </tr>
+            <tr>
+              <td align="middle">Pf</td>
+              <td>Final Punctuation</td>
+            </tr>
+            <tr>
+              <td align="middle">Po</td>
+              <td>Other Punctuation</td>
+            </tr>
+          </table>
+        </td>
+        <td width="33%" class="noborder">
+          <table class="values">
+            <tr>
+              <th align="left">Abb.</th>
+              <th align="left">Long form</th>
+            </tr>
+            <tr>
+              <td align="middle">Z</td>
+              <td>Separator</td>
+            </tr>
+            <tr>
+              <td align="middle">Zs</td>
+              <td>Space Separator</td>
+            </tr>
+            <tr>
+              <td align="middle">Zl</td>
+              <td>Line Separator</td>
+            </tr>
+            <tr>
+              <td align="middle">Zp</td>
+              <td>Paragraph Separator</td>
+            </tr>
+            <tr>
+              <td align="middle">C</td>
+              <td>Other</td>
+            </tr>
+            <tr>
+              <td align="middle">Cc</td>
+              <td>Control</td>
+            </tr>
+            <tr>
+              <td align="middle">Cf</td>
+              <td>Format</td>
+            </tr>
+            <tr>
+              <td align="middle">Cs</td>
+              <td>Surrogate</td>
+            </tr>
+            <tr>
+              <td align="middle">Co</td>
+              <td>Private Use</td>
+            </tr>
+            <tr>
+              <td align="middle">Cn</td>
+              <td>Not Assigned</td>
+            </tr>
+            <tr>
+              <td align="middle">-</td>
+              <td>Any*</td>
+            </tr>
+            <tr>
+              <td align="middle">-</td>
+              <td>Assigned*</td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+    </table>
+    </center>
+  </div>
+  <table border="0" width="100%" cellspacing="0" cellpadding="4" class="noborder">
+    <tr>
+      <td valign="top" class="noborder">*</td>
+      <td valign="top" class="noborder">The last two properties are not part of 
+        the General Category, but are generally useful.
+        <ul>
+          <li><i>Any</i> matches all code points. This could also be captured 
+            with <code>\u0000-\u10FFFF</code>, except for reasons we will get 
+            into later. In some regular expression languages, <code>\p{Any}</code> 
+            may be expressed by a period, but that may exclude newline 
+            characters.</li>
+          <li><i>Assigned</i> is equivalent to <code>\p{^Cn}</code>, and matches 
+            all assigned characters (for the target version of Unicode). It also 
+            includes all private use characters. It is useful for avoiding 
+            confusing double negatives. Note that <i>Cn</i> includes 
+            noncharacters, so <i>Assigned</i> excludes them.</li>
+        </ul>
+      </td>
+    </tr>
+  </table>
+  <h4>Script Property</h4>
+  <p>A regular-expression mechanism may choose to offer the ability to identify 
+  characters on the basis of other Unicode properties besides the General 
+  Category. In particular, Unicode characters are also divided into scripts as 
+  described in <a href="../tr24/index.html">UTR #24: Script 
+  Names</a> [<a href="tr18-6#ScriptDoc">ScriptDoc</a>] (for the data file, see <a href="http://www.unicode.org/Public/UNIDATA/Scripts.txt">Scripts.txt</a> 
+  [<a href="tr18-6#ScriptData">ScriptData</a>]). Using a property such as \p{Greek} 
+  allows people test letters for whether they are Greek or not.</p>
+  <p>The script property values generally only pertain to letters. Other 
+  characters such as punctuation and accents are found in two special Script 
+  names from UTR #24: \p{Common} and \p{Inherited}. In general, programs should 
+  only use specific script values in conjunction with both Common and Inherited. 
+  That is, to sift out characters clearly not appropriate for Greek, one would 
+  use:</p>
+  <p align="center">[\p{Greek}\p{Common}\p{Inherited}]</p>
+  <p>Since Common also includes all code points from U+0000 to U+10FFFF that are 
+  not in the other script categories, including unassigned characters, one may 
+  want to refine this more, such as by using:</p>
+  <p align="center">[\p{Greek}\p{Common}\p{Inherited} - \p{Not Assigned}]</p>
+  <h4 align="left">Other Properties</h4>
+  <p align="left">Other useful properties are described in the documentation for 
+  the Unicode Character Database, cited above. The binary properties include:</p>
+  <ul>
+    <li>
+      <p align="left"><i>Alphabetic, Ideographic</i></li>
+    <li>
+      <p align="left"><i>Lowercase, Uppercase</i>
+      <ul>
+        <li>
+          <p align="left">Note: these are larger classes of characters than the 
+          General Category <i>Lowercase_Letter</i> and <i>Uppercase_Letter</i></li>
+      </ul>
+    </li>
+    <li>
+      <p align="left"><i>White_Space, Bidi_Control, Join_Control</i></li>
+    <li>
+      <p align="left"><i>ASCII_Hex_Digit, Hex_Digit</i></li>
+    <li>
+      <p align="left"><i>Noncharacter_Code_Point</i></li>
+    <li>
+      <p align="left"><i>ID_Start, ID_Continue, XID_Start, XID_Continue</i></li>
+    <li>
+      <p align="left"><i>NF*_NO, NF*_MAYBE</i></li>
+  </ul>
+  <p align="left">The enumerated properties include:</p>
+  <ul>
+    <li>
+      <p align="left"><i>Decomposition_Type</i></li>
+    <li>
+      <p align="left"><i>Numeric_Type</i></li>
+    <li>
+      <p align="left"><i>East_Asian_Width</i></li>
+    <li>
+      <p align="left"><i>Line_Break</i></li>
+  </ul>
+  <p align="left">A full list of the available properties is in <a href="http://www.unicode.org/Public/UNIDATA/PropertyAliases.txt">PropertyAliases.txt</a> 
+  [<a href="tr18-6#Prop">Prop</a>] and <a href="http://www.unicode.org/Public/UNIDATA/PropertyValueAliases.txt">PropertyValueAliases.txt</a> 
+  [<a href="tr18-6#PropValue">PropValue</a>].</p>
+  <h4 align="left">Blocks</h4>
+  <p align="left">Unicode blocks can sometimes also be a useful enumerated 
+  property. However, there are some <i>very</i> significant caveats to the use 
+  of Unicode blocks for the identification of characters: see <a href="tr18-6#Character_Blocks">Annex 
+  A. Character Blocks</a>. If blocks are used, some of the names can collide 
+  with Script names, so they should be distinguished, such as in \p{Greek Block} 
+  or \p{Block=Greek}.</p>
+  <h3><a name="Subtraction_and_Intersection">2.3 Subtraction</a> and 
+  Intersection</h3>
+  <p>With a large character set, character properties are essential. In 
+  addition, there needs to be a way to &quot;subtract&quot; characters from what 
+  is already in the list. For example, one may want to include all letters but <i>Q</i> 
+  and <i>W</i> without having to list every character in <code>\p{letter}</code> 
+  that is neither <i>Q</i> nor <i>W</i>. Here is an example of a syntax change 
+  that handles this, by allowing subtraction of any further items in the set.</p>
+  <table class="syntax">
+    <tr>
+      <td>
+        <pre>ITEM := &quot;[&quot; ITEM &quot;]&quot; // for grouping
+SEP := &quot; &quot;           // no separator = union 
+    := &quot;|&quot;           // union
+    := &quot;-&quot;           // removal
+    := &quot;&amp;&quot;           // intersection</pre>
+      </td>
+    </tr>
+  </table>
+  <p>Note that &quot;-&quot; between characters still means a range, not a 
+  removal.</p>
+  <p><i>Examples:</i></p>
+  <table class="example">
+    <tr>
+      <td><code>[\p{L} - QW]</code></td>
+      <td>Match all letters but Q and W</td>
+    </tr>
+    <tr>
+      <td><code>[\p{N} - [\p{Nd} - 0-9]]</code></td>
+      <td>Match all non-decimal numbers, plus 0-9.</td>
+    </tr>
+    <tr>
+      <td><code>[\u0000-\u007F - ^\p{letter}]</code></td>
+      <td>Match all letters in the ASCII range, by subtracting non-letters.</td>
+    </tr>
+    <tr>
+      <td><code>[\p{greek } - </code><code>\N{GREEK SMALL LETTER ALPHA}</code><code>]</code></td>
+      <td>Match Greek letters except alpha</td>
+    </tr>
+    <tr>
+      <td><code>[\p{assigned} - a-f A-F 0-9]</code></td>
+      <td>Match all assigned characters except for hex digits.</td>
+    </tr>
+  </table>
+  <ul>
+    <li><b>Note:</b> with Perl-style syntax, one would use look-ahead to get the 
+      same effect as difference or intersection. For example, <code>[\u0000-\u03FF~aeiouy]</code> 
+      would be expressed as <code>(?=[\x{0000}-\x{03FF}])[^aeiouy]</code>. This 
+      looks ahead to see if the next character matches <code>[\u0000-\u03FF]</code>, 
+      then checks that the character is not an English vowel.</li>
+  </ul>
+  <h3><a name="Simple_Word_Boundaries">2.4 Simple Word Boundaries</a></h3>
+  <p>Most regular expression engines allow a test for word boundaries (such as 
+  by &quot;\b&quot; in Perl). They generally use a very simple mechanism for 
+  determining word boundaries: a word boundary is between any pair of characters 
+  where one is a <code>&lt;word_character&gt;</code> and the other is not. A 
+  basic extension of this to work for Unicode is to make sure that the class of <code>&lt;word_character&gt;</code> 
+  includes all the <i>Letter</i> values from the Unicode character database, 
+  from <a href="http://www.unicode.org/Public/UNIDATA/UnicodeData.html">UnicodeData.txt</a> 
+  [<a href="tr18-6#UData">UData</a>].</p>
+  <p>Level 2 provides more general support for word boundaries between arbitrary 
+  Unicode characters.</p>
+  <h3><a name="Simple_Loose_Matches">2.5 Simple Loose Matches</a></h3>
+  <p>The only loose matches that most regular expression engines offer is 
+  caseless matching. If the engine does offers this, then it must account for 
+  the large range of cased Unicode characters outside of ASCII. In addition, 
+  because of the vagaries of natural language, there are situations where two 
+  different Unicode characters have the same uppercase or lowercase. Level 1 
+  implementations need to handle these cases. For example, the Greek U+03C3 
+  &quot;σ&quot; <i>small sigma,</i> U+03C2 &quot;ς&quot; <i>small final sigma,</i> 
+  and U+03A3 &quot;Σ&quot; <i>capital sigma</i> must all match.</p>
+  <p>Some caseless matches may match one character against two: for example, 
+  U+00DF &quot;ß&quot; matches the two characters &quot;SS&quot;. However, 
+  because many implementations are not set up to handle this, at Level 1 only 
+  simple case matches are necessary. To correctly implement a caseless match, 
+  see <a href="../tr21/index.html">UAX #21: Case Mappings</a> 
+  [<a href="tr18-6#Case">Case</a>]. The data file supporting caseless matching is <a href="http://www.unicode.org/Public/UNIDATA/CaseFolding.txt">CaseFolding.txt</a> 
+  [<a href="tr18-6#CaseData">CaseData</a>].</p>
+  <p>If the implementation containing the regular expression engine also offers 
+  case conversions, then these should also be done in accordance with UAX #21. 
+  The relevant data files are <a href="http://www.unicode.org/Public/UNIDATA/SpecialCasing.txt">SpecialCasing.txt</a> 
+  [<a href="tr18-6#SpecialCasing">SpecialCasing</a>] and <a href="http://www.unicode.org/Public/UNIDATA/UnicodeData.html">UnicodeData.txt</a> 
+  [<a href="tr18-6#UData">UData</a>]. A level 1 implementation might not offer 
+  anything but simple, default, case-insensitive conversions.</p>
+  <h3><a name="End_Of_Line">2.6 End Of Line</a></h3>
+  <p>Most regular expression engines also allow a test for line boundaries. This 
+  presumes that lines of text are separated by line (or paragraph) separators. 
+  To follow the same approach with Unicode, the end-of-line or start-of-line 
+  testing should include not only CRLF, LF, CR, but also NEL (U+0085), PS 
+  (U+2029) and LS (U+2028). Formfeed (U+000C) also normally indicates an 
+  end-of-line. For more information, see <a href="../tr13.1">UAX 
+  #13, Unicode Newline Guidelines</a> [<a href="tr18-6#NewLine">NewLine</a>].</p>
+  <p>These characters should be uniformly handled in determining logical line 
+  numbers, start-of-line, end-of-line, and arbitrary-character implementations. 
+  Logical line number is useful for compiler error messages and the like. 
+  Regular expressions often allow for SOL and EOL patterns, which match certain 
+  boundaries. Often there is also a &quot;non-line-separator&quot; arbitrary 
+  character pattern that excludes line separator characters.</p>
+  <ul>
+    <li><b>Logical line number</b>
+      <ul>
+        <li>The line number is increased by one for each occurrence ofr:<br>
+          <code>\u2028 | \u2029 | \u000D\u000A | \u000A | \u000C | \u000D | 
+          \u0085</code></li>
+      </ul>
+    </li>
+    <li><b>Logical beginning of line (often &quot;^&quot;)</b>
+      <ul>
+        <li>SOL is at the end of a file or string, and also immediately 
+          following any occurrence of:<br>
+          <code>\u2028 | \u2029 | \u000D\u000A | \u000A | \u000C | \u000D | 
+          \u0085</code></li>
+        <li>Note that there is no empty line within the sequence <code>\u000D\u000A</code>.</li>
+      </ul>
+    </li>
+    <li><b>Logical end of line (often &quot;$&quot;)</b>
+      <ul>
+        <li>EOL at the end of a file or string, and also immediately following 
+          any occurrence of:<br>
+          <code>\u2028 | \u2029 | \u000D\u000A | \u000A | \u000C | \u000D | 
+          \u0085</code></li>
+        <li>Note that there is no empty line within the sequence <code>\u000D\u000A</code>.</li>
+      </ul>
+    </li>
+    <li><b>Arbitrary character pattern (often &quot;.&quot;)</b>
+      <ul>
+        <li>should <i>not</i>&nbsp; match any of<br>
+          <code>\u2028 | \u2029 | \u000A | \u000C | \u000D | \u0085</code></li>
+        <li>Note that ^.*$ (an empty line pattern) should not match the empty 
+          string within the sequence <code>\u000D\u000A</code>, but should match 
+          the empty string within the sequence <code>\u000A\u000D</code>.</li>
+      </ul>
+    </li>
+  </ul>
+  <h3><a name="Surrogates">2.7 Surrogates</a></h3>
+  <p>UTF-16 uses pairs of Unicode code units to express codepoints above FFFF<sub>16</sub>. 
+  (See <i>Section 3.7 Surrogates,</i> or for an overview see <a href="http://www-4.ibm.com/software/developer/library/utfencodingforms/">Forms 
+  of Unicode</a> [<a href="tr18-6#Forms">Forms</a>]). While surrogate pairs could be 
+  used to identify code points above FFFF<sub>16</sub>, that mechanism is 
+  clumsy. It is much more useful to provide specific syntax for specifying 
+  Unicode code points, such as the following:</p>
+  <table class="syntax">
+    <tr>
+      <td width="100%">
+        <pre>&lt;character&gt; := &lt;simple_character&gt;
+&lt;character&gt; := ESCAPE UTF32_MARK
+               HEX_CHAR HEX_CHAR HEX_CHAR HEX_CHAR
+               HEX_CHAR HEX_CHAR HEX_CHAR HEX_CHAR
+
+UTF32_MARK := &quot;U&quot; </pre>
+      </td>
+    </tr>
+  </table>
+  <p><i>Examples:</i></p>
+  <table class="example">
+    <tr>
+      <td><code>[\U00100000]</code></td>
+      <td>Match surrogate private use character</td>
+    </tr>
+  </table>
+  <ul>
+    <li><b>Note:</b> this is one reason why a property for all characters <code>\p{Any}</code> 
+      is useful — it makes it unnecessary to use <code>[\u0000-\U0010FFFF]</code> 
+      to encompass all characters, and is independent of whether supplementary 
+      characters are supported or not.</li>
+    <li><b>Note:</b> If the alternate syntax <code>[...\x{3040}...]</code> is 
+      used instead of <code>\u</code>, then this does not require any change, 
+      since the delimiter provides the length.</li>
+  </ul>
+  <p>The second implication is that, surrogate pairs (or their equivalents in 
+  other encoding forms) need to be handled internally as single values. In 
+  particular, <code>[\u0000-\U0010000]</code> will match all the following 
+  sequence of code units:</p>
+  <table>
+    <tr>
+      <th width="198" align="left">Code Point</th>
+      <th width="199" align="left">UTF-8 Code Units</th>
+      <th width="199" align="left">UTF-16 Code Units</th>
+      <th width="199" align="left">UTF-32 Code Units</th>
+    </tr>
+    <tr>
+      <td><code>7F</code></td>
+      <td><code>7F</code></td>
+      <td><code>007F</code></td>
+      <td><code>0000007F</code></td>
+    </tr>
+    <tr>
+      <td><code>80</code></td>
+      <td><code>C2 80</code></td>
+      <td><code>0080</code></td>
+      <td><code>00000080</code></td>
+    </tr>
+    <tr>
+      <td><code>7FF</code></td>
+      <td><code>DF BF</code></td>
+      <td><code>07FF</code></td>
+      <td><code>000007FF</code></td>
+    </tr>
+    <tr>
+      <td><code>800</code></td>
+      <td><code>E0 A0 80</code></td>
+      <td><code>0800</code></td>
+      <td><code>00000800</code></td>
+    </tr>
+    <tr>
+      <td><code>FFFF</code></td>
+      <td><code>EF BF BF</code></td>
+      <td><code>FFFF</code></td>
+      <td><code>0000FFFF</code></td>
+    </tr>
+    <tr>
+      <td><code>10000</code></td>
+      <td><code>F0 90 80 80</code></td>
+      <td><code>D800 DC00</code></td>
+      <td><code>00010000</code></td>
+    </tr>
+  </table>
+  <hr align="LEFT">
+  <h2><a name="Extended_Unicode_Support">3 Extended Unicode Support</a>: <a name="Level_2">Level 
+  2</a></h2>
+  <p>Level 1 support works well in many circumstances. However, it does not 
+  handle more complex languages or extensions to the Unicode Standard very well. 
+  Particularly important cases are canonical equivalence, word boundaries, 
+  grapheme cluster boundaries, and loose matches. (For more information about 
+  boundary conditions, see<i> The Unicode Standard, Section 5-15</i>.)</p>
+  <p>Level 2 support matches much more what user expectations are for sequences 
+  of Unicode characters. It is still locale-independent and easily implementable. 
+  However, the implementation may be slower when supporting Level 2, and some 
+  expressions may require Level 1 matches. Thus it is usually required to have 
+  some sort of syntax that will turn Level 2 support on and off.</p>
+  <h3><a name="Canonical_Equivalents">3.1 Canonical Equivalents</a></h3>
+  <p>There are many instances where a character can be equivalently expressed by 
+  two different sequences of Unicode characters. For example, <code>[ä]</code> 
+  should match both &quot;ä&quot; and &quot;a\u0308&quot;. (See <a href="../tr15.1">UAX 
+  #15: Unicode Normalization</a> [<a href="tr18-6#Norm">Norm</a>] and <i>Sections 2.5 
+  and 3.9</i> of <i>The Unicode Standard</i> for more information.) There are 
+  two main options for implementing this:</p>
+  <ol>
+    <li>Before (or during) processing, translate text (and pattern) into a 
+      normalized form. This is the simplest to implement, since there are 
+      available code libraries for doing normalization
+  </ol>
+  <ol>
+    <li value="2">Expand the regular expression internally into a more 
+      generalized regular expression that takes canonical equivalence into 
+      account. For example, the expression <code>[a-z,ä]</code> can be 
+      internally turned into <code>[a-z,ä]&nbsp;|&nbsp;(a&nbsp;\u0308)</code>. 
+      While this can be faster, it may also be substantially more difficult to 
+      generate expressions capturing all of the possible equivalent sequences.
+  </ol>
+  <blockquote>
+    <p><b>Note:</b> Combining characters are required for many characters. Even 
+    when text is in Normalization Form C, there may be combining characters in 
+    the text.</p>
+  </blockquote>
+  <h3><a name="Default_Grapheme_Clusters">3.2 Default Grapheme Clusters</a></h3>
+  <p>One or more Unicode characters may make up what the user thinks of as a 
+  character. To avoid ambiguity with the computer use of the term <i>character,</i> 
+  this is called a <i>grapheme cluster</i>. For example, &quot;G&quot; + <i>acute-accent</i> 
+  is a grapheme cluster: it is thought of as a single character by users, yet is 
+  actually represented by two Unicode characters.</p>
+  <blockquote>
+    <p><b>Note: </b>default grapheme clusters were previously referred to as 
+    &quot;locale-independent graphemes&quot;. The term <i>cluster</i> has been 
+    added to emphasize that the term <i>grapheme</i> as used differently in 
+    linguistics. For simplicity and to align with <a href="../tr10/index.html">UTS 
+    #10: Unicode Collation Algorithm</a> [<a href="tr18-6#Collation">Collation</a>], 
+    the terms &quot;locale-independent&quot; and &quot;locale-dependent&quot; 
+    been also changed to &quot;default&quot; and &quot;tailored&quot; 
+    respectively.</p>
+  </blockquote>
+  <p>These <i>default</i> grapheme clusters are not the same as <i>tailored</i> 
+  grapheme clusters, which are covered in Level 3, <a href="tr18-6#Boundaries">Tailored 
+  Grapheme Clusters</a>. The default grapheme clusters are determined according 
+  to the rules in <a href="../tr29.1">UTR #29: Text 
+  Boundaries</a> [<a href="tr18-6#Boundaries">Boundaries</a>].</p>
+  <p>Regular expression engines should provide some mechanism for easily 
+  matching against grapheme clusters, since they are more likely to match user 
+  expectations for many languages. One mechanism for doing that is to have 
+  explicit syntax for clusters, as in the following. This syntax can also be 
+  used for tailored grapheme clusters (<a href="tr18-6#Tailored_Graphemes_Clusters">Tailored 
+  Grapheme Clusters</a>).</p>
+  <table class="syntax">
+    <tr>
+      <td width="100%"><code>ITEM := &quot;\g{&quot; CODE_POINT + &quot;}&quot;</code></td>
+    </tr>
+  </table>
+  <p><i>Examples:</i></p>
+  <table class="example">
+    <tr>
+      <td><code>[a-z\g{x\u0323}]</code></td>
+      <td>Match a-z, and x with an under-dot (used in American Indian languages)</td>
+    </tr>
+    <tr>
+      <td><code>[a-z\g{aa}]</code></td>
+      <td>Match a-z, and aa (treated as a single character in Danish).</td>
+    </tr>
+  </table>
+  &nbsp;
+  <h3><a name="Default_Word_Boundariess">3.3 Default Words</a></h3>
+  <p>The simple Level 1 support using simple <code>&lt;word_character&gt;</code> 
+  classes is only a very rough approximation of user word boundaries. A much 
+  better method takes into account more context than just a single pair of 
+  letters. A general algorithm can take care of character and word boundaries 
+  for most of the world's languages. For more information, see <a href="../tr29.1">UTR 
+  #29: Text Boundaries</a> [<a href="tr18-6#Boundaries">Boundaries</a>].</p>
+  <blockquote>
+    <p><b>Note: </b>Word-break boundaries and line-break boundaries are not 
+    generally the same; line breaking has a much more complex set of 
+    requirements to meet the typographic requirements of different languages. 
+    See <a href="../tr14/index.html">UAX #14: Line Breaking 
+    Properties</a> [<a href="tr18-6#LineBreak">LineBreak</a>] for more information. 
+    However, line breaks are not generally relevant to general regular 
+    expression engines.</p>
+  </blockquote>
+  <p>A fine-grained approach to languages such as Chinese or Thai, languages 
+  that do not have spaces, requires information that is beyond the bounds of 
+  what a Level 2 algorithm can provide.</p>
+  <h3><a name="Default_Loose_Matches">3.4 Default Loose Matches</a></h3>
+  <p>At Level 1, caseless matches do not need to handle cases where one 
+  character matches against two. Level 2 includes caseless matches where one 
+  character may match against two (or more) characters. For example, 00DF &quot;ß&quot; 
+  will match against the two characters &quot;SS&quot;.</p>
+  <p>To correctly implement a caseless match and case conversions, see <a href="../tr21/index.html">UAX 
+  #21: Case Mappings</a> [<a href="tr18-6#Case">Case</a>]. For ease of implementation, 
+  a complete case folding file is supplied at <a href="http://www.unicode.org/Public/UNIDATA/CaseFolding.txt">CaseFolding.txt</a> 
+  [<a href="tr18-6#CaseData">CaseData</a>].</p>
+  <p>If the implementation containing the regular expression engine also offers 
+  case conversions, then these should also be done in accordance with UAX #21, 
+  with the full mappings. The relevant data files are <a href="http://www.unicode.org/Public/UNIDATA/SpecialCasing.txt">SpecialCasing.txt</a> 
+  [<a href="tr18-6#SpecialCasing">SpecialCasing</a>] and <a href="http://www.unicode.org/Public/UNIDATA/UnicodeData.html">UnicodeData.txt</a> 
+  [<a href="tr18-6#UData">UData</a>].</p>
+  <hr align="LEFT">
+  <h2><a name="Tailored_Support">4 Tailored Support</a>: <a name="Level_3">Level 
+  3</a></h2>
+  <p>All of the above deals with a default specification for a regular 
+  expression. However, a regular expression engine also may want to support 
+  tailored specifications, typically tailored for a particular language or 
+  locale. This may be important when the regular expression engine is being used 
+  by less sophisticated users instead of programmers. For example, the order of 
+  Unicode characters may differ substantially from the order expected by users 
+  of a particular language. The regular expression engine has to decide, for 
+  example, whether the list <code>[a-ä]</code> means:</p>
+  <ul>
+    <li>the Unicode characters in binary order between <code>0061<sub>16</sub></code> 
+      and <code>00E5<sub>16</sub></code> (including '<code>z</code>', '<code>Z</code>', 
+      '[', and '<code>¼</code>'), <i>or</i>
+    <li>the letters in that order in the users' locale (which <i>does not</i> 
+      include '<code>z</code>' in English, but <i>does</i> include it in 
+      Swedish).
+  </ul>
+  <p>If both tailored and default regular expressions are supported, then a 
+  number of different mechanism are affected. There are a two main alternatives 
+  for control of tailored support:</p>
+  <ul>
+    <li><i>coarse-grained support:</i> the whole regular expression (or the 
+      whole script in which the regular expression occurs) can be marked as 
+      being tailored.
+    <li><i>fine-grained support:</i> any part of the regular expression can be 
+      marked in some way as being tailored.
+  </ul>
+  <p>Marking locales is generally specified by means of the common ISO 639 and 
+  3166 tags, such as &quot;en_US&quot;. For more information on these tags, see <a href="http://www.unicode.org/onlinedat/online.html">Online 
+  Data</a> [Online].</p>
+  <p>Level 3 support may be considerably slower than Level 2, and some scripts 
+  may require either Level 1 or Level 2 matches instead. Thus it is usually 
+  required to have some sort of syntax that will turn Level 3 support on and 
+  off. Because tailored regular expression patterns are usually quite specific 
+  to the locale, and will generally not work across different locales, the 
+  syntax should also specify the particular locale or other tailoring 
+  customization that the pattern was designed for.</p>
+  <h3><a name="Tailored_Properties">4.1. Tailored Properties</a></h3>
+  <p>Some of Unicode character properties, such as punctuation, may in a few 
+  cases vary from language to language or from country to country. For example, 
+  whether a curly quotation mark is <i>opening</i> or <i>closing</i> punctuation 
+  may vary. For those cases, the mapping of the properties to sets of characters 
+  will need to be dependent on the locale or other tailoring.</p>
+  <h3><a name="Tailored_Graphemes_Clusters">4.2 Tailored Grapheme Clusters</a></h3>
+  <p>Tailored grapheme clusters may be somewhat different than the default 
+  grapheme clusters discussed in Level 2. They are coordinated with the 
+  collation ordering for a given language in the following way. A collation 
+  ordering determines a <i>collation grapheme cluster</i>, which is a sequence 
+  of characters that is treated as a unit by the ordering. For example, <i>ch</i> 
+  is a collation character for a traditional Spanish ordering. More 
+  specifically, a collation character is the longest sequence of characters that 
+  maps to sequence of one or more collation elements where the first collation 
+  element has a primary weight and subsequent elements do not, and no completely 
+  ignorable characters are included.</p>
+  <p>The tailored grapheme clusters for a particular locale are the collation 
+  characters for the collation ordering for that locale. The determination of 
+  tailored grapheme clusters requires the regular expression engine to either 
+  draw upon the platform's collation data, or incorporate its own tailored data 
+  for each supported locale.</p>
+  <p>See&nbsp; <a href="../tr10/index.html">UTS #10: Unicode 
+  Collation Algorithm</a> [<a href="tr18-6#Collation">Collation</a>] for more 
+  information about collation, and <a href="tr18-6#Sample_Collation_Character_Code">Annex 
+  B. Sample Collation Character Code</a> for sample code.</p>
+  <h3><a name="Tailored_Word_Boundaries">4.3 Tailored Words</a></h3>
+  <p>Semantic analysis may be required for correct word-break in languages that 
+  don't require spaces, such as Thai, Japanese, Chinese or Korean. This can 
+  require fairly sophisticated support if Level 3 word boundary detection is 
+  required, and usually requires drawing on platform OS services.</p>
+  <h3><a name="Tailored_Loose_Matches">4.4 Tailored Loose Matches</a></h3>
+  <p>In Level 1 and 2, caseless matches are described, but there are other 
+  interesting linguistic features that users may want to filter out. For 
+  example, <i>V</i> and <i>W</i> are considered equivalent in Swedish 
+  collations, and so [V] should match <i>W</i> in Swedish. In line with the <a href="../tr10/index.html">UTS 
+  #10: Unicode Collation Algorithm</a> [<a href="tr18-6#Collation">Collation</a>], at 
+  the following four levels of equivalences are recommended:</p>
+  <ul>
+    <li>exact match: bit-for-bit identity
+    <li>tertiary match: disregard 4th level differences (language tailorings)
+    <li>secondary match: disregard 3rd level differences such as upper/lowercase 
+      and compatibility variation (e.g. matching both half-width and full-width 
+      katakana).
+    <li>primary match: disregard accents, case and compatibility variation; also 
+      disregard differences between katakana and hiragana.
+  </ul>
+  <p>If users are to have control over these equivalence classes, here is an 
+  example of how the sample syntax could be modified to account for this. The 
+  syntax for switching the strength or type of matching varies widely. Note that 
+  these tags switch behavior on and off in the middle of a regular expression; 
+  they do not match a character.</p>
+  <table class="syntax">
+    <tr>
+      <td width="100%">
+        <pre>ITEM := \c{PRIMARY}   // match primary only
+ITEM := \c{SECONDARY} // match primary &amp; secondary only
+ITEM := \c{TERTIARY}  // match primary, secondary, tertiary
+ITEM := \c{EXACT}     // match all levels, normal state</pre>
+      </td>
+    </tr>
+  </table>
+  <p><i>Examples:</i></p>
+  <table class="example">
+    <tr>
+      <td><code>[\c{SECONDARY}a-m]</code></td>
+      <td>Match a-m, plus case variants A-M, plus compatibility variants</td>
+    </tr>
+  </table>
+  <p>Basic information for these equivalence classes can be derived from the 
+  data tables referenced by <a href="../tr10/index.html">UTS 
+  #10: Unicode Collation Algorithm</a> [<a href="tr18-6#Collation">Collation</a>].</p>
+  <h3><a name="Tailored_Ranges">4.5. Tailored Ranges</a></h3>
+  <p>Tailored character ranges will include tailored grapheme clusters, as 
+  discussed above. This broadens the set of grapheme clusters — in traditional 
+  Spanish, for example, <code>[b-d]</code> would match against &quot;<code>ch</code>&quot;.</p>
+  <blockquote>
+    <p><b>Note: </b>this is another reason why a property for all characters <code>\p{Any}</code> 
+    is needed—it is possible for a locale's collation to not have <code>[\u0000-\U0010FFFF]</code> 
+    encompass all characters.</p>
+  </blockquote>
+  <p>Languages may also vary whether they consider lowercase below uppercase or 
+  the reverse. This can have some surprising results: <code>[a-Z]</code> may not 
+  match anything if <i>Z &lt; a</i> in that locale!</p>
+  <hr>
+  <h2><a name="Character_Blocks">Annex A. Character Blocks</a></h2>
+  <p>The Block property from the Unicode Character Database can be a useful 
+  property for quickly describing a set of Unicode characters. It assigns a name 
+  to segments of the Unicode codepoint space; for example, <code>[\u0370-\u03FF]</code> 
+  is the Greek block.</p>
+  <p>However, block names must be used with discretion; they are very easy to 
+  misuse since they only supply a very coarse view of the Unicode character 
+  allocation. For example:</p>
+  <ul>
+    <li><b>Blocks are not at all exclusive.</b> There are many mathematical 
+      operators that are not in the Mathematical Operators block; there are many 
+      currency symbols not in Currency Symbols, etc.</li>
+    <li><b>Blocks may include characters not assigned in the current version of 
+      Unicode. </b>This can be both an advantage and disadvantage. Like the 
+      General Property, this allows an implementation to handle characters 
+      correctly that are not defined at the time the implementation is released. 
+      However, it also means that depending on the current properties of 
+      assigned characters in a block may fail. For example, all characters in a 
+      block may currently be letters, but this may not be true in the future.</li>
+    <li><b>Writing systems may use characters from multiple blocks: </b>English 
+      uses characters from Basic Latin and General Punctuation, Syriac uses 
+      characters from both the Syriac and Arabic blocks, various languages use 
+      Cyrillic plus a few letters from Latin, etc.</li>
+    <li><b>Characters from a single writing system may be split across multiple 
+      blocks.</b> See the table below. Moreover, presentation forms for a number 
+      of different scripts may be collected in blocks like Alphabetic 
+      Presentation Forms or Halfwidth and Fullwidth Forms.</li>
+  </ul>
+  <table>
+    <tr>
+      <th align="left">Writing Systems</th>
+      <th align="left">Blocks</th>
+    </tr>
+    <tr>
+      <td>Latin&nbsp;&nbsp;</td>
+      <td>Basic Latin,&nbsp; Latin-1 Supplement, Latin Extended-A, Latin 
+        Extended-B, Latin Extended Additional, Diacritics</td>
+    </tr>
+    <tr>
+      <td>Greek&nbsp;&nbsp;</td>
+      <td>Greek, Greek Extended, Diacritics</td>
+    </tr>
+    <tr>
+      <td>Arabic&nbsp;&nbsp;</td>
+      <td>Arabic Presentation Forms-A, Arabic Presentation Forms-B</td>
+    </tr>
+    <tr>
+      <td>Korean</td>
+      <td>Hangul Jamo, Hangul Compatibility Jamo, Hangul Syllables, CJK Unified 
+        Ideographs, CJK Unified Ideographs Extension A, CJK Compatibility 
+        Ideographs, CJK Compatibility Forms, Enclosed CJK Letters and Months, 
+        Small Form Variants</td>
+    </tr>
+    <tr>
+      <td>Diacritics&nbsp;&nbsp;</td>
+      <td>Combining Diacritical Marks, Combining Marks for Symbols, Combining 
+        Half Marks</td>
+    </tr>
+    <tr>
+      <td>Yi&nbsp;&nbsp;</td>
+      <td>Yi Syllables, Yi Radicals</td>
+    </tr>
+    <tr>
+      <td>Chinese</td>
+      <td>CJK Unified Ideographs, CJK Unified Ideographs Extension A, CJK 
+        Compatibility Ideographs, CJK Compatibility Forms, Enclosed CJK Letters 
+        and Months, Small Form Variants, Bopomofo, Bopomofo Extended</td>
+    </tr>
+    <tr>
+      <td><i>others</i></td>
+      <td>IPA Extensions, Spacing Modifier Letters, Cyrillic, Armenian, Hebrew, 
+        Syriac, Thaana, Devanagari, Bengali, Gurmukhi, Gujarati, Oriya, Tamil, 
+        Telugu, Kannada, Malayalam, Sinhala, Thai, Lao, Tibetan, Myanmar, 
+        Georgian, Ethiopic, Cherokee, Unified Canadian Aboriginal Syllabics, 
+        Ogham, Runic, Khmer, Mongolian, CJK Radicals Supplement, Kangxi 
+        Radicals, Ideographic Description Characters, CJK Symbols and 
+        Punctuation, Hiragana, Katakana, Kanbun, Alphabetic Presentation Forms, 
+        Halfwidth and Fullwidth Forms,
+        <p>General Punctuation, Superscripts and Subscripts, Currency Symbols, 
+        Letterlike Symbols, Number Forms, Arrows, Mathematical Operators, 
+        Miscellaneous Technical, Control Pictures, Optical Character 
+        Recognition, Enclosed Alphanumerics, Box Drawing, Block Elements, 
+        Geometric Shapes, Miscellaneous Symbols, Dingbats, Braille Patterns,</p>
+        <p>High Surrogates, High Private Use Surrogates, Low Surrogates, Private 
+        Use, Specials</td>
+    </tr>
+  </table>
+  <p>For that reason, Script values are generally preferred to Block values.</p>
+  <h2><a name="Sample_Collation_Character_Code">Annex B: Sample Collation 
+  Character Code</a></h2>
+  <p>The following provides sample code for doing Level 3 collation character 
+  detection. This code is meant to be illustrative, and has not been optimized. 
+  Although written in Java, it could be easily expressed in any programming 
+  language that allows access to the Unicode Collation Algorithm mappings.</p>
+  <pre><font color="#0000FF">/**
+ * Return the end of a collation character.
+ * @param s         the source string
+ * @param start     the position in the string to search
+ *                  forward from
+ * @param collator  the collator used to produce collation elements.
+ * This can either be a custom-built one, or produced from
+ * the factory method Collator.getInstance(someLocale).
+ * @return          the end position of the collation character
+ */
+</font>
+static int getLocaleCharacterEnd(String s,
+  int start, RuleBasedCollator collator) {
+    int lastPosition = start;
+    CollationElementIterator it 
+      = collator.getCollationElementIterator(
+          s.substring(start,s.length()));
+    it.next(); // discard first collation element
+    int primary;
+        
+<font color="#0000FF">    // accumulate characters until we get to a non-zero primary
+</font>        
+    do {
+        lastPosition = it.getOffset();
+        int ce = it.next();
+        if (ce == CollationElementIterator.NULLORDER) break;
+        primary = CollationElementIterator.primaryOrder(ce);
+    } while (primary == 0);
+    return lastPosition;
+}</pre>
+  <h2><a name="References">References</a></h2>
+  <table class="noborder" cellspacing cellpadding="4">
+    <tr>
+      <td width="1" class="noborder">[<a name="Boundaries">Boundaries</a>]</td>
+      <td class="noborder"><a href="../tr29.1">UTR 
+        #29: Text Boundaries<br>
+        http://www.unicode.org/reports/tr29/<br>
+        </a><i>(At the time of this writing, UTR #29 was in proposed draft 
+        stage.)</i></td>
+    </tr>
+    <tr>
+      <td width="1" class="noborder">[<a name="Case">Case</a>]</td>
+      <td class="noborder"><a href="../tr21/index.html">UAX 
+        #21: Case Mappings<br>
+        http://www.unicode.org/reports/tr21/</a></td>
+    </tr>
+    <tr>
+      <td width="1" class="noborder">[<a name="CaseData">CaseData</a>]</td>
+      <td class="noborder"><a href="http://www.unicode.org/Public/UNIDATA/CaseFolding.txt">http://www.unicode.org/Public/UNIDATA/CaseFolding.txt</a></td>
+    </tr>
+    <tr>
+      <td width="1" class="noborder">[<a name="Chap4">Chap4</a>]</td>
+      <td class="noborder"><a href="http://www.unicode.org/uni2book/ch04.pdf">http://www.unicode.org/uni2book/ch04.pdf</a></td>
+    </tr>
+    <tr>
+      <td width="1" class="noborder">[<a name="Chap5">Chap5</a>]</td>
+      <td class="noborder"><a href="http://www.unicode.org/uni2book/ch05.pdf">http://www.unicode.org/uni2book/ch05.pdf</a></td>
+    </tr>
+    <tr>
+      <td width="1" class="noborder">[<a name="Collation">Collation</a>]</td>
+      <td class="noborder"><a href="../tr10/index.html">UTS 
+        #10: Unicode Collation Algorithm<br>
+        http://www.unicode.org/reports/tr10/</a></td>
+    </tr>
+    <tr>
+      <td width="1" class="noborder">[<a name="FAQ">FAQ</a>]</td>
+      <td class="noborder">Unicode Frequently Asked Questions<br>
+        <a href="http://www.unicode.org/faq/">http://www.unicode.org/faq/<br>
+        </a><i>For answers to common questions on technical issues.</i></td>
+    </tr>
+    <tr>
+      <td width="1" class="noborder">[<a name="Forms">Forms</a>]</td>
+      <td class="noborder">Davis, Mark. &quot;Forms of Unicode&quot;<br>
+        <a href="http://www-4.ibm.com/software/developer/library/utfencodingforms/">http://www-4.ibm.com/software/developer/library/utfencodingforms/</a></td>
+    </tr>
+    <tr>
+      <td width="1" class="noborder">[<a name="Glossary">Glossary</a>]</td>
+      <td class="noborder">Unicode Glossary<a href="http://www.unicode.org/glossary/"><br>
+        http://www.unicode.org/glossary/<br>
+        </a><i>For explanations of terminology used in this and other documents.</i></td>
+    </tr>
+    <tr>
+      <td width="1" class="noborder">[<a name="LineBreak">LineBreak</a>]</td>
+      <td class="noborder"><a href="../tr14/index.html">UAX 
+        #14: Line Breaking Properties<br>
+        http://www.unicode.org/reports/tr14/</a></td>
+    </tr>
+    <tr>
+      <td width="1" class="noborder">[<a name="NewLine">NewLine</a>]</td>
+      <td class="noborder"><a href="../tr13.1">UAX 
+        #13, Unicode Newline Guidelines<br>
+        http://www.unicode.org/reports/tr13/</a></td>
+    </tr>
+    <tr>
+      <td width="1" class="noborder">[<a name="Norm">Norm</a>]</td>
+      <td class="noborder"><a href="../tr15.1">UAX 
+        #15: Unicode Normalization<br>
+        http://www.unicode.org/reports/tr15/</a></td>
+    </tr>
+    <tr>
+      <td width="1" class="noborder">[Online]</td>
+      <td class="noborder"><a href="http://www.unicode.org/onlinedat/online.html">http://www.unicode.org/onlinedat/online.html</a></td>
+    </tr>
+    <tr>
+      <td width="1" class="noborder">[<a name="Perl">Perl</a>]</td>
+      <td class="noborder"><a href="http://www.perl.com/pub/q/documentation">http://www.perl.com/pub/q/documentation</a></td>
+    </tr>
+    <tr>
+      <td width="1" class="noborder">[<a name="Prop">Prop</a>]</td>
+      <td class="noborder"><a href="http://www.unicode.org/Public/UNIDATA/PropertyAliases.txt">http://www.unicode.org/Public/UNIDATA/PropertyAliases.txt</a></td>
+    </tr>
+    <tr>
+      <td width="1" class="noborder">[<a name="PropValue">PropValue</a>]</td>
+      <td class="noborder"><a href="http://www.unicode.org/Public/UNIDATA/PropertyValueAliases.txt">http://www.unicode.org/Public/UNIDATA/PropertyValueAliases.txt</a></td>
+    </tr>
+    <tr>
+      <td width="1" class="noborder">[<a name="Reports">Reports</a>]</td>
+      <td class="noborder">Unicode Technical Reports<br>
+        <a href="../index.html">http://www.unicode.org/reports/<br>
+        </a><i>For information on the status and development process for 
+        technical reports, and for a list of technical reports.</i></td>
+    </tr>
+    <tr>
+      <td width="1" class="noborder">[<a name="ScriptData">ScriptData</a>]</td>
+      <td class="noborder"><a href="http://www.unicode.org/Public/UNIDATA/Scripts.txt">http://www.unicode.org/Public/UNIDATA/Scripts.txt</a></td>
+    </tr>
+    <tr>
+      <td width="1" class="noborder">[<a name="ScriptDoc">ScriptDoc</a>]</td>
+      <td class="noborder"><a href="../tr24/index.html">UTR 
+        #24: Script Names<br>
+        http://www.unicode.org/reports/tr24/</a></td>
+    </tr>
+    <tr>
+      <td width="1" class="noborder">[<a name="SpecialCasing">SpecialCasing</a>]</td>
+      <td class="noborder"><a href="http://www.unicode.org/Public/UNIDATA/SpecialCasing.txt">http://www.unicode.org/Public/UNIDATA/SpecialCasing.txt</a></td>
+    </tr>
+    <tr>
+      <td width="1" class="noborder">[<a name="UCD">UCD</a>]</td>
+      <td class="noborder"><a href="http://www.unicode.org/ucd/">http://www.unicode.org/ucd/</a></td>
+    </tr>
+    <tr>
+      <td width="1" class="noborder">[<a name="UData">UData</a>]</td>
+      <td class="noborder"><a href="http://www.unicode.org/Public/UNIDATA/UnicodeData.txt">http://www.unicode.org/Public/UNIDATA/UnicodeData.txt</a></td>
+    </tr>
+    <tr>
+      <td width="1" class="noborder">[<a name="UDataDoc">UDataDoc</a>]</td>
+      <td class="noborder"><a href="http://www.unicode.org/Public/UNIDATA/UnicodeData.html">http://www.unicode.org/Public/UNIDATA/UnicodeData.html</a></td>
+    </tr>
+    <tr>
+      <td width="1" class="noborder">[<a name="Versions">Versions</a>]</td>
+      <td class="noborder">Versions of the Unicode Standard<br>
+        <a href="http://www.unicode.org/versions/">http://www.unicode.org/versions/<br>
+        </a><i>For details on the precise contents of each version of the 
+        Unicode Standard, and how to cite them.</i></td>
+    </tr>
+  </table>
+  &nbsp;
+  <h2><a name="Acknowledgments">Acknowledgments</a></h2>
+  <p>Thanks to Karlsson Kent, Jarkko Hietaniemi, Gurusamy Sarathy, Tom Watson 
+  and Kento Tamura for their feedback on the document.</p>
+  <h2><a name="Modifications">Modifications</a></h2>
+  <p>The following summarizes modifications from the previous version of this 
+  document.</p>
+  <table class="noborder">
+    <tr>
+      <td width="1" class="noborder"><a name="TrackingNumber6">6</a></td>
+      <td class="noborder">
+        <ul>
+          <li>Fixed 16-bit reference, moved Supplementary characters support 
+            (surrogates) to level 1.
+          <li>Generally changed &quot;locale-dependent&quot; to 
+            &quot;default&quot;, &quot;locale-independent&quot; to 
+            &quot;tailored&quot; and &quot;grapheme&quot; to &quot;grapheme 
+            cluster&quot;</li>
+          <li>Changed syntax slightly to be more like Perl</li>
+          <li>Added explicit table of General Category values</li>
+          <li>Added clarifications about scripts and blocks</li>
+          <li>Added descriptions of other properties, and a pointer to the 
+            default names</li>
+          <li>Referred to TR 29 for grapheme cluster and word boundaries</li>
+          <li>Removed old annex B (word boundary code)</li>
+          <li>Removed spaces from anchors</li>
+          <li>Added references, modification sections
+          <li>Rearranged property section</li>
+          <li>Minor editing</li>
+        </ul>
+      </td>
+    </tr>
+  </table>
+  <p class="copyright">Copyright © 2000-2002 Unicode, Inc. All Rights Reserved. 
+  The Unicode Consortium makes no expressed or implied warranty of any kind, and 
+  assumes no liability for errors or omissions. No liability is assumed for 
+  incidental and consequential damages in connection with or arising out of the 
+  use of the information or programs contained or accompanying this technical 
+  report.</p>
+  <p class="copyright">Unicode and the Unicode logo are trademarks of Unicode, 
+  Inc., and are registered in some jurisdictions.</p>
+</div>
+
+</body>

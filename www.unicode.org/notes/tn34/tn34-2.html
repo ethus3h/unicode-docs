@@ -1,0 +1,961 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+
+       "http://www.w3.org/TR/html4/loose.dtd"> 
+
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta http-equiv="Content-Language" content="en-us">
+<link rel="stylesheet" href="../../unicode/reports/reports.css" 
+type="text/css">
+<title>UTN #34: Unicode Collation Case Study: Sorting French Topic Lists</title>
+</head>
+
+<body bgcolor="#ffffff">
+
+<table class="header">
+  <tr>
+    <td class="icon"><a href="http://www.unicode.org"><img align="middle" 
+    alt="[Unicode]" border="0" 
+    src="../../webscripts/logo60s2.gif" width="34" height="33"></a>&nbsp;&nbsp;
+    <font size="3"><a class="bar" href="../index.html">Technical 
+    Notes</a></font></td>
+  </tr>
+  <tr>
+    <td class="gray">&nbsp;</td>
+  </tr>
+</table>
+<div style="margin: 2em">
+  <h2 align="center">Unicode Technical Note #34</h2>
+  <h1 align="center">Unicode Collation Case Study: Sorting French Topic Lists</h1>
+  <table class="wide">
+    <tr>
+      <td>Version</td>
+      <td><a href="tn34-2.html#TrackingNumber">2</a></td>
+    </tr>
+    <tr>
+      <td>Authors</td>
+      <td>Ken Whistler</td>
+    </tr>
+    <tr>
+      <td>Date</td>
+      <td>2010-08-02</td>
+    </tr>
+    <tr>
+      <td>This Version</td>
+      <td><a href="tn34-2.html">
+      http://www.unicode.org/notes/tn34/tn34-2.html</a></td>
+    </tr>
+    <tr>
+      <td>Previous Version</td>
+      <td><a href="tn34-1.html">
+      http://www.unicode.org/notes/tn34/tn34-1.html</a></td>
+    </tr>
+    <tr>
+      <td>Latest Version</td>
+      <td><a href="index.html">http://www.unicode.org/notes/tn34/</a></td>
+    </tr>
+  </table>
+  <p><br>
+  </p>
+  <h3><i>Summary</i></h3>
+  <p><i>This document presents a case study of collation issues, using data from
+  a French language topic list to illustrate alternative orders and how to
+  obtain them. It also discusses implementation issues for ordering lists of
+  this type.</i></p>
+  <h3><i>Status</i></h3>
+  <p><i>This document is a <b>Unicode Technical Note</b>. Sole responsibility for 
+  its contents rests with the author(s). Publication does not imply any endorsement by the 
+  Unicode Consortium. This document is not subject to the 
+	<a href="http://www.unicode.org/policies/patent_policy.html">Unicode Patent Policy</a>.</i></p>
+
+<p>For information on Unicode Technical Notes including criteria for acceptance, see
+<a href="../index.html">http://www.unicode.org/notes/</a>.</p>
+  <h3><i>Contents</i></h3>
+
+<ul class="toc">
+<li>1.&nbsp;<a href="tn34-2.html#Introduction">Introduction</a></li>
+<li>2.&nbsp;<a href="tn34-2.html#Section_2">Case Study: Ordering a Topic List</a>
+<ul class="toc">
+    <li>2.1.&nbsp;<a href="tn34-2.html#Section_2_1">Topic List, Order 1</a></li>
+    <li>2.2.&nbsp;<a href="tn34-2.html#Section_2_2">Topic List, Order 2</a></li>
+    <li>2.3.&nbsp;<a href="tn34-2.html#Section_2_3">Topic List, Order 3</a></li>
+    <li>2.4.&nbsp;<a href="tn34-2.html#Section_2_4">Topic List, Order 4</a></li>
+    <li>2.5.&nbsp;<a href="tn34-2.html#Section_2_5">Topic List, Order 5</a></li>
+    <li>2.6.&nbsp;<a href="tn34-2.html#Section_2_6">Topic List, Order 6</a></li>
+</ul>
+</li>
+<li>3.&nbsp;<a href="tn34-2.html#Section_3">Implications for the Unicode Collation Algorithm
+</a>
+<ul class="toc">
+    <li>3.1.&nbsp;<a href="tn34-2.html#Section_3_1">Incremental Comparison and Stored Keys</a></li>
+    <li>3.2.&nbsp;<a href="tn34-2.html#Section_3_2">French Accent Weighting</a></li>
+    <li>3.3.&nbsp;<a href="tn34-2.html#Section_3_3">Truncation and UCA</a></li>
+    <li>3.4.&nbsp;<a href="tn34-2.html#Section_3_4">The Real Goal of a Word-Chunking Enhancement</a></li>
+</ul>
+<li><a href="tn34-2.html#References">References</a></li>
+<li><a href="tn34-2.html#Modifications">Modifications</a></li>
+</ul>
+
+
+
+
+<p>&nbsp;</p>
+
+
+
+<h3><a name="Introduction"></a>1. Introduction</h3>
+
+<p>Recent discussion on the Unicode general email list has raised
+a number of issues regarding collation and the Unicode
+Collation Algorithm (UCA) specifically.</p>
+
+<p>In particular, there has been much discussion about whether having
+a specific word-breaking mechanism built into the UCA would be
+an improvement for it, as well as discussion of the problems of
+French accent weighting (reversed at the secondary level) for
+efficiency in handling certain kinds of list sorting in actual
+applications in production.</p>
+
+<p>One of the cases which has been attested as illustrating the
+problems with the UCA and the need for a word-breaking mechanism
+and other changes is the sorting of topic lists (and other kinds
+of lists) on the French Wikipédia.</p>
+
+<p>In lieu of attempting to discuss long examples in email, where
+the discussion cannot truly do justice to the examples or the
+problems they pose, I have written up this small technical note,
+so that I can examine some of the issues in the context of
+an extended example using actual data from the French Wikipédia.</p>
+
+<h3>2. <a name="Section_2"></a>Case Study: Ordering a Topic List</h3>
+
+<p>To illustrate some of the problems, I have selected a sublisting
+from the "Toutes les pages" topical listing for the French
+Wikipédia. In particular:</p>
+
+<p>
+<a href="http://fr.wikipedia.org/w/index.php?title=Sp%C3%A9cial:Toutes_les_pages&amp;from=Fleur&amp;to=Fleuve_Nelson">http://fr.wikipedia.org/w/index.php?title=Sp%C3%A9cial:Toutes_les_pages&amp;from=Fleur&amp;to=Fleuve_Nelson</a> </p>
+
+<p>(This page was accessed and excerpted 2010-07-13. Note that the exact range of topics for a
+particular topic page listing will vary from day to day on the actual site, as entries are
+added or modified.)</p>
+
+<h4>2.1. <a name="Section_2_1"></a>Topic List, Order 1</h4>
+
+<p>The excerpted list of interest here, in its actual occurring order
+on that page is shown below. (I have deleted out intervening entries,
+so as to highlight the collation order issues for "Fleur" and
+"Fleur de lys" in the list.)</p>
+
+<pre>Fleur
+Fleur-De-Lys
+Fleur-de-Lys
+Fleur-de-lys
+Fleur (Disney, Bambi)
+Fleur (Homonymie)
+Fleur (homonymie)
+Fleur (personnage)
+Fleur (plante)
+Fleur (prénom)
+Fleur Adcock
+...
+Fleur De Lampaul
+Fleur De Lys
+Fleur De Lys (Homonymie)
+Fleur De Lys (groupe)
+Fleur De Métal
+...
+Fleur annuelle
+...
+Fleur de Lune
+Fleur de Lys
+Fleur de Mai
+...
+Fleur de lampaul
+Fleur de lis
+Fleur de lune
+Fleur de lys
+Fleur de lys (homonymie)
+Fleur de lys florencée
+Fleur de ma ville
+...
+Fleur stabilisée
+Fleurac
+...
+Fleurbaix
+Fleurdelisé
+Fleurdelysé
+Fleurdepied
+...
+Fleurs de bach
+Fleurs de lis
+Fleurs de lys
+Fleurs de ruine
+...</pre>
+
+<p>By inspection of the ordering of this list, it is clear that the
+ordering being used is a very simple one. It is a single-level
+sort, giving SPACE (and HYPHEN-MINUS and parentheses) a low
+primary weight. It also does not treat case distinctions as
+ignorable, but rather collates uppercase and lowercase as
+distinct letters in ASCII order. Thus it has "H" &lt; "g" in one
+obvious instance. Except for the fact that this collation
+sorts "-" before SPACE, this ordering is otherwise what one
+would expect for a binary string sort.</p>
+
+<p>Obviously this ordering is far from a desirable one for a long
+list like this.</p>
+
+<h4>2.2. <a name="Section_2_2"></a>Topic List, Order 2</h4>
+
+<p>A significant improvement in the order would result from a single,
+change in the collation to ignore case differences. The result
+of that change is shown below.</p>
+
+<pre>Fleur
+Fleur-De-Lys
+Fleur-de-Lys
+Fleur-de-lys
+Fleur (Disney, Bambi)
+Fleur (Homonymie)
+Fleur (homonymie)
+Fleur (personnage)
+Fleur (plante)
+Fleur (prénom)
+Fleur Adcock
+Fleur annuelle
+...
+Fleur De Lampaul
+Fleur de lampaul
+Fleur de lis
+Fleur de Lune
+Fleur de lune
+Fleur De Lys
+Fleur de Lys
+Fleur de lys
+Fleur De Lys (groupe)
+Fleur De Lys (Homonymie)
+Fleur de lys (homonymie)
+Fleur de lys florencée
+Fleur de ma ville
+Fleur de Mai
+Fleur De Métal
+...
+Fleur stabilisée
+Fleurac
+...
+Fleurbaix
+Fleurdelisé
+Fleurdelysé
+Fleurdepied
+...
+Fleurs de bach
+Fleurs de lis
+Fleurs de lys
+Fleurs de ruine
+...</pre>
+
+<p>This does a much better job of grouping similar strings together
+that only differ by casing, and also eliminates ordering
+anomalies of the "H" &lt; "g" variety.</p>
+
+<p>However, the list order still has problems, in that it widely separates
+what would otherwise be considered closely related strings,
+such as "Fleur-de-lys", "Fleur de lys" and "Fleurdelysé".</p>
+
+<h4>2.3. <a name="Section_2_3"></a>Topic List, Order 3</h4>
+
+<p>Now what would happen to this list if ordered instead with
+a multi-level collation based on UCA? First, let's consider
+the default settings for the UCA implementation by the International
+Components for Unicode library [<a href="tn34-2.html#ICU">ICU</a>]. That library does a full
+UCA multi-level collation, using the [<a href="tn34-2.html#LDML">LDML</a>] locale tailorings. The default settings
+for LDML differ from
+the defaults for UCA per se, in that LDML defaults to the "non-ignorable"
+option, rather than 
+the "shifted" option for weighting. Implementations can, however, reset
+that default globally, or for a given locale, or for a tailoring of
+a locale, to "shifted".</p>
+
+<p>The choice of the "non-ignorable" option means that the so-called
+variable elements (e.g., punctuation and symbols) are given
+primary weights, instead of being shifted to a weighting significance
+at the fourth level. Given the ICU default settings for the root
+locale, the list would order as follows.</p>
+
+<pre>Fleur
+Fleur (Disney, Bambi)
+Fleur (homonymie)
+Fleur (Homonymie)
+Fleur (personnage)
+Fleur (plante)
+Fleur (prénom)
+Fleur Adcock
+Fleur annuelle
+...
+Fleur de lampaul
+Fleur De Lampaul
+Fleur de lis
+Fleur de lune
+Fleur de Lune
+Fleur de lys
+Fleur de Lys
+Fleur De Lys
+Fleur De Lys (groupe)
+Fleur de lys (homonymie)
+Fleur De Lys (Homonymie)
+Fleur de lys florencée
+Fleur de ma ville
+Fleur de Mai
+Fleur De Métal
+...
+Fleur stabilisée
+...
+Fleur-de-lys
+Fleur-de-Lys
+Fleur-De-Lys
+...
+Fleurac
+...
+Fleurbaix
+Fleurdelisé
+Fleurdelysé
+Fleurdepied
+...
+Fleurs de bach
+Fleurs de lis
+Fleurs de lys
+Fleurs de ruine
+...</pre>
+
+<p>The main differences to be noted here from Order 2 are that lowercase
+letters are systematically ordered before uppercase characters, but
+with a lower level of significance than for the primary ordering
+differences (a &lt; b &lt; c, etc.). Also, the hyphen-minus character
+sorts <i>after</i> the space character, instead of before it.</p>
+
+<p>This listing does a better job than Order 2, but still has the problem
+of widely separating "Fleur-de-lys", "Fleur de lys" and "Fleurdelysé",
+for example.</p>
+
+<h4>2.4. <a name="Section_2_4"></a>Topic List, Order 4</h4>
+
+<p>Now let's consider what would happen to this list if ordered
+with a multi-level collation using the UCA with its default settings 
+and table. In this case, the collation would be done with
+the "shifted" option&#x2014;something that can be accomplished with
+the ICU implementation by choosing the "Ignore Punctuation" option.</p>
+
+<pre>Fleur
+Fleurac
+Fleur Adcock
+Fleur annuelle
+Fleurbaix
+...
+Fleur de lampaul
+Fleur De Lampaul
+Fleur de lis
+Fleurdelisé
+Fleur de lune
+Fleur de Lune
+Fleur de lys
+Fleur-de-lys
+Fleur de Lys
+Fleur-de-Lys
+Fleur De Lys
+Fleur-De-Lys
+Fleurdelysé
+Fleur de lys florencée
+Fleur De Lys (groupe)
+Fleur de lys (homonymie)
+Fleur De Lys (Homonymie)
+Fleur de ma ville
+Fleur de Mai
+Fleur De Métal
+Fleurdepied
+...
+Fleur (Disney, Bambi)
+Fleur (homonymie)
+Fleur (Homonymie)
+Fleur (personnage)
+Fleur (plante)
+Fleur (prénom)
+...
+Fleurs de bach
+Fleurs de lis
+Fleurs de lys
+Fleurs de ruine
+...
+Fleur stabilisée
+...</pre>
+
+<p>In particular note that (by design), UCA with the "shifted" option treats 
+the weighting of punctuation and spaces as <i>less</i> significant than tertiary-level
+(casing) distinctions. This has the intended effect of
+grouping together strings that only differ by the presence
+or absence of punctuation, as in the case of "Fleur-de-lys",
+"Fleur de lys", and "Fleurdelysé", which now occur closely together
+in the list.</p>
+
+<p>The bad thing about this ordering, for an application like a
+topic list in Wikipedia, is that the entries with parenthetical
+annotations are now widely separated from the same entries without
+such annotations, because the contents of the annotations are
+being collated without separation from the rest of the string.
+The order in the original listing was more or less just a side effect
+of the fact that the left parenthesis character "(" was 
+given a primary weight lower than any
+letter, thus forcing all the annotations to sort ahead of any
+substring beginning with an actual letter--but that was a side
+effect that people were then depending on for the expected order of
+entries.</p>
+
+<p>The other problematical aspect of this default UCA ordering is
+that many list users are unfamiliar with lists that ignore
+spaces, so that "Fleur &lt; Fleurac &lt; Fleur Adcock" just looks
+wrong to them. They expect, based on long experience with
+single-level computer sorts which weight SPACE as a character
+with a primary weight, that all the entries with "Fleur" as the 
+first "word" will occur first, before "Fleurac", "Fleurbaix", etc.</p>
+
+<h4>2.5. <a name="Section_2_5"></a>Topic List, Order 5</h4>
+
+<p>So let's attempt to address some of the problems with Order 4
+by further "fiddling with the dials" of the collation, so to speak.</p>
+
+<p>First of all, we can set a UCA collation to completely ignore
+tertiary (case) differences. This will help a little, because
+it will group strings differing by punctuation together a
+little better, without allowing case distinctions in letters
+to override the punctuation differences.</p>
+
+<p>The next thing we can do is to treat the annotations as
+separate <i>fields</i> for collation. In other words, entries
+with annotations would be treated by comparing the string
+up to the annotation first (using UCA collation), and then
+<i>separately</i> ordering next by the annotation (if any).</p>
+
+<p>The ordering which results from these two changes is as
+follows:</p>
+
+<pre>Fleur
+Fleur (Disney, Bambi)
+Fleur (homonymie)
+Fleur (Homonymie)
+Fleur (personnage)
+Fleur (plante)
+Fleur (prénom)
+Fleurac
+Fleur Adcock
+Fleur annuelle
+Fleurbaix
+...
+Fleur de lampaul
+Fleur De Lampaul
+Fleur de lis
+Fleurdelisé
+Fleur de lune
+Fleur de Lune
+Fleur de lys
+Fleur de Lys
+Fleur De Lys
+Fleur De Lys (groupe)
+Fleur de lys (homonymie)
+Fleur De Lys (Homonymie)
+Fleur-de-lys
+Fleur-de-Lys
+Fleur-De-Lys
+Fleurdelysé
+Fleur de lys florencée
+Fleur de ma ville
+Fleur de Mai
+Fleur De Métal
+Fleurdepied
+...
+Fleurs de bach
+Fleurs de lis
+Fleurs de lys
+Fleurs de ruine
+...
+Fleur stabilisée
+...</pre>
+
+<p>I think this is much closer to user expectations for a wiki
+topic list like this. However, this order does not yet address the
+issue of people being unprepared for a list that ignores
+spaces.</p>
+
+<h4>2.6. <a name="Section_2_6"></a>Topic List, Order 6</h4>
+
+<p>So let's see what can be done about addressing the SPACE issue
+here. If we use a tailored UCA collation table, with a (low)
+tailored primary weight for SPACE, we will end up with much
+of the expected behavior in the listing, while still gaining
+the rest of the benefits of the multilevel sorting.</p>
+
+<p>If we use this tailoring for SPACE, while also using the setting 
+to ignore case differences and again treating parenthetical 
+annotations as a second, separate field for sorting, we get the 
+following listing:</p>
+
+<pre>Fleur
+Fleur (Disney, Bambi)
+Fleur (homonymie)
+Fleur (Homonymie)
+Fleur (personnage)
+Fleur (plante)
+Fleur (prénom)
+Fleur Adcock
+Fleur annuelle
+...
+Fleur de lampaul
+Fleur De Lampaul
+Fleur de lis
+Fleur de lune
+Fleur de Lune
+Fleur de lys
+Fleur de Lys
+Fleur De Lys
+Fleur De Lys (groupe)
+Fleur de lys (homonymie)
+Fleur De Lys (Homonymie)
+Fleur de lys florencée
+Fleur de ma ville
+Fleur de Mai
+Fleur De Métal
+...
+Fleur stabilisée
+...
+Fleurac
+...
+Fleurbaix
+...
+Fleurdelisé
+Fleur-de-lys
+Fleur-de-Lys
+Fleur-De-Lys
+Fleurdelysé
+Fleurdepied
+...
+Fleurs de bach
+Fleurs de lis
+Fleurs de lys
+Fleurs de ruine
+...</pre>
+
+<p>I suspect that this is about the best you can do to meet user
+expectations for a listing like this, without starting down the
+path to much fancier (and expensive) techniques such as
+lemmatizing.</p>
+
+<p>For example, in principle, it would be very nice if a plural
+entry such as "Fleurs de lys"
+could be found in the list right next to "Fleur de lys", instead
+of after "Fleurbaix,... Fleurdepied...," and many other entries.
+However, to accomplish that requires lemmatizing (which in turn requires
+support from a morphological dictionary) that knows that "Fleurs"
+is a plural form of "Fleur" and should be grouped with a
+singular head entry.</p>
+
+<p>Similarly, it would be helpful to group alternative spellings
+together in some way, so that "Fleur de lis" is related to
+"Fleur de lys" in some apparent way, rather than being
+separated alphabetically by the unrelated "Fleur de lune", but identifying
+variant spellings requires dictionary lookup, and listing them
+usably requires some kind of cross-reference mechanism, rather
+than a simple list.</p>
+
+<p>Lemmatized lists also cannot easily be presented as simple lists like
+this one. If you attempt to do so, you end up with lists that
+don't look like they are "in alphabetical order", thus confusing
+the users. Fully lemmatized lists are instead generally presented
+in some kind of layered structure as "dictionary entries"&#x2014;with
+lemmatized headwords, and with related items subordered beneath those
+headwords according to various principles.</p>
+
+<h3>3. <a name="Section_3"></a>Implications for the Unicode Collation Algorithm</h3>
+
+<p>If we can agree that an ordering for a topical list somewhat similar
+to that described above under Order 6 is roughly what people would
+prefer in such listings (as opposed to the existing behavior
+demonstrated under Order 1), are there implications that extend
+to how the Unicode Collation Algorithm should be applied or
+possibly modified to facilitate such ordering?</p>
+
+<p>It has been argued that such topical list sorting poses
+additional requirements for the Unicode Collation Algorithm,
+and in particular that the behavior of French accents (which are
+weighted in the reverse direction at the secondary level in
+the UCA) poses difficulties for sorting such lists.</p>
+
+<p>It should be apparent from the discussion above that in principle
+topical list sorting of this type is not particularly problematical.
+If the correct parameters are chosen for a UCA-based multilevel
+sort, with a tailoring of the SPACE character to match expectations,
+and with parenthetical trailing annotations treated as a separately
+weighted field, the expected results fall out fairly easily,
+as shown above.</p>
+
+<p>It could be argued, however, that the algorithm should be enhanced so that
+this particular behavior occurs by default, so that proper
+handling of trailing annotations would result by simply comparing
+the full strings according to the algorithm. But
+it is clear that the UCA was not intended to be able to mimic the
+collation of fielded data. It is actually a better design to keep
+it as is, because there is no easy way to enhance the algorithm
+to mimic all the kinds of effects people might want from sequential
+comparison of separate fields, and an attempt to do so might
+clutter up the algorithm in ways that would disturb its intended
+scope for the simple comparison of two strings. Fielded comparisons
+need to be done by actually <i>fielding</i> the data to be compared.
+That is a much more flexible approach to the general problem than
+trying to build it into the string comparison (or sortkey construction)
+primitives for collation.</p>
+
+<p>However, while in principle ordering such lists is not very
+complex, there may be practical concerns regarding storage,
+performance, or other issues which concern people. So let's
+take up a discussion of those issues.</p>
+
+<h4>3.1. <a name="Section_3_1"></a>Incremental Comparison and Stored Keys</h4>
+
+<p>The two main ways that the UCA is implemented in APIs are for
+incremental string comparison and for construction of full sortkeys
+for storage for binary comparison.</p>
+
+<p>Incremental string comparison is optimal for the quick comparison
+of two strings according to a UCA multi-level collation table,
+but where the comparison of the same strings does not have to
+be done multiple times. In incremental comparison, collation elements
+for the strings are only compared until a difference is found between
+the strings, and a full sortkey doesn't have to be constructed.
+This saves both processing time and (usually) memory allocation.</p>
+
+<p>Construction of full sortkeys for storage and later binary comparison
+is optimal for tasks such as the indexing of large tables, where
+any given single string may need to be compared hundreds, thousands,
+or even millions of times against other strings. In such a context,
+the additional processing time and allocation overhead to construct
+and store full sortkeys may be far outweighed by the gains from
+being able to do the multiple comparisons using very fast binary
+memory comparison (memcmp) operations on the stored sortkeys.</p>
+
+<h4>3.2. <a name="Section_3_2"></a>French Accent Weighting</h4>
+
+<p>The particular issue posed by rules for French accent weighting
+and the UCA is that the lexicographical ordering rules for French
+accents specify that they are significant from the <i>end</i> of strings,
+rather than from the beginning. This differs from the treatment
+of accents for most languages in collation, and results in special
+parameters and sortkey construction rules for French in the UCA.
+(For details, see [<a href="tn34-2.html#UTS10">UTS10</a>].)</p>
+
+<p>The concern for now is whether the requirements for handling French
+accents cause significant performance or architectural issues for
+handling cases such as sorting topical lists in the French Wikipédia.</p>
+
+<p>There is no question that the French accent handling in UCA imposes
+a performance penalty for comparing strings according to French rules.
+The disagreement is regarding how significant that performance penalty
+is, and whether it is related in some important way to the length
+and structure of strings to be compared.</p>
+
+<p>In the case of construction of full sortkeys, the performance penalty
+for French reverse accent weighting is essentially trivial, unless
+working with truly enormous strings and keys that require piecewise
+buffering. If the algorithm has
+complete buffer access to the string and if the sortkey output can be
+preallocated, then the secondary weights are simply filled into the
+output key in reverse order. If the sortkey is constructed stepwise
+from the front of the string, and in particular in cases of very
+large strings, where it may not be practical to hold onto the
+entire string at once in fast buffers, then a practical approach to
+the problem is to construct the entire sortkey in forward order,
+and then once it has been constructed, reverse the run of secondary
+key weights. Doing so imposes a performance penalty in key construction,
+but particularly in cases where there is separate optimization to
+compact sortkeys into shorter lengths, such secondary key reversal
+can be incorporated into the rest of the sortkey post-processing.</p>
+
+<p>For incremental string comparison, on the other hand, the situation
+for French accent reversal is rather simpler. An efficient incremental
+string comparison doing French accent handling simply keeps track
+of a secondary weight flag while processing the string incrementally.
+Only if the processing gets all the way to the end of the string
+without a primary difference having been triggered, does the
+secondary flag then need to be examined. And when it is checked,
+it simply has flagged the <i>last</i> secondary comparison that made
+a difference, rather than the <i>first</i> in the string. There is never
+any need to reprocess the string from the back to the front, just
+to check secondary weights incrementally. The code to keep track
+of this secondary weight flag makes the incremental comparison
+algorithm more complicated, but the performance difference for
+forward accent weighting versus reverse accent weighting is down
+in the noise.</p>
+
+<p>Now if we consider this reverse accent weighting in the context
+of requests for word boundary determination in the UCA, it becomes
+apparent that neither full sortkey construction nor incremental
+string comparison would require some kind of word boundary chunking
+of the strings for comparison, in order to have efficient (and correct)
+key construction.</p>
+
+<p>For full, stored sortkeys, if there is a secondary (accent) distinction
+in the first word of two compared entries, it is still correct
+and necessary to check the primary weights of all the subsequent
+words in both strings for a difference, before that secondary distinction
+in the first word could be determinative of order. The sortkeys are
+already constructed so that the binary comparisons work by hitting
+a difference in the key at precisely the first point that makes a
+difference. Introducing some kind of word breaker to chunk the
+string into word increments for sortkey construction doesn't help at
+all. Instead, what word chunking does is attempt to emulate a string comparison based
+on fields for each word, and if used when actually building
+full sortkeys for a string would just produce rather jumbled and 
+hard-to-interpret results.</p>
+
+<p>For incremental string comparison, roughly the same considerations
+apply. A properly constructed implementation of an incremental string
+comparison gets to a significant secondary comparison at precisely
+the correct point&#x2014;which is also the earliest possible point in
+the comparison that the difference could be significant. Introducing
+a word chunking step into the comparison accomplishes precisely nothing.</p>
+
+<h4>3.3. <a name="Section_3_3"></a>Truncation and UCA</h4>
+
+<p>In practical applications such as a wiki topical list, there may,
+however, be additional considerations. If an application is
+constrained in storage, it may need to make various modifications
+to what would otherwise be an ideal implementation. In particular,
+there may be cases where implementations of long, large lists
+are designed to truncate either the strings themselves or the stored
+sortkeys (or both).</p>
+
+<p>If the <i>strings</i> for long lists are truncated, that is an application
+design issue that is basically outside the consideration of UCA
+per se. UCA (or any other weighted string comparison mechanism)
+can only work with the input data it has.</p>
+
+<p>Effective truncation of strings depends on an application designer
+correctly identifying what parts of strings represent redundant
+information, and what represent locally significant information.
+If the data for lists contains long segments of repetitive and
+redundant information that interfere with seeing, displaying, or
+comparing the significantly different portions, application strategies that
+can be taken include (database) normalization into distinct tables
+for different parts of the strings. For display of such data, one
+can devise hierarchical strategies that mask repetitive data.
+For <i>ordering</i> of such hierarchical lists, the string comparisons
+(or sortkey storage) would be done separately at each level of
+the hierarchy, and if done that way, each comparison would be done
+with shorter strings (or shorter keys) relevant to the level in
+question.</p>
+
+<p>In any case, these kinds of approaches are effectively means of
+fielding the data and then doing ordering within those fields.
+It is the choice of the design for fielding the data that makes
+the difference. The sortkey construction mechanism itself does
+not require special tweaking for word-by-word parsing (or other
+kinds of chunking) to then work efficiently to support ordering
+of the fielded lists.</p>
+
+<p>On the other hand if the application design chooses to truncate
+<i>sortkeys</i>, there can be more unexpected results. An application
+that uses an implementation of UCA to construct sortkeys for
+arbitrarily long strings, but which then truncates them at
+some defined size for storage is essentially saying that at some point
+for long strings it doesn't matter how they compare&#x2014;as beyond
+that point (and somewhat at random from the point of view of
+what is in them) strings will not compare
+as different even if their content actually is different.</p>
+
+<p>When faced with a tradeoff like this, it would make sense to use
+whatever options the implementation has to optimize and compact
+sortkeys, as at least such options "know what they are doing" in
+making sortkeys shorter, whereas simple truncation of sortkeys
+is done without knowing at what point in a string and at
+what level of significance the truncation will matter.</p>
+
+<p>It has been claimed that in a situation like this, and in particular
+for French data, that augmenting UCA with a word breaking option
+would somehow help with the problem and produce better results for
+list ordering when sortkeys are being truncated for long
+strings, but I think that claim is incorrect. First, if, as is usually
+the case, most strings in the list compare unequal at the primary level
+fairly early in the strings, attempting to chunk the strings for
+sortkey construction isn't going to matter for those strings anyway.
+Second, in the aberrant case in which there are many 
+strings that have long identical prefixes and where the significant
+differences are getting lost due to sortkey truncation, the chunking
+isn't going to help, either&#x2014;in such a case truncation of sortkeys
+is simply an application design error, and the problem should be
+handled in some other way.</p>
+
+<p>But more fundamentally, word chunking for key construction doesn't
+really accomplish what its proponents seem to be claiming for it,
+as illustrated by the following schematic example. Compare
+the strings:</p>
+
+<pre>    
+   aaá xxxxxxxxxxxxxxxxxxxxxxxxxxxxx...
+   aaa xxxxxxxxxxxxxxxxxxxxxxxxxxxxx...
+</pre>
+
+<p>The essential claim seems to be that <i>if</i> I have strings like this,
+where there is a secondary difference early in a string, say in
+the very first "word" of the data, and <i>if</i> the strings are otherwise
+primary equal for the rest of the strings, and <i>if</i> my application
+is doing arbitrary length sortkey truncation which turns out to
+have truncated the secondary difference, so that I cannot tell
+that the first string actually compares greater than the second,
+then an enhancement to UCA that constructs sortkeys one word chunk
+at a time will get the correct answer for these strings.</p>
+
+<p>Such an argument hangs on a very thin thread, however, because it
+assumes that the truncation is only hitting the secondary weights
+and not any primary weights. For example, given the following
+strings and a truncation which hits the sortkeys at the point
+indicated in the strings by a caret:</p>
+
+<pre>    
+   aaá xxxxxxxxxxxxxxxxxxxxxxxxx^xxxx...
+   aaa xxxxxxxxxxxxxxxxxxxxxxxxx^xxxy...
+</pre>
+
+<p>An answer based on the difference in the accent in the first word
+would actually be wrong. The more significant difference in the
+primary weights (for the "y") would have been lost in the truncation.
+Essentially, you cannot get the correct results for long strings
+by comparing only the first words (including their secondary
+differences), unless you continue processing until you run out of
+primary differences, which could be very, very far along the string
+indeed.</p>
+
+<p>And the situation for word-by-word chunking as a part of the sortkey
+construction only gets more complicated when you start introducing
+differences in word lengths, and start to consider the issues of
+how to parse and/or weight punctuation that might or might not be
+considered word boundaries, such as hyphens and apostrophes.</p>
+
+<p>I conclude from this that an "enhancement" of UCA sortkey construction
+to somehow include a word boundary breaker isn't at all an answer
+for the conundrums and errors of comparison which may result from
+sortkey truncation for long strings. In such cases, the better answer
+is to examine the application design and the nature of the strings
+to be compared, to look for other optimizations that would produce
+better results given the application's storage constraints.</p>
+
+<h4>3.4. <a name="Section_3_4"></a>The Real Goal of a Word-Chunking Enhancement</h4>
+
+<p>If a request for a word-chunking enhancement to the UCA to deal
+with edge case problems for sortkey truncation makes no sense,
+then what is the actual problem in list ordering that people
+advocating for it are trying to address.</p>
+
+<p>In my opinion, the <i>real</i> goal here is to "fix" the behavior that
+the UCA algorithm displays when using the default table and default parameters,
+which results in listings that don't treat spaces as having
+primary weights, and which thus don't highlight word identity
+(by which people usually mean just "things separated by spaces") 
+in ordered listings. In other words, people just don't
+like lists ordered as in the example in Section 2.4 above.</p>
+
+<p>The fix for that, however, is not to somehow build in a word-breaker
+in the default algorithm, but instead to address the <i>actual</i> 
+user issue, which is how spaces are being weighted for comparison.</p>
+
+<p>Using the default settings for the ICU implementation gives
+the expected behavior for spaces, as long as the desired collation
+doesn't also require ignoring other punctuation differences.</p>
+
+<p>If a collation is desired which ignores punctuation differences
+but still considers spaces as significant,
+the simple expedient of giving the space character a low primary
+weight and building sortkeys (or comparing strings incrementally)
+with that weighting restores the salient aspect of the list
+ordering that people are actually looking for, as demonstrated
+in the example in Section 2.6 above. Such behavior is entirely
+consistent with the UCA as currently defined. All it requires
+is tailoring the weight for SPACE in the default table, or
+alternatively supporting such a reweighting parametrically in
+an implementation of the UCA.</p>
+
+
+
+  <h2><a name="References">References</a></h2>
+  <table class="noborder" style="border-collapse: collapse" cellpadding="8" 
+  cellspacing="0">
+    <tr>
+      <td width="1" class="noborder">[<a name="FAQ">FAQ</a>]</td>
+      <td class="noborder">Unicode Frequently Asked Questions<br>
+      <a href="http://www.unicode.org/faq/">http://www.unicode.org/faq/</a><br>
+      <i>For answers to common questions on technical issues.</i></td>
+    </tr>
+    <tr>
+      <td width="1" class="noborder">[<a name="Glossary">Glossary</a>]</td>
+      <td class="noborder">Unicode Glossary<br>
+      <a href="http://www.unicode.org/glossary/">http://www.unicode.org/glossary/</a><br>
+      <i>For explanations of terminology used in this and other documents.</i></td>
+    </tr>
+    <tr>
+      <td width="1" class="noborder">[<a name="ICU">ICU</a>]</td>
+      <td class="noborder">International Components for Unicode<br>
+      <a href="http://www.icu-project.org/">http://www.icu-project.org/</a><br>
+      <i>Widely used Unicode library with full UCA collation support.</i></td>
+    </tr>
+    <tr>
+      <td width="1" class="noborder">[<a name="ICUDemo">ICUDemo</a>]</td>
+      <td class="noborder">ICU Locale-Specific Collation Demo<br>
+      <a href="http://demo.icu-project.org/icu-bin/locexp?_=en&amp;d_=en&amp;x=col">http://demo.icu-project.org/icu-bin/locexp?_=en&amp;d_=en&amp;x=col</a><br>
+      <i>Demo which shows the behavior of UCA for sorting lists, allowing choice
+      of various collation options.</i></td>
+    </tr>
+    <tr>
+      <td width="1" class="noborder">[<a name="LDML">LDML</a>]</td>
+      <td class="noborder">UTS #35: <i>Unicode Locale Data Markup Language (LDML)</i><br>
+      <a href="../../reports/tr35/index.html">http://www.unicode.org/reports/tr35/</a></td>
+    </tr>
+    <tr>
+      <td width="1" class="noborder">[<a name="UTS10">UTS10</a>]</td>
+      <td class="noborder">UTS #10: <i>Unicode Collation Algorithm (UCA)</i><br>
+      <a href="../../reports/tr10/index.html">http://www.unicode.org/reports/tr10/</a></td>
+    </tr>
+    <tr>
+      <td width="1" class="noborder">[<a name="Versions">Versions</a>]</td>
+      <td class="noborder">Versions of the Unicode Standard<br>
+      <a href="http://www.unicode.org/versions/">http://www.unicode.org/versions/</a><br>
+      <i>For details on the precise contents of each version of the Unicode 
+      Standard, and how to cite them.</i></td>
+    </tr>
+  </table>
+  <p><br>
+  </p>
+  <h2><a name="Modifications">Modifications</a></h2>
+  <p>The following summarizes modifications from the previous version of this 
+  document.</p>
+  <table class="noborder" style="border-collapse: collapse" cellpadding="8" 
+  cellspacing="0">
+    <tr>
+      <td width="1" class="noborder"><a name="TrackingNumber">2</a></td>
+      <td class="noborder">Minor editorial updates. Added LDML to references.</td>
+    </tr>
+    <tr>
+      <td width="1" class="noborder">1</td>
+      <td class="noborder">Initial version.</td>
+    </tr>
+  </table>
+  <p class="copyright">Copyright © 2010 Ken Whistler and Unicode, Inc. All Rights Reserved. The 
+  Unicode Consortium and [authors] make no expressed or implied warranty of any 
+  kind, and assume no liability for errors or omissions. No liability is assumed 
+  for incidental and consequential damages in connection with or arising out of 
+  the use of the information or programs contained or accompanying this 
+  technical note. The Unicode <a href="http://www.unicode.org/copyright.html">
+  Terms of Use</a> apply.</p>
+  <p class="copyright">Unicode and the Unicode logo are trademarks of Unicode, 
+  Inc., and are registered in some jurisdictions.</div>
+
+</body>
+
+</html>

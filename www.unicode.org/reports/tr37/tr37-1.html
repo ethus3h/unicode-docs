@@ -1,0 +1,384 @@
+<!doctype HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<link type="text/css" href="../../unicode/reports/reports.css" rel="stylesheet">
+<title>UTS #37: Registration of Ideographic Variation Sequences</title>
+</head>
+
+<body bgcolor="#ffffff">
+<table width="100%" cellspacing="0" cellpadding="0" class="header">
+<tbody><tr><td class="icon"><a href="http://www.unicode.org/">
+<img width="34" height="33" border="0" align="middle" src="../../webscripts/logo60s2.gif" alt="[Unicode]"></a>&nbsp;&nbsp;
+<a href="../index.html" class="bar">Technical Reports</a></td></tr><tr><td class="gray">&nbsp;</td></tr></tbody></table>
+
+<div class="body">
+
+<h2 align="center"><span style="color:#FF0000">Proposed Draft</span> Unicode Technical Standard #37</h2>
+<h1 align="center">Registration of Ideographic Variation Sequences</h1>
+<table cellpadding="2" border="1" class="wide">
+<tbody><tr><td valign="top">Version</td><td>1.0 <span style="color:#FF0000">Proposed Draft</span></td></tr>
+<tr><td valign="top">Authors</td><td valign="top">Hideki Hiura<br>Eric Muller (<a href="mailto:emuller@adobe.com">emuller@adobe.com</a>)</td></tr>
+<tr><td valign="top">Date</td><td valign="top">2005-07-16</td></tr>
+<tr><td valign="top">This Version</td><td valign="top"><a href="tr37-1.html">http://www.unicode.org/reports/tr37/tr37-1.html</a></td></tr>
+<tr><td valign="top">Previous Version</td><td valign="top">n/a</td></tr>
+<tr><td valign="top">Latest Version</td><td valign="top"><a href="index.html">http://www.unicode.org/reports/tr37/</a></td></tr>
+<tr><td valign="top">Revision</td><td valign="top"><a href="tr37-1.html#modifications">1</a></td></tr></tbody></table>
+
+<h4 style="margin-top: 1em;">Summary</h4>
+    <p><i>This document describes the operation of the Ideographic
+    Variation Database.</i></p>
+
+  <h4><i>Status</i></h4>
+  <p><i>This is a <b>draft</b> document which may be updated,
+      replaced, or superseded by other documents at any
+      time. Publication does not imply endorsement by the Unicode
+      Consortium.  This is not a stable document; it is inappropriate
+      to cite this document as other than a work in progress.</i></p><blockquote><p><i><b>A Unicode Technical Standard (UTS)</b> is an
+	independent specification. Conformance to the Unicode Standard
+	does not imply conformance to any UTS.</i></p></blockquote><p><i>Please submit corrigenda and other comments with the online
+  reporting form [<a href="tr37-1.html#biblio_feedback">Feedback</a>].  Related
+  information that is useful in understanding this document is found
+  in <a href="tr37-1.html#references">References</a>.  For the latest version of
+  the Unicode Standard see [<a href="tr37-1.html#biblio_unicode">Unicode</a>]. For a list of current Unicode
+  Technical Reports see [<a href="tr37-1.html#biblio_reports">Reports</a>]. For
+  more information about versions of the Unicode Standard, see [<a href="tr37-1.html#biblio_versions">Versions</a>].</i></p><h4>Contents</h4>
+
+  <ul class="toc"><li>
+    1&nbsp; <a href="tr37-1.html#N10048">Introduction</a>
+  </li></ul>
+  <ul class="toc"><li>
+    2&nbsp; <a href="tr37-1.html#N1005A">Description</a>
+  </li></ul>
+  <ul class="toc"><li>
+    3&nbsp; <a href="tr37-1.html#N1007B">Format of the Ideographic Variation Database</a>
+  </li></ul>
+  <ul class="toc"><li>
+    4&nbsp; <a href="tr37-1.html#N100B4">Registration Procedure</a>
+    <ul class="toc"><li>
+      4.1&nbsp; <a href="tr37-1.html#N100B9">Registration of a Collection</a>
+    </li></ul>
+    <ul class="toc"><li>
+      4.2&nbsp; <a href="tr37-1.html#N100EA">Registration of Sequences in a Collection</a>
+    </li></ul>
+    <ul class="toc"><li>
+      4.3&nbsp; <a href="tr37-1.html#N100FC">Registrar</a>
+    </li></ul>
+    <ul class="toc"><li>
+      4.4&nbsp; <a href="tr37-1.html#N10108">Registration Fees</a>
+    </li></ul>
+  </li></ul>
+  <ul class="toc"><li>
+    Appendix A.&nbsp; <a href="tr37-1.html#registration_form">Registration Form for Collections</a>
+  </li></ul>
+  <ul class="toc"><li>
+    Appendix B.&nbsp; <a href="tr37-1.html#N10131">Acknowledgments</a>
+  </li></ul>
+  <ul class="toc"><li><a href="tr37-1.html#references">References</a></li></ul>
+
+<ul class="toc"><li><a href="tr37-1.html#modifications">Modifications</a></li></ul><hr>
+    <h2><a name="N10048">1 Introduction</a></h2>
+
+    <p>Characters in the Unicode Standard can be represented by a
+    wide variety of glyphs. Occasionally the need arises in text
+    processing to restrict or change the set of glyphs that are to be
+    used to display a character. In special circumstances, this
+    restriction needs to be expressed in plain text rather than by
+    font selection or some other rich text mechanism. The Unicode
+    Standard accomodates those circumstances with variation selectors:
+    the code point of a graphic character can be followed by the code
+    point of a variation selector to identify a restriction on the
+    graphic character. The combination of a graphic character and a
+    variation selector is known as a variation sequence (See
+    <i>Section 15.6, Variaton Selectors</i> of
+    <i>[<a href="tr37-1.html#biblio_unicode">Unicode</a>]</i>).</p>
+
+
+    <p>In the case of Han ideographs, it is impossible to build a
+    single collection of variation sequences that can satisfy all the
+    needs of the users. The requirements from scholars, governments
+    and publishers are too different to be accomodated by a single
+    collection. Instead they can be met by having multiple independent
+    collections. The Ideographic Variation Database ensures that a
+    given variation sequence is used in at most one collection, to
+    make interchange of text using such variation sequences
+    reliable.</p>
+  
+    <h2><a name="N1005A">2 Description</a></h2>
+
+    <p>The Ideographic Varation Database records registered
+    variation sequences made of a base character with the Ideographic
+    property and one of the variation selectors in the range U+E0100
+    to U+E01EF. Those variations sequences are suitable for use in
+    text interchange.</p>
+
+    <p>[Ed Note: will need to modify StandardizedVariants.html to
+    include the database by reference.]</p>
+
+    <p>To guarantee the stability of data encoded using registered
+    variation sequences, those sequences are never removed or
+    reassigned.</p>
+
+    <p>Ideographic Variation Sequences are subject to the usual
+    rules for variation sequences: unregistered sequences should not
+    be used, and registered sequences should be used according to
+    their intent. Furthermore, variation selectors are default
+    ignorable. This implies that registrants should carefully consider
+    whether a variation sequence, when viewed as a possible set of
+    glyphs, is indeed a subset of the glyphs which are acceptable for
+    the base character alone.</p>
+
+    <p>The registration process only ensures that once a registrant
+    has successfully registered a variation sequence, the specific
+    combination of base character and variation selector used to
+    represent that sequence in text will not be used to register
+    another sequence. However, this does not prevent two distinct
+    variation sequences from representing the same visual form or
+    variant of a base character.</p>
+
+    <p>There is no guarantee that two sequences involving the same
+    variation selector on different base characters have any
+    relationship nor will a variation selector be designated,
+    independantly of any base, for any purpose. Should there be a
+    requirement to register more than 240 sequences involving the same
+    base character, the Unicode Consortium will seek the encoding of
+    additional variation selectors, and make those available for
+    registration of Ideographic Variation Sequences.</p>
+
+    <p>Registration of a collection does not imply suitability for
+    any purpose. The usefulness of a given variation sequence, and the
+    usefulness of a collection as a whole depends to a large extent on
+    their use. Registrants are encouraged to describe the intent of
+    their collections, and users are also encouraged to evaluate
+    whether a collection is useful for their purpose.</p>
+
+    <p>[Ed note, from Rick: But (a point of interest to some)
+    neither the registry nor the registrar guarantees the perpetual
+    availability of the registered entities. Thus, it is possible at
+    some future time for the definitions pointed to by the registry
+    become unavailable for query or use.</p>
+
+    <p>(To me as an end-user, this would be a fatal flaw in the
+    usefulness of the registry. I could have documents containing
+    these sequences, and yet at some future time, not be guaranteed
+    ever to be able to find out what they mean. This contrasts with
+    the standard itself, in which one can always find out the contents
+    by having a copy of the standard. Somehow, users of this registry
+    should be cautioned in this.)]</p>
+  
+    <h2><a name="N1007B">3 Format of the Ideographic Variation Database</a></h2>
+
+    <p>The Ideographic Variation Database consists of two data
+    files. The first, IVD_Collections.txt records the registered
+    collections. The second, IVD_Sequences.txt records the registered
+    sequences.</p>
+
+    <p>In each file, lines starting with a '#' character and empty
+    lines are comment lines. The other lines are organized into
+    fields, separated by a semicolon; initial and trailing white space
+    in those fields is not significant. Both files are encoded in
+    UTF-8, using U+000A as the line separator.</p>
+
+    <p>In IVD_Collections.txt, each line corresponds to an Ideographic
+    Variation Collection, and there are two fields per line:</p>
+
+    <ul>
+      <li>
+	  field 1: the identifier of a collection
+      </li>
+      <li>
+	field 2: the URL of a site describing the collection
+      </li>
+    </ul>
+
+    <p>In IVD_Sequences.txt, each line corresponds to an Ideographic
+    Variation Sequence and there are four fields per line:</p>
+
+    <ul>
+      <li>
+	field 1: the code points of the base character and the
+	the variation selector, separated by a space
+      </li>
+      <li>
+	field 2: the identifier of the collection under which the
+	sequence is registered
+      </li>
+      <li>
+	field 3: the identifier of the sequence, provided by the
+	registrant
+      </li>
+    </ul>
+
+    <p>The identifiers for collections and sequences are character
+    strings starting with one of 'A'..'Z', 'a'..'z', and continuing
+    with one of 'A'..'Z', 'a'..'z', '0'..'9', '_'.</p>
+  
+    <h2><a name="N100B4">4 Registration Procedure</a></h2>
+
+    
+      <h3><a name="N100B9">4.1 Registration of a Collection</a></h3>
+
+      <p>The registrant must first create a web page describing the
+      intent of the collection, its principles, and any other data
+      that may be useful for users of the collection.</p>
+
+      <p>Once the appropriate page is online, the intent to
+      register the collection must be announced publicly in a manner
+      designated by the registrar. This announcement must include the
+      URL of the page(s) describing the proposed collection. This
+      starts a review period of at least 90 days, during which
+      comments and questions about the collection can be submitted to
+      the registrant. The registrant should respond to these comments
+      and questions.</p>
+
+      <p>At the end of the review period, the registrant can submit
+      the registration form in <a href="tr37-1.html#registration_form">Appendix
+      A</a>, together with a written and signed statement that:</p>
+
+      <ul>
+	<li>
+	  <p>the registrant will make reasonable efforts to
+	  maintain the stability of that URL and the site it points
+	  to</p>
+	</li>
+
+	<li>
+	  <p>the variation sequences that will be registered in
+	  that collection can be used freely, without any limitation,
+	  fee or other requirement</p>
+	</li>
+
+	<li>
+	  <p>all the comments and questions received during the
+	  review period have been addressed</p>
+	</li>
+      </ul>
+
+      <p>Upon receipt of a complete application and the applicable
+      fee if any, the registrar will assign a collection identifier
+      (respecting as much as possible the suggested identifier), and
+      add the collection to the Ideographic Variation Database.</p>
+
+      <p>Owners of collections can change the designated
+      representative at any time by notifying the registrar. They can
+      also change the URL of the web site they maintain by notifying
+      the registrar. Ownership of a collection can be transferred to
+      another party by notifying the registrar.</p>
+
+      <p>The registration of sequences in that collection can be
+      started concurrently with the registration of the collection
+      itself.</p>
+    
+
+    
+      <h3><a name="N100EA">4.2 Registration of Sequences in a Collection</a></h3>
+
+      <p>The registrant must first include the proposed sequences
+      in the web page describing the collection (or some page pointing
+      from it). Ideally, this description should include
+      representative glyphs for proposed sequences.</p>
+
+      <p>Once the page is online, the intent to register the
+      sequences must be announced on a mailing list designated by the
+      registrar. This announcement must include the URL of the page(s)
+      describing the proposed sequences. This starts a review period
+      of 3 months, during which comments and questions about the
+      sequences can be submitted to the mailing list.  The registrant
+      should respond to these comments and questions.</p>
+
+      <p>At the end of the review period, the registrant can submit
+      the application for those sequences. This takes the form of a
+      file in the format of IVD_Sequences.txt, except that the first
+      field must contain only the code point of the base
+      character.</p>
+
+      <p>Upon receipt of a complete application and the applicable
+      fee if any, the registrar will assign a variation selector for
+      each variation sequence, and add the sequences to the
+      Ideographic Variation Database.</p>
+    
+
+    
+      <h3><a name="N100FC">4.3 Registrar</a></h3>
+
+      <p>[Ed note: registration authority vs. registrar]</p>
+
+      <p>The registrar will be appointed by the Unicode Consortium.</p>
+    
+
+    
+      <h3><a name="N10108">4.4 Registration Fees</a></h3>
+
+      <p>The registrar may impose a non-refundable processing fee
+      for the registration of collections and sequences. If a
+      registration application is incomplete, the registrar will
+      inform the registrant and accept one corrected application at no
+      fee. Further corrections to the application may require an
+      additional fee.</p>
+
+      <p>The registrar may wave the processing fee for Full members
+      of the Consortium in good standing. This waiver may be limited
+      to some number of collections and sequences for each calendar
+      year. Full members of the Consortium may sponsor the
+      registration of other parties.</p>
+
+      <p>The Unicode Consortium may register collections or
+      sequences at any time without any processing fee.</p>
+    
+  
+    <h2><a name="registration_form">Appendix A. Registration Form for Collections</a></h2>
+
+    <p>Application for registration of an Ideographic Varition Sequence
+    Collection</p>
+
+    <p>Name and address of the registrant:</p>
+
+    <p>Name and email address of the representative:</p>
+
+    <p>URL of the web site describing the collection:</p>
+
+    <p>Suggested identifier for the collection:</p>
+
+    <p>Pattern for the sequence identifiers:</p>
+  
+    <h2><a name="N10131">Appendix B. Acknowledgments</a></h2>
+    
+    <p>Thanks to Mark Davis, Deborah Goldsmith, Tatsuo Kobayashi,
+    Rick McGowan, Michel Suignard and Ken Whistler for their help
+    developing the registry and their feedback on this
+    document.</p>
+  <h2><a name="references">References</a></h2><table cellspacing="12" cellpadding="0" class="nbwide"><tbody>
+    <tr><td width="99" valign="top" class="nb">[<a name="biblio_feedback">Feedback</a>]</td><td valign="top" class="nb"><a href="http://www.unicode.org/reporting.html">http://www.unicode.org/reporting.html</a><br><i>
+	For reporting errors and requesting information online.
+      </i></td></tr>
+    
+    <tr><td width="99" valign="top" class="nb">[<a name="biblio_reports">Reports</a>]</td><td valign="top" class="nb">Unicode Technical Reports<br><a href="../index.html">http://www.unicode.org/reports/</a><br><i>
+	For information on the status and development process for
+	technical reports, and for a list of technical reports.
+      </i></td></tr>
+    
+    <tr><td width="99" valign="top" class="nb">[<a name="biblio_unicode">Unicode</a>]</td><td valign="top" class="nb"><i>The Unicode Standard, Version 4.0</i>
+      (Boston, MA, Addison-Wesley, 2003. ISBN 0-321-18578-1), as
+      amended by <i>Unicode 4.0.1</i> (<a href="http://www.unicode.org/versions/Unicode4.0.1">http://www.unicode.org/versions/Unicode4.0.1</a>)
+      and by <i>Unicode 4.1.0</i> (<a href="http://www.unicode.org/versions/Unicode4.1.0">http://www.unicode.org/versions/Unicode4.1.0</a>).</td></tr>
+    
+    <tr><td width="99" valign="top" class="nb">[<a name="biblio_versions">Versions</a>]</td><td valign="top" class="nb">Versions of the Unicode Standard<br><a href="http://www.unicode.org/versions/">http://www.unicode.org/versions/</a><br><i>
+	For details on the precise contents of each version of the
+	Unicode Standard, and how to cite them.
+      </i></td></tr>
+  </tbody></table><h2><a name="modifications">Modifications</a></h2><p>This section indicates the changes introduced by each
+	revision.</p>
+      <p><b>Revision 1</b></p>
+	  <ul>
+	    <li><p>First version</p></li>
+	  </ul>
+	
+    <hr><p><font size="-1">Copyright &copy; 2005 Unicode, Inc. All Rights Reserved. The
+  Unicode Consortium makes no expressed or implied warranty of any
+  kind, and assumes no liability for errors or omissions. No liability
+  is assumed for incidental and consequential damages in connection
+  with or arising out of the use of the information or programs
+  contained or accompanying this technical report. The Unicode <a href="http://www.unicode.org/copyright.html">Terms of Use</a>
+  apply.</font></p><p><font size="-1">Unicode and the Unicode logo are trademarks of
+  Unicode, Inc., and are registered in some jurisdictions.</font></p></div></body></html>
