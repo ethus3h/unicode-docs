@@ -7,4 +7,7 @@ wget --warc-file=unicode_public -e robots="off" -R CodeCharts.pdf,RSIndex.pdf,uc
 mv ftp.unicode.org/* .
 mv www.unicode.org/* .
 find Public -path "*/charts/blocks*" -name "U*.pdf" -delete
+rm -r history/movie
+rm history/EarthwebCommercial.avi
+rm history/20thceleb/*.mp3
 crystallize *.warc.gz {ftp,www}.unicode.org
