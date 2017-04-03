@@ -1,0 +1,381 @@
+<!doctype HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"><html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta http-equiv="Content-Language" content="en-us">
+<meta name="VI60_defaultClientScript" content="JavaScript">
+<meta name="GENERATOR" content="Microsoft FrontPage 12.0">
+<meta name="keywords" content="History, Historical, Unicode">
+<meta name="ProgId" content="FrontPage.Editor.Document">
+<title>Early Years of Unicode</title>
+<link rel="stylesheet" type="text/css" 
+href="../webscripts/standard_styles.css">
+</head>
+
+<body text="#330000">
+
+<table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr>
+    <td colspan="2">
+    <table width="100%" border="0" cellpadding="0" cellspacing="0">
+      <tr>
+        <td class="icon"><a href="http://www.unicode.org/"><img border="0" 
+        src="../webscripts/logo60s2.gif" align="middle" 
+        alt="[Unicode]" width="34" height="33"> </a>
+        <a href="index.html" class="bar">
+		<font 
+        size="3">History of Unicode</font></a></td>
+        <td class="bar"><a href="http://www.unicode.org" class="bar">Home</a> |
+        <a href="http://www.unicode.org/sitemap/" class="bar">Site Map</a> |
+        <a href="http://www.unicode.org/search" class="bar">Search </a></td>
+      </tr>
+    </table>
+    </td>
+  </tr>
+  <tr>
+    <td colspan="2" class="gray">&nbsp;</td>
+  </tr>
+  <!-- BEGIN CONTENTS -->
+  <tr>
+    <td>
+    <table>
+      <tr>
+        <td class="contents" valign="top">
+        <blockquote>
+          <h1>Early Years of Unicode </h1>
+          <h2 align="center">The Unicode® Standard<br>
+          &quot;…begin at 0 and add the next character&quot;</h2>
+          <h2>Antecedents and The First Year - 1988</h2>
+          <p align="justify">The concept of a 16-bit universal code was not new. 
+          Even the original 1984 principles of the ISO multi-byte character 
+          encoding are directed to that end:</p>
+          <p align="justify"><i>&quot;...develop the ISO standard for graphic 
+          character repertoire and coding for an international two byte graphic 
+          character set… Consider the needs of programming languages to have the 
+          same amount of storage for each character...&quot; </i>[ISO/TC97/SC2 N1436, 
+          1984]</p>
+          <p align="justify">Other antecedents to Unicode are found in the Star 
+          workstation introduced by Xerox in 1980 and in aspects of the two-byte 
+          standards found in the Far East.</p>
+          <p align="justify">Ground work for the Unicode project began in late 
+          1987 with initial discussions between three software engineers -- Joe 
+          Becker of Xerox Corporation, Lee Collins who was then with Xerox, and 
+          Mark Davis, then of Apple Corporation. </p>
+          <p align="justify">Early 1988 had completed three main investigations:<br>
+          (a) comparisons of fixed-width and mixed-width text access<br>
+          (b) investigations of the total system storage requirements with 
+          two-byte text<br>
+          (c) preliminary character counts for all world alphabets. </p>
+          <p align="justify">Based on these investigations and their experience 
+          with different character encodings, Becker, Collins and Davis derived 
+          the basic architecture for Unicode.</p>
+          <p align="justify">The beginning of the Unicode Standard may be marked 
+          with the publication of the paper written in February of 1988 by Joe 
+          Becker, Unicode 88.</p>
+          <h2>Unicode -- The Beginnings</h2>
+          <blockquote>
+            <p align="justify"><i>“For me, the need for Unicode first struck 
+            about 12 years ago [1985]. While I had done some 
+            internationalization while working in Europe, I hadn’t worked on any 
+            of the more interesting scripts.&nbsp; Two programmers, Ken Krugler 
+            and I were working on a “skunkworks” project in Sapporo, Japan. Our 
+            goal was to produce the first Kanji Macintosh. </i></p>
+            <p align="justify"></p>
+            <p align="justify"><i>Working with our Japanese counterparts was 
+            made somewhat more challenging because of the translation issues. In 
+            the best of all possible worlds, we would all have spoken a common 
+            language. Second best would have been having a technically savvy 
+            translator, experienced with software engineering design and 
+            concepts. What we actually had was one, lone Apple marketing person, 
+            who happened to be bilingual. </i></p>
+            <p align="justify"><i>Imagine yourself in that situation, having to 
+            discuss how to combine Huffman encoding and run-length encoding to 
+            compress Japanese input dictionaries. We soon learned the full 
+            impact of the phrase &quot;to lose something in translation!&quot;</i></p>
+            <p align="justify"><i>But then our translator had to leave, and we 
+            were left with just vestiges of English on their side, and miniscule 
+            Japanese on ours. We then found out just how useful a white-board 
+            can be.</i></p>
+            <p align="justify"><i>Yet one day we hit a stumbling block, and were 
+            just not making progress. We had known that Japanese needed two 
+            bytes to encompass the large character set, and we had prototyped 
+            how to adapt the system software to use two-byte characters. 
+            However, we were having trouble figuring out exactly how things fit 
+            together with our counterparts&#39; data formats.</i></p>
+            <p align="justify"><i>Remember [that] we were new to this, so it 
+            didn&#39;t hit us right away. But all of a sudden, we could see the 
+            light go on in both of our faces: we had assumed that the standard 
+            Shift-JIS character set was a uniform two-byte standard. We were so, 
+            so wrong. You needed a mixture of single and double bytes to 
+            represent even the most common text. Worse yet, some bytes could be 
+            both whole single byte-characters, and parts of double-byte 
+            characters. We weren&#39;t in Kansas anymore!</i></p>
+            <p align="justify"><i>We persevered, and ended up producing a 
+            successful product [Apple KanjiTalk].&nbsp; But -- although we 
+            kicked around different ideas for a radically new kind of character 
+            set -- we never did anything with these ideas. That is, not until we 
+            heard about a proposal from colleagues at Xerox for such a new kind 
+            of character set, a character set originated by Joe Becker, a 
+            character set that he baptized &#39;Unicode&#39;.&quot;</i></p>
+            <p align="right"><font size="2">Mark Davis, President and Co-founder 
+            of the Unicode Standard and the Unicode Consortium:<br>
+            Quoted from Keynote Address,“10 years of Unicode”<br>
+            September 1997 Eleventh International Unicode Conference #11 
+            (©Unicode, Inc. 1997)</font></p>
+          </blockquote>
+          <h2>1985-1987</h2>
+          <p align="justify">During this period of time, in addition to his 
+          co-authoring of Apple KanjiTalk, Davis was involved in further 
+          discussions of a universal character set which were being prompted by 
+          the development of the Apple File Exchange.</p>
+          <blockquote>
+            <p align="justify"><i>“We [at Xerox PARC] decided to put a Japanese 
+            system on Alto (the prototype personal computer) with Fuji Xerox 
+            [1975]. It was the first personal computer built at Xerox PARC. It 
+            was the model that Steve Jobs used [for the first Apple machine].&nbsp; 
+            Thousands were built, none sold. We needed a 16-bit [character 
+            encoding]. Joe Becker came up with the initial 16-bit. This was for 
+            the Xerox STAR product [1981], which was truly multilingual.&nbsp; I 
+            managed the JDS product in STAR. Star went on to 27 languages, 
+            including Japanese, Chinese and English.&quot; </i></p>
+            <p align="right"><font size="2">Bill English, first CFO of Unicode 
+            Consortium<br>
+            (interview with Laura Wideburg © 1998)</font></p>
+          </blockquote>
+          <p align="justify">At Xerox, Huan-mei Liao, Nelson Ng, Dave Opstad, 
+          and Lee Collins began work on a database to map the relationships 
+          between identical Japanese (JIS) and Chinese (simplified and 
+          traditional) characters for quickly building a font for extended 
+          Chinese characters. Xerox users (e.g. Nakajima of the University of 
+          Toronto) were using JIS to extend the Xerox Chinese character set and 
+          vice versa.&nbsp; This opens the discussion of Han unification. </p>
+          <h2>February 1987</h2>
+          <p align="justify">Peter Fenwick visited Xerox PARC, joined by 
+          Nakajima from Toronto, and Alan Tucker and Karen-Smith Yoshimura of 
+          the Research Libraries Group, Inc.(RLG). The discussion led to the 
+          architecture of what later becomes known as the Unicode Standard – “ 
+          begin at 0 and add the next character.”</p>
+          <p>At Apple, discussions of a “universal character set” are sparked by 
+          the Apple File Exchange development. </p>
+          <blockquote>
+            <p align="justify"><i>“I was one of two authors for KanjiTalk for 
+            Apple. Because of this, I met a bunch of people from Xerox doing 
+            multilingual – Joe [Becker], Lee [Collins], Andy Daniels, Dave 
+            Opstead, Eric Mader. I met them and ended up hiring Lee to work for 
+            me at Apple in 1987. We talked to Joe about his idea of Unicode and 
+            wanted to see if this was practical.&nbsp; If you double the text, 
+            what impact would it have?&nbsp; We made some trials with Shift-JIS 
+            encoding, [which] is difficult and easy to corrupt.&nbsp; We looked 
+            at alternatives but Unicode was the most efficient. Lee, Joe and I 
+            started meeting regularly [beginning of the Unicode Working Group].”</i></p>
+            <p align="right"><font size="2">Mark Davis<br>
+            (interview with Laura Wideburg © 1998)</font></p>
+          </blockquote>
+          <h2>Fall of 1987</h2>
+          <p>Mark Davis began Apple’s participation in ANSI X3L2.</p>
+          <h2>September 1987 </h2>
+          <p align="justify">Joe Becker from Xerox and Mark Davis from Apple 
+          begin discussing multilingual issues. Dave Opstad, of&nbsp; Xerox, 
+          presents his evaluation that seven years experience with the Xerox 
+          Character Code Standard (XCCS) compression scheme shows that 
+          fixed-width design is preferable to variable. </p>
+          <h2>December 1987</h2>
+          <p align="justify">Earliest documented use of the term “<b>Unicode</b>” 
+          which Joe Becker coined as the name of the new <b>“unique, universal, 
+          and uniform character encoding.” </b></p>
+          <h2>February 1988 </h2>
+          <p align="justify">Lee Collins, now at Apple works with Davis’ new 
+          character encoding proposals for future Apple systems.&nbsp; One 
+          system includes fixed-width, 16-bit characters, under the name “High 
+          Text” (in opposition to “Lower Text” ASCII).&nbsp; Collins 
+          investigates: </p>
+          <ul>
+            <li>&nbsp;Total system storage requirement with two-byte text</li>
+            <li>Comparisons of fixed-width and mixed-width text access; and</li>
+            <li>Establishment of&nbsp; preliminary character counts for all 
+            world alphabets. </li>
+          </ul>
+          <blockquote>
+            <p align="justify">“<i>At Apple, we were not easy converts, however. 
+            We had some serious issues, both technical and practical. On the 
+            technical side:</i></p>
+            <p align="justify"><i>* Would the increase in the size of text for 
+            America and Western Europe be acceptable to our customers there? <br>
+            * Could the Chinese, Japanese, and Korean ideographs be successfully 
+            unified? <br>
+            * Even then, could all the modern characters in common use actually 
+            fit into 16-bits? </i></p>
+            <p align="justify"><i>Our investigations, headed by Lee Collins, 
+            showed that we could get past these technical issues.</i></p>
+            <p align="justify"><i>As far as the text size, when we tested the 
+            percentage of memory or disk space actually occupied by character 
+            data in typical use, we found that it was rather small. Small not in 
+            absolute terms, but small compared to the amount of overhead in data 
+            structures and formatting information. Nowadays, of course, with 
+            video and sound data taking so much space, the percentage is even 
+            smaller.</i></p>
+            <p align="justify"><i>Concerning unification, when we looked at the 
+            unification of CJK ideographs, we had the successful example of the 
+            Research Libraries Group&#39;s East Asian Character (EACC) bibliographic 
+            code to show the way. We could see that by using the very same 
+            unification rules that the Japanese used for JIS, we could unify 
+            characters across the three languages.</i></p>
+            <p align="justify"><i>And, in terms of character count, when we 
+            counted up the upper bounds for the modern characters in common use, 
+            we came in well under 16 bits.</i></p>
+            <p align="justify"><i>Moreover, we also verified that no matter how 
+            you coded it, a mixed byte character set was always less efficient 
+            to access than Unicode was. </i></p>
+            <p align="justify"><i>We ended up satisfying ourselves that the 
+            overall architecture was correct.</i>” </p>
+            <p align="right"><font size="2">Mark Davis<br>
+            (&quot;10 years of Unicode&quot;)</font></p>
+          </blockquote>
+          <p align="justify">Based upon these investigations, &quot;Unicode 
+          Principles” were derived, outlining of the architecture of the future 
+          Unicode Standard. </p>
+          <blockquote>
+            <p align="justify">“<i>I was pushing at the beginning that we had to 
+            start assigning codes or nothing would ever happen.&nbsp; We started 
+            code charts. Lee on the Apple side, Joe on Xerox.&nbsp; I devoted 
+            Lee full time to Unicode. He was the prime force in the Unified Han.&nbsp; 
+            Without it, Unicode wouldn&#39;t work very well. Lee looked at tens of 
+            thousands of character codes.</i>” </p>
+            <p align="right"><font size="2">Mark Davis<br>
+            (interview with Wideburg © 1998)</font></p>
+          </blockquote>
+          <h2>April 1988</h2>
+          <p>First Unicode text prototypes begin at Apple.&nbsp; Apple decides 
+          to incorporate Unicode support into TrueType.</p>
+          <h2>June 1988 </h2>
+          <p align="justify">Meeting at Research Libraries Group in Palo Alto in 
+          order to discuss the criteria for Han unification.&nbsp; Method 
+          devised for combining frequency of use orderings for Chinese, 
+          Japanese, and Korean (CJK). </p>
+          <blockquote>
+            <p align="justify"><i>“My first memory [of Unicode] is meeting at 
+            Apple on Bubb Road in Cupertino, with Joe and Lee Collins, Allen 
+            Tucker and Karen Smith-Yoshimura, who were involved in CJK. </i></p>
+            <p align="justify"><i>Lee would say RLG had been in CJK for a long 
+            time.&nbsp; Unicode had heard about us.&nbsp; RLG had done a unified 
+            Han set and Lee was working along the same lines.&nbsp; </i></p>
+            <p align="justify"><i>Why RLG?&nbsp; RLG is interested in meeting 
+            the needs of research librarians.&nbsp; Automation was insufficient 
+            because to put them into a computer required transliteration, which 
+            created deficiencies.&nbsp; </i></p>
+            <p align="justify"><i>Most of the meetings were held at RLG in the 
+            early days.&nbsp; We had a meeting room for the Unicode Working 
+            Group. We ended up being the host institution for the most part.&nbsp; 
+            Working with Unicode has been wonderful.&nbsp; </i></p>
+            <p align="justify"><i>In the past the librarians always had to 
+            justify themselves to computer people. The difference with Unicode 
+            is that people ARE interested in scholarship. A fair number of them 
+            have doctorates and are interested in arcane scripts. They have to 
+            use libraries and they appreciate libraries.&nbsp; They have an 
+            awareness of the needs of scholarship.&nbsp; They don&#39;t focus 
+            exclusively on the needs of the marketplace. </i></p>
+            <p align="justify"><i>The other thing is that they are willing to 
+            share their knowledge and teach. In other groups the knowledge 
+            keepers make you feel inferior. [In the Unicode group], like Mark 
+            Davis, he will explain it carefully if you have a question. And you 
+            know Asmus, he is a teacher. They all have a “teacherly” way.&nbsp;&nbsp; 
+            The great people are kind and humane.&nbsp; They hold a high 
+            position, but they don&#39;t &quot;put on dogs.&quot;</i> </p>
+            <p align="right"><font size="2">Joan Aliprand, Current Secretary of 
+            Unicode<br>
+            (interview with Laura Wideburg © 1998)</font></p>
+          </blockquote>
+          <p>(Joan Aliprand, who hails from Australia, did not elaborate upon 
+          this colloquialism).</p>
+          <h2>July 1988</h2>
+          <p align="justify">Apple purchases Research Libraries Group’s Chinese 
+          Japanese Korean (CJK) character database for study of Han unification.
+          </p>
+          <p align="justify">Joe Becker presents the “Unicode Principles” in the 
+          document “Unicode 88” to /usr/group/International Subcommittee meeting 
+          in Dallas, August 1988. </p>
+          <blockquote>
+            <p align="justify">“J<i>oe took an early draft of “Unicode 88” and 
+            distributed it at a conference [summer of 1988 ANSI].&nbsp; Other 
+            companies saw that this was the wave of the future and we started 
+            taking on more people.</i></p>
+            <p align="justify"><i>But the practical question still remained: 
+            Could we get a critical mass of companies to accept this new 
+            encoding? </i></p>
+            <p align="justify"><i>Here, we were taking a gamble. We were all 
+            convinced that this was the correct technical solution. But more 
+            than that, we were all moved by the dream of bringing computers to 
+            every part of the world. Into Japanese, into Chinese, into Arabic or 
+            into Hindi, it should be as easy to localize a program, as it is to 
+            localize into French, into German, or into British English. (Some 
+            people don&#39;t realize that you do have to make a separate version for 
+            the UK--if only they would use modern spelling!)</i></p>
+            <p align="justify"><i>Unicode would not only make it easier and less 
+            costly to localize for our existing major countries, it would also 
+            make it possible to localize for minor languages, languages that 
+            were previously excluded by being just too costly for the effort. 
+            People would not be shut off from computers because of their native 
+            language. Of course, this also made economic sense for our 
+            companies; all major software vendors now sell a majority of their 
+            products internationally, not just domestically.</i></p>
+            <p align="justify"><i>But as time went on we saw that our gamble was 
+            worth taking.</i></p>
+            <p align="justify"><i>As time goes on, ever more programmers must 
+            internationalize their programs. They look at Unicode, and look at 
+            the alternatives. Once the fundamental support is provided for 
+            Unicode in the operating systems or linkable libraries, the best 
+            choice is clear. The momentum behind the wave of Unicode adoption 
+            will not let up. By the year 2000, the majority of programmers 
+            working on new development will be using Unicode.</i>&quot;</p>
+            <p align="right"><font size="2">Mark Davis<br>
+            (“10 years of Unicode”) </font></p>
+          </blockquote>
+          <h2>September 1988</h2>
+          <p align="justify">Joe Becker and Lee Collins go to ANSI X3L2 to argue 
+          for Han Unification; and, the use of Co C1 within ISO DP 10646. Becker 
+          later presents paper on Unicode to ISO Working Group 2. </p>
+          <p align="justify">In the fall of 1988, Collins began building a 
+          database of Unicode characters. The original design ordered characters 
+          alphabetically within scripts, and excluded all composite characters. 
+          Xerox had already built up a database of Unified Han for font 
+          construction. Collins used a database of EACC characters from RLG (The 
+          Research Libraries Group) to start a Han Unification database at 
+          Apple. Becker and Collins later correlated the two databases, and 
+          Collins continued to extend the database with further character 
+          correspondences added for other national standards.</p>
+          <p>&nbsp;</p>
+          <div style="border-top-style: solid; border-top-width: 1; padding-top: 1">
+            <font size="2">Interviews conducted by Laura Wideburg in 1995 are 
+            printed with permission from the interviewer. © Laura Wideburg 1998. 
+            They may not be reprinted without Wideburg&#39;s permission. </font>
+            <p><font size="2">All other material is ©Unicode, Inc. 1988 and may 
+            be reprinted, for purposes of educational or press releases. Any 
+			other reprinting requires permission of the
+			<a href="http://www.unicode.org/contacts.html">Unicode Consortium</a>.</font></div>
+          <p>&nbsp;</p>
+          <hr width="50%">
+          <div align="center">
+            <center>
+            <table cellspacing="0" cellpadding="0" border="0">
+              <tr>
+                <td><a href="http://www.unicode.org/copyright.html">
+                <img src="../img/hb_notice.gif" border="0" 
+                alt="Access to Copyright and terms of use" width="216" 
+                height="50"></a></td>
+              </tr>
+            </table>
+            <script language="Javascript" type="text/javascript" 
+            src="../webscripts/lastModified.js"></script>
+            </center>
+          </div>
+        </blockquote>
+        </td>
+      </tr>
+    </table>
+    </td>
+  </tr>
+</table>
+
+</body>
+
+</html>
